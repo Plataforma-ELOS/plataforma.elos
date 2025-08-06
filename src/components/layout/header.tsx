@@ -9,6 +9,7 @@ import { Menu } from 'lucide-react';
 const navItems = [
   { name: 'Notícias', href: '#' },
   { name: 'Biblioteca Digital', href: '#' },
+  { name: 'Comunidade', href: '/comunidade' },
   { name: 'Suporte IA', href: '/suporte-ia' },
 ];
 
