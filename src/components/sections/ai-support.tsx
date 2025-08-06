@@ -1,10 +1,14 @@
+
 "use client";
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal } from 'lucide-react';
 import Link from 'next/link';
+import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
 
 const supportCards = [
   {
@@ -34,6 +38,42 @@ const popularTopics = [
 ]
 
 export default function AiSupport() {
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [aiResponse, setAiResponse] = useState<string | null>(null);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+
+    setLoading(true);
+    setAiResponse(null);
+    try {
+      const response = await askLegalAssistant(query);
+      setAiResponse(response);
+    } catch (error) {
+      console.error(error);
+      setAiResponse('Desculpe, não consegui processar sua pergunta. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTopicClick = async (topic: string) => {
+    setQuery(topic);
+    setLoading(true);
+    setAiResponse(null);
+    try {
+      const response = await askLegalAssistant(topic);
+      setAiResponse(response);
+    } catch (error) {
+      console.error(error);
+      setAiResponse('Desculpe, não consegui processar sua pergunta. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section className="w-full py-16 md:py-24 lg:py-32 bg-background">
       <div className="container mx-auto px-4 md:px-6">
@@ -47,29 +87,48 @@ export default function AiSupport() {
         </div>
         
         <div className="max-w-3xl mx-auto">
-            <div className="relative mb-8">
+            <form onSubmit={handleSearch} className="relative mb-8">
                 <Input
-                type="search"
-                placeholder="Deixe sua dúvida aqui. Ex: 'Como obter o laudo para TEA?'"
-                className="w-full h-16 pl-6 pr-16 rounded-full text-base shadow-lg border-2 border-border focus:border-primary focus:ring-primary"
+                  type="search"
+                  placeholder="Deixe sua dúvida aqui. Ex: 'Como obter o laudo para TEA?'"
+                  className="w-full h-16 pl-6 pr-16 rounded-full text-base shadow-lg border-2 border-border focus:border-primary focus:ring-primary"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  disabled={loading}
                 />
-                <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12">
-                <Search className="h-6 w-6" />
-                <span className="sr-only">Buscar</span>
+                <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading}>
+                  <Search className="h-6 w-6" />
+                  <span className="sr-only">Buscar</span>
                 </Button>
-            </div>
+            </form>
             <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-16">
                 <span className="font-semibold mr-2">Tópicos populares:</span>
                 {popularTopics.map((topic, index) => (
-                    <Button key={index} variant="outline" className="rounded-full" asChild>
-                       <Link href="#">
-                         {topic.icon}
-                         {topic.text}
-                       </Link>
+                    <Button key={index} variant="outline" className="rounded-full" onClick={() => handleTopicClick(topic.text)} disabled={loading}>
+                        {topic.icon}
+                        {topic.text}
                     </Button>
                 ))}
             </div>
         </div>
+
+        {loading && (
+          <div className="max-w-3xl mx-auto text-center">
+            <p>Buscando a melhor resposta para você...</p>
+          </div>
+        )}
+        
+        {aiResponse && (
+          <div className="max-w-3xl mx-auto my-8">
+            <Alert>
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Resposta da A.I.</AlertTitle>
+              <AlertDescription>
+                {aiResponse}
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
         
         <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
           {supportCards.map((card, index) => (
