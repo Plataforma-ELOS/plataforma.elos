@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Bell, UserCircle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
 
 const navItems = [
   { name: 'Notícias', href: '#' },
@@ -32,6 +33,7 @@ export default function HeaderSecondary() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2">
+                <Image src="https://placehold.co/40x40.png" alt="Logo Elos" width={40} height={40} data-ai-hint="logo" />
                 <span className="text-sm font-medium text-foreground/80">Plataforma</span>
                 <Link href="/" className="flex items-center gap-2">
                     <span className="text-xl font-bold text-primary">E.L.O.S</span>
