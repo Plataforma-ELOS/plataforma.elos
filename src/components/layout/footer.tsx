@@ -17,7 +17,6 @@ export default function Footer() {
               <ul className="space-y-2">
                 <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Notícias</Link></li>
                 <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Biblioteca Digital</Link></li>
-                <li><Link href="/comunidade" className="text-sm text-foreground/80 hover:text-foreground">Comunidade</Link></li>
               </ul>
             </div>
              <div className="space-y-4">

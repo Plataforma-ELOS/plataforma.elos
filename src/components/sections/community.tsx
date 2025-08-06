@@ -49,7 +49,7 @@ export default function Community() {
         </div>
         <div className="mt-16 text-center">
           <Button size="lg" className="rounded-full px-8" asChild>
-            <Link href="/comunidade">Quero fazer parte</Link>
+            <Link href="#">Quero fazer parte</Link>
           </Button>
         </div>
       </div>

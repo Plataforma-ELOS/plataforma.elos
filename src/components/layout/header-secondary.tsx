@@ -11,7 +11,6 @@ import Image from 'next/image';
 const navItems = [
   { name: 'Notícias', href: '#' },
   { name: 'Acervo digital', href: '#' },
-  { name: 'Comunidade', href: '/comunidade' },
   { name: 'Suporte A.I', href: '/suporte-ia' },
 ];
 
