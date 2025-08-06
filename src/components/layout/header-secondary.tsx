@@ -7,15 +7,18 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Bell, UserCircle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
   { name: 'Notícias', href: '#' },
   { name: 'Acervo digital', href: '#' },
+  { name: 'Comunidade', href: '/comunidade' },
   { name: 'Suporte A.I', href: '/suporte-ia' },
 ];
 
 export default function HeaderSecondary() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +29,8 @@ export default function HeaderSecondary() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const isCurrentPage = (href: string) => pathname === href;
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-sm shadow-sm' : 'bg-background'}`}>
@@ -40,7 +45,7 @@ export default function HeaderSecondary() {
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           {navItems.map((item) => (
-            <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${item.name === 'Suporte A.I' ? 'font-bold text-foreground' : ''}`}>
+            <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
               {item.name}
             </Link>
           ))}
@@ -72,7 +77,7 @@ export default function HeaderSecondary() {
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
                   {navItems.map((item) => (
-                    <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${item.name === 'Suporte A.I' ? 'font-bold text-foreground' : ''}`}>
+                    <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
                       {item.name}
                     </Link>
                   ))}
