@@ -10,7 +10,7 @@ const navItems = [
   { name: 'Notícias', href: '#' },
   { name: 'Biblioteca Digital', href: '#' },
   { name: 'Comunidade', href: '#' },
-  { name: 'Suporte IA', href: '#' },
+  { name: 'Suporte IA', href: '/suporte-ia' },
 ];
 
 export default function Header() {
