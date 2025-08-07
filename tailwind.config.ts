@@ -88,10 +88,16 @@ export default {
             height: '0',
           },
         },
+        'ring': {
+          '0%, 100%': { transform: 'rotate(0)' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'rotate(-15deg)' },
+          '20%, 40%, 60%, 80%': { transform: 'rotate(15deg)' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'ring': 'ring 1.5s ease-in-out infinite',
       },
     },
   },
