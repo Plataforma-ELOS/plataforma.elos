@@ -22,6 +22,8 @@ export default function Hero() {
               height={400}
               className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover shadow-2xl shadow-primary/20"
               data-ai-hint="family support"
+              priority
+              style={{ height: 'auto' }}
             />
           </div>
         </div>
