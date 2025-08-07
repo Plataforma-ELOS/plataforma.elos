@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Globe, Filter, Plus } from 'lucide-react';
+import FeatureInProgress from '@/components/feature-in-progress';
 
 const mainNav = [
   { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
@@ -43,24 +43,30 @@ export default function CommunityDashboard() {
                 <div className="flex justify-between items-center py-2">
                     <nav className="flex items-center gap-4">
                         {mainNav.map((item) => (
-                        <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
+                        <FeatureInProgress key={item.name}>
+                          <span className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 cursor-pointer ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
                             {item.icon}
                             <span className="hidden md:inline">{item.name}</span>
-                        </Link>
+                          </span>
+                        </FeatureInProgress>
                         ))}
                     </nav>
                     <div className="flex items-center gap-4">
                         <nav className="hidden md:flex items-center gap-2">
                            {userNav.map((item) => (
-                                <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-lg p-2 text-sm text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
-                                    {item.icon}
-                                </Link>
+                                <FeatureInProgress key={item.name}>
+                                    <span className={`flex items-center gap-2 rounded-lg p-2 text-sm text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 cursor-pointer`}>
+                                        {item.icon}
+                                    </span>
+                                </FeatureInProgress>
                             ))}
                         </nav>
-                        <Button size="sm" className="hidden md:inline-flex">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Criar Grupo
-                        </Button>
+                        <FeatureInProgress>
+                          <Button size="sm" className="hidden md:inline-flex">
+                              <Plus className="mr-2 h-4 w-4" />
+                              Criar Grupo
+                          </Button>
+                        </FeatureInProgress>
                     </div>
                 </div>
             </div>
@@ -80,10 +86,12 @@ export default function CommunityDashboard() {
                 <div className="col-span-2">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-bold">Minhas Conversas</h2>
-                        <Button variant="ghost" size="sm">
-                            <Filter className="mr-2 h-4 w-4" />
-                            Filtros
-                        </Button>
+                        <FeatureInProgress>
+                          <Button variant="ghost" size="sm">
+                              <Filter className="mr-2 h-4 w-4" />
+                              Filtros
+                          </Button>
+                        </FeatureInProgress>
                     </div>
 
                     <Card>
@@ -115,9 +123,11 @@ export default function CommunityDashboard() {
             </div>
         </div>
 
-        <Button className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg" style={{backgroundColor: '#333333'}}>
-            <span className="text-white font-bold text-2xl" style={{color: '#A892EA'}}>L</span>
-        </Button>
+        <FeatureInProgress>
+          <Button className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg" style={{backgroundColor: '#333333'}}>
+              <span className="text-white font-bold text-2xl" style={{color: '#A892EA'}}>L</span>
+          </Button>
+        </FeatureInProgress>
         </main>
         
     </div>

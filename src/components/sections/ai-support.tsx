@@ -7,8 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal } from 'lucide-react';
-import Link from 'next/link';
 import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
+import FeatureInProgress from '@/components/feature-in-progress';
 
 const supportCards = [
   {
@@ -132,24 +132,26 @@ export default function AiSupport() {
         
         <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
           {supportCards.map((card, index) => (
-            <Card key={index} className="p-8 bg-white rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left">
-              <div>
-                <CardHeader className="flex flex-col items-start gap-4 p-0">
-                  <div className="bg-primary/10 p-4 rounded-xl mb-2">
-                    {card.icon}
-                  </div>
-                  <CardTitle className="text-xl font-semibold">{card.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0 mt-3">
-                  <p className="text-foreground/80">{card.description}</p>
-                </CardContent>
-              </div>
-              <div className="mt-6">
-                <Link href={card.href} className="font-semibold text-primary hover:text-primary/80 flex items-center group">
-                    Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </Card>
+            <FeatureInProgress key={index}>
+              <Card className="p-8 bg-white rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer">
+                <div>
+                  <CardHeader className="flex flex-col items-start gap-4 p-0">
+                    <div className="bg-primary/10 p-4 rounded-xl mb-2">
+                      {card.icon}
+                    </div>
+                    <CardTitle className="text-xl font-semibold">{card.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 mt-3">
+                    <p className="text-foreground/80">{card.description}</p>
+                  </CardContent>
+                </div>
+                <div className="mt-6">
+                  <span className="font-semibold text-primary hover:text-primary/80 flex items-center group">
+                      Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </Card>
+            </FeatureInProgress>
           ))}
         </div>
       </div>

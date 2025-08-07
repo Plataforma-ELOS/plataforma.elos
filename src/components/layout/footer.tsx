@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import FeatureInProgress from '@/components/feature-in-progress';
 
 export default function Footer() {
   return (
@@ -15,8 +16,8 @@ export default function Footer() {
             <div className="space-y-4">
               <h4 className="font-semibold">Plataforma</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Notícias</Link></li>
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Biblioteca Digital</Link></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Notícias</span></FeatureInProgress></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Biblioteca Digital</span></FeatureInProgress></li>
                 <li><Link href="/comunidade" className="text-sm text-foreground/80 hover:text-foreground">Comunidade</Link></li>
               </ul>
             </div>
@@ -24,15 +25,15 @@ export default function Footer() {
               <h4 className="font-semibold">Suporte</h4>
               <ul className="space-y-2">
                 <li><Link href="/suporte-ia" className="text-sm text-foreground/80 hover:text-foreground">Suporte IA</Link></li>
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Fale Conosco</Link></li>
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">FAQ</Link></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Fale Conosco</span></FeatureInProgress></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">FAQ</span></FeatureInProgress></li>
               </ul>
             </div>
              <div className="space-y-4">
               <h4 className="font-semibold">Legal</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Termos de Serviço</Link></li>
-                <li><Link href="#" className="text-sm text-foreground/80 hover:text-foreground">Política de Privacidade</Link></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Termos de Serviço</span></FeatureInProgress></li>
+                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Política de Privacidade</span></FeatureInProgress></li>
               </ul>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Lightbulb, HeartHandshake, ClipboardList } from 'lucide-react';
-import Link from 'next/link';
+import FeatureInProgress from '@/components/feature-in-progress';
 
 const features = [
   {
@@ -44,9 +44,11 @@ export default function Features() {
           ))}
         </div>
         <div className="mt-16 text-center">
-          <Button size="lg" variant="outline" className="rounded-full px-8">
-            <Link href="#">Ver no protótipo</Link>
-          </Button>
+          <FeatureInProgress>
+            <Button size="lg" variant="outline" className="rounded-full px-8">
+              Ver no protótipo
+            </Button>
+          </FeatureInProgress>
         </div>
       </div>
     </section>

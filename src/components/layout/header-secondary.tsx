@@ -8,12 +8,13 @@ import { Menu, Bell, UserCircle } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import FeatureInProgress from '@/components/feature-in-progress';
 
 const navItems = [
-  { name: 'Notícias', href: '#' },
-  { name: 'Acervo digital', href: '#' },
-  { name: 'Comunidade', href: '/comunidade' },
-  { name: 'Suporte A.I', href: '/suporte-ia' },
+  { name: 'Notícias', href: '#', isFeature: true },
+  { name: 'Acervo digital', href: '#', isFeature: true },
+  { name: 'Comunidade', href: '/comunidade', isFeature: false },
+  { name: 'Suporte A.I', href: '/suporte-ia', isFeature: false },
 ];
 
 export default function HeaderSecondary() {
@@ -32,6 +33,40 @@ export default function HeaderSecondary() {
 
   const isCurrentPage = (href: string) => pathname === href;
 
+  const renderNavItem = (item: typeof navItems[0]) => {
+    if (item.isFeature) {
+      return (
+        <FeatureInProgress>
+          <span className={`text-foreground/80 hover:text-foreground transition-colors cursor-pointer ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+            {item.name}
+          </span>
+        </FeatureInProgress>
+      );
+    }
+    return (
+      <Link href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+        {item.name}
+      </Link>
+    );
+  };
+  
+    const renderMobileNavItem = (item: typeof navItems[0]) => {
+    if (item.isFeature) {
+      return (
+        <FeatureInProgress>
+          <span className={`text-foreground/80 hover:text-foreground transition-colors cursor-pointer ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+            {item.name}
+          </span>
+        </FeatureInProgress>
+      );
+    }
+    return (
+      <Link href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+        {item.name}
+      </Link>
+    );
+  };
+
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-sm shadow-sm' : 'bg-background'}`}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
@@ -45,22 +80,24 @@ export default function HeaderSecondary() {
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           {navItems.map((item) => (
-            <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
-              {item.name}
-            </Link>
+            <div key={item.name}>{renderNavItem(item)}</div>
           ))}
         </nav>
         <div className="flex items-center gap-4">
+          <FeatureInProgress>
             <Button variant="ghost" size="icon" className="hidden md:inline-flex">
                 <Bell className="h-6 w-6" />
                 <span className="sr-only">Notificações</span>
             </Button>
-            <Avatar className="hidden md:inline-flex h-9 w-9">
+          </FeatureInProgress>
+          <FeatureInProgress>
+             <Avatar className="hidden md:inline-flex h-9 w-9 cursor-pointer">
                 <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
                 <AvatarFallback>
                     <UserCircle className="h-9 w-9 text-muted-foreground" />
                 </AvatarFallback>
             </Avatar>
+          </FeatureInProgress>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -77,22 +114,24 @@ export default function HeaderSecondary() {
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
                   {navItems.map((item) => (
-                    <Link key={item.name} href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
-                      {item.name}
-                    </Link>
+                     <div key={item.name}>{renderMobileNavItem(item)}</div>
                   ))}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
-                    <Button variant="ghost" size="icon">
-                        <Bell className="h-6 w-6" />
-                        <span className="sr-only">Notificações</span>
-                    </Button>
-                    <Avatar className="h-10 w-10">
-                        <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
-                        <AvatarFallback>
-                            <UserCircle className="h-10 w-10 text-muted-foreground" />
-                        </AvatarFallback>
-                    </Avatar>
+                    <FeatureInProgress>
+                      <Button variant="ghost" size="icon">
+                          <Bell className="h-6 w-6" />
+                          <span className="sr-only">Notificações</span>
+                      </Button>
+                    </FeatureInProgress>
+                    <FeatureInProgress>
+                      <Avatar className="h-10 w-10 cursor-pointer">
+                          <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
+                          <AvatarFallback>
+                              <UserCircle className="h-10 w-10 text-muted-foreground" />
+                          </AvatarFallback>
+                      </Avatar>
+                    </FeatureInProgress>
                 </div>
               </div>
             </SheetContent>
