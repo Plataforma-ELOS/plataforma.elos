@@ -6,13 +6,7 @@ export default function Footer() {
     <footer className="w-full bg-white border-t border-border/50">
       <div className="container mx-auto py-12 px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-3">
-          <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-primary">ELOS</span>
-            </Link>
-            <p className="text-foreground/80">Cuidar de alguém começa por cuidar de si.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:col-span-2">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:col-span-3">
             <div className="space-y-4">
               <h4 className="font-semibold">Plataforma</h4>
               <ul className="space-y-2">
