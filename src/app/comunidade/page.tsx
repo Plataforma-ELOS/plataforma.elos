@@ -71,7 +71,7 @@ export default function CommunityPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <HeaderSecondary />
-      <div className="flex-1 bg-background py-8">
+      <main>
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center py-2">
@@ -110,7 +110,7 @@ export default function CommunityPage() {
             </div>
         </div>
         
-        <main className="p-8 relative container mx-auto flex-1">
+        <div className="p-8 relative container mx-auto flex-1">
         <div className="space-y-8">
             <div className="h-48 w-full rounded-2xl border bg-card"></div>
             <div className="grid grid-cols-4 gap-6">
@@ -160,9 +160,8 @@ export default function CommunityPage() {
                 </div>
             </div>
         </div>
-        </main>
-        
-    </div>
+        </div>
+      </main>
       <Footer />
     </div>
   );
