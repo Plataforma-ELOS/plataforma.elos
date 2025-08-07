@@ -38,88 +38,93 @@ const myConversations = [
 
 export default function CommunityDashboard() {
   return (
-    <div className="grid grid-cols-[256px_1fr] flex-1">
-      <aside className="w-64 flex-shrink-0 border-r bg-background p-4 flex flex-col justify-between">
-        <div>
-            <nav className="flex flex-col gap-2 mb-8">
-              {mainNav.map((item) => (
-                <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground font-semibold' : ''}`}>
-                  {item.icon}
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-            </nav>
-            
-            <div className="space-y-2">
-                <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase">Sobre mim</h3>
-                 <nav className="flex flex-col gap-2">
-                    {userNav.map((item) => (
-                        <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
-                            {item.icon}
-                            <span>{item.name}</span>
-                        </Link>
+    <div className="flex flex-col flex-1">
+        <div className="border-b">
+            <div className="container mx-auto px-4 md:px-6">
+                <nav className="flex items-center gap-4 py-2">
+                    {mainNav.map((item) => (
+                    <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
+                        {item.icon}
+                        <span>{item.name}</span>
+                    </Link>
                     ))}
-                 </nav>
+                </nav>
             </div>
         </div>
-        <Button size="lg">Criar Grupo</Button>
-      </aside>
+        <div className="grid grid-cols-[256px_1fr] flex-1">
+        <aside className="w-64 flex-shrink-0 border-r bg-background p-4 flex flex-col justify-between">
+            <div>
+                <div className="space-y-2">
+                    <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase">Sobre mim</h3>
+                    <nav className="flex flex-col gap-2">
+                        {userNav.map((item) => (
+                            <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
+                                {item.icon}
+                                <span>{item.name}</span>
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
+            </div>
+            <Button size="lg">Criar Grupo</Button>
+        </aside>
 
-      <ScrollArea className="h-[calc(100vh-5rem)]">
-        <main className="p-8 relative">
-          <div className="space-y-8">
-              <div className="h-48 w-full rounded-2xl border bg-card"></div>
-              <div className="grid grid-cols-4 gap-6">
-                  <div className="h-24 rounded-2xl border bg-card"></div>
-                  <div className="h-24 rounded-2xl border bg-card"></div>
-                  <div className="h-24 rounded-2xl border bg-card"></div>
-                  <div className="h-24 rounded-2xl border bg-card"></div>
-              </div>
+        <ScrollArea className="h-[calc(100vh-10rem)]">
+            <main className="p-8 relative">
+            <div className="space-y-8">
+                <div className="h-48 w-full rounded-2xl border bg-card"></div>
+                <div className="grid grid-cols-4 gap-6">
+                    <div className="h-24 rounded-2xl border bg-card"></div>
+                    <div className="h-24 rounded-2xl border bg-card"></div>
+                    <div className="h-24 rounded-2xl border bg-card"></div>
+                    <div className="h-24 rounded-2xl border bg-card"></div>
+                </div>
 
-              <div className="grid grid-cols-3 gap-8">
-                  <div className="col-span-2">
-                      <div className="flex justify-between items-center mb-4">
-                          <h2 className="text-xl font-bold">Minhas Conversas</h2>
-                          <Button variant="ghost" size="sm">
-                              <Filter className="mr-2 h-4 w-4" />
-                              Filtros
-                          </Button>
-                      </div>
+                <div className="grid grid-cols-3 gap-8">
+                    <div className="col-span-2">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-bold">Minhas Conversas</h2>
+                            <Button variant="ghost" size="sm">
+                                <Filter className="mr-2 h-4 w-4" />
+                                Filtros
+                            </Button>
+                        </div>
 
-                      <Card>
-                          <CardContent className="p-0">
-                              <ul className="divide-y">
-                                  {myConversations.map((convo, index) => (
-                                      <li key={index} className="flex items-center gap-4 p-4">
-                                          <div className="h-12 w-12 rounded-full bg-muted"></div>
-                                          <div className="flex-1">
-                                              <h3 className="font-semibold">{convo.name}</h3>
-                                              <div className="flex gap-4 text-xs text-muted-foreground mt-1">
-                                                  <span><Calendar className="inline-block mr-1 h-3 w-3" />{convo.created}</span>
-                                                  <span>{convo.activity}</span>
-                                              </div>
-                                          </div>
-                                      </li>
-                                  ))}
-                              </ul>
-                          </CardContent>
-                      </Card>
-                  </div>
-                  <div className="col-span-1">
-                       <Card className="h-full flex items-center justify-center">
-                          <CardContent className="text-center text-muted-foreground p-4">
-                              <p>No planned events</p>
-                          </CardContent>
-                      </Card>
-                  </div>
-              </div>
-          </div>
+                        <Card>
+                            <CardContent className="p-0">
+                                <ul className="divide-y">
+                                    {myConversations.map((convo, index) => (
+                                        <li key={index} className="flex items-center gap-4 p-4">
+                                            <div className="h-12 w-12 rounded-full bg-muted"></div>
+                                            <div className="flex-1">
+                                                <h3 className="font-semibold">{convo.name}</h3>
+                                                <div className="flex gap-4 text-xs text-muted-foreground mt-1">
+                                                    <span><Calendar className="inline-block mr-1 h-3 w-3" />{convo.created}</span>
+                                                    <span>{convo.activity}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="col-span-1">
+                        <Card className="h-full flex items-center justify-center">
+                            <CardContent className="text-center text-muted-foreground p-4">
+                                <p>No planned events</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </div>
 
-          <Button className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg" style={{backgroundColor: '#333333'}}>
-              <span className="text-white font-bold text-2xl" style={{color: '#A892EA'}}>L</span>
-          </Button>
-        </main>
-      </ScrollArea>
+            <Button className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg" style={{backgroundColor: '#333333'}}>
+                <span className="text-white font-bold text-2xl" style={{color: '#A892EA'}}>L</span>
+            </Button>
+            </main>
+        </ScrollArea>
+        </div>
     </div>
   );
 }
