@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Globe, Filter, Plus } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
+import Link from 'next/link';
 
 const mainNav = [
   { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
   { icon: <Search className="h-5 w-5" />, name: 'Buscar', href: '#' },
   { icon: <Zap className="h-5 w-5" />, name: 'Destaques', href: '#' },
-  { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '#' },
+  { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '/comunidade/eventos' },
 ];
 
 const userNav = [
@@ -41,29 +42,45 @@ const myConversations = [
 export default function CommunityDashboard() {
   const [activeTab, setActiveTab] = useState('Início');
 
+  const renderNavItem = (item: typeof mainNav[0]) => {
+    const isLink = item.href.startsWith('/');
+    const content = (
+        <button
+          onClick={() => !isLink && setActiveTab(item.name)}
+          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
+        >
+          {item.icon}
+          <span className="hidden md:inline">{item.name}</span>
+        </button>
+      );
+
+    if (isLink) {
+        return <Link href={item.href}>{content}</Link>
+    }
+
+    return (
+        <FeatureInProgress>
+            {content}
+        </FeatureInProgress>
+    )
+  }
+
   return (
-    <div className="flex flex-col flex-1 bg-background">
+    <div className="flex-1 bg-background py-8">
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center py-2">
                     <nav className="flex items-center gap-2 relative">
                         {mainNav.map((item) => (
-                        <FeatureInProgress key={item.name}>
-                          <button 
-                            onClick={() => setActiveTab(item.name)}
-                            className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
-                          >
-                            {item.icon}
-                            <span className="hidden md:inline">{item.name}</span>
-                          </button>
-                        </FeatureInProgress>
+                          <div key={item.name}>{renderNavItem(item)}</div>
                         ))}
                          <div
                             className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
                             style={{
-                                height: '36px',
-                                width: activeTab === 'Início' ? '87px' : activeTab === 'Buscar' ? '92px' : activeTab === 'Destaques' ? '110px' : '98px',
+                                height: '40px',
+                                width: activeTab === 'Início' ? '87px' : activeTab === 'Buscar' ? '92px' : activeTab === 'Destaques' ? '110px' : activeTab === 'Eventos' ? '98px' : '0',
                                 left: activeTab === 'Início' ? '0px' : activeTab === 'Buscar' ? '95px' : activeTab === 'Destaques' ? '195px' : '313px',
+                                opacity: activeTab === 'Eventos' ? 0 : 1,
                             }}
                         />
                     </nav>
