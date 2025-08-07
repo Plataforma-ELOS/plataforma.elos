@@ -122,12 +122,6 @@ export default function CommunityDashboard() {
                 </div>
             </div>
         </div>
-
-        <FeatureInProgress>
-          <Button className="absolute bottom-8 right-8 rounded-full h-16 w-16 shadow-lg" style={{backgroundColor: '#333333'}}>
-              <span className="text-white font-bold text-2xl" style={{color: '#A892EA'}}>L</span>
-          </Button>
-        </FeatureInProgress>
         </main>
         
     </div>
