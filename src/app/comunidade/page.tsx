@@ -7,6 +7,7 @@ export default function CommunityPage() {
     <div className="flex flex-col min-h-screen">
       <HeaderSecondary />
       <CommunityDashboard />
+      <Footer />
     </div>
   );
 }
