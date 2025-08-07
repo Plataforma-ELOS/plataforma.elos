@@ -46,31 +46,29 @@ export default function CommunityDashboard() {
                         {mainNav.map((item) => (
                         <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
                             {item.icon}
-                            <span>{item.name}</span>
+                            <span className="hidden md:inline">{item.name}</span>
                         </Link>
                         ))}
                     </nav>
-                    <nav className="flex items-center gap-4">
-                       {userNav.map((item) => (
-                            <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
-                                {item.icon}
-                                <span className="hidden md:inline">{item.name}</span>
-                            </Link>
-                        ))}
-                    </nav>
+                    <div className="flex items-center gap-4">
+                        <nav className="hidden md:flex items-center gap-2">
+                           {userNav.map((item) => (
+                                <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-lg p-2 text-sm text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
+                                    {item.icon}
+                                </Link>
+                            ))}
+                        </nav>
+                        <Button size="sm" className="hidden md:inline-flex">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Criar Grupo
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div className="grid grid-cols-[256px_1fr] flex-1">
-        <aside className="w-64 flex-shrink-0 border-r bg-background p-4 flex flex-col justify-between">
-            <div>
-                {/* A navegação do usuário foi movida para o cabeçalho */}
-            </div>
-            <Button size="lg">Criar Grupo</Button>
-        </aside>
-
+        
         <ScrollArea className="h-[calc(100vh-10rem)]">
-            <main className="p-8 relative">
+            <main className="p-8 relative container mx-auto">
             <div className="space-y-8">
                 <div className="h-48 w-full rounded-2xl border bg-card"></div>
                 <div className="grid grid-cols-4 gap-6">
@@ -124,7 +122,7 @@ export default function CommunityDashboard() {
             </Button>
             </main>
         </ScrollArea>
-        </div>
+        
     </div>
   );
 }
