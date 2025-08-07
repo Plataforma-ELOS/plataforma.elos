@@ -85,8 +85,8 @@ export default function HeaderSecondary() {
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex">
-                <Bell className="h-6 w-6 animate-ring" />
+            <Button variant="ghost" size="icon" className="hidden md:inline-flex group">
+                <Bell className="h-6 w-6 group-hover:animate-ring" />
                 <span className="sr-only">Notificações</span>
             </Button>
           </FeatureInProgress>
@@ -119,8 +119,8 @@ export default function HeaderSecondary() {
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
                     <FeatureInProgress>
-                      <Button variant="ghost" size="icon">
-                          <Bell className="h-6 w-6 animate-ring" />
+                      <Button variant="ghost" size="icon" className="group">
+                          <Bell className="h-6 w-6 group-hover:animate-ring" />
                           <span className="sr-only">Notificações</span>
                       </Button>
                     </FeatureInProgress>
