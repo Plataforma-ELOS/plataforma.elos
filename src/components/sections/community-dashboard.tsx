@@ -41,30 +41,30 @@ export default function CommunityDashboard() {
     <div className="flex flex-col flex-1">
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
-                <nav className="flex items-center gap-4 py-2">
-                    {mainNav.map((item) => (
-                    <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
-                        {item.icon}
-                        <span>{item.name}</span>
-                    </Link>
-                    ))}
-                </nav>
+                <div className="flex justify-between items-center py-2">
+                    <nav className="flex items-center gap-4">
+                        {mainNav.map((item) => (
+                        <Link key={item.name} href={item.href} className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
+                            {item.icon}
+                            <span>{item.name}</span>
+                        </Link>
+                        ))}
+                    </nav>
+                    <nav className="flex items-center gap-4">
+                       {userNav.map((item) => (
+                            <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
+                                {item.icon}
+                                <span className="hidden md:inline">{item.name}</span>
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
             </div>
         </div>
         <div className="grid grid-cols-[256px_1fr] flex-1">
         <aside className="w-64 flex-shrink-0 border-r bg-background p-4 flex flex-col justify-between">
             <div>
-                <div className="space-y-2">
-                    <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase">Sobre mim</h3>
-                    <nav className="flex flex-col gap-2">
-                        {userNav.map((item) => (
-                            <Link key={item.name} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10`}>
-                                {item.icon}
-                                <span>{item.name}</span>
-                            </Link>
-                        ))}
-                    </nav>
-                </div>
+                {/* A navegação do usuário foi movida para o cabeçalho */}
             </div>
             <Button size="lg">Criar Grupo</Button>
         </aside>
