@@ -42,7 +42,7 @@ export default function CommunityDashboard() {
   const [activeTab, setActiveTab] = useState('Início');
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 bg-background">
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center py-2">
