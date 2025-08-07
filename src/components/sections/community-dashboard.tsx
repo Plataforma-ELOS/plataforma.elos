@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Globe, Filter, Plus } from 'lucide-react';
@@ -36,20 +39,33 @@ const myConversations = [
 ];
 
 export default function CommunityDashboard() {
+  const [activeTab, setActiveTab] = useState('Início');
+
   return (
     <div className="flex flex-col flex-1">
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center py-2">
-                    <nav className="flex items-center gap-4">
+                    <nav className="flex items-center gap-2 relative">
                         {mainNav.map((item) => (
                         <FeatureInProgress key={item.name}>
-                          <span className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-all hover:text-foreground hover:bg-primary/10 cursor-pointer ${item.name === 'Início' ? 'bg-primary/10 text-foreground' : ''}`}>
+                          <button 
+                            onClick={() => setActiveTab(item.name)}
+                            className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
+                          >
                             {item.icon}
                             <span className="hidden md:inline">{item.name}</span>
-                          </span>
+                          </button>
                         </FeatureInProgress>
                         ))}
+                         <div
+                            className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
+                            style={{
+                                height: '36px',
+                                width: activeTab === 'Início' ? '87px' : activeTab === 'Buscar' ? '92px' : activeTab === 'Destaques' ? '110px' : '98px',
+                                left: activeTab === 'Início' ? '0px' : activeTab === 'Buscar' ? '95px' : activeTab === 'Destaques' ? '195px' : '313px',
+                            }}
+                        />
                     </nav>
                     <div className="flex items-center gap-4">
                         <nav className="hidden md:flex items-center gap-2">
