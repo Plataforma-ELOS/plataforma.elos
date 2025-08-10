@@ -31,7 +31,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
       <HeaderSecondary />
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 md:px-6">
-            <Link href="/#professionals" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
                 <ArrowLeft className="w-4 h-4" />
                 Voltar para a página inicial
             </Link>
@@ -56,10 +56,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                 <Star className="text-muted-foreground/50" />
                                 <span className="text-sm text-muted-foreground ml-2">(123 avaliações)</span>
                             </div>
-                            <FeatureInProgress>
-                                <Button size="lg" className="w-full">Agendar Consulta</Button>
-                            </FeatureInProgress>
-                             <div className="flex justify-center gap-4">
+                             <div className="flex justify-center gap-4 pt-4">
                                 <FeatureInProgress>
                                     <Button variant="outline" size="icon">
                                         <Mail className="h-5 w-5" />
