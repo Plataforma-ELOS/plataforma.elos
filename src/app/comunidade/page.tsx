@@ -302,13 +302,10 @@ export default function CommunityPage() {
                                 <span className="sr-only">Notificações</span>
                             </Button>
                         </FeatureInProgress>
-                        <button
-                          onClick={() => setActiveTab('Salvos')}
-                          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-300 hover:text-foreground ${activeTab === 'Salvos' ? 'text-foreground bg-primary/10' : 'text-foreground/60'}`}
-                        >
-                            <Bookmark className="h-5 w-5" />
+                        <Button variant="ghost" size="icon" onClick={() => setActiveTab('Salvos')}>
+                            <Bookmark className={`h-5 w-5 ${activeTab === 'Salvos' ? 'text-primary' : 'text-foreground/60'}`} />
                             <span className="sr-only">Salvos</span>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
