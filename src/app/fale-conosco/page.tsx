@@ -1,4 +1,6 @@
 
+"use client";
+
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Mail, Phone, MapPin } from 'lucide-react';
