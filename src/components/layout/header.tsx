@@ -9,8 +9,8 @@ import { Menu } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 
 const navItems = [
-  { name: 'Notícias', href: '#', isFeature: true },
-  { name: 'Acervo Digital', href: '/biblioteca-digital', isFeature: false },
+  { name: 'Notícias', href: '/noticias', isFeature: false },
+  { name: 'Acervo Digital', href: '/acervo-digital', isFeature: false },
   { name: 'Comunidade', href: '/comunidade', isFeature: false },
   { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
 ];
