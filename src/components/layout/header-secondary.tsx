@@ -13,9 +13,9 @@ import FeatureInProgress from '@/components/feature-in-progress';
 
 const navItems = [
   { name: 'Notícias', href: '#', isFeature: true },
-  { name: 'Acervo digital', href: '/biblioteca-digital', isFeature: false },
+  { name: 'Acervo Digital', href: '/biblioteca-digital', isFeature: false },
   { name: 'Comunidade', href: '/comunidade', isFeature: false },
-  { name: 'Suporte A.I', href: '/suporte-ia', isFeature: false },
+  { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
 ];
 
 export default function HeaderSecondary() {
