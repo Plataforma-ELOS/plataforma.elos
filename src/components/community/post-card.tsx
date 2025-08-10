@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -6,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { ThumbsUp, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 import FeatureInProgress from "../feature-in-progress";
 
-type Post = {
+export type Post = {
   author: {
     name: string;
     avatarUrl: string;
@@ -42,7 +43,7 @@ export default function PostCard({ post }: PostCardProps) {
               </Button>
             </FeatureInProgress>
           </div>
-          <p className="mt-2 text-foreground/90">{post.content}</p>
+          <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
         </div>
       </div>
       <div className="mt-4 flex justify-between items-center text-muted-foreground">

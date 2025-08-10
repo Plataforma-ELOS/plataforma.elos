@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -9,7 +10,7 @@ import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Globe, Filt
 import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
 import CreatePost from '@/components/community/create-post';
-import PostCard from '@/components/community/post-card';
+import PostCard, { Post } from '@/components/community/post-card';
 
 const mainNav = [
   { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
@@ -36,7 +37,18 @@ const myConversations = [
   },
 ];
 
-const posts = [
+const initialPosts: Post[] = [
+  {
+    author: {
+      name: 'Carlos Souza',
+      avatarUrl: 'https://placehold.co/40x40.png',
+      hint: 'man portrait',
+    },
+    time: '5h',
+    content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
+    likes: 35,
+    comments: 10,
+  },
   {
     author: {
       name: 'Ana Silva',
@@ -48,21 +60,29 @@ const posts = [
     likes: 12,
     comments: 5,
   },
-  {
-    author: {
-      name: 'Carlos Souza',
-      avatarUrl: 'https://placehold.co/40x40.png',
-      hint: 'man portrait',
-    },
-    time: '5h',
-    content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
-    likes: 35,
-    comments: 10,
-  }
 ];
 
 export default function CommunityPage() {
   const [activeTab, setActiveTab] = useState('Início');
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+
+  const handleCreatePost = (content: string) => {
+    if (!content.trim()) return;
+
+    const newPost: Post = {
+      author: {
+        name: 'Usuário Atual',
+        avatarUrl: 'https://placehold.co/48x48.png',
+        hint: 'user avatar',
+      },
+      time: 'Agora',
+      content,
+      likes: 0,
+      comments: 0,
+    };
+
+    setPosts(prevPosts => [newPost, ...prevPosts]);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -126,7 +146,7 @@ export default function CommunityPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Coluna Principal do Feed */}
                 <div className="lg:col-span-2 space-y-6">
-                    <CreatePost />
+                    <CreatePost onCreatePost={handleCreatePost} />
                     {posts.map((post, index) => (
                         <PostCard key={index} post={post} />
                     ))}
