@@ -105,13 +105,13 @@ export default function CommunityPage() {
 
   useEffect(() => {
     if (navRef.current) {
-      const activeButton = navRef.current.querySelector(`button[data-tab-name="${activeTab}"]`) as HTMLElement;
-      if (activeButton) {
-        setIndicatorStyle({
-          left: activeButton.offsetLeft,
-          width: activeButton.offsetWidth,
-        });
-      }
+        const activeButton = navRef.current.querySelector(`button[data-tab-name="${activeTab}"]`) as HTMLElement;
+        if (activeButton) {
+            setIndicatorStyle({
+                left: activeButton.offsetLeft,
+                width: activeButton.offsetWidth,
+            });
+        }
     }
   }, [activeTab]);
 
@@ -181,18 +181,18 @@ export default function CommunityPage() {
     switch (activeTab) {
       case 'Início':
         return (
-          <>
+          <div className="animate-in fade-in-0 duration-500 space-y-6">
             <CreatePost onCreatePost={handleCreatePost} />
             <div className="space-y-6">
               {posts.map((post) => (
                 <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
               ))}
             </div>
-          </>
+          </div>
         );
        case 'Buscar':
         return (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-in fade-in-0 duration-500">
                 <form onSubmit={handleSearch} className="flex gap-2">
                     <Input 
                         placeholder="Buscar na comunidade..." 
@@ -231,7 +231,7 @@ export default function CommunityPage() {
       case 'Salvos':
         const savedPosts = posts.filter(post => post.isSaved);
         return (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-in fade-in-0 duration-500">
                 <h2 className="text-2xl font-bold">Itens Salvos</h2>
                 {savedPosts.length > 0 ? (
                     savedPosts.map((post) => (
@@ -249,7 +249,7 @@ export default function CommunityPage() {
        case 'Destaques':
         const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-in fade-in-0 duration-500">
             <h2 className="text-2xl font-bold">Posts em Destaque</h2>
             <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
             {featuredPosts.map((post) => (
@@ -259,12 +259,12 @@ export default function CommunityPage() {
         );
       case 'Eventos':
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-in fade-in-0 duration-500">
             <h2 className="text-2xl font-bold">Agenda de Eventos</h2>
             <p className="text-muted-foreground">Participe de workshops, palestras e encontros da comunidade.</p>
             <div className="space-y-4">
               {communityEvents.map((event, index) => (
-                <Card key={index}>
+                <Card key={index} className="animate-in fade-in-0 slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${index * 100}ms`}}>
                   <CardHeader>
                     <CardTitle>{event.title}</CardTitle>
                     <CardDescription>{event.date}</CardDescription>
@@ -284,7 +284,7 @@ export default function CommunityPage() {
         );
       default:
         return (
-          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed animate-in fade-in-0 duration-500">
             <Construction className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold">Seção em Construção</h3>
             <p className="text-muted-foreground mt-2">A área de "{activeTab}" ainda está em desenvolvimento. Volte em breve!</p>
@@ -300,22 +300,25 @@ export default function CommunityPage() {
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center py-2 h-16">
-                    <nav ref={navRef} className="flex items-center gap-2 relative">
-                        {mainNav.map((item) => (
-                          <button
-                            key={item.name}
-                            data-tab-name={item.name}
-                            onClick={() => setActiveTab(item.name)}
-                            className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
-                          >
-                            {item.icon}
-                            <span className="hidden md:inline">{item.name}</span>
-                          </button>
-                        ))}
+                    <nav ref={navRef} className="relative">
+                        <div className="flex items-center gap-2">
+                            {mainNav.map((item) => (
+                              <button
+                                key={item.name}
+                                data-tab-name={item.name}
+                                onClick={() => setActiveTab(item.name)}
+                                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
+                              >
+                                {item.icon}
+                                <span className="hidden md:inline">{item.name}</span>
+                              </button>
+                            ))}
+                        </div>
                          <div
                             className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
                             style={{
                                 height: '40px',
+                                top: 0,
                                 ...indicatorStyle
                             }}
                         />

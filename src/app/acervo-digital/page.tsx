@@ -187,13 +187,13 @@ export default function DigitalLibraryPage() {
           </div>
           
           {view === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-0 duration-500">
               {filteredItems.map((item, index) => (
                 <DigitalLibraryCard key={index} item={item} />
               ))}
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-in fade-in-0 duration-500">
               {filteredItems.map((item, index) => (
                 <DigitalLibraryListItem key={index} item={item} />
               ))}
@@ -202,7 +202,7 @@ export default function DigitalLibraryPage() {
 
 
           {filteredItems.length === 0 && (
-            <div className="text-center py-16">
+            <div className="text-center py-16 animate-in fade-in-0 duration-500">
               <Search className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
               <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
               <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave ou ajuste seus filtros.</p>

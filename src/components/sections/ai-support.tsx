@@ -127,7 +127,7 @@ export default function AiSupport() {
         </div>
 
         {lastQuery && (
-          <Card className="max-w-3xl mx-auto my-8 p-6">
+          <Card className="max-w-3xl mx-auto my-8 p-6 animate-in fade-in-0 duration-500">
             <div className="flex items-start space-x-4">
               <User className="h-6 w-6 text-primary" />
               <div className="flex-1">
@@ -139,7 +139,7 @@ export default function AiSupport() {
         )}
 
         {(loading && !aiResponse) && (
-          <div className="max-w-3xl mx-auto my-8">
+          <div className="max-w-3xl mx-auto my-8 animate-in fade-in-0 duration-500">
             <Card className="p-6">
                 <div className="flex items-start space-x-4">
                     <div className="bg-primary/10 p-2 rounded-full">
@@ -157,7 +157,7 @@ export default function AiSupport() {
         )}
         
         {aiResponse && (
-          <div className="max-w-3xl mx-auto my-8">
+          <div className="max-w-3xl mx-auto my-8 animate-in fade-in-0 duration-500">
             <Card className="p-6">
                <div className="flex items-start space-x-4">
                   <div className="bg-primary/10 p-2 rounded-full">
