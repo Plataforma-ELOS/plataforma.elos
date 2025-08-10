@@ -5,12 +5,12 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal } from 'lucide-react';
+import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal, User } from 'lucide-react';
 import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import ReactMarkdown from 'react-markdown';
 
 const supportCards = [
   {
@@ -41,18 +41,23 @@ const popularTopics = [
 
 export default function AiSupport() {
   const [query, setQuery] = useState('');
+  const [lastQuery, setLastQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent, queryString?: string) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const currentQuery = queryString || query;
+    if (!currentQuery.trim()) return;
 
     setLoading(true);
     setAiResponse(null);
+    setLastQuery(currentQuery);
+    setQuery('');
+    
     try {
-      const response = await askLegalAssistant(query);
+      const response = await askLegalAssistant(currentQuery);
       setAiResponse(response);
     } catch (error) {
       console.error(error);
@@ -66,23 +71,8 @@ export default function AiSupport() {
     }
   };
 
-  const handleTopicClick = async (topic: string) => {
-    setQuery(topic);
-    setLoading(true);
-    setAiResponse(null);
-    try {
-      const response = await askLegalAssistant(topic);
-      setAiResponse(response);
-    } catch (error) {
-      console.error(error);
-      toast({
-        variant: "destructive",
-        title: "Ocorreu um erro",
-        description: "Não foi possível processar sua pergunta. Tente novamente.",
-      });
-    } finally {
-      setLoading(false);
-    }
+  const handleTopicClick = (topic: string) => {
+    handleSearch(new Event('submit') as any, topic);
   }
 
   return (
@@ -123,32 +113,57 @@ export default function AiSupport() {
             </div>
         </div>
 
+        {lastQuery && (
+          <Card className="max-w-3xl mx-auto my-8 p-6">
+            <div className="flex items-start space-x-4">
+              <User className="h-6 w-6 text-primary" />
+              <div className="flex-1">
+                <p className="font-semibold">Sua pergunta</p>
+                <p className="text-muted-foreground">{lastQuery}</p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {loading && (
           <div className="max-w-3xl mx-auto my-8">
-            <div className="flex items-start space-x-4">
-                <Skeleton className="h-6 w-6" />
-                <div className="space-y-2 flex-1">
-                    <Skeleton className="h-4 w-1/4" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-4/5" />
+            <Card className="p-6">
+                <div className="flex items-start space-x-4">
+                    <div className="bg-primary/10 p-2 rounded-full">
+                        <Terminal className="h-6 w-6 text-primary animate-pulse" />
+                    </div>
+                    <div className="space-y-3 flex-1">
+                        <p className="font-semibold">A.I. está respondendo...</p>
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-4/5" />
+                         <Skeleton className="h-4 w-full" />
+                    </div>
                 </div>
-            </div>
-          </div>
+            </Card>
+        </div>
         )}
         
         {aiResponse && !loading && (
           <div className="max-w-3xl mx-auto my-8">
-            <Alert>
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>Resposta da A.I.</AlertTitle>
-              <AlertDescription>
-                {aiResponse}
-              </AlertDescription>
-            </Alert>
+            <Card className="p-6">
+               <div className="flex items-start space-x-4">
+                  <div className="bg-primary/10 p-2 rounded-full">
+                    <Terminal className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1 space-y-4">
+                    <p className="font-semibold">Resposta da A.I.</p>
+                     <div className="prose prose-sm max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground">
+                        <ReactMarkdown>
+                          {aiResponse}
+                        </ReactMarkdown>
+                      </div>
+                  </div>
+               </div>
+            </Card>
           </div>
         )}
         
-        <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
+        <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto pt-16">
           {supportCards.map((card, index) => (
             <FeatureInProgress key={index}>
               <Card className="p-8 bg-white rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer">
