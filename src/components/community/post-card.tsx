@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -24,6 +25,14 @@ type PostCardProps = {
 };
 
 export default function PostCard({ post }: PostCardProps) {
+  const [likes, setLikes] = useState(post.likes);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikes(isLiked ? likes - 1 : likes + 1);
+  };
+
   return (
     <Card className="rounded-2xl shadow-sm p-5 border">
       <div className="flex items-start gap-4">
@@ -49,19 +58,17 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="mt-4 flex justify-between items-center text-muted-foreground">
         <div className="flex gap-1 text-sm items-center">
             <ThumbsUp className="h-4 w-4" />
-            <span>{post.likes}</span>
+            <span>{likes}</span>
         </div>
          <div className="flex gap-1 text-sm items-center">
             <span>{post.comments} comentários</span>
         </div>
       </div>
       <div className="mt-2 border-t pt-2 flex justify-around">
-        <FeatureInProgress>
-          <Button variant="ghost" className="w-full">
-            <ThumbsUp className="h-5 w-5 mr-2" />
-            Curtir
-          </Button>
-        </FeatureInProgress>
+        <Button variant="ghost" className="w-full" onClick={handleLike}>
+          <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary fill-current' : ''}`} />
+          Curtir
+        </Button>
         <FeatureInProgress>
           <Button variant="ghost" className="w-full">
             <MessageCircle className="h-5 w-5 mr-2" />
