@@ -22,7 +22,7 @@ export default function DigitalCollection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {collectionItems.map((item, index) => (
-            <Link key={index} href="/biblioteca-digital" className="group">
+            <Link key={index} href="/acervo-digital" className="group">
               <Card className="overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 group h-full">
                 <div className="relative">
                   <Image
@@ -45,7 +45,7 @@ export default function DigitalCollection() {
         </div>
         <div className="mt-16 text-center">
             <Button size="lg" className="rounded-full px-8" asChild>
-                <Link href="/biblioteca-digital">Ver acervo completo</Link>
+                <Link href="/acervo-digital">Ver acervo completo</Link>
             </Button>
         </div>
       </div>
