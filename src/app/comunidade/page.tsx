@@ -57,6 +57,19 @@ const initialPosts: Post[] = [
     comments: [],
     isSaved: true,
   },
+   {
+    id: 'post-3',
+    author: {
+      name: 'Juliana Pereira',
+      avatarUrl: 'https://placehold.co/40x40.png',
+      hint: 'woman portrait',
+    },
+    time: '1d',
+    content: 'Alguém aqui já passou pelo processo de solicitação do BPC? Comecei a juntar os papéis e parece uma montanha de coisas. Se alguém tiver um checklist ou alguma dica, agradeceria muito!',
+    likes: 48,
+    comments: [],
+    isSaved: false,
+  },
 ];
 
 export default function CommunityPage() {
@@ -193,6 +206,30 @@ export default function CommunityPage() {
                 )}
             </>
         );
+       case 'Destaques':
+        const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
+        return (
+          <>
+            <h2 className="text-2xl font-bold mb-4">Posts em Destaque</h2>
+            <p className="text-muted-foreground mb-6">As conversas mais populares da comunidade no momento.</p>
+            {featuredPosts.map((post) => (
+              <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+            ))}
+          </>
+        );
+      case 'Eventos':
+        return (
+          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+            <Calendar className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold">Agenda de Eventos</h3>
+            <p className="text-muted-foreground mt-2">Volte em breve para conferir workshops, palestras e encontros da comunidade.</p>
+             <FeatureInProgress>
+              <Button variant="outline" className="mt-4">
+                Sugerir um evento
+              </Button>
+            </FeatureInProgress>
+          </Card>
+        );
       default:
         return (
           <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
@@ -323,11 +360,9 @@ export default function CommunityPage() {
                             <Calendar className="mx-auto h-12 w-12 mb-4" />
                             <h3 className="font-semibold mb-1">Nenhum evento agendado</h3>
                             <p className="text-sm mb-4">Fique de olho para workshops, palestras e encontros.</p>
-                            <FeatureInProgress>
-                              <Button variant="outline" size="sm" className="mt-4" onClick={() => setActiveTab('Eventos')}>
-                                Ver todos os eventos
-                              </Button>
-                            </FeatureInProgress>
+                            <Button variant="outline" size="sm" className="mt-4" onClick={() => setActiveTab('Eventos')}>
+                              Ver todos os eventos
+                            </Button>
                         </CardContent>
                     </Card>
                 </div>
@@ -338,3 +373,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    
