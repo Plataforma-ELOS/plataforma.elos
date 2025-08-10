@@ -22,23 +22,25 @@ export default function DigitalCollection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {collectionItems.map((item, index) => (
-            <Card key={index} className="overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 group">
-              <div className="relative">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title}
-                  width={400}
-                  height={225}
-                  className="w-full h-auto object-cover"
-                  data-ai-hint={item.hint}
-                />
-                 <div className="absolute top-0 left-0 w-full h-full bg-black/10 group-hover:bg-black/30 transition-colors duration-300" />
-                <Badge className="absolute top-3 right-3 bg-primary/80 text-primary-foreground" variant="default">{item.type}</Badge>
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-              </div>
-            </Card>
+            <Link key={index} href="/biblioteca-digital" className="group">
+              <Card className="overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 group h-full">
+                <div className="relative">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    width={400}
+                    height={225}
+                    className="w-full h-auto object-cover"
+                    data-ai-hint={item.hint}
+                  />
+                  <div className="absolute top-0 left-0 w-full h-full bg-black/10 group-hover:bg-black/30 transition-colors duration-300" />
+                  <Badge className="absolute top-3 right-3 bg-primary/80 text-primary-foreground" variant="default">{item.type}</Badge>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                </div>
+              </Card>
+            </Link>
           ))}
         </div>
         <div className="mt-16 text-center">
