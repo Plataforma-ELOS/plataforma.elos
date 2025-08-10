@@ -67,17 +67,26 @@ const libraryItems = [
 export default function DigitalLibraryPage() {
   const [view, setView] = useState('grid');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState('all');
   const [filteredItems, setFilteredItems] = useState(libraryItems);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
+    
     const results = libraryItems.filter(item => {
+      // Filter by type
+      const typeMatch = filterType === 'all' || item.type === filterType;
+      if (!typeMatch) return false;
+
+      // Filter by search query
+      if (!lowercasedQuery) return true;
       const titleMatch = item.title.toLowerCase().includes(lowercasedQuery);
       const tagMatch = item.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery));
       return titleMatch || tagMatch;
     });
+
     setFilteredItems(results);
-  }, [searchQuery]);
+  }, [searchQuery, filterType]);
 
 
   return (
@@ -116,19 +125,16 @@ export default function DigitalLibraryPage() {
                     Ordenar: Mais Recentes
                   </Button>
                 </FeatureInProgress>
-                <FeatureInProgress>
-                  <Select defaultValue="all">
-                    <SelectTrigger className="w-full md:w-[180px] h-11">
-                      <SelectValue placeholder="Filtrar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Filtrar: All</SelectItem>
-                      <SelectItem value="video">Vídeos</SelectItem>
-                      <SelectItem value="document">Documentos</SelectItem>
-                      <SelectItem value="game">Jogos</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FeatureInProgress>
+                <Select value={filterType} onValueChange={setFilterType}>
+                  <SelectTrigger className="w-full md:w-[180px] h-11">
+                    <SelectValue placeholder="Filtrar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Filtrar: Todos</SelectItem>
+                    <SelectItem value="video">Vídeos</SelectItem>
+                    <SelectItem value="document">Documentos</SelectItem>
+                  </SelectContent>
+                </Select>
                 <div className="bg-muted p-1 rounded-md hidden md:flex">
                    <FeatureInProgress>
                       <Button variant={view === 'grid' ? 'default' : 'ghost'} size="icon" onClick={() => setView('grid')}>
