@@ -42,6 +42,7 @@ const libraryItems = [
     date: '14 de julho de 2024',
     tags: ['Comportamento', 'TEA', 'Palestra'],
     actionText: 'Assistir Agora',
+    actionUrl: '#',
     downloadable: true,
   },
   {
@@ -54,6 +55,7 @@ const libraryItems = [
     date: '11 de julho de 2024',
     tags: ['Atividades', 'Sensorial', 'PDF'],
     actionText: 'Fazer Download',
+    actionUrl: '#',
     downloadable: true,
   },
   {
@@ -66,6 +68,7 @@ const libraryItems = [
     date: '09 de julho de 2024',
     tags: ['Educação', 'PEI', 'Documento'],
     actionText: 'Fazer Download',
+    actionUrl: '#',
     downloadable: true,
   },
   {
@@ -79,6 +82,7 @@ const libraryItems = [
     date: '07 de julho de 2024',
     tags: ['Comunicação', 'CAA', 'Workshop'],
     actionText: 'Assistir Agora',
+    actionUrl: '#',
     downloadable: true,
   },
 ];

@@ -2,6 +2,7 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +22,7 @@ type LibraryItem = {
   date: string;
   tags: string[];
   actionText: string;
+  actionUrl: string;
   downloadable?: boolean;
 };
 
@@ -68,18 +70,20 @@ export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
           </div>
         </div>
          <div className="p-4 pt-0 mt-auto">
-            <FeatureInProgress>
-                <div className='flex gap-2'>
-                    <Button className="w-full">
-                        {item.actionText}
-                    </Button>
-                    {item.downloadable && (
-                        <Button variant="outline" size="icon">
-                            <Download className="h-4 w-4" />
-                        </Button>
-                    )}
-                </div>
-            </FeatureInProgress>
+             <div className='flex gap-2'>
+                <Button asChild className="w-full">
+                  <Link href={item.actionUrl} target="_blank">
+                    {item.actionText}
+                  </Link>
+                </Button>
+                {item.downloadable && (
+                  <Button asChild variant="outline" size="icon">
+                    <Link href={item.actionUrl} download>
+                      <Download className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
+            </div>
         </div>
       </CardContent>
     </Card>
