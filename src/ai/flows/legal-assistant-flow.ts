@@ -8,7 +8,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import {generateStream} from 'genkit/generate';
+import {generateStream} from 'genkit';
 
 const legalAssistantFlow = ai.defineFlow(
   {
@@ -38,7 +38,7 @@ const legalAssistantFlow = ai.defineFlow(
 
 
 export async function askLegalAssistant(question: string) {
-  const { stream } = await generateStream({
+  const { stream } = generateStream({
       prompt: question,
       model: 'googleai/gemini-2.0-flash',
       config: {
