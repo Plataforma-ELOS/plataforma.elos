@@ -8,7 +8,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import {generateStream} from 'genkit';
 
 const legalAssistantFlow = ai.defineFlow(
   {
@@ -38,7 +37,7 @@ const legalAssistantFlow = ai.defineFlow(
 
 
 export async function askLegalAssistant(question: string) {
-  const { stream } = generateStream({
+  const { stream } = ai.generateStream({
       prompt: question,
       model: 'googleai/gemini-2.0-flash',
       config: {
@@ -56,12 +55,13 @@ export async function askLegalAssistant(question: string) {
   const reader = stream.getReader();
   const newStream = new ReadableStream({
     async start(controller) {
+      const encoder = new TextEncoder();
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
           break;
         }
-        controller.enqueue(value.text);
+        controller.enqueue(encoder.encode(value.text));
       }
       controller.close();
     },
