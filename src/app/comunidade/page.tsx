@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Construction, Users } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
@@ -71,6 +71,28 @@ const initialPosts: Post[] = [
   },
 ];
 
+const communityEvents = [
+  {
+    title: 'Workshop Online: Introdução à Comunicação Alternativa',
+    date: '25 de Agosto de 2024 - 19:00',
+    description: 'Aprenda os conceitos básicos e as primeiras estratégias para implementar a comunicação alternativa e aumentativa (CAA) no dia a dia. Evento gratuito e aberto a todos.',
+    type: 'Online',
+  },
+  {
+    title: 'Roda de Conversa: Lidando com a Seletividade Alimentar',
+    date: '02 de Setembro de 2024 - 18:00',
+    description: 'Um encontro para troca de experiências e dicas práticas sobre como ampliar o repertório alimentar das crianças com TEA, com mediação de uma nutricionista convidada.',
+    type: 'Online',
+  },
+  {
+    title: 'Encontro no Parque: Piquenique Inclusivo em São Paulo',
+    date: '14 de Setembro de 2024 - 10:00',
+    description: 'Vamos nos encontrar para uma manhã de socialização e diversão ao ar livre no Parque Ibirapuera. Traga sua toalha, um lanche e venha fazer parte!',
+    type: 'Presencial',
+  },
+];
+
+
 export default function CommunityPage() {
   const [activeTab, setActiveTab] = useState('Início');
   const [posts, setPosts] = useState<Post[]>(initialPosts);
@@ -78,7 +100,7 @@ export default function CommunityPage() {
   const [searchResults, setSearchResults] = useState<Post[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   
-  const navRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({});
 
   useEffect(() => {
@@ -161,9 +183,11 @@ export default function CommunityPage() {
         return (
           <>
             <CreatePost onCreatePost={handleCreatePost} />
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
-            ))}
+            <div className="space-y-6">
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+              ))}
+            </div>
           </>
         );
        case 'Buscar':
@@ -183,9 +207,11 @@ export default function CommunityPage() {
                 </form>
                 {hasSearched ? (
                     searchResults.length > 0 ? (
-                        searchResults.map((post) => (
+                      <div className="space-y-6">
+                        {searchResults.map((post) => (
                             <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
-                        ))
+                        ))}
+                      </div>
                     ) : (
                         <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
                             <Search className="h-16 w-16 text-muted-foreground mb-4" />
@@ -205,8 +231,8 @@ export default function CommunityPage() {
       case 'Salvos':
         const savedPosts = posts.filter(post => post.isSaved);
         return (
-            <>
-                <h2 className="text-2xl font-bold mb-4">Itens Salvos</h2>
+            <div className="space-y-6">
+                <h2 className="text-2xl font-bold">Itens Salvos</h2>
                 {savedPosts.length > 0 ? (
                     savedPosts.map((post) => (
                         <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
@@ -218,31 +244,43 @@ export default function CommunityPage() {
                         <p className="text-muted-foreground mt-2">Use o ícone de marcador para salvar posts e encontrá-los aqui.</p>
                     </Card>
                 )}
-            </>
+            </div>
         );
        case 'Destaques':
         const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
         return (
-          <>
-            <h2 className="text-2xl font-bold mb-4">Posts em Destaque</h2>
-            <p className="text-muted-foreground mb-6">As conversas mais populares da comunidade no momento.</p>
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">Posts em Destaque</h2>
+            <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
             {featuredPosts.map((post) => (
               <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
             ))}
-          </>
+          </div>
         );
       case 'Eventos':
         return (
-          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
-            <Calendar className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold">Agenda de Eventos</h3>
-            <p className="text-muted-foreground mt-2">Volte em breve para conferir workshops, palestras e encontros da comunidade.</p>
-             <FeatureInProgress>
-              <Button variant="outline" className="mt-4">
-                Sugerir um evento
-              </Button>
-            </FeatureInProgress>
-          </Card>
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">Agenda de Eventos</h2>
+            <p className="text-muted-foreground">Participe de workshops, palestras e encontros da comunidade.</p>
+            <div className="space-y-4">
+              {communityEvents.map((event, index) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <CardTitle>{event.title}</CardTitle>
+                    <CardDescription>{event.date}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <p className="text-muted-foreground flex-1">{event.description}</p>
+                    <FeatureInProgress>
+                      <Button>
+                        Ver Detalhes
+                      </Button>
+                    </FeatureInProgress>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         );
       default:
         return (
@@ -307,7 +345,7 @@ export default function CommunityPage() {
         <div className="container mx-auto px-4 md:px-6 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Coluna Principal do Feed */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2">
                   {renderContent()}
                 </div>
 
@@ -369,3 +407,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    
