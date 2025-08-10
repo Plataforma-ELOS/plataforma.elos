@@ -11,6 +11,25 @@ import { Search, ArrowUpDown, LayoutGrid, List, Plus } from 'lucide-react';
 import DigitalLibraryCard from '@/components/sections/digital-library-card';
 import FeatureInProgress from '@/components/feature-in-progress';
 
+// Helper to parse Brazilian dates (dd de MMMM de yyyy)
+const parseBrazilianDate = (dateString: string): Date => {
+  const months: { [key: string]: number } = {
+    'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3, 'maio': 4, 'junho': 5,
+    'julho': 6, 'agosto': 7, 'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
+  };
+  const parts = dateString.split(' de ');
+  if (parts.length === 3) {
+    const day = parseInt(parts[0], 10);
+    const month = months[parts[1].toLowerCase()];
+    const year = parseInt(parts[2], 10);
+    if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+      return new Date(year, month, day);
+    }
+  }
+  return new Date(0); // Return an invalid date if parsing fails
+};
+
+
 const libraryItems = [
   {
     type: 'video',
@@ -68,12 +87,13 @@ export default function DigitalLibraryPage() {
   const [view, setView] = useState('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [sortOrder, setSortOrder] = useState('recent');
   const [filteredItems, setFilteredItems] = useState(libraryItems);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     
-    const results = libraryItems.filter(item => {
+    let results = libraryItems.filter(item => {
       // Filter by type
       const typeMatch = filterType === 'all' || item.type === filterType;
       if (!typeMatch) return false;
@@ -85,8 +105,20 @@ export default function DigitalLibraryPage() {
       return titleMatch || tagMatch;
     });
 
+    // Sort results
+    results.sort((a, b) => {
+      const dateA = parseBrazilianDate(a.date).getTime();
+      const dateB = parseBrazilianDate(b.date).getTime();
+      
+      if (sortOrder === 'recent') {
+        return dateB - dateA;
+      } else {
+        return dateA - dateB;
+      }
+    });
+
     setFilteredItems(results);
-  }, [searchQuery, filterType]);
+  }, [searchQuery, filterType, sortOrder]);
 
 
   return (
@@ -119,12 +151,14 @@ export default function DigitalLibraryPage() {
                 />
               </div>
               <div className="flex items-center gap-2">
-                <FeatureInProgress>
-                  <Button variant="outline" className="h-11">
-                    <ArrowUpDown className="mr-2 h-4 w-4" />
-                    Ordenar: Mais Recentes
-                  </Button>
-                </FeatureInProgress>
+                <Button 
+                  variant="outline" 
+                  className="h-11"
+                  onClick={() => setSortOrder(sortOrder === 'recent' ? 'oldest' : 'recent')}
+                >
+                  <ArrowUpDown className="mr-2 h-4 w-4" />
+                  Ordenar: {sortOrder === 'recent' ? 'Mais Recentes' : 'Mais Antigos'}
+                </Button>
                 <Select value={filterType} onValueChange={setFilterType}>
                   <SelectTrigger className="w-full md:w-[180px] h-11">
                     <SelectValue placeholder="Filtrar" />
