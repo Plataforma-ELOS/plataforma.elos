@@ -18,7 +18,6 @@ const mainNav = [
   { icon: <Search className="h-5 w-5" />, name: 'Buscar', href: '#' },
   { icon: <Zap className="h-5 w-5" />, name: 'Destaques', href: '#' },
   { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '#' },
-  { icon: <Bookmark className="h-5 w-5" />, name: 'Salvos', href: '#' },
 ];
 
 const myConversations: any[] = [];
@@ -247,7 +246,7 @@ export default function CommunityPage() {
       'Buscar': '95px',
       'Destaques': '195px',
       'Eventos': '313px',
-      'Salvos': '420px',
+      'Salvos': '0px', // Salvos is no longer in the main nav
     };
     return positions[tabName] || '0px';
   };
@@ -258,7 +257,7 @@ export default function CommunityPage() {
         'Buscar': '92px',
         'Destaques': '110px',
         'Eventos': '98px',
-        'Salvos': '90px'
+        'Salvos': '0px', // Salvos is no longer in the main nav
     };
     return widths[tabName] || '0';
   };
@@ -303,6 +302,13 @@ export default function CommunityPage() {
                                 <span className="sr-only">Notificações</span>
                             </Button>
                         </FeatureInProgress>
+                        <button
+                          onClick={() => setActiveTab('Salvos')}
+                          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-300 hover:text-foreground ${activeTab === 'Salvos' ? 'text-foreground bg-primary/10' : 'text-foreground/60'}`}
+                        >
+                            <Bookmark className="h-5 w-5" />
+                            <span className="sr-only">Salvos</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -373,5 +379,3 @@ export default function CommunityPage() {
     </div>
   );
 }
-
-    
