@@ -6,7 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Construction } from 'lucide-react';
+import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Construction, Users } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
 import CreatePost from '@/components/community/create-post';
@@ -21,23 +21,7 @@ const mainNav = [
   { icon: <Bookmark className="h-5 w-5" />, name: 'Salvos', href: '#' },
 ];
 
-const myConversations = [
-  { 
-    name: 'Mães umas pelas outras, sempre.', 
-    created: 'Criado desde julho 2023',
-    activity: 'Última atividade: 6h'
-  },
-  { 
-    name: 'Mães umas pelas outras, sempre.', 
-    created: 'Criado desde julho 2023',
-    activity: 'Última atividade: 6h'
-  },
-  { 
-    name: 'Mães umas pelas outras, sempre.', 
-    created: 'Criado desde julho 2023',
-    activity: 'Última atividade: 6h'
-  },
-];
+const myConversations: any[] = [];
 
 const initialPosts: Post[] = [
   {
@@ -195,6 +179,7 @@ export default function CommunityPage() {
         const savedPosts = posts.filter(post => post.isSaved);
         return (
             <>
+                <h2 className="text-2xl font-bold mb-4">Itens Salvos</h2>
                 {savedPosts.length > 0 ? (
                     savedPosts.map((post) => (
                         <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
@@ -281,12 +266,6 @@ export default function CommunityPage() {
                                 <span className="sr-only">Notificações</span>
                             </Button>
                         </FeatureInProgress>
-                        <FeatureInProgress>
-                          <Button size="sm">
-                              <Plus className="mr-2 h-4 w-4" />
-                              Criar Grupo
-                          </Button>
-                        </FeatureInProgress>
                     </div>
                 </div>
             </div>
@@ -305,7 +284,8 @@ export default function CommunityPage() {
                         <CardHeader>
                             <CardTitle className="text-xl">Minhas Conversas</CardTitle>
                         </CardHeader>
-                        <CardContent className="p-0">
+                        <CardContent>
+                          {myConversations.length > 0 ? (
                             <ul className="divide-y">
                                 {myConversations.map((convo, index) => (
                                     <li key={index} className="flex items-center gap-4 p-4 hover:bg-muted/50 cursor-pointer">
@@ -313,12 +293,25 @@ export default function CommunityPage() {
                                         <div className="flex-1">
                                             <h3 className="font-semibold text-sm">{convo.name}</h3>
                                             <div className="flex gap-4 text-xs text-muted-foreground mt-1">
-                                                <span>{convo.activity}</span>
+                                                <span>{/* convo.activity */}</span>
                                             </div>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
+                          ) : (
+                            <div className="text-center text-muted-foreground p-4">
+                              <Users className="mx-auto h-12 w-12 mb-4" />
+                              <h3 className="font-semibold mb-1">Junte-se ou crie um grupo</h3>
+                              <p className="text-sm mb-4">Você ainda não faz parte de nenhuma conversa.</p>
+                              <FeatureInProgress>
+                                <Button size="sm">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Criar Grupo
+                                </Button>
+                              </FeatureInProgress>
+                            </div>
+                          )}
                         </CardContent>
                     </Card>
 
@@ -327,9 +320,13 @@ export default function CommunityPage() {
                             <CardTitle className="text-xl">Próximos Eventos</CardTitle>
                         </CardHeader>
                         <CardContent className="text-center text-muted-foreground p-4">
-                            <p>Nenhum evento planejado</p>
+                            <Calendar className="mx-auto h-12 w-12 mb-4" />
+                            <h3 className="font-semibold mb-1">Nenhum evento agendado</h3>
+                            <p className="text-sm mb-4">Fique de olho para workshops, palestras e encontros.</p>
                             <FeatureInProgress>
-                              <Button variant="outline" size="sm" className="mt-4">Ver todos os eventos</Button>
+                              <Button variant="outline" size="sm" className="mt-4" onClick={() => setActiveTab('Eventos')}>
+                                Ver todos os eventos
+                              </Button>
                             </FeatureInProgress>
                         </CardContent>
                     </Card>
@@ -342,4 +339,4 @@ export default function CommunityPage() {
   );
 }
 
-    
+  
