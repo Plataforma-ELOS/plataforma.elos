@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ThumbsUp, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
+import { ThumbsUp, MessageCircle, Share2, MoreHorizontal, Bookmark } from "lucide-react";
 import FeatureInProgress from "../feature-in-progress";
 import CommentSection from "./comment-section";
 
@@ -29,14 +29,16 @@ export type Post = {
   content: string;
   likes: number;
   comments: Comment[];
+  isSaved: boolean;
 };
 
 type PostCardProps = {
   post: Post;
   onComment: (postId: string, commentContent: string) => void;
+  onToggleSave: (postId: string) => void;
 };
 
-export default function PostCard({ post, onComment }: PostCardProps) {
+export default function PostCard({ post, onComment, onToggleSave }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -64,10 +66,16 @@ export default function PostCard({ post, onComment }: PostCardProps) {
               <span className="text-xs text-muted-foreground">· {post.time}</span>
             </div>
             
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center">
+              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onToggleSave(post.id)}>
+                <Bookmark className={`h-5 w-5 text-muted-foreground ${post.isSaved ? 'fill-primary text-primary' : ''}`} />
               </Button>
-            
+              <FeatureInProgress>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+                </Button>
+              </FeatureInProgress>
+            </div>
           </div>
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
         </div>
@@ -91,11 +99,12 @@ export default function PostCard({ post, onComment }: PostCardProps) {
           Comentar
         </Button>
         
+        <FeatureInProgress>
           <Button variant="ghost" className="w-full">
             <Share2 className="h-5 w-5 mr-2" />
             Compartilhar
           </Button>
-        
+        </FeatureInProgress>
       </div>
       {showComments && (
         <div className="mt-4 border-t pt-4">
@@ -105,7 +114,3 @@ export default function PostCard({ post, onComment }: PostCardProps) {
     </Card>
   );
 }
-
-
-
-    

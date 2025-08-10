@@ -17,6 +17,7 @@ const mainNav = [
   { icon: <Search className="h-5 w-5" />, name: 'Buscar', href: '#' },
   { icon: <Zap className="h-5 w-5" />, name: 'Destaques', href: '#' },
   { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '#' },
+  { icon: <Bookmark className="h-5 w-5" />, name: 'Salvos', href: '#' },
 ];
 
 const myConversations = [
@@ -56,6 +57,7 @@ const initialPosts: Post[] = [
             time: '4h'
         }
     ],
+    isSaved: false,
   },
   {
     id: 'post-2',
@@ -68,6 +70,7 @@ const initialPosts: Post[] = [
     content: 'Olá pessoal! Alguém tem dicas de como lidar com a seletividade alimentar? Meu filho só quer comer as mesmas 3 coisas e estou ficando sem ideias. Qualquer ajuda é bem-vinda! 🙏',
     likes: 12,
     comments: [],
+    isSaved: true,
   },
 ];
 
@@ -89,6 +92,7 @@ export default function CommunityPage() {
       content,
       likes: 0,
       comments: [],
+      isSaved: false,
     };
 
     setPosts(prevPosts => [newPost, ...prevPosts]);
@@ -112,18 +116,47 @@ export default function CommunityPage() {
         : post
     ));
   };
+  
+  const handleToggleSave = (postId: string) => {
+    setPosts(posts.map(post =>
+      post.id === postId
+        ? { ...post, isSaved: !post.isSaved }
+        : post
+    ));
+  };
 
 
   const renderContent = () => {
+    let postsToRender = posts;
+    if (activeTab === 'Salvos') {
+        postsToRender = posts.filter(post => post.isSaved);
+    }
+      
     switch (activeTab) {
       case 'Início':
         return (
           <>
             <CreatePost onCreatePost={handleCreatePost} />
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} onComment={handleAddComment} />
+              <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
             ))}
           </>
+        );
+      case 'Salvos':
+        return (
+            <>
+                {postsToRender.length > 0 ? (
+                    postsToRender.map((post) => (
+                        <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+                    ))
+                ) : (
+                    <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+                        <Bookmark className="h-16 w-16 text-muted-foreground mb-4" />
+                        <h3 className="text-xl font-semibold">Nenhum item salvo</h3>
+                        <p className="text-muted-foreground mt-2">Use o ícone de marcador para salvar posts e encontrá-los aqui.</p>
+                    </Card>
+                )}
+            </>
         );
       default:
         return (
@@ -134,6 +167,28 @@ export default function CommunityPage() {
           </Card>
         );
     }
+  };
+  
+   const getLeftPosition = (tabName: string) => {
+    const positions: { [key: string]: string } = {
+      'Início': '0px',
+      'Buscar': '95px',
+      'Destaques': '195px',
+      'Eventos': '313px',
+      'Salvos': '420px',
+    };
+    return positions[tabName] || '0px';
+  };
+  
+  const getWidth = (tabName: string) => {
+    const widths: { [key: string]: string } = {
+        'Início': '87px',
+        'Buscar': '92px',
+        'Destaques': '110px',
+        'Eventos': '98px',
+        'Salvos': '90px'
+    };
+    return widths[tabName] || '0';
   };
 
   return (
@@ -158,8 +213,8 @@ export default function CommunityPage() {
                             className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
                             style={{
                                 height: '40px',
-                                width: activeTab === 'Início' ? '87px' : activeTab === 'Buscar' ? '92px' : activeTab === 'Destaques' ? '110px' : activeTab === 'Eventos' ? '98px' : '0',
-                                left: activeTab === 'Início' ? '0px' : activeTab === 'Buscar' ? '95px' : activeTab === 'Destaques' ? '195px' : '313px',
+                                width: getWidth(activeTab),
+                                left: getLeftPosition(activeTab),
                             }}
                         />
                     </nav>
@@ -174,12 +229,6 @@ export default function CommunityPage() {
                             <Button variant="ghost" size="icon">
                                 <Send className="h-5 w-5" />
                                 <span className="sr-only">Notificações</span>
-                            </Button>
-                        </FeatureInProgress>
-                        <FeatureInProgress>
-                            <Button variant="ghost" size="icon">
-                                <Bookmark className="h-5 w-5" />
-                                <span className="sr-only">Salvos</span>
                             </Button>
                         </FeatureInProgress>
                         <FeatureInProgress>
