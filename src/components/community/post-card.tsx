@@ -7,30 +7,47 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ThumbsUp, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 import FeatureInProgress from "../feature-in-progress";
+import CommentSection from "./comment-section";
+
+export type Author = {
+  name: string;
+  avatarUrl: string;
+  hint: string;
+};
+
+export type Comment = {
+  id: string;
+  author: Author;
+  content: string;
+  time: string;
+};
 
 export type Post = {
-  author: {
-    name: string;
-    avatarUrl: string;
-    hint: string;
-  };
+  id: string;
+  author: Author;
   time: string;
   content: string;
   likes: number;
-  comments: number;
+  comments: Comment[];
 };
 
 type PostCardProps = {
   post: Post;
+  onComment: (postId: string, commentContent: string) => void;
 };
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, onComment }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
+  };
+  
+  const handleCommentSubmit = (commentContent: string) => {
+    onComment(post.id, commentContent);
   };
 
   return (
@@ -60,8 +77,8 @@ export default function PostCard({ post }: PostCardProps) {
             <ThumbsUp className="h-4 w-4" />
             <span>{likes}</span>
         </div>
-         <div className="flex gap-1 text-sm items-center">
-            <span>{post.comments} comentários</span>
+         <div className="flex gap-1 text-sm items-center cursor-pointer hover:underline" onClick={() => setShowComments(!showComments)}>
+            <span>{post.comments.length} comentários</span>
         </div>
       </div>
       <div className="mt-2 border-t pt-2 flex justify-around">
@@ -69,12 +86,10 @@ export default function PostCard({ post }: PostCardProps) {
           <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary fill-current' : ''}`} />
           Curtir
         </Button>
-        <FeatureInProgress>
-          <Button variant="ghost" className="w-full">
-            <MessageCircle className="h-5 w-5 mr-2" />
-            Comentar
-          </Button>
-        </FeatureInProgress>
+        <Button variant="ghost" className="w-full" onClick={() => setShowComments(!showComments)}>
+          <MessageCircle className="h-5 w-5 mr-2" />
+          Comentar
+        </Button>
         <FeatureInProgress>
           <Button variant="ghost" className="w-full">
             <Share2 className="h-5 w-5 mr-2" />
@@ -82,6 +97,12 @@ export default function PostCard({ post }: PostCardProps) {
           </Button>
         </FeatureInProgress>
       </div>
+      {showComments && (
+        <div className="mt-4 border-t pt-4">
+           <CommentSection comments={post.comments} onCommentSubmit={handleCommentSubmit} />
+        </div>
+      )}
     </Card>
   );
 }
+

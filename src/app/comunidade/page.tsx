@@ -10,7 +10,7 @@ import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Const
 import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
 import CreatePost from '@/components/community/create-post';
-import PostCard, { Post } from '@/components/community/post-card';
+import PostCard, { Post, Comment } from '@/components/community/post-card';
 
 const mainNav = [
   { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
@@ -39,6 +39,7 @@ const myConversations = [
 
 const initialPosts: Post[] = [
   {
+    id: 'post-1',
     author: {
       name: 'Carlos Souza',
       avatarUrl: 'https://placehold.co/40x40.png',
@@ -47,9 +48,17 @@ const initialPosts: Post[] = [
     time: '5h',
     content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
     likes: 35,
-    comments: 10,
+    comments: [
+        {
+            id: 'comment-1-1',
+            author: { name: 'Mariana Costa', avatarUrl: 'https://placehold.co/40x40.png', hint: 'woman portrait' },
+            content: 'Que demais, Carlos! Fico muito feliz por vocês! É uma inspiração.',
+            time: '4h'
+        }
+    ],
   },
   {
+    id: 'post-2',
     author: {
       name: 'Ana Silva',
       avatarUrl: 'https://placehold.co/40x40.png',
@@ -58,7 +67,7 @@ const initialPosts: Post[] = [
     time: '2h',
     content: 'Olá pessoal! Alguém tem dicas de como lidar com a seletividade alimentar? Meu filho só quer comer as mesmas 3 coisas e estou ficando sem ideias. Qualquer ajuda é bem-vinda! 🙏',
     likes: 12,
-    comments: 5,
+    comments: [],
   },
 ];
 
@@ -70,6 +79,7 @@ export default function CommunityPage() {
     if (!content.trim()) return;
 
     const newPost: Post = {
+      id: `post-${Date.now()}`,
       author: {
         name: 'Usuário Atual',
         avatarUrl: 'https://placehold.co/48x48.png',
@@ -78,11 +88,31 @@ export default function CommunityPage() {
       time: 'Agora',
       content,
       likes: 0,
-      comments: 0,
+      comments: [],
     };
 
     setPosts(prevPosts => [newPost, ...prevPosts]);
   };
+  
+  const handleAddComment = (postId: string, commentContent: string) => {
+    const newComment: Comment = {
+      id: `comment-${Date.now()}`,
+      author: {
+        name: 'Usuário Atual',
+        avatarUrl: 'https://placehold.co/48x48.png',
+        hint: 'user avatar',
+      },
+      content: commentContent,
+      time: 'Agora',
+    };
+
+    setPosts(posts.map(post =>
+      post.id === postId
+        ? { ...post, comments: [...post.comments, newComment] }
+        : post
+    ));
+  };
+
 
   const renderContent = () => {
     switch (activeTab) {
@@ -90,8 +120,8 @@ export default function CommunityPage() {
         return (
           <>
             <CreatePost onCreatePost={handleCreatePost} />
-            {posts.map((post, index) => (
-              <PostCard key={index} post={post} />
+            {posts.map((post) => (
+              <PostCard key={post.id} post={post} onComment={handleAddComment} />
             ))}
           </>
         );
