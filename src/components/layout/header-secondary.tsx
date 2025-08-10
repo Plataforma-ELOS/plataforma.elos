@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -37,7 +38,7 @@ export default function HeaderSecondary() {
     const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
     if (item.isFeature) {
       return (
-        <FeatureInProgress>
+        <FeatureInProgress key={item.name}>
           <span className={`${classNames} cursor-pointer`}>
             {item.name}
           </span>
@@ -45,7 +46,7 @@ export default function HeaderSecondary() {
       );
     }
     return (
-      <Link href={item.href} className={classNames}>
+      <Link href={item.href} key={item.name} className={classNames}>
         {item.name}
       </Link>
     );
@@ -55,7 +56,7 @@ export default function HeaderSecondary() {
     const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
     if (item.isFeature) {
       return (
-        <FeatureInProgress>
+        <FeatureInProgress key={item.name}>
           <span className={`${classNames} cursor-pointer`}>
             {item.name}
           </span>
@@ -63,7 +64,7 @@ export default function HeaderSecondary() {
       );
     }
     return (
-      <Link href={item.href} className={classNames}>
+      <Link href={item.href} key={item.name} className={classNames}>
         {item.name}
       </Link>
     );
@@ -81,7 +82,7 @@ export default function HeaderSecondary() {
             </div>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {navItems.map((item) => <div key={item.name}>{renderNavItem(item)}</div>)}
+          {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
@@ -113,7 +114,7 @@ export default function HeaderSecondary() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => <div key={item.name}>{renderMobileNavItem(item)}</div>)}
+                  {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
                     <FeatureInProgress>

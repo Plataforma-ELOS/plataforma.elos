@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -30,7 +31,7 @@ export default function Header() {
   const renderNavItem = (item: typeof navItems[0]) => {
     if (item.isFeature) {
       return (
-        <FeatureInProgress>
+        <FeatureInProgress key={item.name}>
           <span className="text-foreground/80 hover:text-foreground transition-colors cursor-pointer">
             {item.name}
           </span>
@@ -38,7 +39,7 @@ export default function Header() {
       );
     }
     return (
-      <Link href={item.href} className="text-foreground/80 hover:text-foreground transition-colors">
+      <Link href={item.href} key={item.name} className="text-foreground/80 hover:text-foreground transition-colors">
         {item.name}
       </Link>
     );
@@ -47,7 +48,7 @@ export default function Header() {
   const renderMobileNavItem = (item: typeof navItems[0]) => {
     if (item.isFeature) {
       return (
-        <FeatureInProgress>
+        <FeatureInProgress key={item.name}>
           <span className="text-foreground/80 hover:text-foreground transition-colors cursor-pointer">
             {item.name}
           </span>
@@ -55,7 +56,7 @@ export default function Header() {
       );
     }
     return (
-      <Link href={item.href} className="text-foreground/80 hover:text-foreground transition-colors">
+      <Link href={item.href} key={item.name} className="text-foreground/80 hover:text-foreground transition-colors">
         {item.name}
       </Link>
     );
@@ -68,7 +69,7 @@ export default function Header() {
           <span className="text-2xl font-bold text-primary">ELOS</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {navItems.map((item) => <div key={item.name}>{renderNavItem(item)}</div>)}
+          {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
@@ -91,7 +92,7 @@ export default function Header() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => <div key={item.name}>{renderMobileNavItem(item)}</div>)}
+                  {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
                  <div className="p-6 border-t">
                   <FeatureInProgress>
