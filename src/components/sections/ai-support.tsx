@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -8,6 +9,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal } from 'lucide-react';
 import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
 import FeatureInProgress from '@/components/feature-in-progress';
+import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const supportCards = [
   {
@@ -40,6 +43,7 @@ export default function AiSupport() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +56,11 @@ export default function AiSupport() {
       setAiResponse(response);
     } catch (error) {
       console.error(error);
-      setAiResponse('Desculpe, não consegui processar sua pergunta. Tente novamente.');
+      toast({
+        variant: "destructive",
+        title: "Ocorreu um erro",
+        description: "Não foi possível processar sua pergunta. Tente novamente.",
+      });
     } finally {
       setLoading(false);
     }
@@ -67,7 +75,11 @@ export default function AiSupport() {
       setAiResponse(response);
     } catch (error) {
       console.error(error);
-      setAiResponse('Desculpe, não consegui processar sua pergunta. Tente novamente.');
+      toast({
+        variant: "destructive",
+        title: "Ocorreu um erro",
+        description: "Não foi possível processar sua pergunta. Tente novamente.",
+      });
     } finally {
       setLoading(false);
     }
@@ -112,12 +124,19 @@ export default function AiSupport() {
         </div>
 
         {loading && (
-          <div className="max-w-3xl mx-auto text-center">
-            <p>Buscando a melhor resposta para você...</p>
+          <div className="max-w-3xl mx-auto my-8">
+            <div className="flex items-start space-x-4">
+                <Skeleton className="h-6 w-6" />
+                <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-1/4" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-4/5" />
+                </div>
+            </div>
           </div>
         )}
         
-        {aiResponse && (
+        {aiResponse && !loading && (
           <div className="max-w-3xl mx-auto my-8">
             <Alert>
               <Terminal className="h-4 w-4" />
