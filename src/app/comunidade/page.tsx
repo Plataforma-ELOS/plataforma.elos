@@ -303,7 +303,7 @@ export default function CommunityPage() {
                             <div className="text-center text-muted-foreground p-4">
                               <Users className="mx-auto h-12 w-12 mb-4" />
                               <h3 className="font-semibold mb-1">Junte-se ou crie um grupo</h3>
-                              <p className="text-sm mb-4">Você ainda não faz parte de nenhuma conversa.</p>
+                              <p className="text-sm mb-4">Você ainda não faz parte de nenhum grupo.</p>
                               <FeatureInProgress>
                                 <Button size="sm">
                                     <Plus className="mr-2 h-4 w-4" />
@@ -338,7 +338,3 @@ export default function CommunityPage() {
     </div>
   );
 }
-
-  
-
-    
