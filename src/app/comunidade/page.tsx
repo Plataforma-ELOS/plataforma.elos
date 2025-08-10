@@ -95,12 +95,6 @@ export default function CommunityPage() {
                     <div className="flex items-center gap-2">
                         <FeatureInProgress>
                             <Button variant="ghost" size="icon">
-                                <Bookmark className="h-5 w-5" />
-                                <span className="sr-only">Salvos</span>
-                            </Button>
-                        </FeatureInProgress>
-                        <FeatureInProgress>
-                            <Button variant="ghost" size="icon">
                                 <MessageSquare className="h-5 w-5" />
                                 <span className="sr-only">Mensagens</span>
                             </Button>
@@ -109,6 +103,12 @@ export default function CommunityPage() {
                             <Button variant="ghost" size="icon">
                                 <Send className="h-5 w-5" />
                                 <span className="sr-only">Notificações</span>
+                            </Button>
+                        </FeatureInProgress>
+                        <FeatureInProgress>
+                            <Button variant="ghost" size="icon">
+                                <Bookmark className="h-5 w-5" />
+                                <span className="sr-only">Salvos</span>
                             </Button>
                         </FeatureInProgress>
                         <FeatureInProgress>
