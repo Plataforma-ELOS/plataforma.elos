@@ -32,7 +32,7 @@ type DigitalLibraryCardProps = {
 
 export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
   return (
-    <Card className="flex flex-col rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full border">
+    <Card className="flex flex-col rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 h-full border animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       <CardContent className="p-0 flex flex-col flex-grow">
         <div className="relative">
           {item.type === 'video' && item.imageUrl ? (

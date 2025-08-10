@@ -53,7 +53,7 @@ export default function PostCard({ post, onComment, onToggleSave }: PostCardProp
   };
 
   return (
-    <Card className="rounded-2xl shadow-sm p-5 border">
+    <Card className="rounded-2xl shadow-sm p-5 border animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       <div className="flex items-start gap-4">
         <Avatar className="h-11 w-11">
           <AvatarImage src={post.author.avatarUrl} alt={post.author.name} data-ai-hint={post.author.hint} />

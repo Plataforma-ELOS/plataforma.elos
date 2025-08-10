@@ -31,7 +31,7 @@ type DigitalLibraryListItemProps = {
 
 export default function DigitalLibraryListItem({ item }: DigitalLibraryListItemProps) {
   return (
-    <Card className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border">
+    <Card className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
         <div className="relative w-full sm:w-48 flex-shrink-0">
           {item.type === 'video' && item.imageUrl ? (
