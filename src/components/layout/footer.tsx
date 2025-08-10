@@ -15,12 +15,12 @@ export default function Footer() {
                 <li><Link href="/noticias" className="text-sm text-foreground/80 hover:text-foreground">Notícias</Link></li>
                 <li><Link href="/acervo-digital" className="text-sm text-foreground/80 hover:text-foreground">Acervo Digital</Link></li>
                 <li><Link href="/comunidade" className="text-sm text-foreground/80 hover:text-foreground">Comunidade</Link></li>
+                <li><Link href="/suporte-ia" className="text-sm text-foreground/80 hover:text-foreground">Suporte IA</Link></li>
               </ul>
             </div>
              <div className="space-y-4">
               <h4 className="font-semibold">Suporte</h4>
               <ul className="space-y-2">
-                <li><Link href="/suporte-ia" className="text-sm text-foreground/80 hover:text-foreground">Suporte IA</Link></li>
                 <li><Link href="/fale-conosco" className="text-sm text-foreground/80 hover:text-foreground">Fale Conosco</Link></li>
                 <li><Link href="/faq" className="text-sm text-foreground/80 hover:text-foreground">FAQ</Link></li>
               </ul>
