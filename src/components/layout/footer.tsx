@@ -13,7 +13,7 @@ export default function Footer() {
               <h4 className="font-semibold">Plataforma</h4>
               <ul className="space-y-2">
                 <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Notícias</span></FeatureInProgress></li>
-                <li><FeatureInProgress><span className="text-sm text-foreground/80 hover:text-foreground cursor-pointer">Biblioteca Digital</span></FeatureInProgress></li>
+                <li><Link href="/biblioteca-digital" className="text-sm text-foreground/80 hover:text-foreground">Biblioteca Digital</Link></li>
                 <li><Link href="/comunidade" className="text-sm text-foreground/80 hover:text-foreground">Comunidade</Link></li>
               </ul>
             </div>

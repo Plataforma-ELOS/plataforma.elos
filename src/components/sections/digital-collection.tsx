@@ -1,14 +1,13 @@
 import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
+import { Button } from '../ui/button';
 
 const collectionItems = [
   { type: 'Vídeo', title: 'Entendendo a sobrecarga sensorial', imageUrl: 'https://placehold.co/400x225.png', hint: 'child playing' },
   { type: 'Jogo', title: 'Jogo das Emoções', imageUrl: 'https://placehold.co/400x225.png', hint: 'kids emotions' },
   { type: 'Documento', title: 'Guia de Rotinas Visuais', imageUrl: 'https://placehold.co/400x225.png', hint: 'planner schedule' },
-  { type: 'Artigo', title: 'Comunicação Alternativa', imageUrl: 'https://placehold.co/400x225.png', hint: 'sign language' },
-  { type: 'Vídeo', title: 'Técnicas de relaxamento para cuidadores', imageUrl: 'https://placehold.co/400x225.png', hint: 'yoga meditation' },
-  { type: 'Jogo', title: 'Aventura no Mundo Social', imageUrl: 'https://placehold.co/400x225.png', hint: 'children friends' },
 ];
 
 export default function DigitalCollection() {
@@ -41,6 +40,11 @@ export default function DigitalCollection() {
               </div>
             </Card>
           ))}
+        </div>
+        <div className="mt-16 text-center">
+            <Button size="lg" className="rounded-full px-8" asChild>
+                <Link href="/biblioteca-digital">Ver acervo completo</Link>
+            </Button>
         </div>
       </div>
     </section>
