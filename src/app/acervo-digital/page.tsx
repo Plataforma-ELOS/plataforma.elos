@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, ArrowUpDown, LayoutGrid, List, Plus } from 'lucide-react';
 import DigitalLibraryCard from '@/components/sections/digital-library-card';
+import DigitalLibraryListItem from '@/components/sections/digital-library-list-item';
 import FeatureInProgress from '@/components/feature-in-progress';
 
 // Helper to parse Brazilian dates (dd de MMMM de yyyy)
@@ -174,26 +175,31 @@ export default function DigitalLibraryPage() {
                   </SelectContent>
                 </Select>
                 <div className="bg-muted p-1 rounded-md hidden md:flex">
-                   <FeatureInProgress>
-                      <Button variant={view === 'grid' ? 'default' : 'ghost'} size="icon" onClick={() => setView('grid')}>
-                        <LayoutGrid />
-                      </Button>
-                    </FeatureInProgress>
-                    <FeatureInProgress>
-                      <Button variant={view === 'list' ? 'default' : 'ghost'} size="icon" onClick={() => setView('list')}>
-                        <List />
-                      </Button>
-                    </FeatureInProgress>
+                  <Button variant={view === 'grid' ? 'default' : 'ghost'} size="icon" onClick={() => setView('grid')}>
+                    <LayoutGrid />
+                  </Button>
+                  <Button variant={view === 'list' ? 'default' : 'ghost'} size="icon" onClick={() => setView('list')}>
+                    <List />
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredItems.map((item, index) => (
-              <DigitalLibraryCard key={index} item={item} />
-            ))}
-          </div>
+          {view === 'grid' ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredItems.map((item, index) => (
+                <DigitalLibraryCard key={index} item={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredItems.map((item, index) => (
+                <DigitalLibraryListItem key={index} item={item} />
+              ))}
+            </div>
+          )}
+
 
           {filteredItems.length === 0 && (
             <div className="text-center py-16">
