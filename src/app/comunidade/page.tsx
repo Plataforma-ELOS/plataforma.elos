@@ -282,7 +282,7 @@ export default function CommunityPage() {
                 <div className="space-y-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-xl">Minhas Conversas</CardTitle>
+                            <CardTitle className="text-xl">Meus Grupos</CardTitle>
                         </CardHeader>
                         <CardContent>
                           {myConversations.length > 0 ? (
@@ -340,3 +340,5 @@ export default function CommunityPage() {
 }
 
   
+
+    
