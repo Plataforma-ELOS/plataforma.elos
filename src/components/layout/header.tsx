@@ -68,7 +68,7 @@ export default function Header() {
           <span className="text-2xl font-bold text-primary">ELOS</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {navItems.map((item) => renderNavItem(item))}
+          {navItems.map((item) => <div key={item.name}>{renderNavItem(item)}</div>)}
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
@@ -91,7 +91,7 @@ export default function Header() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => renderMobileNavItem(item))}
+                  {navItems.map((item) => <div key={item.name}>{renderMobileNavItem(item)}</div>)}
                 </nav>
                  <div className="p-6 border-t">
                   <FeatureInProgress>

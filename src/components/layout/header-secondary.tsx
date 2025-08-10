@@ -34,34 +34,36 @@ export default function HeaderSecondary() {
   const isCurrentPage = (href: string) => pathname === href;
 
   const renderNavItem = (item: typeof navItems[0]) => {
+    const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
     if (item.isFeature) {
       return (
         <FeatureInProgress>
-          <span className={`text-foreground/80 hover:text-foreground transition-colors cursor-pointer ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+          <span className={`${classNames} cursor-pointer`}>
             {item.name}
           </span>
         </FeatureInProgress>
       );
     }
     return (
-      <Link href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+      <Link href={item.href} className={classNames}>
         {item.name}
       </Link>
     );
   };
   
-    const renderMobileNavItem = (item: typeof navItems[0]) => {
+  const renderMobileNavItem = (item: typeof navItems[0]) => {
+    const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
     if (item.isFeature) {
       return (
         <FeatureInProgress>
-          <span className={`text-foreground/80 hover:text-foreground transition-colors cursor-pointer ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+          <span className={`${classNames} cursor-pointer`}>
             {item.name}
           </span>
         </FeatureInProgress>
       );
     }
     return (
-      <Link href={item.href} className={`text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`}>
+      <Link href={item.href} className={classNames}>
         {item.name}
       </Link>
     );
@@ -79,7 +81,7 @@ export default function HeaderSecondary() {
             </div>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          {navItems.map((item) => renderNavItem(item))}
+          {navItems.map((item) => <div key={item.name}>{renderNavItem(item)}</div>)}
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
@@ -111,7 +113,7 @@ export default function HeaderSecondary() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => renderMobileNavItem(item))}
+                  {navItems.map((item) => <div key={item.name}>{renderMobileNavItem(item)}</div>)}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
                     <FeatureInProgress>
