@@ -92,12 +92,17 @@ export default {
           '0%, 100%': { transform: 'rotate(0)' },
           '10%, 30%, 50%, 70%, 90%': { transform: 'rotate(-15deg)' },
           '20%, 40%, 60%, 80%': { transform: 'rotate(15deg)' },
-        }
+        },
+        'pulse': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'ring': 'ring 1.5s ease-in-out',
+        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
        typography: ({ theme }: { theme: any }) => ({
         DEFAULT: {
