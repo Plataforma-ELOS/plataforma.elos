@@ -11,6 +11,7 @@ import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
 import CreatePost from '@/components/community/create-post';
 import PostCard, { Post, Comment } from '@/components/community/post-card';
+import { Input } from '@/components/ui/input';
 
 const mainNav = [
   { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
@@ -77,6 +78,9 @@ const initialPosts: Post[] = [
 export default function CommunityPage() {
   const [activeTab, setActiveTab] = useState('Início');
   const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Post[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleCreatePost = (content: string) => {
     if (!content.trim()) return;
@@ -125,13 +129,22 @@ export default function CommunityPage() {
     ));
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setHasSearched(true);
+    if (!searchQuery.trim()) {
+        setSearchResults([]);
+        return;
+    }
+    const results = posts.filter(post => 
+        post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.author.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setSearchResults(results);
+  }
+
 
   const renderContent = () => {
-    let postsToRender = posts;
-    if (activeTab === 'Salvos') {
-        postsToRender = posts.filter(post => post.isSaved);
-    }
-      
     switch (activeTab) {
       case 'Início':
         return (
@@ -142,11 +155,48 @@ export default function CommunityPage() {
             ))}
           </>
         );
+       case 'Buscar':
+        return (
+            <div className="space-y-6">
+                <form onSubmit={handleSearch} className="flex gap-2">
+                    <Input 
+                        placeholder="Buscar na comunidade..." 
+                        className="h-11"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <Button type="submit" size="lg">
+                        <Search className="mr-2 h-4 w-4" />
+                        Buscar
+                    </Button>
+                </form>
+                {hasSearched ? (
+                    searchResults.length > 0 ? (
+                        searchResults.map((post) => (
+                            <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+                        ))
+                    ) : (
+                        <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+                            <Search className="h-16 w-16 text-muted-foreground mb-4" />
+                            <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
+                            <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave.</p>
+                        </Card>
+                    )
+                ) : (
+                     <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+                        <Search className="h-16 w-16 text-muted-foreground mb-4" />
+                        <h3 className="text-xl font-semibold">Busque na Comunidade</h3>
+                        <p className="text-muted-foreground mt-2">Encontre posts, tópicos e conversas sobre os assuntos que te interessam.</p>
+                    </Card>
+                )}
+            </div>
+        );
       case 'Salvos':
+        const savedPosts = posts.filter(post => post.isSaved);
         return (
             <>
-                {postsToRender.length > 0 ? (
-                    postsToRender.map((post) => (
+                {savedPosts.length > 0 ? (
+                    savedPosts.map((post) => (
                         <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
                     ))
                 ) : (
@@ -291,3 +341,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    
