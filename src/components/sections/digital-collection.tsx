@@ -44,7 +44,7 @@ export default function DigitalCollection() {
           ))}
         </div>
         <div className="mt-16 text-center">
-            <Button size="lg" className="rounded-full px-8" asChild>
+            <Button size="lg" className="rounded-full px-8 transition-transform duration-300 ease-out hover:scale-105" asChild>
                 <Link href="/acervo-digital">Ver acervo completo</Link>
             </Button>
         </div>

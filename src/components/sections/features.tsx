@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,7 +33,7 @@ export default function Features() {
         </div>
         <div className="grid gap-8 md:grid-cols-3">
           {features.map((feature, index) => (
-            <Card key={index} className="flex flex-col items-center text-center p-6 bg-background rounded-2xl shadow-lg hover:shadow-primary/20 transition-shadow duration-300 transform hover:-translate-y-2">
+            <Card key={index} className="flex flex-col items-center text-center p-6 bg-background rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
               <CardHeader>
                 <div className="bg-primary/10 p-4 rounded-full mb-4 inline-flex">
                   {feature.icon}

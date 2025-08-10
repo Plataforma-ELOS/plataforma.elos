@@ -73,7 +73,7 @@ export default function Header() {
         </nav>
         <div className="flex items-center gap-4">
           <FeatureInProgress>
-            <Button asChild className="hidden md:inline-flex rounded-full">
+            <Button asChild className="hidden md:inline-flex rounded-full transition-transform duration-300 ease-out hover:scale-105">
               <span className="cursor-pointer">Login</span>
             </Button>
           </FeatureInProgress>

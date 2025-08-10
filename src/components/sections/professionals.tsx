@@ -22,17 +22,17 @@ export default function Professionals() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8">
           {professionals.map((prof, index) => (
             <Link href={prof.href} key={index} className="group">
-                <Card className="flex flex-col items-center p-6 border-0 shadow-none bg-transparent transition-transform transform group-hover:-translate-y-2">
+                <Card className="flex flex-col items-center p-6 border-0 shadow-none bg-transparent">
                     <Image
                       src={prof.imageUrl}
                       alt={`Foto de ${prof.name}`}
                       width={128}
                       height={128}
-                      className="rounded-full object-cover mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all"
+                      className="rounded-full object-cover mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300 group-hover:scale-110"
                       data-ai-hint={prof.hint}
                     />
                     <CardContent className="text-center p-0">
-                      <h4 className="text-lg font-semibold group-hover:text-primary">
+                      <h4 className="text-lg font-semibold group-hover:text-primary transition-colors">
                           {prof.name}
                       </h4>
                     </CardContent>
