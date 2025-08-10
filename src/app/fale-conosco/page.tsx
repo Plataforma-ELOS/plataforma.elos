@@ -3,13 +3,18 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import FeatureInProgress from '@/components/feature-in-progress';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 
 export default function ContactPage() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Lógica de envio do formulário será implementada futuramente.
+    alert('Obrigado pelo seu contato! Mensagem enviada (simulação).');
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-muted/20">
       <HeaderSecondary />
@@ -68,29 +73,27 @@ export default function ContactPage() {
                             <CardTitle>Envie uma Mensagem</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <FeatureInProgress>
-                                <form className="space-y-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="first-name">Nome</Label>
-                                            <Input id="first-name" placeholder="Seu nome" disabled />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="last-name">Sobrenome</Label>
-                                            <Input id="last-name" placeholder="Seu sobrenome" disabled />
-                                        </div>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="first-name">Nome</Label>
+                                        <Input id="first-name" placeholder="Seu nome" required />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="email">Email</Label>
-                                        <Input id="email" type="email" placeholder="seu@email.com" disabled />
+                                        <Label htmlFor="last-name">Sobrenome</Label>
+                                        <Input id="last-name" placeholder="Seu sobrenome" required />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="message">Mensagem</Label>
-                                        <Textarea id="message" placeholder="Escreva sua mensagem aqui..." className="min-h-[120px]" disabled />
-                                    </div>
-                                    <Button type="submit" className="w-full" disabled>Enviar Mensagem</Button>
-                                </form>
-                            </FeatureInProgress>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input id="email" type="email" placeholder="seu@email.com" required />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="message">Mensagem</Label>
+                                    <Textarea id="message" placeholder="Escreva sua mensagem aqui..." className="min-h-[120px]" required />
+                                </div>
+                                <Button type="submit" className="w-full">Enviar Mensagem</Button>
+                            </form>
                         </CardContent>
                     </Card>
                 </div>
