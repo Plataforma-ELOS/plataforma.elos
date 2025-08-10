@@ -70,7 +70,7 @@ export default function CommunityPage() {
       <main>
         <div className="border-b">
             <div className="container mx-auto px-4 md:px-6">
-                <div className="flex justify-between items-center py-2">
+                <div className="flex justify-between items-center py-2 h-16">
                     <nav className="flex items-center gap-2 relative">
                         {mainNav.map((item) => (
                           <FeatureInProgress key={item.name}>
@@ -92,12 +92,32 @@ export default function CommunityPage() {
                             }}
                         />
                     </nav>
-                    <FeatureInProgress>
-                      <Button size="sm">
-                          <Plus className="mr-2 h-4 w-4" />
-                          Criar Grupo
-                      </Button>
-                    </FeatureInProgress>
+                    <div className="flex items-center gap-2">
+                        <FeatureInProgress>
+                            <Button variant="ghost" size="icon">
+                                <Bookmark className="h-5 w-5" />
+                                <span className="sr-only">Salvos</span>
+                            </Button>
+                        </FeatureInProgress>
+                        <FeatureInProgress>
+                            <Button variant="ghost" size="icon">
+                                <MessageSquare className="h-5 w-5" />
+                                <span className="sr-only">Mensagens</span>
+                            </Button>
+                        </FeatureInProgress>
+                        <FeatureInProgress>
+                            <Button variant="ghost" size="icon">
+                                <Send className="h-5 w-5" />
+                                <span className="sr-only">Notificações</span>
+                            </Button>
+                        </FeatureInProgress>
+                        <FeatureInProgress>
+                          <Button size="sm">
+                              <Plus className="mr-2 h-4 w-4" />
+                              Criar Grupo
+                          </Button>
+                        </FeatureInProgress>
+                    </div>
                 </div>
             </div>
         </div>
