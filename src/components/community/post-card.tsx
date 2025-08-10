@@ -63,11 +63,11 @@ export default function PostCard({ post, onComment }: PostCardProps) {
               <p className="font-semibold">{post.author.name}</p>
               <span className="text-xs text-muted-foreground">· {post.time}</span>
             </div>
-            <FeatureInProgress>
+            
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
               </Button>
-            </FeatureInProgress>
+            
           </div>
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
         </div>
@@ -90,12 +90,12 @@ export default function PostCard({ post, onComment }: PostCardProps) {
           <MessageCircle className="h-5 w-5 mr-2" />
           Comentar
         </Button>
-        <FeatureInProgress>
+        
           <Button variant="ghost" className="w-full">
             <Share2 className="h-5 w-5 mr-2" />
             Compartilhar
           </Button>
-        </FeatureInProgress>
+        
       </div>
       {showComments && (
         <div className="mt-4 border-t pt-4">
@@ -106,3 +106,6 @@ export default function PostCard({ post, onComment }: PostCardProps) {
   );
 }
 
+
+
+    
