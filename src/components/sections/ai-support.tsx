@@ -52,13 +52,24 @@ export default function AiSupport() {
     if (!currentQuery.trim()) return;
 
     setLoading(true);
-    setAiResponse(null);
+    setAiResponse('');
     setLastQuery(currentQuery);
     setQuery('');
     
     try {
-      const response = await askLegalAssistant(currentQuery);
-      setAiResponse(response);
+      const responseStream = await askLegalAssistant(currentQuery);
+      const reader = responseStream.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+        const chunk = decoder.decode(value, { stream: true });
+        setAiResponse(prev => (prev || '') + chunk);
+      }
+
     } catch (error) {
       console.error(error);
       toast({
@@ -66,6 +77,8 @@ export default function AiSupport() {
         title: "Ocorreu um erro",
         description: "Não foi possível processar sua pergunta. Tente novamente.",
       });
+      setAiResponse(null);
+      setLastQuery('');
     } finally {
       setLoading(false);
     }
@@ -125,7 +138,7 @@ export default function AiSupport() {
           </Card>
         )}
 
-        {loading && (
+        {(loading && !aiResponse) && (
           <div className="max-w-3xl mx-auto my-8">
             <Card className="p-6">
                 <div className="flex items-start space-x-4">
@@ -143,7 +156,7 @@ export default function AiSupport() {
         </div>
         )}
         
-        {aiResponse && !loading && (
+        {aiResponse && (
           <div className="max-w-3xl mx-auto my-8">
             <Card className="p-6">
                <div className="flex items-start space-x-4">
