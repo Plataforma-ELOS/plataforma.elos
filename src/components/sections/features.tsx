@@ -45,13 +45,6 @@ export default function Features() {
             </Card>
           ))}
         </div>
-        <div className="mt-16 text-center">
-          <FeatureInProgress>
-            <Button size="lg" variant="outline" className="rounded-full px-8">
-              Ver no protótipo
-            </Button>
-          </FeatureInProgress>
-        </div>
       </div>
     </section>
   );
