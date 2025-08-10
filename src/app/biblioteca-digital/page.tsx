@@ -1,7 +1,7 @@
 // src/app/biblioteca-digital/page.tsx
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -66,6 +66,19 @@ const libraryItems = [
 
 export default function DigitalLibraryPage() {
   const [view, setView] = useState('grid');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredItems, setFilteredItems] = useState(libraryItems);
+
+  useEffect(() => {
+    const lowercasedQuery = searchQuery.toLowerCase();
+    const results = libraryItems.filter(item => {
+      const titleMatch = item.title.toLowerCase().includes(lowercasedQuery);
+      const tagMatch = item.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery));
+      return titleMatch || tagMatch;
+    });
+    setFilteredItems(results);
+  }, [searchQuery]);
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -89,7 +102,12 @@ export default function DigitalLibraryPage() {
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input placeholder="Buscar por título, tag, etc..." className="pl-10 h-11" />
+                <Input 
+                  placeholder="Buscar por título, tag, etc..." 
+                  className="pl-10 h-11"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
               <div className="flex items-center gap-2">
                 <FeatureInProgress>
@@ -128,10 +146,18 @@ export default function DigitalLibraryPage() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {libraryItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <DigitalLibraryCard key={index} item={item} />
             ))}
           </div>
+
+          {filteredItems.length === 0 && (
+            <div className="text-center py-16">
+              <Search className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
+              <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave ou ajuste seus filtros.</p>
+            </div>
+          )}
         </div>
       </main>
       <Footer />
