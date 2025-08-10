@@ -6,7 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Globe, Filter, Plus } from 'lucide-react';
+import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Construction } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import Link from 'next/link';
 import CreatePost from '@/components/community/create-post';
@@ -84,6 +84,28 @@ export default function CommunityPage() {
     setPosts(prevPosts => [newPost, ...prevPosts]);
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'Início':
+        return (
+          <>
+            <CreatePost onCreatePost={handleCreatePost} />
+            {posts.map((post, index) => (
+              <PostCard key={index} post={post} />
+            ))}
+          </>
+        );
+      default:
+        return (
+          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+            <Construction className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold">Seção em Construção</h3>
+            <p className="text-muted-foreground mt-2">A área de "{activeTab}" ainda está em desenvolvimento. Volte em breve!</p>
+          </Card>
+        );
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <HeaderSecondary />
@@ -93,15 +115,14 @@ export default function CommunityPage() {
                 <div className="flex justify-between items-center py-2 h-16">
                     <nav className="flex items-center gap-2 relative">
                         {mainNav.map((item) => (
-                          <FeatureInProgress key={item.name}>
-                            <button
-                              onClick={() => setActiveTab(item.name)}
-                              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
-                            >
-                              {item.icon}
-                              <span className="hidden md:inline">{item.name}</span>
-                            </button>
-                          </FeatureInProgress>
+                          <button
+                            key={item.name}
+                            onClick={() => setActiveTab(item.name)}
+                            className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
+                          >
+                            {item.icon}
+                            <span className="hidden md:inline">{item.name}</span>
+                          </button>
                         ))}
                          <div
                             className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
@@ -146,10 +167,7 @@ export default function CommunityPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Coluna Principal do Feed */}
                 <div className="lg:col-span-2 space-y-6">
-                    <CreatePost onCreatePost={handleCreatePost} />
-                    {posts.map((post, index) => (
-                        <PostCard key={index} post={post} />
-                    ))}
+                  {renderContent()}
                 </div>
 
                 {/* Barra Lateral */}
