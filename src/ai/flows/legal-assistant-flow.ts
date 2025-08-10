@@ -52,16 +52,13 @@ export async function askLegalAssistant(question: string) {
       NUNCA forneça conselhos legais ou médicos diretos. Sempre enquadre suas respostas como informação e orientação.`,
     });
 
-  const reader = stream.getReader();
   const newStream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          break;
+      for await (const chunk of stream) {
+        if (chunk.text) {
+          controller.enqueue(encoder.encode(chunk.text));
         }
-        controller.enqueue(encoder.encode(value.text));
       }
       controller.close();
     },
