@@ -2,12 +2,12 @@
 "use client";
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, FileText, HelpCircle, Search, AppWindow, BadgeHelp, BookUser, ShieldQuestion, Terminal, User } from 'lucide-react';
 import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
-import FeatureInProgress from '@/components/feature-in-progress';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import ReactMarkdown from 'react-markdown';
@@ -17,19 +17,19 @@ const supportCards = [
     icon: <FileText className="h-8 w-8 text-primary" />,
     title: 'Conheça seus direitos',
     description: 'Navegue por guias práticos sobre legislação, BPC, laudos e mais.',
-    href: '#',
+    href: '/faq',
   },
   {
     icon: <AppWindow className="h-8 w-8 text-primary" />,
-    title: 'Acesse seus benefícios',
-    description: 'Encontre programas e serviços de saúde, educação e transporte.',
-    href: '#',
+    title: 'Explore o Acervo',
+    description: 'Encontre materiais, vídeos e documentos úteis para o dia a dia.',
+    href: '/acervo-digital',
   },
   {
     icon: <HelpCircle className="h-8 w-8 text-primary" />,
     title: 'Perguntas Frequentes',
     description: 'Respostas rápidas para as dúvidas mais comuns da comunidade.',
-    href: '#',
+    href: '/faq',
   },
 ];
 
@@ -126,60 +126,62 @@ export default function AiSupport() {
             </div>
         </div>
 
-        {lastQuery && (
-          <Card className="max-w-3xl mx-auto my-8 p-6 animate-in fade-in-0 duration-500">
-            <div className="flex items-start space-x-4">
-              <User className="h-6 w-6 text-primary" />
-              <div className="flex-1">
-                <p className="font-semibold">Sua pergunta</p>
-                <p className="text-muted-foreground">{lastQuery}</p>
-              </div>
-            </div>
-          </Card>
-        )}
-
-        {(loading && !aiResponse) && (
-          <div className="max-w-3xl mx-auto my-8 animate-in fade-in-0 duration-500">
-            <Card className="p-6">
-                <div className="flex items-start space-x-4">
-                    <div className="bg-primary/10 p-2 rounded-full">
-                        <Terminal className="h-6 w-6 text-primary animate-pulse" />
-                    </div>
-                    <div className="space-y-3 flex-1">
-                        <p className="font-semibold">A.I. está respondendo...</p>
-                        <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-4/5" />
-                         <Skeleton className="h-4 w-full" />
-                    </div>
+        <div className="animate-in fade-in-0 duration-500">
+          {lastQuery && (
+            <Card className="max-w-3xl mx-auto my-8 p-6">
+              <div className="flex items-start space-x-4">
+                <User className="h-6 w-6 text-primary" />
+                <div className="flex-1">
+                  <p className="font-semibold">Sua pergunta</p>
+                  <p className="text-muted-foreground">{lastQuery}</p>
                 </div>
+              </div>
             </Card>
-        </div>
-        )}
-        
-        {aiResponse && (
-          <div className="max-w-3xl mx-auto my-8 animate-in fade-in-0 duration-500">
-            <Card className="p-6">
-               <div className="flex items-start space-x-4">
-                  <div className="bg-primary/10 p-2 rounded-full">
-                    <Terminal className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="flex-1 space-y-4">
-                    <p className="font-semibold">Resposta da A.I.</p>
-                     <div className="prose prose-sm max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground">
-                        <ReactMarkdown>
-                          {aiResponse}
-                        </ReactMarkdown>
+          )}
+
+          {(loading && !aiResponse) && (
+            <div className="max-w-3xl mx-auto my-8">
+              <Card className="p-6">
+                  <div className="flex items-start space-x-4">
+                      <div className="bg-primary/10 p-2 rounded-full">
+                          <Terminal className="h-6 w-6 text-primary animate-pulse" />
+                      </div>
+                      <div className="space-y-3 flex-1">
+                          <p className="font-semibold">A.I. está respondendo...</p>
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-4/5" />
+                           <Skeleton className="h-4 w-full" />
                       </div>
                   </div>
-               </div>
-            </Card>
+              </Card>
           </div>
-        )}
+          )}
+          
+          {aiResponse && (
+            <div className="max-w-3xl mx-auto my-8">
+              <Card className="p-6">
+                 <div className="flex items-start space-x-4">
+                    <div className="bg-primary/10 p-2 rounded-full">
+                      <Terminal className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1 space-y-4">
+                      <p className="font-semibold">Resposta da A.I.</p>
+                       <div className="prose prose-sm max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground">
+                          <ReactMarkdown>
+                            {aiResponse}
+                          </ReactMarkdown>
+                        </div>
+                    </div>
+                 </div>
+              </Card>
+            </div>
+          )}
+        </div>
         
         <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto pt-16">
           {supportCards.map((card, index) => (
-            <FeatureInProgress key={index}>
-              <Card className="p-8 bg-white rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer">
+            <Link href={card.href} key={index} className="group">
+              <Card className="p-8 bg-white rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer h-full">
                 <div>
                   <CardHeader className="flex flex-col items-start gap-4 p-0">
                     <div className="bg-primary/10 p-4 rounded-xl mb-2">
@@ -192,12 +194,12 @@ export default function AiSupport() {
                   </CardContent>
                 </div>
                 <div className="mt-6">
-                  <span className="font-semibold text-primary hover:text-primary/80 flex items-center group">
+                  <span className="font-semibold text-primary hover:text-primary/80 flex items-center">
                       Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
               </Card>
-            </FeatureInProgress>
+            </Link>
           ))}
         </div>
       </div>
