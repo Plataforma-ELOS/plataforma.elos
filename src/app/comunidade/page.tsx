@@ -20,8 +20,6 @@ const mainNav = [
   { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '#' },
 ];
 
-const myConversations: any[] = [];
-
 const initialPosts: Post[] = [
   {
     id: 'post-1',
