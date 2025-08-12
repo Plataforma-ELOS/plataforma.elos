@@ -8,6 +8,20 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import fs from 'fs/promises';
+import path from 'path';
+
+// Função para ler o contexto da plataforma de um arquivo
+async function getPlatformContext() {
+  const filePath = path.join(process.cwd(), 'src', 'ai', 'context', 'elos-platform-context.md');
+  try {
+    const context = await fs.readFile(filePath, 'utf-8');
+    return context;
+  } catch (error) {
+    console.error("Erro ao ler o arquivo de contexto:", error);
+    return "Contexto da plataforma E.L.O.S não pôde ser carregado.";
+  }
+}
 
 const legalAssistantFlow = ai.defineFlow(
   {
@@ -16,6 +30,7 @@ const legalAssistantFlow = ai.defineFlow(
     outputSchema: z.string(),
   },
   async (prompt) => {
+    const platformContext = await getPlatformContext();
     const llmResponse = await ai.generate({
       prompt: prompt,
       model: 'googleai/gemini-2.0-flash',
@@ -28,7 +43,13 @@ const legalAssistantFlow = ai.defineFlow(
       Responda de forma acolhedora, objetiva e direta.
       Use uma linguagem simples e evite jargões legais.
       Se a pergunta for muito complexa ou fora do seu escopo, recomende que o usuário procure um profissional especializado (advogado, assistente social) ou o serviço de mentoria da plataforma.
-      NUNCA forneça conselhos legais ou médicos diretos. Sempre enquadre suas respostas como informação e orientação.`,
+      NUNCA forneça conselhos legais ou médicos diretos. Sempre enquadre suas respostas como informação e orientação.
+      
+      Utilize o seguinte contexto sobre a plataforma E.L.O.S para guiar suas respostas:
+      ---
+      ${platformContext}
+      ---
+      `,
     });
 
     return llmResponse.text;
@@ -37,6 +58,8 @@ const legalAssistantFlow = ai.defineFlow(
 
 
 export async function askLegalAssistant(question: string) {
+  const platformContext = await getPlatformContext();
+
   const { stream } = ai.generateStream({
       prompt: question,
       model: 'googleai/gemini-2.0-flash',
@@ -49,7 +72,13 @@ export async function askLegalAssistant(question: string) {
       Responda de forma acolhedora, objetiva e direta.
       Use uma linguagem simples e evite jargões legais.
       Se a pergunta for muito complexa ou fora do seu escopo, recomende que o usuário procure um profissional especializado (advogado, assistente social) ou o serviço de mentoria da plataforma.
-      NUNCA forneça conselhos legais ou médicos diretos. Sempre enquadre suas respostas como informação e orientação.`,
+      NUNCA forneça conselhos legais ou médicos diretos. Sempre enquadre suas respostas como informação e orientação.
+
+      Utilize o seguinte contexto sobre a plataforma E.L.O.S para guiar suas respostas:
+      ---
+      ${platformContext}
+      ---
+      `,
     });
 
   const newStream = new ReadableStream({
