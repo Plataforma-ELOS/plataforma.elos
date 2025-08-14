@@ -1,3 +1,4 @@
+
 import { Card } from '@/components/ui/card';
 import { ArrowRight, BookOpen, Clapperboard, Gamepad2 } from 'lucide-react';
 import Link from 'next/link';
@@ -25,7 +26,7 @@ const collectionItems = [
 
 export default function NewDigitalCollection() {
   return (
-    <section className="w-full py-20 md:py-24 lg:py-32 bg-background">
+    <section className="w-full py-20 md:py-24 lg:py-32 bg-primary/10">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">

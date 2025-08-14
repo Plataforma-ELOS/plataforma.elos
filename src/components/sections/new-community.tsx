@@ -1,3 +1,5 @@
+
+import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Image from "next/image";
 
@@ -40,6 +42,9 @@ export default function NewCommunity() {
                 </li>
               ))}
             </ul>
+             <div className="pt-6">
+                <Button>Veja o que dizem sobre nós</Button>
+            </div>
           </div>
            <div className="relative flex items-center justify-center min-h-[500px]">
              <svg
@@ -61,10 +66,10 @@ export default function NewCommunity() {
               }}
             >
                <Image
-                src="https://placehold.co/600x600.png"
+                src="https://placehold.co/800x800.png"
                 alt="Comunidade unida"
-                width={600}
-                height={600}
+                width={800}
+                height={800}
                 data-ai-hint="community people"
                 className="w-full h-full object-cover"
               />
