@@ -16,46 +16,84 @@ const images = [
   { src: 'https://placehold.co/600x400.png', alt: 'Notícia 5', hint: 'publication' },
   { src: 'https://placehold.co/600x400.png', alt: 'Notícia 6', hint: 'media' },
   { src: 'https://placehold.co/600x400.png', alt: 'Notícia 7', hint: 'press' },
+  { src: 'https://placehold.co/600x400.png', alt: 'Notícia 8', hint: 'news article' },
+  { src: 'https://placehold.co/600x400.png', alt: 'Notícia 9', hint: 'headline' },
+  { src: 'https://placehold.co/600x400.png', alt: 'Notícia 10', hint: 'journalism' },
 ];
 
 export default function NewsCarousel() {
   return (
-    <section className="w-full py-20 md:py-24 lg:py-32 bg-white">
+    <section className="w-full py-20 md:py-24 lg:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-center mb-12">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-center mb-16">
           Últimas notícias
         </h2>
       </div>
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        plugins={[
-          Autoplay({
-            delay: 2000,
-            stopOnInteraction: false,
-          }),
-        ]}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-1">
-          {images.map((image, index) => (
-            <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/5">
-              <div className="p-1">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={600}
-                  height={400}
-                  className="rounded-lg object-cover"
-                  data-ai-hint={image.hint}
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      <div className="space-y-4">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 2000,
+              stopOnInteraction: false,
+              playOnInit: true,
+            }),
+          ]}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-1">
+            {images.map((image, index) => (
+              <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/5">
+                <div className="p-1">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={600}
+                    height={400}
+                    className="rounded-lg object-cover"
+                    data-ai-hint={image.hint}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 2000,
+              stopOnInteraction: false,
+              playOnInit: true,
+              direction: 'backward',
+            }),
+          ]}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-1">
+            {[...images].reverse().map((image, index) => (
+              <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/5">
+                <div className="p-1">
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    width={600}
+                    height={400}
+                    className="rounded-lg object-cover"
+                    data-ai-hint={image.hint}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
     </section>
   );
 }

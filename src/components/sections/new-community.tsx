@@ -18,16 +18,16 @@ const communityPoints = [
 
 export default function NewCommunity() {
   return (
-    <section className="w-full py-20 md:py-24 lg:py-32 bg-background">
+    <section className="w-full py-20 md:py-24 lg:py-32 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
+          <div className="space-y-12">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">O seu lugar ideal</h2>
-            <ul className="space-y-6">
+            <ul className="space-y-8">
               {communityPoints.map((point, index) => (
                 <li key={index} className="flex items-start gap-4">
                   <div className="flex-shrink-0">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg">
                       <Check className="h-5 w-5" />
                     </span>
                   </div>

@@ -2,9 +2,9 @@
 import Image from 'next/image';
 
 const professionals = [
-  { name: 'Dra. Cristiane', role: 'Psiquiatra', imageUrl: 'https://placehold.co/150x150.png', hint: 'woman doctor portrait' },
-  { name: 'Dr. Fernando', role: 'Acompanhante terapêutico', imageUrl: 'https://placehold.co/150x150.png', hint: 'man therapist portrait' },
-  { name: 'Dra. Vera', role: 'Psicopedagoga', imageUrl: 'https://placehold.co/150x150.png', hint: 'woman teacher portrait' },
+  { name: 'Dra. Cristiane', role: 'Psiquiatra', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman doctor portrait' },
+  { name: 'Dr. Fernando', role: 'Acompanhante terapêutico', imageUrl: 'https://placehold.co/200x200.png', hint: 'man therapist portrait' },
+  { name: 'Dra. Vera', role: 'Psicopedagoga', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman teacher portrait' },
 ];
 
 export default function NewProfessionals() {
@@ -27,8 +27,8 @@ export default function NewProfessionals() {
                 <Image
                   src={prof.imageUrl}
                   alt={`Foto de ${prof.name}`}
-                  width={150}
-                  height={150}
+                  width={200}
+                  height={200}
                   className="rounded-full object-cover ring-4 ring-background"
                   data-ai-hint={prof.hint}
                 />
