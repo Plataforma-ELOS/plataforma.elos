@@ -6,6 +6,7 @@ export default function Hero() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
           <div className="flex flex-col justify-center space-y-6">
+            <span className="text-lg font-semibold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">Sua jornada de cuidado começa aqui.</span>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-foreground font-headline">
               Cuidar de alguém começa por cuidar de si.
             </h1>
@@ -21,10 +22,10 @@ export default function Hero() {
               }}
             >
               <Image
-                src="https://placehold.co/600x600.png"
+                src="https://placehold.co/800x800.png"
                 alt="Cuidadora e criança sorrindo"
-                width={600}
-                height={600}
+                width={800}
+                height={800}
                 data-ai-hint="mother child"
                 className="w-full h-full object-cover"
               />

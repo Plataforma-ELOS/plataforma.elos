@@ -5,6 +5,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 
@@ -29,7 +31,7 @@ export default function NewsCarousel() {
           Últimas notícias
         </h2>
       </div>
-      <div className="space-y-4">
+      <div className="relative">
         <Carousel
           opts={{
             align: "start",
@@ -40,7 +42,6 @@ export default function NewsCarousel() {
               delay: 2000,
               stopOnInteraction: false,
               playOnInit: true,
-              direction: 'backward',
             }),
           ]}
           className="w-full"
@@ -61,37 +62,14 @@ export default function NewsCarousel() {
               </CarouselItem>
             ))}
           </CarouselContent>
-        </Carousel>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          plugins={[
-            Autoplay({
-              delay: 2000,
-              stopOnInteraction: false,
-              playOnInit: true,
-            }),
-          ]}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-1">
-            {[...images].reverse().map((image, index) => (
-              <CarouselItem key={index} className="pl-1 basis-1/2 md:basis-1/3 lg:basis-1/5">
-                <div className="p-1">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={600}
-                    height={400}
-                    className="rounded-lg object-cover"
-                    data-ai-hint={image.hint}
-                  />
+           <div className="absolute inset-0 flex items-center justify-between pointer-events-none">
+                <div className="h-full w-24 bg-gradient-to-r from-background to-transparent pointer-events-auto">
+                     <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-auto" />
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+                <div className="h-full w-24 bg-gradient-to-l from-background to-transparent pointer-events-auto">
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-auto" />
+                </div>
+            </div>
         </Carousel>
       </div>
     </section>
