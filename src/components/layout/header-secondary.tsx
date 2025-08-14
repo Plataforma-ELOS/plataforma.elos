@@ -75,9 +75,8 @@ export default function HeaderSecondary() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2">
-                <Image src="https://placehold.co/40x40.png" alt="Logo Elos" width={40} height={40} data-ai-hint="logo" style={{ height: 'auto' }} />
                 <Link href="/" className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-primary">Plataforma E.L.O.S</span>
+                    <span className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Plataforma E.L.O.S</span>
                 </Link>
             </div>
         </div>
@@ -110,7 +109,7 @@ export default function HeaderSecondary() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/" className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-primary">Plataforma E.L.O.S</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Plataforma E.L.O.S</span>
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">

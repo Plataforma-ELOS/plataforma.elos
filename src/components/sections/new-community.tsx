@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Image from "next/image";
@@ -42,7 +43,7 @@ export default function NewCommunity() {
               ))}
             </ul>
              <div className="pt-6">
-                <Button variant="secondary" size="lg" className="rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
+                <Button variant="outline" size="lg" className="rounded-full shadow-lg transition-transform duration-300 hover:scale-105">
                     Veja o que dizem sobre nós
                 </Button>
             </div>
