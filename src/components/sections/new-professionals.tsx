@@ -9,7 +9,7 @@ const professionals = [
 export default function NewProfessionals() {
   return (
     <section className="w-full relative py-20 md:py-24 lg:py-32">
-      <div className="absolute top-0 left-0 w-full h-3/5 bg-primary/10 -z-10" />
+      <div className="absolute top-0 left-0 w-full h-[32rem] bg-primary/10 -z-10" />
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-24">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
@@ -19,7 +19,7 @@ export default function NewProfessionals() {
             Onde o cuidado é valorizado e mantido.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16">
           {professionals.map((prof, index) => (
             <div key={index} className="flex flex-col items-center text-center">
               <div className="relative mb-4">

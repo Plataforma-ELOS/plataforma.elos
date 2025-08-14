@@ -41,7 +41,7 @@ export default function NewCommunity() {
               ))}
             </ul>
           </div>
-           <div className="relative flex items-center justify-center min-h-[400px]">
+           <div className="relative flex items-center justify-center min-h-[500px]">
              <svg
                 className="absolute w-full h-full opacity-30"
                 viewBox="0 0 500 500"
