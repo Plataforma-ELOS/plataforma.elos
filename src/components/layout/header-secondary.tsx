@@ -75,8 +75,9 @@ export default function HeaderSecondary() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2">
-                <Link href="/" className="flex items-center gap-2">
-                    <span className="text-xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Plataforma E.L.O.S</span>
+                <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+                    <span className="text-foreground">Plataforma</span>
+                    <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                 </Link>
             </div>
         </div>
@@ -108,8 +109,9 @@ export default function HeaderSecondary() {
             <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
-                   <Link href="/" className="flex items-center gap-2">
-                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Plataforma E.L.O.S</span>
+                   <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
+                        <span className="text-foreground">Plataforma</span>
+                        <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
