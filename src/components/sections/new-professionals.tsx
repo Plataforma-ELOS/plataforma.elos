@@ -1,4 +1,3 @@
-// src/components/sections/new-professionals.tsx
 import Image from 'next/image';
 
 const professionals = [
@@ -10,9 +9,9 @@ const professionals = [
 export default function NewProfessionals() {
   return (
     <section className="w-full relative py-20 md:py-24 lg:py-32">
-      <div className="absolute top-0 left-0 w-full h-2/3 bg-primary/10 -z-10" />
+      <div className="absolute top-0 left-0 w-full h-3/5 bg-primary/10 -z-10" />
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-24">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
             Profissionais de segurança
           </h2>
@@ -29,7 +28,7 @@ export default function NewProfessionals() {
                   alt={`Foto de ${prof.name}`}
                   width={200}
                   height={200}
-                  className="rounded-full object-cover ring-4 ring-background"
+                  className="rounded-full object-cover ring-8 ring-background"
                   data-ai-hint={prof.hint}
                 />
               </div>

@@ -40,6 +40,7 @@ export default function NewsCarousel() {
               delay: 2000,
               stopOnInteraction: false,
               playOnInit: true,
+              direction: 'backward',
             }),
           ]}
           className="w-full"
@@ -71,7 +72,6 @@ export default function NewsCarousel() {
               delay: 2000,
               stopOnInteraction: false,
               playOnInit: true,
-              direction: 'backward',
             }),
           ]}
           className="w-full"

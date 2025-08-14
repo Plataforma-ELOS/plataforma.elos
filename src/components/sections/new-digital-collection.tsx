@@ -1,5 +1,4 @@
-// src/components/sections/new-digital-collection.tsx
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { ArrowRight, BookOpen, Clapperboard, Gamepad2 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -36,7 +35,7 @@ export default function NewDigitalCollection() {
             O melhor para os melhores.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {collectionItems.map((item, index) => (
             <Card key={index} className="group overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col p-8 aspect-square justify-between">
                 <div className="bg-primary/10 p-3 rounded-xl mb-4 self-start">
