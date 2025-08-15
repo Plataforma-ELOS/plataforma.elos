@@ -16,6 +16,7 @@ const navItems = [
   { name: 'Acervo Digital', href: '/acervo-digital', isFeature: false },
   { name: 'Comunidade', href: '/comunidade', isFeature: false },
   { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
+  { name: 'Perfis Profissionais', href: '#', isFeature: true },
 ];
 
 export default function HeaderSecondary() {
