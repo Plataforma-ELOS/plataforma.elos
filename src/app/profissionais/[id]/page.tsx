@@ -16,31 +16,181 @@ import { Badge } from '@/components/ui/badge';
 
 // Mock data, in a real app this would be fetched based on the id
 const professionalsData: { [key: string]: any } = {
-  'dra-cristiane': { name: 'Dra. Cristiane', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait', specialty: 'Psicóloga Especialista em TEA', crm: 'CRP 06/123456', description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.' },
-  'dr-fernando': { name: 'Dr. Fernando', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait', specialty: 'Neuropediatra', crm: 'CRM 123456 - SP', description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.' },
-  'dra-beatriz': { name: 'Dra. Beatriz', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait', specialty: 'Fonoaudióloga', crm: 'CRFa 2 - 12345', description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.' },
-  'dr-ricardo': { name: 'Dr. Ricardo', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait', specialty: 'Terapeuta Ocupacional', crm: 'CRP 123456 - UF', description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.' },
-  'dra-ana': { name: 'Dra. Ana', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait', specialty: 'Psicopedagoga', crm: 'N/A', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.' },
-  'dr-marcos': { name: 'Dr. Marcos', imageUrl: 'https://placehold.co/128x128.png', hint: 'man companion portrait', specialty: 'Acompanhante Terapêutico', crm: 'N/A', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.' },
+  'dra-cristiane': { 
+    name: 'Dra. Cristiane', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'woman doctor portrait', 
+    specialty: 'Psicóloga Especialista em TEA', 
+    crm: 'CRP 06/123456', 
+    description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
+    contact: {
+      phone: '(11) 9 1234-5678',
+      email: 'cristiane.psico@elos.com.br',
+      instagram: '@dra.cristiane.tea',
+    },
+    experiences: [
+      "Graduação em Psicologia na USP",
+      "Pós-graduação em Análise do Comportamento Aplicada (ABA)",
+      "10+ anos de prática clínica com foco em TEA",
+      "Certificação em Terapia de Aceitação e Compromisso (ACT)",
+      "Atendimento a todas as faixas etárias",
+      "Idiomas: Português e Inglês",
+    ],
+    skills: [
+      "Terapia ABA",
+      "Regulação emocional",
+      "Habilidades sociais",
+      "Gestão de comportamento desafiador",
+      "Orientação de pais",
+      "Inclusão escolar",
+    ],
+  },
+  'dr-fernando': { 
+    name: 'Dr. Fernando', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'man doctor portrait', 
+    specialty: 'Neuropediatra', 
+    crm: 'CRM 123456 - SP', 
+    description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.',
+    contact: {
+      phone: '(21) 9 9876-5432',
+      email: 'dr.fernando.neuro@elos.com.br',
+      instagram: '@drfernando.neurokids',
+    },
+    experiences: [
+      "Residência em Neurologia Infantil na UFRJ",
+      "Membro da Sociedade Brasileira de Neurologia Infantil",
+      "8 anos de experiência em diagnóstico de TEA",
+      "Foco em intervenção precoce",
+      "Especialista em comorbidades associadas ao TEA",
+      "Idiomas: Português",
+    ],
+    skills: [
+      "Diagnóstico precoce",
+      "Acompanhamento neurológico",
+      "Manejo de medicação",
+      "Tratamento de comorbidades (TDAH, ansiedade)",
+      "Eletroencefalograma (EEG)",
+      "Trabalho em equipe multidisciplinar",
+    ],
+  },
+  'dra-beatriz': { 
+    name: 'Dra. Beatriz', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'woman psychologist portrait', 
+    specialty: 'Fonoaudióloga', 
+    crm: 'CRFa 2 - 12345', 
+    description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
+    contact: {
+      phone: '(31) 9 8765-4321',
+      email: 'bia.fono@elos.com.br',
+      instagram: '@beatriz.fono.tea',
+    },
+     experiences: [
+      "Graduação em Fonoaudiologia pela UFMG",
+      "Especialização em Linguagem com foco em TEA",
+      "Certificação no método PECS",
+      "5 anos de experiência com comunicação alternativa",
+      "Atuação em clínicas e escolas",
+      "Idiomas: Português",
+    ],
+    skills: [
+      "Comunicação Alternativa (CAA)",
+      "Método PECS",
+      "Terapia de fala e linguagem",
+      "Seletividade alimentar",
+      "Habilidades de conversação",
+      "Interação social",
+    ],
+  },
+  'dr-ricardo': { 
+    name: 'Dr. Ricardo', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'man therapist portrait', 
+    specialty: 'Terapeuta Ocupacional', 
+    crm: 'CREFITO-3/54321-TO', 
+    description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
+    contact: {
+      phone: '(41) 9 7654-3210',
+      email: 'ricardo.to@elos.com.br',
+      instagram: '@ricardo.to.infantil',
+    },
+    experiences: [
+      "Graduação em Terapia Ocupacional pela UFPR",
+      "Certificação Internacional em Integração Sensorial de Ayres",
+      "7 anos de experiência com crianças no espectro",
+      "Especialista em desenvolvimento da autonomia",
+      "Experiência com adaptação de ambientes",
+      "Idiomas: Português",
+    ],
+    skills: [
+      "Integração Sensorial",
+      "Atividades de Vida Diária (AVDs)",
+      "Coordenação motora fina",
+      "Brincar terapêutico",
+      "Adaptação de materiais",
+      "Autonomia e independência",
+    ],
+  },
+  'dra-ana': { 
+    name: 'Dra. Ana', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'woman teacher portrait', 
+    specialty: 'Psicopedagoga', 
+    crm: 'ABPp 1234-SP', 
+    description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
+     contact: {
+      phone: '(51) 9 6543-2109',
+      email: 'ana.psicopedagoga@elos.com.br',
+      instagram: '@ana.aprendizagem.tea',
+    },
+     experiences: [
+      "Graduação em Pedagogia e Psicopedagogia",
+      "Especialização em Educação Inclusiva",
+      "Foco em adaptação curricular (PEI)",
+      "12 anos de experiência em ambiente escolar",
+      "Mediação de conflitos e bullying",
+      "Idiomas: Português e Libras",
+    ],
+    skills: [
+      "Plano de Ensino Individualizado (PEI)",
+      "Adaptação de atividades",
+      "Alfabetização",
+      "Funções executivas",
+      "Dificuldades de aprendizagem",
+      "Mediação escolar",
+    ],
+  },
+  'dr-marcos': { 
+    name: 'Dr. Marcos', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'man companion portrait', 
+    specialty: 'Acompanhante Terapêutico', 
+    crm: 'N/A', 
+    description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa, promovendo a independência e a inclusão social.',
+     contact: {
+      phone: '(81) 9 5432-1098',
+      email: 'marcos.at@elos.com.br',
+      instagram: '@marcos.inclusao.social',
+    },
+     experiences: [
+      "Formação em Acompanhamento Terapêutico",
+      "Estudante de Psicologia",
+      "4 anos de experiência como AT",
+      "Trabalho em diversos contextos (escola, casa, comunidade)",
+      "Foco em generalização de habilidades",
+      "Idiomas: Português",
+    ],
+    skills: [
+      "Habilidades sociais em contexto real",
+      "Generalização de aprendizados",
+      "Manejo de crises em público",
+      "Autonomia em atividades externas",
+      "Inclusão em grupos",
+      "Comunicação com a família e a escola",
+    ],
+  },
 };
-
-const experiences = [
-    "Graduação em Psicologia",
-    "Pós-graduação em Análise do Comportamento Aplicada (ABA)",
-    "3 anos de prática clínica",
-    "Curso complementar em Intervenção Precoce no TEA",
-    "Atendimento a todas as faixas etárias",
-    "Idiomas: Português e Espanhol",
-];
-
-const skills = [
-    "Ansiedade",
-    "Depressão",
-    "Autoconhecimento",
-    "Habilidades sociais e de comunicação",
-    "Seletividade alimentar",
-    "Regulação emocional",
-];
 
 const generateReviews = (professionalName: string) => [
     {
@@ -48,7 +198,7 @@ const generateReviews = (professionalName: string) => [
         author: "Mariana S.",
         date: "15 de Julho, 2024",
         rating: 5,
-        content: `A ${professionalName} foi um anjo em nossas vidas. A abordagem dela com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!`,
+        content: `O(A) ${professionalName} foi um anjo em nossas vidas. A abordagem dele(a) com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!`,
         likes: 12,
     },
     {
@@ -56,20 +206,21 @@ const generateReviews = (professionalName: string) => [
         author: "Rafael P.",
         date: "2 de Julho, 2024",
         rating: 5,
-        content: "Excelente profissional! Muito atenciosa e dedicada. Nos ajudou a entender melhor o diagnóstico e os próximos passos. Gratidão!",
+        content: `Excelente profissional! Muito atencioso(a) e dedicado(a). Nos ajudou a entender melhor o diagnóstico e os próximos passos. Gratidão!`,
         likes: 8,
     },
 ];
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
-  const [activeTab, setActiveTab] = useState('sobre');
-  
   const professional = professionalsData[params.id] || {
     name: "Profissional não encontrado",
     imageUrl: "https://placehold.co/128x128.png",
     specialty: "",
     crm: "N/A",
     description: "O perfil que você está tentando acessar não foi encontrado.",
+    contact: {},
+    experiences: [],
+    skills: [],
   };
 
   const reviews = generateReviews(professional.name);
@@ -128,13 +279,13 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                             <div>
                                 <h3 className="text-xl font-bold mb-3">Experiências</h3>
                                 <ul className="list-disc list-inside text-muted-foreground space-y-1.5">
-                                    {experiences.map(exp => <li key={exp}>{exp}</li>)}
+                                    {professional.experiences.map((exp: string) => <li key={exp}>{exp}</li>)}
                                 </ul>
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold mb-3">Áreas de atuação</h3>
                                  <div className="flex flex-wrap gap-2">
-                                    {skills.map(skill => (
+                                    {professional.skills.map((skill: string) => (
                                         <Badge key={skill} variant="secondary" className="font-normal text-base py-1 px-3">{skill}</Badge>
                                     ))}
                                 </div>
@@ -146,20 +297,20 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                     <h3 className="font-semibold text-lg">Informações de Contato</h3>
                                     <div className="flex items-center gap-4">
                                         <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href="tel:+5581984041883" className="text-muted-foreground hover:text-primary">
-                                            (81) 9 8404-1883
+                                        <a href={`tel:${professional.contact.phone}`} className="text-muted-foreground hover:text-primary">
+                                            {professional.contact.phone}
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href="mailto:psicogabrielsouto@gmail.com" className="text-muted-foreground hover:text-primary">
-                                            psicogabrielsouto@gmail.com
+                                        <a href={`mailto:${professional.contact.email}`} className="text-muted-foreground hover:text-primary">
+                                            {professional.contact.email}
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <Instagram className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href="https://instagram.com/psicogabrielsouto" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                                            @psicogabrielsouto
+                                        <a href={`https://instagram.com/${professional.contact.instagram.substring(1)}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                                            {professional.contact.instagram}
                                         </a>
                                     </div>
                                 </CardContent>
@@ -182,7 +333,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                     </div>
                                 </div>
                                 <div className="space-y-6">
-                                    {reviews.map(review => (
+                                    {reviews.map((review: any) => (
                                         <div key={review.id}>
                                             <div className="flex items-center gap-2 mb-2">
                                                 <div className="flex text-yellow-500">
