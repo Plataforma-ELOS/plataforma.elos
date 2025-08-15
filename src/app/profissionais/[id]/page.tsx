@@ -12,6 +12,7 @@ import FeatureInProgress from '@/components/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 
 // Mock data, in a real app this would be fetched based on the id
@@ -148,11 +149,4 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
         </footer>
     </div>
   );
-}
-
-// Function to generate static paths
-export async function generateStaticParams() {
-  return Object.keys(professionalsData).map((id) => ({
-    id,
-  }));
 }
