@@ -5,11 +5,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Bell, UserCircle } from 'lucide-react';
+import { Menu, Bell, UserCircle, Bookmark, Settings, Sun, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import FeatureInProgress from '@/components/feature-in-progress';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { Switch } from '../ui/switch';
+
 
 const navItems = [
   { name: 'Notícias', href: '/noticias', isFeature: false },
@@ -18,6 +20,78 @@ const navItems = [
   { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
   { name: 'Perfis Profissionais', href: '/profissionais', isFeature: false },
 ];
+
+function UserProfileDropdown() {
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Avatar className="h-9 w-9 cursor-pointer">
+                    <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
+                    <AvatarFallback>
+                        <UserCircle className="h-9 w-9 text-muted-foreground" />
+                    </AvatarFallback>
+                </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="end">
+                <DropdownMenuLabel>
+                    <div className="flex items-center gap-3">
+                         <Avatar className="h-10 w-10 cursor-pointer">
+                            <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
+                            <AvatarFallback>
+                                <UserCircle className="h-10 w-10 text-muted-foreground" />
+                            </AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="font-semibold">Maria Silva</p>
+                            <p className="text-xs text-muted-foreground font-normal">maria.silva@example.com</p>
+                        </div>
+                    </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <UserCircle className="mr-2" />
+                            <span>Meu Perfil</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                     <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <Bookmark className="mr-2" />
+                            <span>Itens Salvos</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                    <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <Settings className="mr-2" />
+                            <span>Configurações</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                 <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                       <div className="flex justify-between items-center w-full">
+                           <div className="flex items-center">
+                             <Sun className="mr-2" />
+                             <span>Alto Contraste</span>
+                           </div>
+                           <Switch id="accessibility-switch-mobile" />
+                       </div>
+                    </DropdownMenuItem>
+                 </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <FeatureInProgress>
+                    <DropdownMenuItem>
+                        <LogOut className="mr-2" />
+                        <span>Sair</span>
+                    </DropdownMenuItem>
+                </FeatureInProgress>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+}
+
 
 export default function HeaderSecondary() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -92,14 +166,9 @@ export default function HeaderSecondary() {
                 <span className="sr-only">Notificações</span>
             </Button>
           </FeatureInProgress>
-          <FeatureInProgress>
-             <Avatar className="hidden md:inline-flex h-9 w-9 cursor-pointer">
-                <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
-                <AvatarFallback>
-                    <UserCircle className="h-9 w-9 text-muted-foreground" />
-                </AvatarFallback>
-            </Avatar>
-          </FeatureInProgress>
+          <div className="hidden md:inline-flex">
+            <UserProfileDropdown />
+          </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -125,14 +194,7 @@ export default function HeaderSecondary() {
                           <span className="sr-only">Notificações</span>
                       </Button>
                     </FeatureInProgress>
-                    <FeatureInProgress>
-                      <Avatar className="h-10 w-10 cursor-pointer">
-                          <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
-                          <AvatarFallback>
-                              <UserCircle className="h-10 w-10 text-muted-foreground" />
-                          </AvatarFallback>
-                      </Avatar>
-                    </FeatureInProgress>
+                    <UserProfileDropdown />
                 </div>
               </div>
             </SheetContent>
