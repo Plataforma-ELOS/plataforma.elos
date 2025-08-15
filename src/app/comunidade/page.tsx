@@ -1,16 +1,14 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Home, Search, Zap, Calendar, Bookmark, MessageSquare, Send, Plus, Construction, Users } from 'lucide-react';
+import { Home, Search, Zap, Calendar, Bookmark, Construction, Users, Plus } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
-import Link from 'next/link';
-import CreatePost from '@/components/community/create-post';
-import PostCard, { Post, Comment } from '@/components/community/post-card';
+import PostCard, { Post } from '@/components/community/post-card';
 import { Input } from '@/components/ui/input';
 
 const mainNav = [
@@ -31,14 +29,7 @@ const initialPosts: Post[] = [
     time: '5h',
     content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
     likes: 35,
-    comments: [
-        {
-            id: 'comment-1-1',
-            author: { name: 'Mariana Costa', avatarUrl: 'https://placehold.co/40x40.png', hint: 'woman portrait' },
-            content: 'Que demais, Carlos! Fico muito feliz por vocês! É uma inspiração.',
-            time: '4h'
-        }
-    ],
+    commentCount: 2,
     isSaved: false,
   },
   {
@@ -51,7 +42,7 @@ const initialPosts: Post[] = [
     time: '2h',
     content: 'Olá pessoal! Alguém tem dicas de como lidar com a seletividade alimentar? Meu filho só quer comer as mesmas 3 coisas e estou ficando sem ideias. Qualquer ajuda é bem-vinda! 🙏',
     likes: 12,
-    comments: [],
+    commentCount: 5,
     isSaved: true,
   },
    {
@@ -64,7 +55,7 @@ const initialPosts: Post[] = [
     time: '1d',
     content: 'Alguém aqui já passou pelo processo de solicitação do BPC? Comecei a juntar os papéis e parece uma montanha de coisas. Se alguém tiver um checklist ou alguma dica, agradeceria muito!',
     likes: 48,
-    comments: [],
+    commentCount: 15,
     isSaved: false,
   },
 ];
@@ -97,45 +88,6 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Post[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
-
-  const handleCreatePost = (content: string) => {
-    if (!content.trim()) return;
-
-    const newPost: Post = {
-      id: `post-${Date.now()}`,
-      author: {
-        name: 'Usuário Atual',
-        avatarUrl: 'https://placehold.co/48x48.png',
-        hint: 'user avatar',
-      },
-      time: 'Agora',
-      content,
-      likes: 0,
-      comments: [],
-      isSaved: false,
-    };
-
-    setPosts(prevPosts => [newPost, ...prevPosts]);
-  };
-  
-  const handleAddComment = (postId: string, commentContent: string) => {
-    const newComment: Comment = {
-      id: `comment-${Date.now()}`,
-      author: {
-        name: 'Usuário Atual',
-        avatarUrl: 'https://placehold.co/48x48.png',
-        hint: 'user avatar',
-      },
-      content: commentContent,
-      time: 'Agora',
-    };
-
-    setPosts(posts.map(post =>
-      post.id === postId
-        ? { ...post, comments: [...post.comments, newComment] }
-        : post
-    ));
-  };
   
   const handleToggleSave = (postId: string) => {
     setPosts(posts.map(post =>
@@ -165,10 +117,17 @@ export default function CommunityPage() {
       case 'Início':
         return (
           <div className="animate-in fade-in-0 duration-500 space-y-6">
-            <CreatePost onCreatePost={handleCreatePost} />
+             <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
+                <Users className="h-16 w-16 text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold">Bem-vindo(a) à Comunidade!</h3>
+                <p className="text-muted-foreground mt-2 mb-4">A interação agora acontece dentro dos grupos. Explore, conecte-se e participe das conversas.</p>
+                <FeatureInProgress>
+                  <Button size="lg">Explorar Grupos</Button>
+                </FeatureInProgress>
+            </Card>
             <div className="space-y-6">
               {posts.map((post) => (
-                <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+                <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
               ))}
             </div>
           </div>
@@ -192,7 +151,7 @@ export default function CommunityPage() {
                     searchResults.length > 0 ? (
                       <div className="space-y-6">
                         {searchResults.map((post) => (
-                            <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+                            <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
                         ))}
                       </div>
                     ) : (
@@ -218,7 +177,7 @@ export default function CommunityPage() {
                 <h2 className="text-2xl font-bold">Itens Salvos</h2>
                 {savedPosts.length > 0 ? (
                     savedPosts.map((post) => (
-                        <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+                        <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
                     ))
                 ) : (
                     <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
@@ -236,7 +195,7 @@ export default function CommunityPage() {
             <h2 className="text-2xl font-bold">Posts em Destaque</h2>
             <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
             {featuredPosts.map((post) => (
-              <PostCard key={post.id} post={post} onComment={handleAddComment} onToggleSave={handleToggleSave} />
+              <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
             ))}
           </div>
         );
@@ -346,3 +305,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    
