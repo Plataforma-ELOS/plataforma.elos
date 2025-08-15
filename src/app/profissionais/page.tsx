@@ -33,6 +33,7 @@ const clinics = [
     { name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
     { name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
     { name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
+    { name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: 'https://placehold.co/800x450.png', hint: 'group therapy' },
 ];
 
 const specialties = [
@@ -185,47 +186,42 @@ export default function ProfessionalsPage() {
         </section>
 
         {/* Clinics Section */}
-        <section className="w-full py-16 md:py-24 bg-muted/30 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-muted/30 via-transparent to-muted/30 z-10" />
-            <div className="container mx-auto">
+        <section className="w-full py-16 md:py-24 bg-muted/30">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Clínicas Parceiras</h2>
                     <p className="max-w-[700px] text-foreground/80 md:text-xl">
                         Espaços multidisciplinares para um cuidado completo e integrado.
                     </p>
                 </div>
-                 <Carousel
-                  opts={{ align: "start", loop: true, }}
-                  className="w-full max-w-6xl mx-auto"
-                >
-                  <CarouselContent className="-ml-8">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                     {clinics.map((clinic, index) => (
-                        <CarouselItem key={index} className="pl-8 md:basis-1/2 lg:basis-1/2">
-                             <FeatureInProgress>
-                                <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer">
-                                    <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
-                                    <div className="p-6 flex flex-col flex-grow">
-                                        <CardHeader className="p-0">
-                                            <CardTitle className="text-xl">{clinic.name}</CardTitle>
-                                            <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
-                                            <p>{clinic.description}</p>
-                                        </CardContent>
-                                        <div className="mt-6">
-                                            <Button variant="outline">
-                                                Ver Detalhes da Clínica
-                                            </Button>
-                                        </div>
+                        <FeatureInProgress key={index}>
+                            <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer">
+                                <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
+                                <div className="p-6 flex flex-col flex-grow">
+                                    <CardHeader className="p-0">
+                                        <CardTitle className="text-xl">{clinic.name}</CardTitle>
+                                        <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
+                                        <p>{clinic.description}</p>
+                                    </CardContent>
+                                    <div className="mt-6">
+                                        <Button variant="outline">
+                                            Ver Detalhes da Clínica
+                                        </Button>
                                     </div>
-                                </Card>
-                            </FeatureInProgress>
-                        </CarouselItem>
+                                </div>
+                            </Card>
+                        </FeatureInProgress>
                     ))}
-                  </CarouselContent>
-                   <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20" />
-                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20" />
-                </Carousel>
+                </div>
+                <div className="text-center mt-12">
+                    <FeatureInProgress>
+                        <Button size="lg">Explorar mais clínicas</Button>
+                    </FeatureInProgress>
+                </div>
             </div>
         </section>
       </main>
