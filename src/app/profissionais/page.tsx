@@ -1,5 +1,6 @@
-
 // src/app/profissionais/page.tsx
+"use client";
+
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -10,26 +11,37 @@ import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { Badge } from '@/components/ui/badge';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait' },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait' },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman doctor portrait' },
+  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man doctor portrait' },
+  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman psychologist portrait' },
+  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man therapist portrait' },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman teacher portrait' },
+  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man companion portrait' },
 ];
 
 const clinics = [
     { name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
     { name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
+    { name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
 ];
 
 const specialties = [
-    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'psychology session' },
-    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'speech therapy' },
-    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x300.png', hint: 'occupational therapy' },
-    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x300.png', hint: 'doctor brain' },
-    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'educational psychology' },
-    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x300.png', hint: 'therapeutic companion' },
+    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'psychology session' },
+    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'speech therapy' },
+    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x400.png', hint: 'occupational therapy' },
+    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x400.png', hint: 'doctor brain' },
+    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'educational psychology' },
+    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x400.png', hint: 'therapeutic companion' },
 ]
 
 export default function ProfessionalsPage() {
@@ -104,8 +116,8 @@ export default function ProfessionalsPage() {
                                         src={specialty.imageUrl} 
                                         alt={specialty.name} 
                                         width={400} 
-                                        height={300} 
-                                        className="w-full h-auto object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-300"
+                                        height={400} 
+                                        className="w-full h-auto object-cover aspect-square group-hover:scale-105 transition-transform duration-300"
                                         data-ai-hint={specialty.hint}
                                     />
                                 </Card>
@@ -125,71 +137,95 @@ export default function ProfessionalsPage() {
         </section>
 
         {/* Professionals Section */}
-        <section className="w-full py-16 md:py-24">
-            <div className="container mx-auto px-4 md:px-6">
+        <section className="w-full py-16 md:py-24 relative overflow-hidden">
+             <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10" />
+            <div className="container mx-auto px-0">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Profissionais Liberais</h2>
                     <p className="max-w-[700px] text-foreground/80 md:text-xl">
                         Especialistas dedicados e avaliados pela nossa comunidade.
                     </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {professionals.map((prof) => (
-                        <Card key={prof.id} className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col">
-                            <Avatar className="h-24 w-24 mx-auto mb-4 ring-4 ring-primary/20">
-                                <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} />
-                                <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <CardHeader className="p-0">
-                                <CardTitle className="text-xl">{prof.name}</CardTitle>
-                                <CardDescription className="text-primary font-semibold">{prof.specialty}</CardDescription>
-                            </CardHeader>
-                            <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
-                                <p className="text-sm">{prof.description}</p>
-                            </CardContent>
-                            <div className="mt-6">
-                                <Button asChild>
-                                    <Link href={`/profissionais/${prof.id}`}>Ver Perfil Completo</Link>
-                                </Button>
-                            </div>
-                        </Card>
+                <Carousel
+                  opts={{ align: "start", loop: true, }}
+                   plugins={[
+                        Autoplay({
+                          delay: 3000,
+                          stopOnInteraction: true,
+                          playOnInit: true,
+                        }),
+                      ]}
+                  className="w-full"
+                >
+                  <CarouselContent className="-ml-4">
+                    {professionals.map((prof, index) => (
+                       <CarouselItem key={prof.id} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
+                         <Link href={`/profissionais/${prof.id}`} className="group block">
+                            <Card className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full bg-card border-0">
+                                <Avatar className="h-24 w-24 mx-auto mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all">
+                                    <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} />
+                                    <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <CardHeader className="p-0">
+                                    <CardTitle className="text-xl group-hover:text-primary">{prof.name}</CardTitle>
+                                    <CardDescription className="text-primary font-semibold">{prof.specialty}</CardDescription>
+                                </CardHeader>
+                                <div className="mt-4">
+                                     <Button variant="link" className="text-primary">Ver Perfil</Button>
+                                </div>
+                            </Card>
+                         </Link>
+                      </CarouselItem>
                     ))}
-                </div>
+                  </CarouselContent>
+                  <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20" />
+                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20" />
+                </Carousel>
             </div>
         </section>
 
         {/* Clinics Section */}
-        <section className="w-full py-16 md:py-24 bg-muted/30">
-            <div className="container mx-auto px-4 md:px-6">
+        <section className="w-full py-16 md:py-24 bg-muted/30 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-muted/30 via-transparent to-muted/30 z-10" />
+            <div className="container mx-auto">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Clínicas Parceiras</h2>
                     <p className="max-w-[700px] text-foreground/80 md:text-xl">
                         Espaços multidisciplinares para um cuidado completo e integrado.
                     </p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <Carousel
+                  opts={{ align: "start", loop: true, }}
+                  className="w-full max-w-6xl mx-auto"
+                >
+                  <CarouselContent className="-ml-8">
                     {clinics.map((clinic, index) => (
-                        <Card key={index} className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col">
-                            <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
-                            <div className="p-6 flex flex-col flex-grow">
-                                <CardHeader className="p-0">
-                                    <CardTitle className="text-xl">{clinic.name}</CardTitle>
-                                    <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
-                                </CardHeader>
-                                <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
-                                    <p>{clinic.description}</p>
-                                </CardContent>
-                                <div className="mt-6">
-                                    <FeatureInProgress>
-                                      <Button variant="outline">
-                                        Ver Detalhes da Clínica
-                                      </Button>
-                                    </FeatureInProgress>
-                                </div>
-                            </div>
-                        </Card>
+                        <CarouselItem key={index} className="pl-8 md:basis-1/2 lg:basis-1/2">
+                             <FeatureInProgress>
+                                <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer">
+                                    <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
+                                    <div className="p-6 flex flex-col flex-grow">
+                                        <CardHeader className="p-0">
+                                            <CardTitle className="text-xl">{clinic.name}</CardTitle>
+                                            <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
+                                            <p>{clinic.description}</p>
+                                        </CardContent>
+                                        <div className="mt-6">
+                                            <Button variant="outline">
+                                                Ver Detalhes da Clínica
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </FeatureInProgress>
+                        </CarouselItem>
                     ))}
-                </div>
+                  </CarouselContent>
+                   <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20" />
+                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20" />
+                </Carousel>
             </div>
         </section>
       </main>
