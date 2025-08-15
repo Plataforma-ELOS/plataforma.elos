@@ -42,13 +42,13 @@ const skills = [
     "Regulação emocional",
 ];
 
-const reviews = [
+const generateReviews = (professionalName: string) => [
     {
         id: 1,
         author: "Mariana S.",
         date: "15 de Julho, 2024",
         rating: 5,
-        content: "A Dra. Cristiane foi um anjo em nossas vidas. A abordagem dela com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!",
+        content: `A ${professionalName} foi um anjo em nossas vidas. A abordagem dela com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!`,
         likes: 12,
     },
     {
@@ -71,6 +71,8 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
     crm: "N/A",
     description: "O perfil que você está tentando acessar não foi encontrado.",
   };
+
+  const reviews = generateReviews(professional.name);
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
