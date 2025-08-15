@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import FeatureInProgress from '@/components/feature-in-progress';
+import { Badge } from '@/components/ui/badge';
 
 const professionals = [
   { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait' },
