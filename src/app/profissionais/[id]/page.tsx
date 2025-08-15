@@ -16,6 +16,8 @@ const professionalsData: { [key: string]: any } = {
   'dr-fernando': { name: 'Dr. Fernando', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait', specialty: 'Neuropediatra', description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.' },
   'dra-beatriz': { name: 'Dra. Beatriz', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait', specialty: 'Fonoaudióloga', description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.' },
   'dr-ricardo': { name: 'Dr. Ricardo', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait', specialty: 'Terapeuta Ocupacional', description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.' },
+  'dra-ana': { name: 'Dra. Ana', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.' },
+  'dr-marcos': { name: 'Dr. Marcos', imageUrl: 'https://placehold.co/128x128.png', hint: 'man companion portrait', specialty: 'Acompanhante Terapêutico', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.' },
 };
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
@@ -31,9 +33,9 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
       <HeaderSecondary />
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 md:px-6">
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
+            <Link href="/profissionais" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
                 <ArrowLeft className="w-4 h-4" />
-                Voltar para a página inicial
+                Voltar para a busca
             </Link>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Coluna do Perfil */}
@@ -112,4 +114,11 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
       <Footer />
     </div>
   );
+}
+
+// Function to generate static paths
+export async function generateStaticParams() {
+  return Object.keys(professionalsData).map((id) => ({
+    id,
+  }));
 }
