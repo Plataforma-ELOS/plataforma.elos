@@ -102,16 +102,17 @@ export default function AiSupport() {
         
         <div className="max-w-3xl mx-auto">
             <form onSubmit={handleSearch} className="relative mb-8">
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                 <Input
                   type="search"
                   placeholder="Deixe sua dúvida aqui. Ex: 'Como obter o laudo para TEA?'"
-                  className="w-full h-16 pl-6 pr-16 rounded-full text-base shadow-lg border-2 border-border focus:border-primary focus:ring-primary"
+                  className="w-full h-16 pl-16 pr-16 rounded-full text-base shadow-lg border-2 border-border focus:border-primary focus:ring-primary"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   disabled={loading}
                 />
                 <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading}>
-                  <Search className="h-6 w-6" />
+                  <ArrowRight className="h-6 w-6" />
                   <span className="sr-only">Buscar</span>
                 </Button>
             </form>
