@@ -5,8 +5,7 @@ import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp } from 'lucide-react';
-import Image from 'next/image';
+import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,7 +19,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-cristiane': { name: 'Dra. Cristiane', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait', specialty: 'Psicóloga Especialista em TEA', crm: 'CRP 06/123456', description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.' },
   'dr-fernando': { name: 'Dr. Fernando', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait', specialty: 'Neuropediatra', crm: 'CRM 123456 - SP', description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.' },
   'dra-beatriz': { name: 'Dra. Beatriz', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait', specialty: 'Fonoaudióloga', crm: 'CRFa 2 - 12345', description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.' },
-  'dr-ricardo': { name: 'Dr. Ricardo', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait', specialty: 'Terapeuta Ocupacional', crm: 'CREFITO-3/12345-TO', description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.' },
+  'dr-ricardo': { name: 'Dr. Ricardo', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait', specialty: 'Terapeuta Ocupacional', crm: 'CRP 123456 - UF', description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.' },
   'dra-ana': { name: 'Dra. Ana', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait', specialty: 'Psicopedagoga', crm: 'N/A', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.' },
   'dr-marcos': { name: 'Dr. Marcos', imageUrl: 'https://placehold.co/128x128.png', hint: 'man companion portrait', specialty: 'Acompanhante Terapêutico', crm: 'N/A', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.' },
 };
@@ -141,18 +140,24 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                         </TabsContent>
                         <TabsContent value="contato" className="text-left space-y-4">
                            <Card>
-                                <CardContent className="p-6 space-y-4">
+                                <CardContent className="p-6 space-y-6">
                                     <h3 className="font-semibold text-lg">Informações de Contato</h3>
                                     <div className="flex items-center gap-4">
-                                        <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href="mailto:contato@exemplo.com" className="text-muted-foreground hover:text-primary">
-                                            contato@exemplo.com
+                                        <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <a href="tel:+5581984041883" className="text-muted-foreground hover:text-primary">
+                                            (81) 9 8404-1883
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href="tel:+5511999998888" className="text-muted-foreground hover:text-primary">
-                                            (11) 99999-8888
+                                        <Mail className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <a href="mailto:psicogabrielsouto@gmail.com" className="text-muted-foreground hover:text-primary">
+                                            psicogabrielsouto@gmail.com
+                                        </a>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <Instagram className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <a href="https://instagram.com/psicogabrielsouto" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                                            @psicogabrielsouto
                                         </a>
                                     </div>
                                 </CardContent>
