@@ -2,15 +2,16 @@
 "use client";
 
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
-export default function Footer() {
+export default function Footer({ className }: { className?: string}) {
   return (
-    <footer className="w-full bg-primary/20 border-t border-border/50">
+    <footer className={cn("w-full bg-primary/20 border-t border-border/50", className)}>
       <div className="container mx-auto py-12 px-4 md:px-6">
         <div className="grid gap-12 lg:grid-cols-3">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:col-span-3">
             <div className="space-y-4">
-              <h4 className="font-semibold text-foreground">Plataforma</h4>
+              <h4 className="font-semibold text-foreground">Plataforma E.L.O.S</h4>
               <ul className="space-y-2">
                 <li><Link href="/noticias" className="text-sm text-foreground/80 hover:text-foreground">Notícias</Link></li>
                 <li><Link href="/acervo-digital" className="text-sm text-foreground/80 hover:text-foreground">Acervo Digital</Link></li>
