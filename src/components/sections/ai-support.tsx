@@ -101,21 +101,24 @@ export default function AiSupport() {
         </div>
         
         <div className="max-w-3xl mx-auto">
-            <form onSubmit={handleSearch} className="relative mb-8">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Deixe sua dúvida aqui. Ex: 'Como obter o laudo para TEA?'"
-                  className="w-full h-16 pl-16 pr-16 rounded-full text-base shadow-lg border-2 border-border focus:border-primary focus:ring-primary"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  disabled={loading}
-                />
-                <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading}>
-                  <ArrowRight className="h-6 w-6" />
-                  <span className="sr-only">Buscar</span>
-                </Button>
-            </form>
+            <div className="relative mb-8">
+                 <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-full blur-lg opacity-75 animate-pulse-slow"></div>
+                <form onSubmit={handleSearch} className="relative">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+                    <Input
+                    type="search"
+                    placeholder="Deixe sua dúvida aqui. Ex: 'Como obter o laudo para TEA?'"
+                    className="w-full h-16 pl-16 pr-16 rounded-full text-base shadow-lg border-2 border-transparent focus:border-primary focus:ring-primary bg-background"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    disabled={loading}
+                    />
+                    <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading}>
+                    <ArrowRight className="h-6 w-6" />
+                    <span className="sr-only">Buscar</span>
+                    </Button>
+                </form>
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-16">
                 <span className="font-semibold mr-2">Tópicos populares:</span>
                 {popularTopics.map((topic, index) => (
