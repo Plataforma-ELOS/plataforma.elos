@@ -21,7 +21,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman doctor portrait', 
     specialty: 'Psicóloga Especialista em TEA', 
-    crm: 'CRP 06/123456', 
+    crm: 'CRP 061234 - SP', 
     description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
     contact: {
       phone: '(11) 9 1234-5678',
@@ -108,7 +108,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man therapist portrait', 
     specialty: 'Terapeuta Ocupacional', 
-    crm: 'CREFITO-3/54321-TO', 
+    crm: 'CREFITO-3 54321 - SP', 
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
     contact: {
       phone: '(41) 9 7654-3210',
@@ -137,7 +137,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman teacher portrait', 
     specialty: 'Psicopedagoga', 
-    crm: 'ABPp 1234-SP', 
+    crm: 'ABPp 1234 - SP', 
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
      contact: {
       phone: '(51) 9 6543-2109',
