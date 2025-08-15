@@ -23,6 +23,15 @@ const clinics = [
     { name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
 ];
 
+const specialties = [
+    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'psychology session' },
+    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'speech therapy' },
+    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x300.png', hint: 'occupational therapy' },
+    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x300.png', hint: 'doctor brain' },
+    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x300.png', hint: 'educational psychology' },
+    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x300.png', hint: 'therapeutic companion' },
+]
+
 export default function ProfessionalsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -76,9 +85,47 @@ export default function ProfessionalsPage() {
                 </div>
             </div>
         </section>
+        
+        {/* Specialties Section */}
+        <section className="w-full py-16 md:py-24 bg-muted/30">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="flex flex-col items-center text-center space-y-4 mb-12">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Explore por Especialidade</h2>
+                    <p className="max-w-[700px] text-foreground/80 md:text-xl">
+                        Encontre o suporte certo para cada necessidade específica da sua jornada.
+                    </p>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    {specialties.map((specialty, index) => (
+                        <FeatureInProgress key={index}>
+                            <div className="group cursor-pointer">
+                                <Card className="overflow-hidden rounded-xl">
+                                    <Image 
+                                        src={specialty.imageUrl} 
+                                        alt={specialty.name} 
+                                        width={400} 
+                                        height={300} 
+                                        className="w-full h-auto object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-300"
+                                        data-ai-hint={specialty.hint}
+                                    />
+                                </Card>
+                                <div className="bg-card p-4 rounded-b-xl -mt-2 relative shadow-sm">
+                                    <h3 className="font-semibold text-center text-card-foreground">{specialty.name}</h3>
+                                </div>
+                            </div>
+                        </FeatureInProgress>
+                    ))}
+                </div>
+                <div className="text-center mt-12">
+                    <FeatureInProgress>
+                        <Button variant="outline" size="lg">Não encontrou o que procurava? Veja mais!</Button>
+                    </FeatureInProgress>
+                </div>
+            </div>
+        </section>
 
         {/* Professionals Section */}
-        <section className="w-full py-16 md:py-24 bg-muted/30">
+        <section className="w-full py-16 md:py-24">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Profissionais Liberais</h2>
@@ -112,7 +159,7 @@ export default function ProfessionalsPage() {
         </section>
 
         {/* Clinics Section */}
-        <section className="w-full py-16 md:py-24">
+        <section className="w-full py-16 md:py-24 bg-muted/30">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Clínicas Parceiras</h2>
