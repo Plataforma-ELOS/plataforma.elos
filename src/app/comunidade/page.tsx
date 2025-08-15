@@ -6,10 +6,21 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Home, Search, Zap, Calendar, Bookmark, Construction, Users, Plus } from 'lucide-react';
+import { Users, Plus, BookOpen } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import PostCard, { Post } from '@/components/community/post-card';
-import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const initialPosts: Post[] = [
   {
@@ -134,19 +145,42 @@ export default function CommunityPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-xl">Meus Grupos</CardTitle>
+                             <CardDescription>Participe de conversas focadas em seus interesses.</CardDescription>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-center text-muted-foreground p-4">
-                              <Users className="mx-auto h-12 w-12 mb-4" />
-                              <h3 className="font-semibold mb-1">Junte-se ou crie um grupo</h3>
-                              <p className="text-sm mb-4">A funcionalidade de grupos será implementada em breve.</p>
-                              <FeatureInProgress>
-                                <Button size="sm">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Criar Grupo
-                                </Button>
-                              </FeatureInProgress>
-                            </div>
+                        <CardContent className="space-y-3">
+                            <Button asChild className="w-full">
+                                <Link href="/comunidade/meus-grupos">Ver meus grupos</Link>
+                            </Button>
+                             <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                  <Button variant="outline" className="w-full">
+                                      <Plus className="mr-2 h-4 w-4" />
+                                      Criar um Grupo
+                                  </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Regras para Criação de Grupos</AlertDialogTitle>
+                                  <AlertDialogDescription className="space-y-2">
+                                    <p>Para manter nossa comunidade segura e organizada, por favor, leia as regras antes de criar um novo grupo.</p>
+                                    <ul className="list-disc list-inside text-sm text-foreground/80 space-y-1">
+                                        <li><strong>Finalidade Clara:</strong> O grupo deve ter um tópico ou objetivo claro.</li>
+                                        <li><strong>Moderação Ativa:</strong> O criador é o moderador inicial e responsável pelo grupo.</li>
+                                        <li><strong>Exclusão por Inatividade:</strong> Se um grupo permanecer com apenas 1 membro (o criador) por 2 semanas, ele será automaticamente excluído.</li>
+                                         <li><strong>Manutenção:</strong> Grupos inativos por longos períodos poderão ser marcados para exclusão após notificação ao moderador.</li>
+                                    </ul>
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                  <FeatureInProgress>
+                                    <AlertDialogAction>
+                                        Criar Grupo Agora
+                                    </AlertDialogAction>
+                                  </FeatureInProgress>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                         </CardContent>
                     </Card>
                 </div>
