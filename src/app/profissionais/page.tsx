@@ -138,9 +138,8 @@ export default function ProfessionalsPage() {
         </section>
 
         {/* Professionals Section */}
-        <section className="w-full py-16 md:py-24 relative overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background z-10" />
-            <div className="container mx-auto px-0">
+        <section className="w-full py-16 md:py-24 relative">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Profissionais Liberais</h2>
                     <p className="max-w-[700px] text-foreground/80 md:text-xl">
@@ -179,8 +178,8 @@ export default function ProfessionalsPage() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20" />
-                  <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20" />
+                  <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20" />
+                  <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20" />
                 </Carousel>
             </div>
         </section>
