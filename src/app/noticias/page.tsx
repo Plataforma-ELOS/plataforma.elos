@@ -1,20 +1,19 @@
-
 // src/app/noticias/page.tsx
 import Link from 'next/link';
 import Image from 'next/image';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Newspaper } from 'lucide-react';
+import { Newspaper, ArrowRight } from 'lucide-react';
+import NewsCard from '@/components/news/news-card';
 
 const newsArticles = [
   {
     slug: 'nova-lei-amplia-direitos-no-trabalho',
     title: 'Nova Lei Amplia Direitos para Cuidadores no Ambiente de Trabalho',
     description: 'Entenda as principais mudanças na legislação que garantem mais flexibilidade e apoio para pais e responsáveis por pessoas com TEA.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'gavel justice',
+    imageUrl: 'https://placehold.co/1200x600.png',
+    imageHint: 'gavel justice law',
     category: 'Legislação',
     date: '1 de Agosto de 2024',
   },
@@ -48,6 +47,9 @@ const newsArticles = [
 ];
 
 export default function NewsPage() {
+  const featuredArticle = newsArticles[0];
+  const otherArticles = newsArticles.slice(1);
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -65,29 +67,37 @@ export default function NewsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsArticles.map((article, index) => (
-              <Link key={article.slug} href={`/noticias/${article.slug}`} className="group">
-                <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col" style={{ animationDelay: `${index * 100}ms`}}>
-                  <div className="relative">
-                    <Image
-                      src={article.imageUrl}
-                      alt={article.title}
-                      width={600}
-                      height={400}
-                      className="w-full h-56 object-cover"
-                      data-ai-hint={article.imageHint}
-                    />
-                     <div className="absolute top-0 left-0 w-full h-full bg-black/10 group-hover:bg-black/30 transition-colors duration-300" />
+          {/* Featured Article */}
+          <div className="mb-16 group">
+            <Link href={`/noticias/${featuredArticle.slug}`}>
+              <div className="relative bg-card rounded-3xl overflow-hidden shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all duration-500 transform hover:-translate-y-2">
+                <Image
+                  src={featuredArticle.imageUrl}
+                  alt={featuredArticle.title}
+                  width={1200}
+                  height={600}
+                  className="w-full h-[400px] md:h-[500px] object-cover"
+                  data-ai-hint={featuredArticle.imageHint}
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-8 md:p-12 text-white">
+                  <Badge variant="default" className="mb-4 bg-primary/90 text-primary-foreground">{featuredArticle.category}</Badge>
+                  <h2 className="text-3xl md:text-5xl font-bold font-headline max-w-4xl leading-tight">{featuredArticle.title}</h2>
+                  <p className="mt-2 text-lg text-white/80 max-w-2xl hidden md:block">{featuredArticle.description}</p>
+                  <div className="mt-6 flex items-center gap-2 font-semibold text-primary group-hover:underline">
+                      Ler artigo completo <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </div>
-                  <CardContent className="p-6 flex flex-col flex-grow">
-                    <Badge variant="default" className="mb-2 self-start bg-primary/80 text-primary-foreground">{article.category}</Badge>
-                    <h3 className="text-xl font-bold mb-2 flex-grow">{article.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4">{article.description}</p>
-                    <p className="text-xs text-muted-foreground mt-auto">{article.date}</p>
-                  </CardContent>
-                </Card>
-              </Link>
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Other Articles */}
+          <h3 className="text-3xl font-bold mb-8 text-center md:text-left">Últimas Notícias</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {otherArticles.map((article, index) => (
+              <NewsCard key={article.slug} article={article} index={index} />
             ))}
           </div>
         </div>
