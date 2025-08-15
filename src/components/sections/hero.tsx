@@ -14,7 +14,7 @@ export default function Hero() {
               Cuidar é ajudar quem você ama a viver melhor. Aqui, você encontra recursos, comunidade e profissionais que entendem sua jornada.
             </p>
           </div>
-          <div className="relative flex items-center justify-center min-h-[500px]">
+          <div className="relative flex items-center justify-end min-h-[500px]">
             <div
               className="absolute w-full h-full"
               style={{
