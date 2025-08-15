@@ -5,12 +5,12 @@ import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mail, Phone, Share2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 
@@ -41,6 +41,25 @@ const skills = [
     "Habilidades sociais e de comunicação",
     "Seletividade alimentar",
     "Regulação emocional",
+];
+
+const reviews = [
+    {
+        id: 1,
+        author: "Mariana S.",
+        date: "15 de Julho, 2024",
+        rating: 5,
+        content: "A Dra. Cristiane foi um anjo em nossas vidas. A abordagem dela com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!",
+        likes: 12,
+    },
+    {
+        id: 2,
+        author: "Rafael P.",
+        date: "2 de Julho, 2024",
+        rating: 5,
+        content: "Excelente profissional! Muito atenciosa e dedicada. Nos ajudou a entender melhor o diagnóstico e os próximos passos. Gratidão!",
+        likes: 8,
+    },
 ];
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
@@ -120,15 +139,66 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                 </div>
                             </div>
                         </TabsContent>
-                        <TabsContent value="contato" className="text-left">
-                           <FeatureInProgress>
-                                <p className="text-muted-foreground">Informações de contato ainda não disponíveis.</p>
-                           </FeatureInProgress>
+                        <TabsContent value="contato" className="text-left space-y-4">
+                           <Card>
+                                <CardContent className="p-6 space-y-4">
+                                    <h3 className="font-semibold text-lg">Informações de Contato</h3>
+                                    <div className="flex items-center gap-4">
+                                        <Mail className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <a href="mailto:contato@exemplo.com" className="text-muted-foreground hover:text-primary">
+                                            contato@exemplo.com
+                                        </a>
+                                    </div>
+                                    <div className="flex items-center gap-4">
+                                        <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <a href="tel:+5511999998888" className="text-muted-foreground hover:text-primary">
+                                            (11) 99999-8888
+                                        </a>
+                                    </div>
+                                </CardContent>
+                           </Card>
                         </TabsContent>
-                        <TabsContent value="avaliacoes" className="text-left">
-                            <FeatureInProgress>
-                                <p className="text-muted-foreground">A seção de avaliações está em construção.</p>
-                            </FeatureInProgress>
+                         <TabsContent value="avaliacoes" className="text-left space-y-6">
+                            <div>
+                                <h3 className="text-xl font-bold mb-4">O que os pacientes dizem</h3>
+                                <div className="flex items-center gap-4 mb-6 p-4 bg-muted rounded-lg">
+                                    <div className='text-center'>
+                                        <p className="text-4xl font-bold text-primary">5.0</p>
+                                        <div className="flex justify-center text-yellow-500">
+                                            <Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" />
+                                        </div>
+                                    </div>
+                                    <Separator orientation='vertical' className="h-12"/>
+                                    <div>
+                                        <p className="font-semibold">Excelente</p>
+                                        <p className="text-sm text-muted-foreground">Baseado em {reviews.length} avaliações</p>
+                                    </div>
+                                </div>
+                                <div className="space-y-6">
+                                    {reviews.map(review => (
+                                        <div key={review.id}>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="flex text-yellow-500">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'text-gray-300'}`} />
+                                                    ))}
+                                                </div>
+                                                <p className="font-semibold text-sm">{review.author}</p>
+                                                <p className="text-xs text-muted-foreground">&middot; {review.date}</p>
+                                            </div>
+                                            <p className="text-muted-foreground">{review.content}</p>
+                                            <div className="mt-2">
+                                                <Button variant="ghost" size="sm" className="text-muted-foreground h-auto p-1">
+                                                    <ThumbsUp className="w-4 h-4 mr-2"/> {review.likes}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <FeatureInProgress>
+                                    <Button variant="outline" className="w-full mt-6">Deixar uma avaliação</Button>
+                                </FeatureInProgress>
+                            </div>
                         </TabsContent>
                     </Tabs>
                 </CardContent>
