@@ -11,13 +11,6 @@ import FeatureInProgress from '@/components/feature-in-progress';
 import PostCard, { Post } from '@/components/community/post-card';
 import { Input } from '@/components/ui/input';
 
-const mainNav = [
-  { icon: <Home className="h-5 w-5" />, name: 'Início', href: '#' },
-  { icon: <Search className="h-5 w-5" />, name: 'Buscar', href: '#' },
-  { icon: <Zap className="h-5 w-5" />, name: 'Destaques', href: '#' },
-  { icon: <Calendar className="h-5 w-5" />, name: 'Eventos', href: '#' },
-];
-
 const initialPosts: Post[] = [
   {
     id: 'post-1',
@@ -83,12 +76,8 @@ const communityEvents = [
 
 
 export default function CommunityPage() {
-  const [activeTab, setActiveTab] = useState('Início');
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<Post[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
-  
+
   const handleToggleSave = (postId: string) => {
     setPosts(posts.map(post =>
       post.id === postId
@@ -97,135 +86,17 @@ export default function CommunityPage() {
     ));
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setHasSearched(true);
-    if (!searchQuery.trim()) {
-        setSearchResults([]);
-        return;
-    }
-    const results = posts.filter(post => 
-        post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.author.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(results);
-  }
-
-
   const renderContent = () => {
-    switch (activeTab) {
-      case 'Início':
-        return (
-          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed animate-in fade-in-0 duration-500">
-            <Users className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold">Bem-vindo(a) à Comunidade!</h3>
-            <p className="text-muted-foreground mt-2 mb-4">A interação agora acontece dentro dos grupos. Explore, conecte-se e participe das conversas.</p>
-            <FeatureInProgress>
-              <Button size="lg">Explorar Grupos</Button>
-            </FeatureInProgress>
-        </Card>
-        );
-       case 'Buscar':
-        return (
-            <div className="space-y-6 animate-in fade-in-0 duration-500">
-                <form onSubmit={handleSearch} className="flex gap-2">
-                    <Input 
-                        placeholder="Buscar na comunidade..." 
-                        className="h-11"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <Button type="submit" size="lg">
-                        <Search className="mr-2 h-4 w-4" />
-                        Buscar
-                    </Button>
-                </form>
-                {hasSearched ? (
-                    searchResults.length > 0 ? (
-                      <div className="space-y-6">
-                        {searchResults.map((post) => (
-                            <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
-                        ))}
-                      </div>
-                    ) : (
-                        <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
-                            <Search className="h-16 w-16 text-muted-foreground mb-4" />
-                            <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
-                            <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave.</p>
-                        </Card>
-                    )
-                ) : (
-                     <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
-                        <Search className="h-16 w-16 text-muted-foreground mb-4" />
-                        <h3 className="text-xl font-semibold">Busque na Comunidade</h3>
-                        <p className="text-muted-foreground mt-2">Encontre posts, tópicos e conversas sobre os assuntos que te interessam.</p>
-                    </Card>
-                )}
-            </div>
-        );
-      case 'Salvos':
-        const savedPosts = posts.filter(post => post.isSaved);
-        return (
-            <div className="space-y-6 animate-in fade-in-0 duration-500">
-                <h2 className="text-2xl font-bold">Itens Salvos</h2>
-                {savedPosts.length > 0 ? (
-                    savedPosts.map((post) => (
-                        <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
-                    ))
-                ) : (
-                    <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
-                        <Bookmark className="h-16 w-16 text-muted-foreground mb-4" />
-                        <h3 className="text-xl font-semibold">Nenhum item salvo</h3>
-                        <p className="text-muted-foreground mt-2">Use o ícone de marcador para salvar posts e encontrá-los aqui.</p>
-                    </Card>
-                )}
-            </div>
-        );
-       case 'Destaques':
-        const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
-        return (
-          <div className="space-y-6 animate-in fade-in-0 duration-500">
-            <h2 className="text-2xl font-bold">Posts em Destaque</h2>
-            <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
-            {featuredPosts.map((post) => (
-              <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
-            ))}
-          </div>
-        );
-      case 'Eventos':
-        return (
-          <div className="space-y-6 animate-in fade-in-0 duration-500">
-            <h2 className="text-2xl font-bold">Agenda de Eventos</h2>
-            <p className="text-muted-foreground">Participe de workshops, palestras e encontros da comunidade.</p>
-            <div className="space-y-4">
-              {communityEvents.map((event, index) => (
-                <Card key={index} className="animate-in fade-in-0 slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${index * 100}ms`}}>
-                  <CardHeader>
-                    <CardTitle>{event.title}</CardTitle>
-                    <CardDescription>{event.date}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <p className="text-muted-foreground flex-1">{event.description}</p>
-                    <FeatureInProgress>
-                      <Button>
-                        Ver Detalhes
-                      </Button>
-                    </FeatureInProgress>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        );
-      default:
-        return (
-          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed animate-in fade-in-0 duration-500">
-            <Construction className="h-16 w-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold">Seção em Construção</h3>
-            <p className="text-muted-foreground mt-2">A área de "{activeTab}" ainda está em desenvolvimento. Volte em breve!</p>
-          </Card>
-        );
-    }
+    const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
+    return (
+      <div className="space-y-6 animate-in fade-in-0 duration-500">
+        <h2 className="text-2xl font-bold">Posts em Destaque</h2>
+        <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
+        {featuredPosts.map((post) => (
+          <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
+        ))}
+      </div>
+    );
   };
   
   return (
@@ -233,20 +104,6 @@ export default function CommunityPage() {
       <HeaderSecondary />
       <main className="flex-1 py-8">
         <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                {mainNav.map(item => (
-                    <Button 
-                        key={item.name}
-                        variant={activeTab === item.name ? 'default' : 'outline'}
-                        className="h-20 text-base justify-start p-4 gap-3 bg-card hover:bg-card/90 border flex-col items-start md:flex-row md:items-center md:h-16"
-                        onClick={() => setActiveTab(item.name)}
-                    >
-                        {item.icon}
-                        <span>{item.name}</span>
-                    </Button>
-                ))}
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 {/* Coluna Principal do Feed */}
                 <div className="lg:col-span-2">
@@ -266,9 +123,11 @@ export default function CommunityPage() {
                                     <p className="text-xs text-muted-foreground">{event.date}</p>
                                 </div>
                             ))}
-                             <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setActiveTab('Eventos')}>
-                              Ver todos os eventos
-                            </Button>
+                             <FeatureInProgress>
+                                <Button variant="outline" size="sm" className="w-full mt-2">
+                                    Ver todos os eventos
+                                </Button>
+                             </FeatureInProgress>
                         </CardContent>
                     </Card>
 
