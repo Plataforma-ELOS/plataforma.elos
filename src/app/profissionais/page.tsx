@@ -108,7 +108,7 @@ export default function ProfessionalsPage() {
                         Encontre o suporte certo para cada necessidade específica da sua jornada.
                     </p>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty, index) => (
                         <FeatureInProgress key={index}>
                             <div className="group cursor-pointer">
@@ -122,8 +122,8 @@ export default function ProfessionalsPage() {
                                         data-ai-hint={specialty.hint}
                                     />
                                 </Card>
-                                <div className="bg-card p-4 rounded-b-xl -mt-2 relative shadow-sm">
-                                    <h3 className="font-semibold text-center text-card-foreground">{specialty.name}</h3>
+                                <div className="bg-card p-3 rounded-b-xl -mt-2 relative shadow-sm">
+                                    <h3 className="font-semibold text-center text-card-foreground text-sm">{specialty.name}</h3>
                                 </div>
                             </div>
                         </FeatureInProgress>
