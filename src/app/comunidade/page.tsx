@@ -254,7 +254,7 @@ export default function CommunityPage() {
                 </div>
 
                 {/* Barra Lateral */}
-                <div className="space-y-8 sticky top-24">
+                <div className="space-y-8 lg:sticky top-24">
                      <Card>
                         <CardHeader>
                             <CardTitle className="text-xl">Próximos Eventos</CardTitle>
