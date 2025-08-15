@@ -116,21 +116,14 @@ export default function CommunityPage() {
     switch (activeTab) {
       case 'Início':
         return (
-          <div className="animate-in fade-in-0 duration-500 space-y-6">
-             <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed">
-                <Users className="h-16 w-16 text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold">Bem-vindo(a) à Comunidade!</h3>
-                <p className="text-muted-foreground mt-2 mb-4">A interação agora acontece dentro dos grupos. Explore, conecte-se e participe das conversas.</p>
-                <FeatureInProgress>
-                  <Button size="lg">Explorar Grupos</Button>
-                </FeatureInProgress>
-            </Card>
-            <div className="space-y-6">
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
-              ))}
-            </div>
-          </div>
+          <Card className="flex flex-col items-center justify-center p-10 text-center rounded-2xl border-dashed animate-in fade-in-0 duration-500">
+            <Users className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold">Bem-vindo(a) à Comunidade!</h3>
+            <p className="text-muted-foreground mt-2 mb-4">A interação agora acontece dentro dos grupos. Explore, conecte-se e participe das conversas.</p>
+            <FeatureInProgress>
+              <Button size="lg">Explorar Grupos</Button>
+            </FeatureInProgress>
+        </Card>
         );
        case 'Buscar':
         return (
@@ -240,12 +233,12 @@ export default function CommunityPage() {
       <HeaderSecondary />
       <main className="flex-1 py-8">
         <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 {mainNav.map(item => (
                     <Button 
                         key={item.name}
                         variant={activeTab === item.name ? 'default' : 'outline'}
-                        className="h-16 text-base justify-start p-4 gap-3 bg-card hover:bg-card/90 border"
+                        className="h-20 text-base justify-start p-4 gap-3 bg-card hover:bg-card/90 border flex-col items-start md:flex-row md:items-center md:h-16"
                         onClick={() => setActiveTab(item.name)}
                     >
                         {item.icon}
@@ -305,5 +298,3 @@ export default function CommunityPage() {
     </div>
   );
 }
-
-    
