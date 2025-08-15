@@ -97,21 +97,6 @@ export default function CommunityPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Post[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
-  
-  const navRef = useRef<HTMLDivElement>(null);
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-
-  useEffect(() => {
-    if (navRef.current) {
-        const activeButton = navRef.current.querySelector(`button[data-tab-name="${activeTab}"]`) as HTMLElement;
-        if (activeButton) {
-            setIndicatorStyle({
-                left: activeButton.offsetLeft,
-                width: activeButton.offsetWidth,
-            });
-        }
-    }
-  }, [activeTab]);
 
   const handleCreatePost = (content: string) => {
     if (!content.trim()) return;
@@ -292,66 +277,32 @@ export default function CommunityPage() {
   };
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-muted/30">
       <HeaderSecondary />
-      <main>
-        <div className="border-b">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="flex justify-between items-center py-2 h-16">
-                    <nav ref={navRef} className="relative">
-                        <div className="flex items-center gap-2">
-                            {mainNav.map((item) => (
-                              <button
-                                key={item.name}
-                                data-tab-name={item.name}
-                                onClick={() => setActiveTab(item.name)}
-                                className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-foreground z-10 ${activeTab === item.name ? 'text-foreground' : 'text-foreground/60'}`}
-                              >
-                                {item.icon}
-                                <span className="hidden md:inline">{item.name}</span>
-                              </button>
-                            ))}
-                        </div>
-                         <div
-                            className="absolute bg-primary/10 rounded-md transition-all duration-300 ease-out"
-                            style={{
-                                height: '40px',
-                                top: 0,
-                                ...indicatorStyle
-                            }}
-                        />
-                    </nav>
-                    <div className="flex items-center gap-2">
-                        <FeatureInProgress>
-                            <Button variant="ghost" size="icon">
-                                <MessageSquare className="h-5 w-5" />
-                                <span className="sr-only">Mensagens</span>
-                            </Button>
-                        </FeatureInProgress>
-                        <FeatureInProgress>
-                            <Button variant="ghost" size="icon">
-                                <Send className="h-5 w-5" />
-                                <span className="sr-only">Notificações</span>
-                            </Button>
-                        </FeatureInProgress>
-                        <Button variant="ghost" size="icon" onClick={() => setActiveTab('Salvos')}>
-                            <Bookmark className={`h-5 w-5 transition-colors ${activeTab === 'Salvos' ? 'text-primary fill-primary' : 'text-foreground/60'}`} />
-                            <span className="sr-only">Salvos</span>
-                        </Button>
-                    </div>
-                </div>
+      <main className="flex-1 py-8">
+        <div className="container mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                {mainNav.map(item => (
+                    <Button 
+                        key={item.name}
+                        variant={activeTab === item.name ? 'default' : 'outline'}
+                        className="h-16 text-base justify-start p-4 gap-3 bg-card hover:bg-card/90 border"
+                        onClick={() => setActiveTab(item.name)}
+                    >
+                        {item.icon}
+                        <span>{item.name}</span>
+                    </Button>
+                ))}
             </div>
-        </div>
-        
-        <div className="container mx-auto px-4 md:px-6 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 {/* Coluna Principal do Feed */}
                 <div className="lg:col-span-2">
                   {renderContent()}
                 </div>
 
                 {/* Barra Lateral */}
-                <div className="space-y-8">
+                <div className="space-y-8 sticky top-24">
                      <Card>
                         <CardHeader>
                             <CardTitle className="text-xl">Próximos Eventos</CardTitle>
@@ -395,7 +346,3 @@ export default function CommunityPage() {
     </div>
   );
 }
-
-    
-
-    
