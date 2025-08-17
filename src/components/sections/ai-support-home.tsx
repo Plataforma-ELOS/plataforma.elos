@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function AiSupportHome() {
   return (
-    <section className="w-full py-24 md:py-32 bg-white">
+    <section className="w-full py-24 md:py-32 bg-gradient-to-b from-primary/10 to-background dark:from-primary/20 dark:to-background">
       <div className="container mx-auto px-4 md:px-6 flex justify-center">
         <div className="relative w-full max-w-2xl">
           <div className="absolute -inset-1.5 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-3xl blur-lg opacity-75 animate-pulse-slow"></div>

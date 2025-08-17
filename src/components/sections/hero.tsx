@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="w-full py-20 md:py-24 lg:py-32 bg-gradient-to-b from-background to-white overflow-hidden">
+    <section className="w-full py-20 md:py-24 lg:py-32 bg-gradient-to-b from-background to-primary/10 dark:to-primary/20 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
           <div className="flex flex-col justify-center space-y-6">

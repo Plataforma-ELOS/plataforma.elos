@@ -1,3 +1,4 @@
+
 // src/app/profissionais/page.tsx
 "use client";
 
@@ -214,7 +215,7 @@ export default function ProfessionalsPage() {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                     {clinics.map((clinic, index) => (
                         <Link href={`/profissionais/${clinic.id}`} key={index} className="group block">
-                            <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer">
+                            <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer bg-card">
                                 <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
                                 <div className="p-6 flex flex-col flex-grow">
                                     <CardHeader className="p-0">
