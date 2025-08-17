@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseSensitive, CaseUpper, CaseLower } from 'lucide-react';
+import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseSensitive, CaseUpper, CaseLower, Edit } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -45,8 +45,8 @@ function UserProfileDropdown() {
                 <DropdownMenuGroup>
                     <FeatureInProgress>
                         <DropdownMenuItem>
-                            <User className="mr-2" />
-                            <span>Meu Perfil</span>
+                            <Edit className="mr-2" />
+                            <span>Editar Perfil</span>
                         </DropdownMenuItem>
                     </FeatureInProgress>
                      <FeatureInProgress>

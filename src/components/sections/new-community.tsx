@@ -82,8 +82,7 @@ export default function NewCommunity() {
                         Veja o que dizem sobre nós
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl bg-card border-primary/20 p-10">
-                    <div className="p-4">
+                  <DialogContent className="max-w-xl bg-card border-primary/20 p-8 sm:p-10">
                       <Carousel
                         opts={{ align: "start", loop: true, }}
                         plugins={[
@@ -94,7 +93,7 @@ export default function NewCommunity() {
                         <CarouselContent>
                           {testimonials.map((testimonial, index) => (
                             <CarouselItem key={index}>
-                              <div className="text-center flex flex-col items-center justify-between h-64">
+                              <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
                                 <div className="absolute top-6 right-6 flex items-center gap-3">
                                   <h4 className="font-bold text-base text-right">{testimonial.name}</h4>
                                   <Avatar className="h-10 w-10">
@@ -104,7 +103,7 @@ export default function NewCommunity() {
                                       </AvatarFallback>
                                   </Avatar>
                                 </div>
-                                <p className="text-lg text-muted-foreground italic text-center max-w-lg mx-auto pt-16">
+                                <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-16 flex-grow flex items-center">
                                     "{testimonial.text}"
                                 </p>
                                 <div className="flex text-yellow-400 gap-1 mt-4">
@@ -118,10 +117,9 @@ export default function NewCommunity() {
                             </CarouselItem>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                        <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                        <CarouselPrevious className="absolute left-0 sm:left-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                        <CarouselNext className="absolute right-0 sm:right-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
                       </Carousel>
-                    </div>
                   </DialogContent>
                 </Dialog>
             </div>
