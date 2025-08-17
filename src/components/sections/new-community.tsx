@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Check, UserCircle } from "lucide-react";
+import { Check, Star, UserCircle } from "lucide-react";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -82,10 +82,7 @@ export default function NewCommunity() {
                         Veja o que dizem sobre nós
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px] md:max-w-lg lg:max-w-2xl bg-background/90 backdrop-blur-sm border-primary/20">
-                    <DialogHeader>
-                      <DialogTitle className="text-center text-2xl font-headline text-primary">Nossa Comunidade, Nossa Força</DialogTitle>
-                    </DialogHeader>
+                  <DialogContent className="max-w-2xl bg-card border-primary/20 p-10">
                     <div className="p-4">
                       <Carousel
                         opts={{ align: "start", loop: true, }}
@@ -97,21 +94,32 @@ export default function NewCommunity() {
                         <CarouselContent>
                           {testimonials.map((testimonial, index) => (
                             <CarouselItem key={index}>
-                              <div className="p-4 text-center">
-                                 <Avatar className="h-16 w-16 mx-auto mb-4">
+                              <div className="text-center flex flex-col items-center justify-between h-64">
+                                <div className="absolute top-6 right-6 flex items-center gap-3">
+                                  <h4 className="font-bold text-base text-right">{testimonial.name}</h4>
+                                  <Avatar className="h-10 w-10">
                                       <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
                                       <AvatarFallback>
-                                          <UserCircle className="h-16 w-16 text-muted-foreground" />
+                                          <UserCircle className="h-10 w-10 text-muted-foreground" />
                                       </AvatarFallback>
                                   </Avatar>
-                                <p className="text-lg text-muted-foreground italic mb-4">"{testimonial.text}"</p>
-                                <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                                </div>
+                                <p className="text-lg text-muted-foreground italic text-center max-w-lg mx-auto pt-16">
+                                    "{testimonial.text}"
+                                </p>
+                                <div className="flex text-yellow-400 gap-1 mt-4">
+                                    <Star className="w-5 h-5 fill-current" />
+                                    <Star className="w-5 h-5 fill-current" />
+                                    <Star className="w-5 h-5 fill-current" />
+                                    <Star className="w-5 h-5 fill-current" />
+                                    <Star className="w-5 h-5 fill-current" />
+                                </div>
                               </div>
                             </CarouselItem>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious className="left-2" />
-                        <CarouselNext className="right-2" />
+                        <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                        <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
                       </Carousel>
                     </div>
                   </DialogContent>
