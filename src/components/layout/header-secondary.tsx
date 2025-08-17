@@ -1,16 +1,17 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Bell, UserCircle, Bookmark, Settings, Sun, LogOut, HelpCircle, User } from 'lucide-react';
+import { Menu, Bell, UserCircle, Bookmark, Settings, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseLower, CaseUpper, CaseSensitive } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { usePathname } from 'next/navigation';
 import FeatureInProgress from '@/components/feature-in-progress';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Switch } from '../ui/switch';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '../ui/dropdown-menu';
+import { useTheme } from 'next-themes';
+import { FontSizeContext } from '../providers';
 
 
 const navItems = [
@@ -22,6 +23,9 @@ const navItems = [
 ];
 
 function UserProfileDropdown() {
+    const { setTheme } = useTheme();
+    const { fontSize, setFontSize } = useContext(FontSizeContext);
+    
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -68,15 +72,49 @@ function UserProfileDropdown() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                  <DropdownMenuGroup>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                       <div className="flex justify-between items-center w-full">
-                           <div className="flex items-center">
-                             <Sun className="mr-2" />
-                             <span>Alto Contraste</span>
-                           </div>
-                           <Switch id="accessibility-switch-mobile" />
-                       </div>
-                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            <span>Tema</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                <Sun className="mr-2" />
+                                Claro
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                <Moon className="mr-2" />
+                                Escuro
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("system")}>
+                                <Laptop className="mr-2" />
+                                Sistema
+                            </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <CaseSensitive className="mr-2" />
+                            <span>Tamanho do Texto</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                             <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
+                                <DropdownMenuRadioItem value="sm">
+                                    <CaseLower className="mr-2"/>
+                                    Pequeno
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="base">
+                                    <CaseSensitive className="mr-2"/>
+                                    Normal
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="lg">
+                                    <CaseUpper className="mr-2"/>
+                                    Grande
+                                </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
                  </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <FeatureInProgress>
