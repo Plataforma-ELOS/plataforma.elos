@@ -8,19 +8,19 @@ const collectionItems = [
     icon: <Clapperboard className="h-8 w-8 text-primary" />, 
     title: 'Vídeos Educativos', 
     description: 'Entendendo a sobrecarga sensorial e mais.',
-    href: '/acervo-digital',
+    href: '/acervo-digital?type=video',
   },
   { 
     icon: <Gamepad2 className="h-8 w-8 text-primary" />, 
     title: 'Jogos Interativos',
     description: 'Aprenda sobre emoções de forma lúdica.',
-    href: '/acervo-digital',
+    href: '/acervo-digital?type=document', // Assuming games are document types for now
   },
   { 
     icon: <BookOpen className="h-8 w-8 text-primary" />,
     title: 'Guias Práticos', 
     description: 'Modelos de rotinas visuais e documentos.',
-    href: '/acervo-digital',
+    href: '/acervo-digital?type=document',
   },
 ];
 

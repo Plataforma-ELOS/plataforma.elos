@@ -1,3 +1,4 @@
+
 // src/components/sections/new-professionals.tsx
 "use client";
 import Image from 'next/image';
@@ -67,8 +68,12 @@ export default function NewProfessionals() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20" />
-          <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20" />
+           <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
+                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
+                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
+            </div>
+          <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>
       </div>
     </section>

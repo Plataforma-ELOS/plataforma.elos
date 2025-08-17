@@ -1,3 +1,4 @@
+
 // src/components/sections/digital-library-card.tsx
 "use client";
 
@@ -7,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FileText, Download, PlayCircle } from 'lucide-react';
+import { FileText, Download, PlayCircle, Bookmark } from 'lucide-react';
 import FeatureInProgress from '../feature-in-progress';
 
 type LibraryItem = {
@@ -76,13 +77,11 @@ export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
                     {item.actionText}
                   </Link>
                 </Button>
-                {item.downloadable && (
-                  <Button asChild variant="outline" size="icon">
-                    <Link href={item.actionUrl} download>
-                      <Download className="h-4 w-4" />
-                    </Link>
+                <FeatureInProgress>
+                  <Button variant="outline" size="icon">
+                    <Bookmark className="h-4 w-4" />
                   </Button>
-                )}
+                </FeatureInProgress>
             </div>
         </div>
       </CardContent>

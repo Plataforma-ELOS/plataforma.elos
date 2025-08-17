@@ -1,3 +1,4 @@
+
 // src/app/profissionais/[id]/page.tsx
 "use client";
 
@@ -12,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-
+import Footer from '@/components/layout/footer';
 
 // Mock data, in a real app this would be fetched based on the id
 const professionalsData: { [key: string]: any } = {
@@ -21,7 +22,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman doctor portrait', 
     specialty: 'Psicóloga Especialista em TEA', 
-    crm: 'CRP 061234 - SP', 
+    crm: 'CRP 06/123456', 
     description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
     contact: {
       phone: '(11) 9 1234-5678',
@@ -79,7 +80,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman psychologist portrait', 
     specialty: 'Fonoaudióloga', 
-    crm: 'CRFa 2 - 12345', 
+    crm: 'CRFa 2-12345', 
     description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
     contact: {
       phone: '(31) 9 8765-4321',
@@ -190,6 +191,65 @@ const professionalsData: { [key: string]: any } = {
       "Comunicação com a família e a escola",
     ],
   },
+   'clinica-superar': { 
+    name: 'Clínica Superar', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'clinic logo', 
+    specialty: 'Centro Multidisciplinar', 
+    crm: 'CNPJ: 12.345.678/0001-90', 
+    description: 'Com uma equipe completa e integrada, a Clínica Superar oferece um cuidado humanizado e multidisciplinar, focando no desenvolvimento global de cada paciente. Nosso ambiente é preparado para acolher famílias e promover o bem-estar.',
+    contact: {
+      phone: '(11) 9 8888-1111',
+      email: 'contato@clinicasuperar.com.br',
+      instagram: '@clinicasuperar',
+    },
+    experiences: [
+      "Mais de 5 anos de atuação",
+      "Equipe com Psicólogos, Fonoaudiólogos, T.O. e mais",
+      "Estrutura com salas de integração sensorial",
+      "Programas de intervenção precoce",
+      "Grupos de habilidades sociais",
+      "Parceria com escolas para inclusão",
+    ],
+    skills: [
+      "Avaliação Multidisciplinar",
+      "Terapia ABA",
+      "Integração Sensorial",
+      "Grupos Terapêuticos",
+      "Orientação Familiar",
+      "Fonoaudiologia",
+      "Psicomotricidade",
+    ],
+  },
+    'espaco-crescer': { 
+    name: 'Espaço Crescer', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'child climbing logo', 
+    specialty: 'Terapia Infantil e Familiar', 
+    crm: 'CNPJ: 22.333.444/0001-55', 
+    description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio à família como um todo. Nossas terapias são baseadas no brincar.',
+    contact: {
+      phone: '(21) 9 7777-2222',
+      email: 'contato@espacocrescer.com.br',
+      instagram: '@espacocrescer.tea',
+    },
+    experiences: [
+      "Foco em intervenção precoce (0 a 6 anos)",
+      "Terapeutas especializados no modelo Denver",
+      "Ambiente lúdico e acolhedor",
+      "Sessões de terapia em grupo e individuais",
+      "Workshops e palestras para pais",
+      "Consultoria escolar",
+    ],
+    skills: [
+      "Modelo Denver de Intervenção Precoce",
+      "Terapia Ocupacional Pediátrica",
+      "Psicologia Infantil",
+      "Apoio e treinamento para pais",
+      "Brincar terapêutico",
+      "Desenvolvimento da comunicação",
+    ],
+  },
 };
 
 const generateReviews = (professionalName: string) => [
@@ -213,7 +273,7 @@ const generateReviews = (professionalName: string) => [
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
   const professional = professionalsData[params.id] || {
-    name: "Profissional não encontrado",
+    name: "Perfil não encontrado",
     imageUrl: "https://placehold.co/128x128.png",
     specialty: "",
     crm: "N/A",
@@ -268,7 +328,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                      {/* Navegação por abas */}
                     <Tabs defaultValue="sobre" className="w-full mt-8">
                         <TabsList className="grid w-full grid-cols-3 bg-muted">
-                            <TabsTrigger value="sobre">Sobre mim</TabsTrigger>
+                            <TabsTrigger value="sobre">Sobre</TabsTrigger>
                             <TabsTrigger value="contato">Contato</TabsTrigger>
                             <TabsTrigger value="avaliacoes">Avaliações</TabsTrigger>
                         </TabsList>
@@ -276,6 +336,10 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
 
                         {/* Conteúdo das abas */}
                         <TabsContent value="sobre" className="text-left space-y-8">
+                            <div>
+                                <h3 className="text-xl font-bold mb-3">Apresentação</h3>
+                                 <p className="text-muted-foreground">{professional.description}</p>
+                            </div>
                             <div>
                                 <h3 className="text-xl font-bold mb-3">Experiências</h3>
                                 <ul className="list-disc list-inside text-muted-foreground space-y-1.5">

@@ -61,13 +61,15 @@ export default function AiSupport() {
       const reader = responseStream.getReader();
       const decoder = new TextDecoder();
 
+      let accumulatedResponse = '';
       while (true) {
         const { done, value } = await reader.read();
         if (done) {
           break;
         }
         const chunk = decoder.decode(value, { stream: true });
-        setAiResponse(prev => (prev || '') + chunk);
+        accumulatedResponse += chunk;
+        setAiResponse(accumulatedResponse);
       }
 
     } catch (error) {
@@ -85,7 +87,8 @@ export default function AiSupport() {
   };
 
   const handleTopicClick = (topic: string) => {
-    handleSearch(new Event('submit') as any, topic);
+    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
+    handleSearch(fakeEvent, topic);
   }
 
   return (

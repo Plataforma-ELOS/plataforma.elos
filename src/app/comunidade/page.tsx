@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { useRouter } from 'next/navigation';
 
 const initialPosts: Post[] = [
   {
@@ -64,7 +65,7 @@ const initialPosts: Post[] = [
   },
 ];
 
-const communityEvents = [
+const allCommunityEvents = [
   {
     title: 'Workshop Online: Introdução à Comunicação Alternativa',
     date: '25 de Agosto de 2024 - 19:00',
@@ -83,11 +84,19 @@ const communityEvents = [
     description: 'Vamos nos encontrar para uma manhã de socialização e diversão ao ar livre no Parque Ibirapuera. Traga sua toalha, um lanche e venha fazer parte!',
     type: 'Presencial',
   },
+  {
+    title: 'Palestra: Direitos da Pessoa com TEA no Mercado de Trabalho',
+    date: '20 de Setembro de 2024 - 20:00',
+    description: 'Conheça a legislação e tire suas dúvidas sobre a inclusão de pessoas com autismo no ambiente profissional.',
+    type: 'Online',
+  },
 ];
 
 
 export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [showAllEvents, setShowAllEvents] = useState(false);
+  const router = useRouter();
 
   const handleToggleSave = (postId: string) => {
     setPosts(posts.map(post =>
@@ -95,6 +104,10 @@ export default function CommunityPage() {
         ? { ...post, isSaved: !post.isSaved }
         : post
     ));
+  };
+  
+  const handleCreateGroup = () => {
+    router.push('/comunidade/criar-grupo');
   };
 
   const renderContent = () => {
@@ -128,17 +141,15 @@ export default function CommunityPage() {
                             <CardTitle className="text-xl">Próximos Eventos</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                            {communityEvents.slice(0, 2).map((event, index) => (
+                            {(showAllEvents ? allCommunityEvents : allCommunityEvents.slice(0, 2)).map((event, index) => (
                                 <div key={index}>
                                     <h4 className="font-semibold text-sm">{event.title}</h4>
                                     <p className="text-xs text-muted-foreground">{event.date}</p>
                                 </div>
                             ))}
-                             <FeatureInProgress>
-                                <Button variant="outline" size="sm" className="w-full mt-2">
-                                    Ver todos os eventos
-                                </Button>
-                             </FeatureInProgress>
+                            <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setShowAllEvents(!showAllEvents)}>
+                                {showAllEvents ? 'Ver menos eventos' : 'Ver todos os eventos'}
+                            </Button>
                         </CardContent>
                     </Card>
 
@@ -173,11 +184,9 @@ export default function CommunityPage() {
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                  <FeatureInProgress>
-                                    <AlertDialogAction>
-                                        Criar Grupo Agora
-                                    </AlertDialogAction>
-                                  </FeatureInProgress>
+                                  <AlertDialogAction onClick={handleCreateGroup}>
+                                      Criar Grupo Agora
+                                  </AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>

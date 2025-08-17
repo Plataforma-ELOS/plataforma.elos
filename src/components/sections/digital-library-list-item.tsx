@@ -1,3 +1,4 @@
+
 // src/components/sections/digital-library-list-item.tsx
 "use client";
 
@@ -7,7 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { FileText, Download, PlayCircle } from 'lucide-react';
+import { FileText, Bookmark, PlayCircle } from 'lucide-react';
+import FeatureInProgress from '../feature-in-progress';
 
 type LibraryItem = {
   type: 'video' | 'document';
@@ -80,14 +82,12 @@ export default function DigitalLibraryListItem({ item }: DigitalLibraryListItemP
               {item.actionText}
             </Link>
           </Button>
-          {item.downloadable && (
-            <Button asChild variant="outline" size="icon">
-              <Link href={item.actionUrl} download>
-                <Download className="h-4 w-4" />
-                <span className="sr-only">Download</span>
-              </Link>
+          <FeatureInProgress>
+            <Button variant="outline" size="icon">
+                <Bookmark className="h-4 w-4" />
+                <span className="sr-only">Favoritar</span>
             </Button>
-          )}
+          </FeatureInProgress>
         </div>
       </CardContent>
     </Card>

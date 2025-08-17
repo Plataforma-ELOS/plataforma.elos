@@ -1,5 +1,7 @@
 
 // src/app/comunidade/meus-grupos/page.tsx
+'use client';
+import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,9 +10,13 @@ import { ArrowLeft, Users, Search } from 'lucide-react';
 import Link from 'next/link';
 
 // Mock data, em uma aplicação real viria do backend
-const userGroups: any[] = []; 
+const userGroupsData = [
+  // O usuário não participa de nenhum grupo inicialmente
+]; 
 
 export default function MyGroupsPage() {
+  const [userGroups, setUserGroups] = useState<any[]>(userGroupsData);
+
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
       <HeaderSecondary />
@@ -27,9 +33,11 @@ export default function MyGroupsPage() {
                     <h1 className="text-4xl font-bold font-headline text-primary">Meus Grupos</h1>
                     <p className="text-muted-foreground mt-1">Seus espaços para conversas e conexões.</p>
                 </div>
-                <Button variant="outline">
+                <Button variant="outline" asChild>
+                  <Link href="/comunidade/explorar-grupos">
                     <Search className="mr-2 h-4 w-4" />
                     Explorar novos grupos
+                  </Link>
                 </Button>
             </div>
 
@@ -43,8 +51,14 @@ export default function MyGroupsPage() {
                 <h2 className="text-2xl font-semibold mb-2">Você ainda não faz parte de nenhum grupo</h2>
                 <p className="text-muted-foreground mb-6">Que tal explorar os grupos existentes ou criar o seu próprio?</p>
                 <div className="flex justify-center gap-4">
-                  <Button>Explorar Grupos</Button>
-                  <Button variant="secondary">Criar um Grupo</Button>
+                  <Button asChild>
+                    <Link href="/comunidade/explorar-grupos">
+                      Explorar Grupos
+                    </Link>
+                  </Button>
+                  <Button variant="secondary" asChild>
+                     <Link href="/comunidade/criar-grupo">Criar um Grupo</Link>
+                  </Button>
                 </div>
               </Card>
             )}

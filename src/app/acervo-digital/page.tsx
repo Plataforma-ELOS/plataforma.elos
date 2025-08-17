@@ -1,7 +1,9 @@
+
 // src/app/acervo-digital/page.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -88,12 +90,20 @@ const libraryItems = [
   },
 ];
 
-export default function DigitalLibraryPage() {
+function DigitalLibraryContent() {
+  const searchParams = useSearchParams();
   const [view, setView] = useState('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortOrder, setSortOrder] = useState('recent');
   const [filteredItems, setFilteredItems] = useState(libraryItems);
+
+  useEffect(() => {
+    const typeFromUrl = searchParams.get('type');
+    if (typeFromUrl === 'video' || typeFromUrl === 'document') {
+      setFilterType(typeFromUrl);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -212,5 +222,13 @@ export default function DigitalLibraryPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function DigitalLibraryPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <DigitalLibraryContent />
+    </Suspense>
   );
 }

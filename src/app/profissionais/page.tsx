@@ -1,3 +1,4 @@
+
 // src/app/profissionais/page.tsx
 "use client";
 
@@ -19,6 +20,8 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 const professionals = [
   { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman doctor portrait' },
@@ -30,22 +33,32 @@ const professionals = [
 ];
 
 const clinics = [
-    { name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
-    { name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
-    { name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
-    { name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: 'https://placehold.co/800x450.png', hint: 'group therapy' },
+    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
+    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
+    { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
+    { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: 'https://placehold.co/800x450.png', hint: 'group therapy' },
 ];
 
 const specialties = [
-    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'psychology session' },
-    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'speech therapy' },
-    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x400.png', hint: 'occupational therapy' },
-    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x400.png', hint: 'doctor brain' },
-    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'educational psychology' },
-    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x400.png', hint: 'therapeutic companion' },
+    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'psychology session', tag: 'Psicóloga' },
+    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'speech therapy', tag: 'Fonoaudióloga' },
+    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x400.png', hint: 'occupational therapy', tag: 'Terapeuta Ocupacional' },
+    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x400.png', hint: 'doctor brain', tag: 'Neuropediatra' },
+    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'educational psychology', tag: 'Psicopedagoga' },
+    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x400.png', hint: 'therapeutic companion', tag: 'Acompanhante Terapêutico' },
 ]
 
 export default function ProfessionalsPage() {
+  const router = useRouter();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSpecialtyClick = (tag: string) => {
+    if (searchInputRef.current) {
+      searchInputRef.current.value = tag;
+      // You can add logic here to trigger a search/filter
+    }
+  };
+  
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -64,7 +77,11 @@ export default function ProfessionalsPage() {
                     <FeatureInProgress>
                       <div className="relative w-full max-w-lg mt-4">
                           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                          <input placeholder="Buscar por especialidade ou nome..." className="w-full h-12 pl-12 pr-4 rounded-full border bg-card text-card-foreground" />
+                          <input 
+                            ref={searchInputRef}
+                            placeholder="Buscar por especialidade ou nome..." 
+                            className="w-full h-12 pl-12 pr-4 rounded-full border bg-card text-card-foreground" 
+                           />
                       </div>
                     </FeatureInProgress>
                 </div>
@@ -79,7 +96,7 @@ export default function ProfessionalsPage() {
                         <Badge variant="secondary">Qualidade e Confiança</Badge>
                         <h2 className="text-3xl font-bold tracking-tighter font-headline">Nosso Compromisso com Você</h2>
                         <p className="text-muted-foreground">
-                            Cada profissional e clínica na plataforma passa por um processo de verificação para garantir que você tenha acesso a um cuidado seguro e de alta qualidade.
+                            Cada profissional e clínica na Plataforma E.L.O.S passa por um processo de verificação para garantir que você tenha acesso a um cuidado seguro e de alta qualidade.
                         </p>
                         <ul className="space-y-3 pt-2">
                             <li className="flex items-center gap-3">
@@ -110,23 +127,21 @@ export default function ProfessionalsPage() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty, index) => (
-                        <FeatureInProgress key={index}>
-                            <div className="group cursor-pointer">
-                                <Card className="overflow-hidden rounded-xl">
-                                    <Image 
-                                        src={specialty.imageUrl} 
-                                        alt={specialty.name} 
-                                        width={400} 
-                                        height={400} 
-                                        className="w-full h-auto object-cover aspect-square group-hover:scale-105 transition-transform duration-300"
-                                        data-ai-hint={specialty.hint}
-                                    />
-                                </Card>
-                                <div className="bg-card p-3 rounded-b-xl -mt-2 relative shadow-sm">
-                                    <h3 className="font-semibold text-center text-card-foreground text-sm">{specialty.name}</h3>
-                                </div>
+                        <div key={index} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
+                            <Card className="overflow-hidden rounded-xl">
+                                <Image 
+                                    src={specialty.imageUrl} 
+                                    alt={specialty.name} 
+                                    width={400} 
+                                    height={400} 
+                                    className="w-full h-auto object-cover aspect-square group-hover:scale-105 transition-transform duration-300"
+                                    data-ai-hint={specialty.hint}
+                                />
+                            </Card>
+                            <div className="bg-card p-3 rounded-b-xl -mt-2 relative shadow-sm">
+                                <h3 className="font-semibold text-center text-card-foreground text-sm">{specialty.name}</h3>
                             </div>
-                        </FeatureInProgress>
+                        </div>
                     ))}
                 </div>
                 <div className="text-center mt-12">
@@ -178,8 +193,12 @@ export default function ProfessionalsPage() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20" />
-                  <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20" />
+                   <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
+                        <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
+                        <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
+                    </div>
+                  <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+                  <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
                 </Carousel>
             </div>
         </section>
@@ -195,12 +214,12 @@ export default function ProfessionalsPage() {
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                     {clinics.map((clinic, index) => (
-                        <FeatureInProgress key={index}>
+                        <Link href={`/profissionais/${clinic.id}`} key={index} className="group block">
                             <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer">
                                 <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
                                 <div className="p-6 flex flex-col flex-grow">
                                     <CardHeader className="p-0">
-                                        <CardTitle className="text-xl">{clinic.name}</CardTitle>
+                                        <CardTitle className="text-xl group-hover:text-primary">{clinic.name}</CardTitle>
                                         <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
@@ -213,7 +232,7 @@ export default function ProfessionalsPage() {
                                     </div>
                                 </div>
                             </Card>
-                        </FeatureInProgress>
+                        </Link>
                     ))}
                 </div>
                 <div className="text-center mt-12">
