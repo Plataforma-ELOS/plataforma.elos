@@ -82,13 +82,4 @@
   body {
     @apply bg-background text-foreground;
   }
-  html.text-sm {
-    @apply text-sm;
-  }
-  html.text-base {
-    @apply text-base;
-  }
-  html.text-lg {
-    @apply text-lg;
-  }
 }
