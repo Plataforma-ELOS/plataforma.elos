@@ -135,7 +135,7 @@ export default function AiSupport() {
 
         <div className="animate-in fade-in-0 duration-500">
           {lastQuery && (
-            <Card className="max-w-3xl mx-auto my-8 p-6">
+            <Card className="max-w-3xl mx-auto my-8 p-6 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex items-start space-x-4">
                 <User className="h-6 w-6 text-primary" />
                 <div className="flex-1">
@@ -148,7 +148,7 @@ export default function AiSupport() {
 
           {(loading && !aiResponse) && (
             <div className="max-w-3xl mx-auto my-8">
-              <Card className="p-6">
+              <Card className="p-6 shadow-lg">
                   <div className="flex items-start space-x-4">
                       <div className="bg-primary/10 p-2 rounded-full">
                           <Terminal className="h-6 w-6 text-primary animate-pulse" />
@@ -166,7 +166,7 @@ export default function AiSupport() {
           
           {aiResponse && (
             <div className="max-w-3xl mx-auto my-8">
-              <Card className="p-6">
+              <Card className="p-6 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                  <div className="flex items-start space-x-4">
                     <div className="bg-primary/10 p-2 rounded-full">
                       <Terminal className="h-6 w-6 text-primary" />
@@ -188,16 +188,16 @@ export default function AiSupport() {
         <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto pt-16">
           {supportCards.map((card, index) => (
             <Link href={card.href} key={index} className="group">
-              <Card className="p-8 bg-card dark:bg-white/90 rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer h-full">
+              <Card className="p-8 bg-card dark:bg-card rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer h-full">
                 <div>
                   <CardHeader className="flex flex-col items-start gap-4 p-0">
                     <div className="bg-primary/10 p-4 rounded-xl mb-2">
                       {card.icon}
                     </div>
-                    <CardTitle className="text-xl font-semibold dark:text-gray-800">{card.title}</CardTitle>
+                    <CardTitle className="text-xl font-semibold dark:text-card-foreground">{card.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-0 mt-3">
-                    <p className="text-foreground/80 dark:text-gray-600">{card.description}</p>
+                    <p className="text-foreground/80 dark:text-muted-foreground">{card.description}</p>
                   </CardContent>
                 </div>
                 <div className="mt-6">
@@ -213,3 +213,5 @@ export default function AiSupport() {
     </section>
   );
 }
+
+    

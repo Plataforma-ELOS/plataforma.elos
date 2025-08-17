@@ -21,7 +21,7 @@ export default function CreatePost({ onCreatePost }: CreatePostProps) {
   };
 
   return (
-    <div className="bg-card p-4 rounded-2xl shadow-sm border">
+    <div className="bg-card p-4 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 border">
       <div className="flex gap-4">
         <Avatar className="hidden md:inline-flex h-12 w-12 cursor-pointer">
           <AvatarImage src="https://placehold.co/48x48.png" alt="Avatar" data-ai-hint="user avatar" />
@@ -52,3 +52,5 @@ export default function CreatePost({ onCreatePost }: CreatePostProps) {
     </div>
   );
 }
+
+    

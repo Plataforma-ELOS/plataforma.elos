@@ -86,7 +86,7 @@ export default function ExploreGroupsPage() {
             
             <div className="space-y-6">
               {groups.map(group => (
-                <Card key={group.id} className="flex flex-col md:flex-row items-start p-6 gap-6">
+                <Card key={group.id} className="flex flex-col md:flex-row items-start p-6 gap-6 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                     <Avatar className="h-16 w-16 hidden md:flex">
                         <AvatarFallback>
                             <Users className="w-8 h-8 text-muted-foreground" />
@@ -121,3 +121,5 @@ export default function ExploreGroupsPage() {
     </div>
   );
 }
+
+    

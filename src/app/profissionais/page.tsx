@@ -128,7 +128,7 @@ export default function ProfessionalsPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty, index) => (
                         <div key={index} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
-                            <Card className="overflow-hidden rounded-xl">
+                            <Card className="overflow-hidden rounded-xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                                 <Image 
                                     src={specialty.imageUrl} 
                                     alt={specialty.name} 
@@ -247,3 +247,5 @@ export default function ProfessionalsPage() {
     </div>
   );
 }
+
+    

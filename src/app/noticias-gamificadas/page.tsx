@@ -87,7 +87,7 @@ export default function NewsGamifiedPage() {
             <h2 className="text-2xl font-bold mb-4">Suas Trilhas de Conhecimento</h2>
             <div className="space-y-4 mb-12">
               {knowledgeTrails.map((trail, index) => (
-                <Card key={index} className="p-6 rounded-2xl">
+                <Card key={index} className="p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                     <CardHeader className="p-0 mb-4">
                         <CardTitle>{trail.title}</CardTitle>
                         <CardDescription>{trail.description}</CardDescription>
@@ -107,7 +107,7 @@ export default function NewsGamifiedPage() {
 
             {/* Quiz Semanal */}
             <h2 className="text-2xl font-bold mb-4">Teste seus Conhecimentos</h2>
-            <Card className="p-6 rounded-2xl text-center bg-primary/10 border-primary/20">
+            <Card className="p-6 rounded-2xl text-center bg-primary/10 border-primary/20 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
               <Puzzle className="h-12 w-12 text-primary mx-auto mb-4" />
               <CardTitle className="text-xl mb-2">Quiz da Semana!</CardTitle>
               <p className="text-muted-foreground mb-4">Acerte as perguntas sobre as notícias da semana e ganhe pontos.</p>
@@ -120,3 +120,5 @@ export default function NewsGamifiedPage() {
     </div>
   );
 }
+
+    

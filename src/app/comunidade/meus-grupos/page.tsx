@@ -46,7 +46,7 @@ export default function MyGroupsPage() {
                 {/* O mapeamento dos grupos do usuário iria aqui */}
               </div>
             ) : (
-              <Card className="text-center p-12 border-dashed">
+              <Card className="text-center p-12 border-dashed shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                 <Users className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
                 <h2 className="text-2xl font-semibold mb-2">Você ainda não faz parte de nenhum grupo</h2>
                 <p className="text-muted-foreground mb-6">Que tal explorar os grupos existentes ou criar o seu próprio?</p>
@@ -69,3 +69,5 @@ export default function MyGroupsPage() {
     </div>
   );
 }
+
+    
