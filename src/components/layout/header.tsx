@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, UserCircle, Settings, Bookmark, Sun, Moon, LogOut, Shield } from 'lucide-react';
+import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User } from 'lucide-react';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -32,24 +32,16 @@ function UserProfileDropdown() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="end">
                 <DropdownMenuLabel>
-                    <div className="flex items-center gap-3">
-                         <Avatar className="h-10 w-10 cursor-pointer">
-                            <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
-                            <AvatarFallback>
-                                <UserCircle className="h-10 w-10 text-muted-foreground" />
-                            </AvatarFallback>
-                        </Avatar>
-                        <div>
+                    <div className="flex flex-col space-y-1">
                             <p className="font-semibold">Maria Silva</p>
                             <p className="text-xs text-muted-foreground font-normal">maria.silva@example.com</p>
-                        </div>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <FeatureInProgress>
                         <DropdownMenuItem>
-                            <UserCircle className="mr-2" />
+                            <User className="mr-2" />
                             <span>Meu Perfil</span>
                         </DropdownMenuItem>
                     </FeatureInProgress>
@@ -65,10 +57,16 @@ function UserProfileDropdown() {
                             <span>Configurações</span>
                         </DropdownMenuItem>
                     </FeatureInProgress>
+                     <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <HelpCircle className="mr-2" />
+                            <span>Ajuda</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                        <div className="flex justify-between items-center w-full">
                            <div className="flex items-center">
                              <Sun className="mr-2" />
