@@ -1,4 +1,3 @@
-
 // src/app/profissionais/page.tsx
 "use client";
 
