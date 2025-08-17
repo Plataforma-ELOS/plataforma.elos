@@ -9,7 +9,7 @@ import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, ArrowUpDown, LayoutGrid, List, Plus } from 'lucide-react';
+import { Search, ArrowUpDown, LayoutGrid, List, Plus, Bookmark } from 'lucide-react';
 import DigitalLibraryCard from '@/components/sections/digital-library-card';
 import DigitalLibraryListItem from '@/components/sections/digital-library-list-item';
 import FeatureInProgress from '@/components/feature-in-progress';
@@ -137,7 +137,7 @@ function DigitalLibraryContent() {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-primary/10 dark:from-background dark:to-primary/20">
       <HeaderSecondary />
       <main className="flex-1">
         <div className="container mx-auto px-4 md:px-6 py-8">
