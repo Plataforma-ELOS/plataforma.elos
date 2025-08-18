@@ -42,7 +42,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 duration-500">
+    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
       <AlertDialog open={isSubmitted} onOpenChange={setIsSubmitted}>
         <AlertDialogContent>
           <AlertDialogHeader>
