@@ -27,49 +27,29 @@ function UserProfileDropdown() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Avatar className="h-9 w-9 cursor-pointer">
-                    <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
-                    <AvatarFallback>
-                        <UserCircle className="h-9 w-9 text-muted-foreground" />
-                    </AvatarFallback>
-                </Avatar>
+                <Button variant="ghost" size="icon">
+                    <UserCircle className="h-6 w-6 text-foreground" />
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="end">
                 <DropdownMenuLabel>
-                    <div className="flex flex-col space-y-1">
-                            <p className="font-semibold">Maria Silva</p>
-                            <p className="text-xs text-muted-foreground font-normal">maria.silva@example.com</p>
-                    </div>
+                    <p className="font-semibold">Minha Conta</p>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <FeatureInProgress>
-                        <DropdownMenuItem>
-                            <Edit className="mr-2" />
-                            <span>Editar Perfil</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                     <FeatureInProgress>
-                        <DropdownMenuItem>
-                            <Bookmark className="mr-2" />
-                            <span>Itens Salvos</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                    <FeatureInProgress>
-                        <DropdownMenuItem>
-                            <Settings className="mr-2" />
-                            <span>Configurações</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                     <FeatureInProgress>
-                        <DropdownMenuItem>
-                            <HelpCircle className="mr-2" />
-                            <span>Ajuda</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                </DropdownMenuGroup>
+                 <DropdownMenuItem asChild>
+                    <Link href="/login">
+                        <LogOut className="mr-2" />
+                        <span>Fazer Login</span>
+                    </Link>
+                </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                    <Link href="/cadastro">
+                        <User className="mr-2" />
+                        <span>Criar Conta</span>
+                    </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                 <DropdownMenuGroup>
+                <DropdownMenuGroup>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -114,13 +94,6 @@ function UserProfileDropdown() {
                         </DropdownMenuSubContent>
                     </DropdownMenuSub>
                  </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <FeatureInProgress>
-                    <DropdownMenuItem>
-                        <LogOut className="mr-2" />
-                        <span>Sair</span>
-                    </DropdownMenuItem>
-                </FeatureInProgress>
             </DropdownMenuContent>
         </DropdownMenu>
     );
@@ -187,9 +160,9 @@ export default function Header() {
           {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
-            <Button asChild className="hidden md:inline-flex bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold rounded-full">
-              <Link href="/login">Login</Link>
-            </Button>
+            <div className="hidden md:flex">
+              <UserProfileDropdown />
+            </div>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -210,7 +183,7 @@ export default function Header() {
                 </nav>
                  <div className="p-6 border-t">
                     <Button asChild className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold rounded-full">
-                      <Link href="/login">Login</Link>
+                      <Link href="/login">Login ou Cadastre-se</Link>
                     </Button>
                 </div>
               </div>

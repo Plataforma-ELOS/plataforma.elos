@@ -8,6 +8,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { CheckCircle } from 'lucide-react';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -18,14 +29,41 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
 
 export default function LoginPage() {
   const router = useRouter();
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/home');
+    setIsSubmitted(true);
   };
+
+  const handleContinue = () => {
+    setIsSubmitted(false);
+    router.push('/home');
+  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 duration-500">
+      <AlertDialog open={isSubmitted} onOpenChange={setIsSubmitted}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="bg-green-100 p-3 rounded-full">
+                <CheckCircle className="h-12 w-12 text-green-500" />
+              </div>
+            </div>
+            <AlertDialogTitle className="text-center text-2xl">Login Realizado com Sucesso!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-muted-foreground px-4">
+              Seja bem-vindo(a) de volta! Você será redirecionado para a página inicial.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleContinue} className="w-full">
+              Continuar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="mx-auto grid w-full max-w-md gap-6">

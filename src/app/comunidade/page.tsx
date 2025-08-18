@@ -6,8 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, Plus, BookOpen } from 'lucide-react';
-import FeatureInProgress from '@/components/feature-in-progress';
+import { Users, Plus, BookOpen, LogIn } from 'lucide-react';
 import PostCard, { Post } from '@/components/community/post-card';
 import Link from 'next/link';
 import {
@@ -92,6 +91,35 @@ const allCommunityEvents = [
   },
 ];
 
+function LoginRequiredDialog({ children, onConfirm }: { children: React.ReactNode, onConfirm: () => void }) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        {children}
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                    <LogIn className="h-10 w-10 text-primary" />
+                </div>
+            </div>
+          <AlertDialogTitle className="text-center">Acesso Restrito</AlertDialogTitle>
+          <AlertDialogDescription className="text-center">
+            Para acessar esta funcionalidade e interagir com a comunidade, você precisa fazer login ou criar uma conta.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="sm:justify-center">
+          <AlertDialogCancel>Agora não</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>
+            Fazer Login
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 
 export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
@@ -106,8 +134,8 @@ export default function CommunityPage() {
     ));
   };
   
-  const handleCreateGroup = () => {
-    router.push('/comunidade/criar-grupo');
+  const handleProtectedAction = () => {
+    router.push('/login');
   };
 
   const renderContent = () => {
@@ -159,37 +187,17 @@ export default function CommunityPage() {
                              <CardDescription>Participe de conversas focadas em seus interesses.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                            <Button asChild className="w-full">
-                                <Link href="/comunidade/meus-grupos">Ver meus grupos</Link>
-                            </Button>
-                             <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                  <Button variant="outline" className="w-full">
-                                      <Plus className="mr-2 h-4 w-4" />
-                                      Criar um Grupo
-                                  </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Regras para Criação de Grupos</AlertDialogTitle>
-                                  <div className="text-sm text-muted-foreground pt-2 text-left">
-                                    <p className="mb-3">Para manter nossa comunidade segura e organizada, por favor, leia as regras antes de criar um novo grupo.</p>
-                                    <ul className="list-disc list-inside space-y-1.5">
-                                        <li><strong>Finalidade Clara:</strong> O grupo deve ter um tópico ou objetivo claro.</li>
-                                        <li><strong>Moderação Ativa:</strong> O criador é o moderador inicial e responsável pelo grupo.</li>
-                                        <li><strong>Exclusão por Inatividade:</strong> Se um grupo permanecer com apenas 1 membro (o criador) por 2 semanas, ele será automaticamente excluído.</li>
-                                         <li><strong>Manutenção:</strong> Grupos inativos por longos períodos poderão ser marcados para exclusão após notificação ao moderador.</li>
-                                    </ul>
-                                  </div>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                                  <AlertDialogAction onClick={handleCreateGroup}>
-                                      Criar Grupo Agora
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                             <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                                <Button className="w-full">
+                                    Ver meus grupos
+                                </Button>
+                            </LoginRequiredDialog>
+                             <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                                <Button variant="outline" className="w-full">
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Criar um Grupo
+                                </Button>
+                            </LoginRequiredDialog>
                         </CardContent>
                     </Card>
                 </div>

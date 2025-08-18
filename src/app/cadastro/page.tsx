@@ -21,7 +21,8 @@ export default function CadastroPage() {
   
   const handleUserSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/home');
+    // Após o cadastro, leva o usuário para a tela de login
+    router.push('/login');
   }
 
   return (
