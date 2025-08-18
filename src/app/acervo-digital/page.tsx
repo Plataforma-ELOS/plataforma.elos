@@ -143,7 +143,7 @@ function DigitalLibraryContent() {
         <div className="container mx-auto px-4 md:px-6 py-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="space-y-1">
-              <h1 className="text-4xl font-bold text-primary font-headline">Acervo Digital</h1>
+              <h1 className="text-4xl font-bold text-primary dark:text-foreground font-headline">Acervo Digital</h1>
               <p className="text-muted-foreground">A plataforma definitiva para encontrar, compartilhar e colaborar com materiais sobre o TEA.</p>
             </div>
             <FeatureInProgress>

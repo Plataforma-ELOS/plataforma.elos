@@ -29,7 +29,7 @@ export default function NewProfessionals() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center text-center space-y-4 mb-12">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
-            Profissionais de Confiança
+            Profissionais de <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Confiança</span>
           </h2>
           <p className="max-w-[700px] text-foreground/80 md:text-xl">
             Onde o cuidado é valorizado e mantido. Especialistas dedicados e avaliados pela nossa comunidade.
