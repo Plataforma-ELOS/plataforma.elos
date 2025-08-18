@@ -1,10 +1,13 @@
 // src/app/login/page.tsx
+"use client";
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useRouter } from 'next/navigation';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -14,9 +17,11 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
 );
 
 export default function LoginPage() {
+  const router = useRouter();
+
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8">
-      <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
+      <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="mx-auto grid w-full max-w-md gap-6">
             <div className="grid gap-2 text-center">
@@ -30,7 +35,7 @@ export default function LoginPage() {
                 Entre com sua conta para continuar.
               </p>
             </div>
-            <div className="grid gap-4">
+            <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); router.push('/home'); }}>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -61,10 +66,10 @@ export default function LoginPage() {
                       Lembrar de mim
                   </label>
               </div>
-              <Button type="submit" className="w-full rounded-full" asChild>
-                  <Link href="/home">Entrar</Link>
+              <Button type="submit" className="w-full rounded-full">
+                  Entrar
               </Button>
-            </div>
+            </form>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
