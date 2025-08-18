@@ -75,7 +75,7 @@ export default function ProfessionalSignUpPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8">
+    <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
        <AlertDialog open={isSubmitted} onOpenChange={setIsSubmitted}>
           <AlertDialogContent>
               <AlertDialogHeader>

@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -23,7 +24,7 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased')} suppressHydrationWarning={true}>
         <Providers>
-          <div className="animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
+          <div className="animate-in fade-in-0 duration-500">
               {children}
           </div>
           <Toaster />
