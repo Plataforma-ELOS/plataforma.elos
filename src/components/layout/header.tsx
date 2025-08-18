@@ -177,7 +177,7 @@ export default function Header() {
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-sm shadow-sm' : 'bg-background'}`}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
+        <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
           <span className="text-foreground">Plataforma</span>
           <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
               E.L.O.S
@@ -187,11 +187,9 @@ export default function Header() {
           {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
-            <FeatureInProgress>
-              <Button className="hidden md:inline-flex bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold">
-                Login
-              </Button>
-            </FeatureInProgress>
+            <Button asChild className="hidden md:inline-flex bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold rounded-full">
+              <Link href="/login">Login</Link>
+            </Button>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -202,7 +200,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
-                   <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
+                   <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
                     <span className="text-foreground">Plataforma</span>
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
@@ -211,11 +209,9 @@ export default function Header() {
                   {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
                  <div className="p-6 border-t">
-                    <FeatureInProgress>
-                      <Button className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold">
-                        Login
-                      </Button>
-                    </FeatureInProgress>
+                    <Button asChild className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold rounded-full">
+                      <Link href="/login">Login</Link>
+                    </Button>
                 </div>
               </div>
             </SheetContent>
