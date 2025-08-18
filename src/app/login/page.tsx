@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Puzzle } from 'lucide-react';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -17,22 +18,24 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
 export default function LoginPage() {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8">
-      <div className="w-full max-w-6xl bg-background shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
+      <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
-          <div className="mx-auto grid w-full max-w-md gap-8">
+          <div className="mx-auto grid w-full max-w-md gap-6">
             <div className="grid gap-2 text-center">
-              <Link href="/home" className="flex items-center justify-center gap-2 text-3xl font-bold">
-                  <span className="text-foreground">Plataforma</span>
-                  <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
-                      E.L.O.S
-                  </span>
+              <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
+                  <Puzzle className="h-7 w-7 text-primary" />
+                  <span className="text-foreground">Plataforma E.L.O.S</span>
               </Link>
-              <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
+              <h1 className="text-3xl font-bold mt-4">Crie sua conta</h1>
               <p className="text-balance text-muted-foreground">
-                Faça login para continuar sua jornada de cuidado.
+                É rápido, simples e abre as portas para um mundo de apoio.
               </p>
             </div>
             <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Nome</Label>
+                <Input id="name" placeholder="Seu nome completo" required />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -43,16 +46,8 @@ export default function LoginPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Senha</Label>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Esqueceu sua senha?
-                  </Link>
-                </div>
-                <Input id="password" type="password" required />
+                <Label htmlFor="password">Senha</Label>
+                <Input id="password" type="password" required placeholder="••••••••"/>
               </div>
               <div className="flex items-center space-x-2">
                   <Checkbox id="remember-me" />
@@ -64,7 +59,7 @@ export default function LoginPage() {
                   </label>
               </div>
               <Button type="submit" className="w-full rounded-full" asChild>
-                  <Link href="/home">Entrar</Link>
+                  <Link href="/home">Criar Conta</Link>
               </Button>
             </div>
             <div className="relative">
@@ -79,21 +74,29 @@ export default function LoginPage() {
             </div>
               <div className="grid grid-cols-2 gap-4">
                  <SocialButton icon={
-                      <svg role="img" viewBox="0 0 24 24" className="h-4 w-4"><path fill="currentColor" d="M12.48 10.92v3.28h7.84c-.24 1.84-.85 3.18-1.73 4.1-1.02 1.02-2.62 2.04-4.79 2.04-5.87 0-9.47-4.82-9.47-9.8s3.6-9.8 9.47-9.8c2.62 0 4.5.96 6.17 2.18l-2.43 2.37c-.99-1-2.2-1.92-3.74-1.92-3.58 0-6.17 2.95-6.17 6.1s2.59 6.1 6.17 6.1c3.22 0 4.5-1.84 4.79-3.28h-4.79z"></path></svg>
+                      <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.7503 1.165 15.0553 0 12.0003 0C7.31028 0 3.25527 2.725 1.25027 6.55L4.93528 9.32498C5.87528 6.56502 8.65528 4.75 12.0003 4.75Z" /><path fill="currentColor" d="M23.49 12.275C23.49 11.49 23.415 10.73 23.285 10H12V14.51H18.47C18.18 15.99 17.34 17.255 16.08 18.105L16.08 18.145L19.835 20.91C22.02 18.965 23.49 15.92 23.49 12.275Z" /><path fill="currentColor" d="M4.93028 9.32498L1.25027 6.54998C0.465271 8.22498 0.000274658 10.06 0.000274658 12C0.000274658 13.94 0.465271 15.775 1.25027 17.45L4.93028 14.675C4.51528 13.565 4.25027 12.35 4.25027 11.995C4.25027 11.235 4.43528 10.26 4.93028 9.32498Z" /><path fill="currentColor" d="M12.0003 24C15.2403 24 17.9653 22.935 19.8353 20.91L16.0803 18.105C14.9603 18.845 13.6203 19.25 12.0003 19.25C8.65528 19.25 5.87528 17.435 4.93528 14.675L1.25527 17.455C3.25527 21.275 7.31028 24 12.0003 24Z" /></svg>
                   }>
                       Google
                   </SocialButton>
                    <SocialButton icon={
-                      <svg role="img" viewBox="0 0 24 24" className="h-4 w-4 fill-[#1877F2]"><path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.407.593 24 1.324 24h11.494v-9.294H9.692v-3.622h3.126V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.324V1.324C24 .593 23.407 0 22.676 0z"></path></svg>
+                      <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M17.153 22.5c-2.43 0-3.32-1.353-5.03-1.353-1.713 0-2.733 1.353-5.034 1.353-4.22 0-6.09-4.26-6.09-9.273 0-5.62 4.155-8.227 8.3-8.227 2.1 0 3.52 1.092 4.938 1.092 1.355 0 3.038-1.092 5.03-1.092 4.468 0 7.856 3.654 7.856 8.358 0 4.148-2.615 7.02-5.32 8.784-1.28.84-2.738 1.38-4.43 1.358zM12.02 3.064c-1.575 0-3.153 1.06-4.023 2.147-2.18 2.654-2.115 6.692-2.115 6.692.93 0 2.183-1.38 4.14-1.38s2.87 1.38 4.023 1.38c2.146 0 3.33-2.454 3.394-2.52.067-.066-2.147-3.41-5.42-3.319z"/></svg>
                   }>
-                      Facebook
+                      Apple
                   </SocialButton>
               </div>
-            <div className="mt-4 text-center text-sm">
-              Não tem uma conta?{' '}
-              <Link href="#" className="underline">
-                Cadastre-se
-              </Link>
+             <div className="mt-4 text-center text-sm space-y-4">
+                <p>
+                    Já tem uma conta?{' '}
+                    <Link href="#" className="underline font-semibold">
+                       Faça Login
+                    </Link>
+                </p>
+                 <p className="border-t pt-4">
+                    É um profissional ou clínica?{' '}
+                    <Link href="#" className="underline font-semibold text-primary">
+                       Cadastre-se aqui
+                    </Link>
+                </p>
             </div>
           </div>
         </div>
