@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
 import { useState, useContext } from 'react';
+import Image from 'next/image';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import { CheckCircle, XCircle, User, LogIn } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import { AuthContext } from '@/components/providers';
 
 export default function LoginPage() {
@@ -93,66 +94,80 @@ export default function LoginPage() {
       </AlertDialog>
 
       <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="w-full max-w-lg mx-auto bg-card shadow-2xl rounded-2xl p-8 sm:p-12">
-            <div className="mx-auto grid w-full max-w-md gap-6">
-              <div className="grid gap-2 text-center">
-                <div className="flex items-center justify-center gap-2 text-2xl font-bold">
-                    <span className="text-foreground">Plataforma</span>
-                    <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
+        <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
+            <div className="flex items-center justify-center p-8 sm:p-12">
+                <div className="mx-auto grid w-full max-w-md gap-6">
+                <div className="grid gap-2 text-center">
+                    <div className="flex items-center justify-center gap-2 text-2xl font-bold">
+                        <span className="text-foreground">Plataforma</span>
+                        <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
+                    </div>
+                    <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
+                    <p className="text-balance text-muted-foreground">
+                    Entre com sua conta para continuar.
+                    </p>
                 </div>
-                <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
-                <p className="text-balance text-muted-foreground">
-                  Entre com sua conta para continuar.
-                </p>
-              </div>
-              <form className="grid gap-4" onSubmit={handleSubmit}>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="seu@email.com"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                <form className="grid gap-4" onSubmit={handleSubmit}>
+                    <div className="grid gap-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="seu@email.com"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    </div>
+                    <div className="grid gap-2">
+                    <div className="flex items-center">
+                        <Label htmlFor="password">Senha</Label>
+                    </div>
+                    <Input 
+                        id="password" 
+                        type="password" 
+                        required 
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox id="remember-me" />
+                        <label
+                            htmlFor="remember-me"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Lembrar de mim
+                        </label>
+                    </div>
+                    <Button type="submit" className="w-full rounded-full">
+                        Entrar
+                    </Button>
+                </form>
+                <div className="mt-4 text-center text-sm">
+                    <p>
+                        Não tem uma conta?{' '}
+                        <button onClick={() => router.push('/cadastro')} className="underline font-semibold">
+                            Crie uma agora
+                        </button>
+                    </p>
                 </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Senha</Label>
-                  </div>
-                  <Input 
-                    id="password" 
-                    type="password" 
-                    required 
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
                 </div>
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="remember-me" />
-                    <label
-                        htmlFor="remember-me"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                        Lembrar de mim
-                    </label>
-                </div>
-                <Button type="submit" className="w-full rounded-full">
-                    Entrar
-                </Button>
-              </form>
-               <div className="mt-4 text-center text-sm">
-                  <p>
-                      Não tem uma conta?{' '}
-                      <button onClick={() => router.push('/cadastro')} className="underline font-semibold">
-                         Crie uma agora
-                      </button>
-                  </p>
-              </div>
             </div>
-          </div>
+
+             {/* Coluna da Direita (Imagem) */}
+            <div className="hidden lg:flex items-center justify-center p-6 bg-background">
+                <Image
+                    src="https://placehold.co/1920x1080.png"
+                    alt="Image"
+                    width="1920"
+                    height="1080"
+                    data-ai-hint="community support smiling"
+                    className="h-full w-full object-cover rounded-xl"
+                />
+            </div>
+        </div>
       </div>
     </>
   );
