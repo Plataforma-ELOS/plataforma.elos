@@ -1,4 +1,4 @@
-// src/app/login/page.tsx
+// src/app/cadastro/page.tsx
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
     </Button>
 );
 
-export default function LoginPage() {
+export default function CadastroPage() {
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
@@ -25,12 +25,16 @@ export default function LoginPage() {
                   <span className="text-foreground">Plataforma</span>
                   <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
               </Link>
-              <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
+              <h1 className="text-3xl font-bold mt-4">Crie sua conta</h1>
               <p className="text-balance text-muted-foreground">
-                Entre com sua conta para continuar.
+                É rápido, simples e abre as portas para um mundo de apoio.
               </p>
             </div>
             <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Nome</Label>
+                <Input id="name" placeholder="Seu nome completo" required />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -54,7 +58,7 @@ export default function LoginPage() {
                   </label>
               </div>
               <Button type="submit" className="w-full rounded-full" asChild>
-                  <Link href="/home">Entrar</Link>
+                  <Link href="/home">Criar Conta</Link>
               </Button>
             </div>
             <div className="relative">
@@ -81,9 +85,9 @@ export default function LoginPage() {
               </div>
              <div className="mt-4 text-center text-sm space-y-4">
                 <p>
-                    Não tem uma conta?{' '}
-                    <Link href="/cadastro" className="underline font-semibold">
-                       Crie uma agora
+                    Já tem uma conta?{' '}
+                    <Link href="/login" className="underline font-semibold">
+                       Faça Login
                     </Link>
                 </p>
                  <p className="border-t pt-4">

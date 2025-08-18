@@ -39,10 +39,10 @@ export default function ProfessionalSignUpPage() {
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     // Allow only numbers and limit to 7 digits
-    if (/^\d*$/.test(value) && value.length <= 7) {
+    if (/^\d{0,7}$/.test(value)) {
       e.target.value = value;
     } else {
-        e.target.value = e.target.value.slice(0, -1);
+        e.target.value = e.target.value.slice(0, 7);
     }
   };
   
@@ -70,7 +70,7 @@ export default function ProfessionalSignUpPage() {
             </div>
             <AlertDialogTitle className="text-center text-2xl">Inscrição Realizada com Sucesso!</AlertDialogTitle>
             <AlertDialogDescription className="text-center text-muted-foreground px-4">
-              Sua inscrição foi recebida e será analisada pela nossa equipe. Você receberá uma resposta em seu e--mail em um período de até 2 semanas. Agradecemos o seu interesse em fazer parte da E.L.O.S!
+              Sua inscrição foi recebida e será analisada pela nossa equipe. Você receberá uma resposta em seu e-mail em um período de até 2 semanas. Agradecemos o seu interesse em fazer parte da E.L.O.S!
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -128,7 +128,7 @@ export default function ProfessionalSignUpPage() {
 
               <div className="grid gap-2">
                 <Label htmlFor="professional-id">Número do Registro Profissional (apenas números)</Label>
-                <Input id="professional-id" placeholder="Ex: 06123456" required onChange={handleNumericInput} />
+                <Input id="professional-id" placeholder="Ex: 06123456" required onChange={handleNumericInput} maxLength={7} minLength={7} />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="experience">Compartilhe um pouco de sua experiência</Label>
