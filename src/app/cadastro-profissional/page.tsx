@@ -1,4 +1,3 @@
-
 // src/app/cadastro-profissional/page.tsx
 "use client";
 
@@ -158,7 +157,7 @@ export default function ProfessionalSignUpPage() {
         </div>
 
         {/* Coluna da Direita (Imagem) */}
-        <div className="hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-blue-900/30 dark:via-purple-900/30 dark:to-pink-900/30">
+        <div className="hidden lg:flex items-center justify-center p-6 bg-background">
           <Image
             src="https://placehold.co/1920x1080.png"
             alt="Image"
