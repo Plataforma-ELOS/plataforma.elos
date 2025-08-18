@@ -41,7 +41,15 @@ export default function LoginPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Senha</Label>
+                <div className="flex items-center">
+                  <Label htmlFor="password">Senha</Label>
+                  <Link
+                    href="#"
+                    className="ml-auto inline-block text-sm underline"
+                  >
+                    Esqueceu sua senha?
+                  </Link>
+                </div>
                 <Input id="password" type="password" required placeholder="••••••••"/>
               </div>
               <div className="flex items-center space-x-2">
@@ -79,17 +87,11 @@ export default function LoginPage() {
                       Apple
                   </SocialButton>
               </div>
-             <div className="mt-4 text-center text-sm space-y-4">
+             <div className="mt-4 text-center text-sm">
                 <p>
                     Não tem uma conta?{' '}
                     <Link href="/cadastro" className="underline font-semibold">
                        Crie uma agora
-                    </Link>
-                </p>
-                 <p className="border-t pt-4">
-                    É um profissional ou clínica?{' '}
-                    <Link href="/profissionais/cadastro" className="underline font-semibold text-primary">
-                       Cadastre-se aqui
                     </Link>
                 </p>
             </div>
