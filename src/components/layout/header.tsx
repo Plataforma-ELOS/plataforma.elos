@@ -181,10 +181,8 @@ export default function Header() {
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
                   {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
-                 <div className="p-6 border-t">
-                    <Button asChild className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold rounded-full">
-                      <Link href="/login">Login ou Cadastre-se</Link>
-                    </Button>
+                 <div className="p-6 border-t flex items-center justify-center">
+                    <UserProfileDropdown />
                 </div>
               </div>
             </SheetContent>
