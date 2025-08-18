@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { AuthContext } from '@/components/providers';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) => (
   <Button variant="outline" className="w-full justify-center gap-3">
@@ -18,16 +20,24 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode; icon: Rea
 
 export default function CadastroPage() {
   const router = useRouter();
+  const { register } = useContext(AuthContext);
   
-  const handleUserSubmit = (e: React.FormEvent) => {
+  const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
+    
+    register({ name, email, password });
+    
     // Após o cadastro, leva o usuário para a tela de login
     router.push('/login');
   }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
-      <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl grid lg:grid-cols-2">
+      <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
         
         {/* Coluna da Esquerda (Formulário) */}
         <div className="flex items-center justify-center p-8 sm:p-12">
@@ -46,15 +56,15 @@ export default function CadastroPage() {
                 <form className="grid gap-4" onSubmit={handleUserSubmit}>
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nome</Label>
-                        <Input id="name" placeholder="Seu nome completo" required />
+                        <Input id="name" name="name" placeholder="Seu nome completo" required />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="seu@email.com" required />
+                        <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password">Senha</Label>
-                        <Input id="password" type="password" required placeholder="••••••••"/>
+                        <Input id="password" name="password" type="password" required placeholder="••••••••"/>
                     </div>
                     <div className="flex items-center space-x-2">
                         <Checkbox id="remember-me" />

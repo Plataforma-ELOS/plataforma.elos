@@ -22,12 +22,6 @@ import {
 import { CheckCircle, XCircle } from 'lucide-react';
 import { AuthContext } from '@/components/providers';
 
-// Mock de usuários cadastrados
-const registeredUsers = [
-  { email: 'maria.silva@example.com', password: '123', name: 'Maria Silva' },
-  { email: 'joao.costa@example.com', password: '123', name: 'João Costa' },
-  { email: 'admin@elos.com.br', password: 'admin', name: 'Admin Elos' },
-];
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -38,7 +32,7 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useContext(AuthContext);
+  const { login, registeredUsers } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
@@ -46,14 +40,14 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const user = registeredUsers.find(u => u.email === email);
+    const user = registeredUsers.find(u => u.email === email && u.password === password);
     
     if (user) {
-      // E-mail encontrado, simula login bem-sucedido
+      // E-mail e senha correspondem, login bem-sucedido
       login(user);
       setShowSuccessDialog(true);
     } else {
-      // E-mail não encontrado
+      // E-mail não encontrado ou senha incorreta
       setShowErrorDialog(true);
     }
   };
@@ -61,7 +55,7 @@ export default function LoginPage() {
   const handleContinue = () => {
     setShowSuccessDialog(false);
     router.push('/home');
-  }
+  };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
@@ -96,9 +90,9 @@ export default function LoginPage() {
                 <XCircle className="h-12 w-12 text-destructive" />
               </div>
             </div>
-            <AlertDialogTitle className="text-center text-2xl">E-mail não cadastrado</AlertDialogTitle>
+            <AlertDialogTitle className="text-center text-2xl">Dados inválidos</AlertDialogTitle>
             <AlertDialogDescription className="text-center text-muted-foreground px-4">
-              Os dados inseridos não foram encontrados em nosso sistema. Por favor, verifique o e-mail ou crie uma nova conta.
+              Os dados inseridos não foram encontrados em nosso sistema. Por favor, verifique suas informações ou crie uma nova conta.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -183,12 +177,12 @@ export default function LoginPage() {
                       <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.7503 1.165 15.0553 0 12.0003 0C7.31028 0 3.25527 2.725 1.25027 6.55L4.93528 9.32498C5.87528 6.56502 8.65528 4.75 12.0003 4.75Z" /><path fill="currentColor" d="M23.49 12.275C23.49 11.49 23.415 10.73 23.285 10H12V14.51H18.47C18.18 15.99 17.34 17.255 16.08 18.105L16.08 18.145L19.835 20.91C22.02 18.965 23.49 15.92 23.49 12.275Z" /><path fill="currentColor" d="M4.93028 9.32498L1.25027 6.54998C0.465271 8.22498 0.000274658 10.06 0.000274658 12C0.000274658 13.94 0.465271 15.775 1.25027 17.45L4.93028 14.675C4.51528 13.565 4.25027 12.35 4.25027 11.995C4.25027 11.235 4.43528 10.26 4.93028 9.32498Z" /><path fill="currentColor" d="M12.0003 24C15.2403 24 17.9653 22.935 19.8353 20.91L16.0803 18.105C14.9603 18.845 13.6203 19.25 12.0003 19.25C8.65528 19.25 5.87528 17.435 4.93528 14.675L1.25527 17.455C3.25527 21.275 7.31028 24 12.0003 24Z" /></svg>
                   }>
                       Google
-                  </SocialButton>
+                  </Button>
                    <SocialButton icon={
                       <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M17.153 22.5c-2.43 0-3.32-1.353-5.03-1.353-1.713 0-2.733 1.353-5.034 1.353-4.22 0-6.09-4.26-6.09-9.273 0-5.62 4.155-8.227 8.3-8.227 2.1 0 3.52 1.092 4.938 1.092 1.355 0 3.038-1.092 5.03-1.092 4.468 0 7.856 3.654 7.856 8.358 0 4.148-2.615 7.02-5.32 8.784-1.28.84-2.738 1.38-4.43 1.358zM12.02 3.064c-1.575 0-3.153 1.06-4.023 2.147-2.18 2.654-2.115 6.692-2.115 6.692.93 0 2.183-1.38 4.14-1.38s2.87 1.38 4.023 1.38c2.146 0 3.33-2.454 3.394-2.52.067-.066-2.147-3.41-5.42-3.319z"/></svg>
                   }>
                       Apple
-                  </SocialButton>
+                  </Button>
               </div>
              <div className="mt-4 text-center text-sm">
                 <p>
