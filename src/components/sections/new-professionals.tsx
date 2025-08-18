@@ -29,7 +29,7 @@ export default function NewProfessionals() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center text-center space-y-4 mb-12">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
-            Profissionais de <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">Confiança</span>
+            Profissionais de Confiança
           </h2>
           <p className="max-w-[700px] text-foreground/80 md:text-xl">
             Onde o cuidado é valorizado e mantido. Especialistas dedicados e avaliados pela nossa comunidade.
@@ -68,8 +68,8 @@ export default function NewProfessionals() {
             ))}
           </CarouselContent>
            <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
-                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
-                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
+                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent dark:from-black dark:to-transparent"></div>
+                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent dark:from-black dark:to-transparent"></div>
             </div>
           <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
           <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
