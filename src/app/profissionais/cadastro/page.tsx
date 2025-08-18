@@ -1,4 +1,3 @@
-
 // src/app/profissionais/cadastro/page.tsx
 "use client";
 
@@ -56,19 +55,19 @@ export default function ProfessionalSignUpPage() {
       <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl overflow-hidden grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="mx-auto grid w-full max-w-md gap-6">
-            <div className="grid gap-2">
-                <Button variant="ghost" asChild className="justify-start p-0 h-auto text-muted-foreground w-fit">
+            <div className="grid gap-2 text-center">
+                 <Button variant="ghost" asChild className="justify-start p-0 h-auto text-muted-foreground w-fit absolute top-8 left-8">
                     <Link href="/login">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Voltar
                     </Link>
                 </Button>
-              <h1 className="text-3xl font-bold mt-2">Cadastro Profissional</h1>
+              <h1 className="text-3xl font-bold mt-12">Cadastro Profissional</h1>
               <p className="text-balance text-muted-foreground">
                 Submeta sua inscrição para participar do time de perfis profissionais da plataforma E.L.O.S.
               </p>
             </div>
-            <form className="grid gap-4" onSubmit={handleSubmit}>
+            <form className="grid gap-4 mt-4" onSubmit={handleSubmit}>
               <div className="grid gap-2">
                 <Label htmlFor="full-name">Nome Completo</Label>
                 <Input id="full-name" placeholder="Seu nome ou nome da clínica" required />
@@ -91,9 +90,9 @@ export default function ProfessionalSignUpPage() {
                 </Select>
               </div>
               
-              <div className={`grid gap-2 transition-all duration-300 ${registrationType === 'clinic' ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>
+              <div className={`grid gap-2 transition-all duration-300 ease-in-out ${registrationType === 'clinic' ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>
                 <Label htmlFor="cnpj">CNPJ</Label>
-                <Input id="cnpj" placeholder="00.000.000/0000-00" disabled={registrationType !== 'clinic'} />
+                <Input id="cnpj" placeholder="00.000.000/0000-00" required={registrationType === 'clinic'} disabled={registrationType !== 'clinic'} />
               </div>
 
               <div className="grid gap-2">
