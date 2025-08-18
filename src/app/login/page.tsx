@@ -24,7 +24,8 @@ export default function LoginPage() {
             <div className="grid gap-2 text-center">
               <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
                   <Puzzle className="h-7 w-7 text-primary" />
-                  <span className="text-foreground">Plataforma E.L.O.S</span>
+                  <span className="text-foreground">Plataforma</span>
+                  <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
               </Link>
               <h1 className="text-3xl font-bold mt-4">Crie sua conta</h1>
               <p className="text-balance text-muted-foreground">
