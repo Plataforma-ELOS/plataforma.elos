@@ -1,8 +1,6 @@
 // src/app/login/page.tsx
 "use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,16 +17,8 @@ import {
   AlertDialogTitle,
   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle, User, LogIn } from 'lucide-react';
 import { AuthContext } from '@/components/providers';
-
-
-const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
-    <Button variant="outline" className="w-full justify-center gap-3">
-        {icon}
-        {children}
-    </Button>
-);
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,11 +33,9 @@ export default function LoginPage() {
     const user = registeredUsers.find(u => u.email === email && u.password === password);
     
     if (user) {
-      // E-mail e senha correspondem, login bem-sucedido
       login(user);
       setShowSuccessDialog(true);
     } else {
-      // E-mail não encontrado ou senha incorreta
       setShowErrorDialog(true);
     }
   };
@@ -55,10 +43,10 @@ export default function LoginPage() {
   const handleContinue = () => {
     setShowSuccessDialog(false);
     router.push('/home');
-  }
+  };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
+    <>
       {/* Pop-up de Sucesso */}
       <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <AlertDialogContent>
@@ -104,107 +92,68 @@ export default function LoginPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
-        <div className="flex items-center justify-center p-8 sm:p-12">
-          <div className="mx-auto grid w-full max-w-md gap-6">
-            <div className="grid gap-2 text-center">
-              <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
-                  <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
-                  <span className="text-foreground">Plataforma</span>
-                  <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
-              </Link>
-              <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
-              <p className="text-balance text-muted-foreground">
-                Entre com sua conta para continuar.
-              </p>
-            </div>
-            <form className="grid gap-4" onSubmit={handleSubmit}>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Senha</Label>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Esqueceu sua senha?
-                  </Link>
+      <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="w-full max-w-lg mx-auto bg-card shadow-2xl rounded-2xl p-8 sm:p-12">
+            <div className="mx-auto grid w-full max-w-md gap-6">
+              <div className="grid gap-2 text-center">
+                <div className="flex items-center justify-center gap-2 text-2xl font-bold">
+                    <span className="text-foreground">Plataforma</span>
+                    <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  required 
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center space-x-2">
-                  <Checkbox id="remember-me" />
-                  <label
-                      htmlFor="remember-me"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                      Lembrar de mim
-                  </label>
-              </div>
-              <Button type="submit" className="w-full rounded-full">
-                  Entrar
-              </Button>
-            </form>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                  Ou continue com
-                  </span>
-              </div>
-            </div>
-              <div className="grid grid-cols-2 gap-4">
-                 <SocialButton icon={
-                      <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.7503 1.165 15.0553 0 12.0003 0C7.31028 0 3.25527 2.725 1.25027 6.55L4.93528 9.32498C5.87528 6.56502 8.65528 4.75 12.0003 4.75Z" /><path fill="currentColor" d="M23.49 12.275C23.49 11.49 23.415 10.73 23.285 10H12V14.51H18.47C18.18 15.99 17.34 17.255 16.08 18.105L16.08 18.145L19.835 20.91C22.02 18.965 23.49 15.92 23.49 12.275Z" /><path fill="currentColor" d="M4.93028 9.32498L1.25027 6.54998C0.465271 8.22498 0.000274658 10.06 0.000274658 12C0.000274658 13.94 0.465271 15.775 1.25027 17.45L4.93028 14.675C4.51528 13.565 4.25027 12.35 4.25027 11.995C4.25027 11.235 4.43528 10.26 4.93028 9.32498Z" /><path fill="currentColor" d="M12.0003 24C15.2403 24 17.9653 22.935 19.8353 20.91L16.0803 18.105C14.9603 18.845 13.6203 19.25 12.0003 19.25C8.65528 19.25 5.87528 17.435 4.93528 14.675L1.25527 17.455C3.25527 21.275 7.31028 24 12.0003 24Z" /></svg>
-                  }>
-                      Google
-                  </Button>
-                   <SocialButton icon={
-                      <svg role="img" viewBox="0 0 24 24" className="h-5 w-5"><path fill="currentColor" d="M17.153 22.5c-2.43 0-3.32-1.353-5.03-1.353-1.713 0-2.733 1.353-5.034 1.353-4.22 0-6.09-4.26-6.09-9.273 0-5.62 4.155-8.227 8.3-8.227 2.1 0 3.52 1.092 4.938 1.092 1.355 0 3.038-1.092 5.03-1.092 4.468 0 7.856 3.654 7.856 8.358 0 4.148-2.615 7.02-5.32 8.784-1.28.84-2.738 1.38-4.43 1.358zM12.02 3.064c-1.575 0-3.153 1.06-4.023 2.147-2.18 2.654-2.115 6.692-2.115 6.692.93 0 2.183-1.38 4.14-1.38s2.87 1.38 4.023 1.38c2.146 0 3.33-2.454 3.394-2.52.067-.066-2.147-3.41-5.42-3.319z"/></svg>
-                  }>
-                      Apple
-                  </Button>
-              </div>
-             <div className="mt-4 text-center text-sm">
-                <p>
-                    Não tem uma conta?{' '}
-                    <Link href="/cadastro" className="underline font-semibold">
-                       Crie uma agora
-                    </Link>
+                <h1 className="text-3xl font-bold mt-4">Bem-vindo(a) de volta!</h1>
+                <p className="text-balance text-muted-foreground">
+                  Entre com sua conta para continuar.
                 </p>
+              </div>
+              <form className="grid gap-4" onSubmit={handleSubmit}>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="seu@email.com"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Senha</Label>
+                  </div>
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    required 
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="remember-me" />
+                    <label
+                        htmlFor="remember-me"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Lembrar de mim
+                    </label>
+                </div>
+                <Button type="submit" className="w-full rounded-full">
+                    Entrar
+                </Button>
+              </form>
+               <div className="mt-4 text-center text-sm">
+                  <p>
+                      Não tem uma conta?{' '}
+                      <button onClick={() => router.push('/cadastro')} className="underline font-semibold">
+                         Crie uma agora
+                      </button>
+                  </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="hidden lg:flex items-center justify-center bg-card p-6">
-            <Image
-              src="https://placehold.co/1920x1080.png"
-              alt="Image"
-              width="1920"
-              height="1080"
-              data-ai-hint="mother child smiling"
-              className="h-full w-full object-cover rounded-xl"
-            />
-        </div>
       </div>
-    </div>
+    </>
   );
 }
