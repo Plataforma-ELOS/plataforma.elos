@@ -93,7 +93,7 @@ export default function LoginPage() {
                 </p>
                  <p className="border-t pt-4">
                     É um profissional ou clínica?{' '}
-                    <Link href="#" className="underline font-semibold text-primary">
+                    <Link href="/profissionais/cadastro" className="underline font-semibold text-primary">
                        Cadastre-se aqui
                     </Link>
                 </p>
