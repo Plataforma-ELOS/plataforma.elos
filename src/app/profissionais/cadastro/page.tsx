@@ -38,11 +38,9 @@ export default function ProfessionalSignUpPage() {
 
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow only numbers and limit to 7 digits
-    if (/^\d{0,7}$/.test(value)) {
-      e.target.value = value;
-    } else {
-        e.target.value = e.target.value.slice(0, 7);
+    // Allow only numbers
+    if (!/^\d*$/.test(value)) {
+        e.target.value = value.replace(/\D/g, '');
     }
   };
   
@@ -92,9 +90,14 @@ export default function ProfessionalSignUpPage() {
                     Voltar
                 </Link>
             </Button>
-            <div className="text-center mt-12">
-              <h1 className="text-3xl font-bold">Cadastro Profissional</h1>
-              <p className="text-balance text-muted-foreground mt-2">
+            <div className="grid gap-2 text-center mt-12">
+               <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
+                  <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
+                  <span className="text-foreground">Plataforma</span>
+                  <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
+              </Link>
+              <h1 className="text-3xl font-bold mt-4">Cadastro Profissional</h1>
+              <p className="text-balance text-muted-foreground">
                 Submeta sua inscrição para participar do time de perfis profissionais da plataforma E.L.O.S.
               </p>
             </div>
