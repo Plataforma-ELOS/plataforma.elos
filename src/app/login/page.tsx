@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Puzzle } from 'lucide-react';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -23,7 +22,7 @@ export default function LoginPage() {
           <div className="mx-auto grid w-full max-w-md gap-6">
             <div className="grid gap-2 text-center">
               <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
-                  <Puzzle className="h-7 w-7 text-primary" />
+                  <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
                   <span className="text-foreground">Plataforma</span>
                   <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
               </Link>
