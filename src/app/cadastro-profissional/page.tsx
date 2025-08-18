@@ -39,7 +39,6 @@ export default function ProfessionalSignUpPage() {
 
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Permite apenas números e limita o comprimento
     const numericValue = value.replace(/\D/g, '');
     if (numericValue.length <= 7) {
       e.target.value = numericValue;
@@ -65,7 +64,6 @@ export default function ProfessionalSignUpPage() {
 
   const handleProfessionalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Validação final do campo de registro
     const professionalIdInput = document.getElementById('professional-id') as HTMLInputElement;
     if (professionalIdInput.value.length !== 7) {
       alert('O número do registro profissional deve ter exatamente 7 dígitos.');
@@ -75,7 +73,7 @@ export default function ProfessionalSignUpPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
+    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
        <AlertDialog open={isSubmitted} onOpenChange={setIsSubmitted}>
           <AlertDialogContent>
               <AlertDialogHeader>

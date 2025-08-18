@@ -26,7 +26,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-muted/40 p-4 sm:p-6 lg:p-8 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
+    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 duration-500">
       <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="mx-auto grid w-full max-w-md gap-6">
