@@ -187,9 +187,11 @@ export default function Header() {
           {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
-            <div className="hidden md:inline-flex">
-                 <UserProfileDropdown />
-            </div>
+            <FeatureInProgress>
+              <Button className="hidden md:inline-flex bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold">
+                Login
+              </Button>
+            </FeatureInProgress>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -209,7 +211,11 @@ export default function Header() {
                   {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
                  <div className="p-6 border-t">
-                    <UserProfileDropdown />
+                    <FeatureInProgress>
+                      <Button className="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold">
+                        Login
+                      </Button>
+                    </FeatureInProgress>
                 </div>
               </div>
             </SheetContent>
