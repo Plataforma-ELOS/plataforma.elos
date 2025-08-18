@@ -1,5 +1,5 @@
 
-import Header from '@/components/layout/header';
+import HeaderSecondary from '@/components/layout/header-secondary';
 import Hero from '@/components/sections/hero';
 import Footer from '@/components/layout/footer';
 import AiSupportHome from '@/components/sections/ai-support-home';
@@ -11,7 +11,7 @@ import NewProfessionals from '@/components/sections/new-professionals';
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header />
+      <HeaderSecondary />
       <main className="flex-1">
         <Hero />
         <AiSupportHome />
