@@ -55,7 +55,7 @@ export default function LoginPage() {
   const handleContinue = () => {
     setShowSuccessDialog(false);
     router.push('/home');
-  };
+  }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
@@ -194,7 +194,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        <div className="hidden lg:flex items-center justify-center bg-background p-6">
+        <div className="hidden lg:flex items-center justify-center bg-card p-6">
             <Image
               src="https://placehold.co/1920x1080.png"
               alt="Image"
