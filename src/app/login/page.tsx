@@ -62,7 +62,7 @@ export default function LoginPage() {
                     Lembrar de mim
                 </label>
             </div>
-            <Button type="submit" className="w-full" asChild>
+            <Button type="submit" className="w-full rounded-full" asChild>
                 <Link href="/home">Entrar</Link>
             </Button>
           </div>
@@ -96,15 +96,17 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      <div className="hidden bg-muted lg:block">
-        <Image
-          src="https://placehold.co/1080x1920.png"
-          alt="Image"
-          width="1920"
-          height="1080"
-          data-ai-hint="mother child smiling"
-          className="h-full w-full object-cover dark:brightness-[0.3] dark:grayscale"
-        />
+      <div className="hidden bg-muted lg:flex items-center justify-center p-8">
+        <div className="w-full h-full bg-background rounded-2xl flex items-center justify-center p-4">
+            <Image
+              src="https://placehold.co/1920x1080.png"
+              alt="Image"
+              width="1920"
+              height="1080"
+              data-ai-hint="mother child smiling"
+              className="h-full w-full object-cover rounded-xl dark:brightness-[0.7]"
+            />
+        </div>
       </div>
     </div>
   );
