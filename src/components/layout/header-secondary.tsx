@@ -11,7 +11,7 @@ import { usePathname } from 'next/navigation';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '../ui/dropdown-menu';
 import { useTheme } from 'next-themes';
-import { FontSizeContext } from '../providers';
+import { AuthContext, FontSizeContext } from '../providers';
 
 
 const navItems = [
@@ -25,6 +25,39 @@ const navItems = [
 function UserProfileDropdown() {
     const { setTheme } = useTheme();
     const { fontSize, setFontSize } = useContext(FontSizeContext);
+    const { user, logout } = useContext(AuthContext);
+    
+    if (!user) {
+         return (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                     <Button variant="ghost" size="icon">
+                        <UserCircle className="h-6 w-6 text-foreground" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64" align="end">
+                    <DropdownMenuLabel>
+                        <p className="font-semibold">Minha Conta</p>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Link href="/login">
+                            <LogOut className="mr-2" />
+                            <span>Fazer Login</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/cadastro">
+                            <User className="mr-2" />
+                            <span>Criar Conta</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    {/* Theme and Font Size options for non-logged in users */}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        );
+    }
     
     return (
         <DropdownMenu>
@@ -32,15 +65,15 @@ function UserProfileDropdown() {
                 <Avatar className="h-9 w-9 cursor-pointer">
                     <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
                     <AvatarFallback>
-                        <UserCircle className="h-9 w-9 text-muted-foreground" />
+                        {user.name.charAt(0)}
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64" align="end">
                 <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
-                        <p className="font-semibold">Maria Silva</p>
-                        <p className="text-xs text-muted-foreground font-normal">maria.silva@example.com</p>
+                        <p className="font-semibold">{user.name}</p>
+                        <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -117,12 +150,10 @@ function UserProfileDropdown() {
                     </DropdownMenuSub>
                  </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <FeatureInProgress>
-                    <DropdownMenuItem>
-                        <LogOut className="mr-2" />
-                        <span>Sair</span>
-                    </DropdownMenuItem>
-                </FeatureInProgress>
+                <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2" />
+                    <span>Sair</span>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

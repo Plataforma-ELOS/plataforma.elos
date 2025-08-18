@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,8 +17,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { AuthContext } from '@/components/providers';
+
+// Mock de usuários cadastrados
+const registeredUsers = [
+  { email: 'maria.silva@example.com', password: '123', name: 'Maria Silva' },
+  { email: 'joao.costa@example.com', password: '123', name: 'João Costa' },
+  { email: 'admin@elos.com.br', password: 'admin', name: 'Admin Elos' },
+];
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: React.ReactNode }) => (
     <Button variant="outline" className="w-full justify-center gap-3">
@@ -29,21 +38,35 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode, icon: Rea
 
 export default function LoginPage() {
   const router = useRouter();
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    const user = registeredUsers.find(u => u.email === email);
+    
+    if (user) {
+      // E-mail encontrado, simula login bem-sucedido
+      login(user);
+      setShowSuccessDialog(true);
+    } else {
+      // E-mail não encontrado
+      setShowErrorDialog(true);
+    }
   };
 
   const handleContinue = () => {
-    setIsSubmitted(false);
+    setShowSuccessDialog(false);
     router.push('/home');
   }
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
-      <AlertDialog open={isSubmitted} onOpenChange={setIsSubmitted}>
+      {/* Pop-up de Sucesso */}
+      <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <div className="flex justify-center mb-4">
@@ -64,7 +87,30 @@ export default function LoginPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="w-full max-w-5xl bg-background shadow-2xl rounded-2xl grid lg:grid-cols-2">
+      {/* Pop-up de Erro */}
+      <AlertDialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="bg-destructive/10 p-3 rounded-full">
+                <XCircle className="h-12 w-12 text-destructive" />
+              </div>
+            </div>
+            <AlertDialogTitle className="text-center text-2xl">E-mail não cadastrado</AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-muted-foreground px-4">
+              Os dados inseridos não foram encontrados em nosso sistema. Por favor, verifique o e-mail ou crie uma nova conta.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowErrorDialog(false)}>Tentar Novamente</AlertDialogCancel>
+            <AlertDialogAction onClick={() => router.push('/cadastro')}>
+              Criar Conta
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
         <div className="flex items-center justify-center p-8 sm:p-12">
           <div className="mx-auto grid w-full max-w-md gap-6">
             <div className="grid gap-2 text-center">
@@ -86,6 +132,8 @@ export default function LoginPage() {
                   type="email"
                   placeholder="seu@email.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="grid gap-2">
@@ -98,7 +146,14 @@ export default function LoginPage() {
                     Esqueceu sua senha?
                   </Link>
                 </div>
-                <Input id="password" type="password" required placeholder="••••••••"/>
+                <Input 
+                  id="password" 
+                  type="password" 
+                  required 
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
               <div className="flex items-center space-x-2">
                   <Checkbox id="remember-me" />
@@ -145,7 +200,7 @@ export default function LoginPage() {
             </div>
           </div>
         </div>
-        <div className="hidden lg:flex items-center justify-center p-6 bg-background">
+        <div className="hidden lg:flex items-center justify-center bg-background p-6">
             <Image
               src="https://placehold.co/1920x1080.png"
               alt="Image"
