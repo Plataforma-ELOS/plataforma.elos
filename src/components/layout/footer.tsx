@@ -17,6 +17,7 @@ export default function Footer({ className }: { className?: string}) {
                 <li><Link href="/acervo-digital" className="text-sm text-foreground/80 hover:text-foreground">Acervo Digital</Link></li>
                 <li><Link href="/comunidade" className="text-sm text-foreground/80 hover:text-foreground">Comunidade</Link></li>
                 <li><Link href="/suporte-ia" className="text-sm text-foreground/80 hover:text-foreground">Suporte IA</Link></li>
+                <li><Link href="/profissionais" className="text-sm text-foreground/80 hover:text-foreground">Perfis Profissionais</Link></li>
               </ul>
             </div>
              <div className="space-y-4">
