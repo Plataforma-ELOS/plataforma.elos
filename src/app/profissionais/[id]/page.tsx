@@ -56,7 +56,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man doctor portrait', 
     specialty: 'Neuropediatra', 
-    crm: 'CRM 123456 - SP', 
+    crm: 'CRM/SP 123456', 
     description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.',
     contact: {
       phone: '(21) 9 9876-5432',
@@ -85,7 +85,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman psychologist portrait', 
     specialty: 'Fonoaudióloga', 
-    crm: 'CRFa 2-12345', 
+    crm: 'CRFa 2-12345/SP', 
     description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
     contact: {
       phone: '(31) 9 8765-4321',
@@ -114,7 +114,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man therapist portrait', 
     specialty: 'Terapeuta Ocupacional', 
-    crm: 'CREFITO-3 54321 - SP', 
+    crm: 'CREFITO-3/54321', 
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
     contact: {
       phone: '(41) 9 7654-3210',
@@ -143,7 +143,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman teacher portrait', 
     specialty: 'Psicopedagoga', 
-    crm: 'ABPp 1234 - SP', 
+    crm: 'ABPp 1234-SP', 
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
      contact: {
       phone: '(51) 9 6543-2109',
@@ -524,3 +524,5 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
     </div>
   );
 }
+
+    
