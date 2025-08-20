@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/components/providers';
 
 const initialPosts: Post[] = [
   {
@@ -29,6 +30,7 @@ const initialPosts: Post[] = [
       name: 'Carlos Souza',
       avatarUrl: 'https://placehold.co/40x40.png',
       hint: 'man portrait',
+      email: 'carlos.souza@example.com',
     },
     time: '5h',
     content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
@@ -42,6 +44,7 @@ const initialPosts: Post[] = [
       name: 'Ana Silva',
       avatarUrl: 'https://placehold.co/40x40.png',
       hint: 'woman portrait',
+      email: 'ana.silva@example.com',
     },
     time: '2h',
     content: 'Olá pessoal! Alguém tem dicas de como lidar com a seletividade alimentar? Meu filho só quer comer as mesmas 3 coisas e estou ficando sem ideias. Qualquer ajuda é bem-vinda! 🙏',
@@ -52,9 +55,10 @@ const initialPosts: Post[] = [
    {
     id: 'post-3',
     author: {
-      name: 'Juliana Pereira',
+      name: 'Admin Elos',
       avatarUrl: 'https://placehold.co/40x40.png',
       hint: 'woman portrait',
+      email: 'admin@elos.com.br'
     },
     time: '1d',
     content: 'Alguém aqui já passou pelo processo de solicitação do BPC? Comecei a juntar os papéis e parece uma montanha de coisas. Se alguém tiver um checklist ou alguma dica, agradeceria muito!',
@@ -125,6 +129,7 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [showAllEvents, setShowAllEvents] = useState(false);
   const router = useRouter();
+  const { user } = useContext(AuthContext);
 
   const handleToggleSave = (postId: string) => {
     setPosts(posts.map(post =>
@@ -134,6 +139,10 @@ export default function CommunityPage() {
     ));
   };
   
+  const handleDeletePost = (postId: string) => {
+    setPosts(posts.filter(post => post.id !== postId));
+  };
+
   const handleProtectedAction = () => {
     router.push('/login');
   };
@@ -145,7 +154,13 @@ export default function CommunityPage() {
         <h2 className="text-2xl font-bold">Posts em Destaque</h2>
         <p className="text-muted-foreground">As conversas mais populares da comunidade no momento.</p>
         {featuredPosts.map((post) => (
-          <PostCard key={post.id} post={post} onToggleSave={handleToggleSave} />
+          <PostCard 
+            key={post.id} 
+            post={post} 
+            onToggleSave={handleToggleSave} 
+            onDelete={handleDeletePost}
+            currentUser={user}
+          />
         ))}
       </div>
     );

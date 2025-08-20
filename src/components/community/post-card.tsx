@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,12 +13,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { AuthContext } from "../providers";
+import type { User } from "../providers";
 
 
 export type Author = {
   name: string;
   avatarUrl: string;
   hint: string;
+  email: string;
 };
 
 export type Post = {
@@ -34,11 +37,14 @@ export type Post = {
 type PostCardProps = {
   post: Post;
   onToggleSave: (postId: string) => void;
+  onDelete: (postId: string) => void;
+  currentUser: User | null;
 };
 
-export default function PostCard({ post, onToggleSave }: PostCardProps) {
+export default function PostCard({ post, onToggleSave, onDelete, currentUser }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
+  const isOwner = currentUser?.email === post.author.email;
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -63,27 +69,27 @@ export default function PostCard({ post, onToggleSave }: PostCardProps) {
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onToggleSave(post.id)}>
                 <Bookmark className={`h-5 w-5 text-muted-foreground ${post.isSaved ? 'fill-primary text-primary' : ''}`} />
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <FeatureInProgress>
-                    <DropdownMenuItem>
-                      <Edit className="mr-2 h-4 w-4" />
-                      <span>Editar Post</span>
-                    </DropdownMenuItem>
-                  </FeatureInProgress>
-                  <FeatureInProgress>
-                    <DropdownMenuItem className="text-destructive focus:text-destructive">
+              {isOwner && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <FeatureInProgress>
+                      <DropdownMenuItem>
+                        <Edit className="mr-2 h-4 w-4" />
+                        <span>Editar Post</span>
+                      </DropdownMenuItem>
+                    </FeatureInProgress>
+                    <DropdownMenuItem onClick={() => onDelete(post.id)} className="text-destructive focus:text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
                       <span>Excluir Post</span>
                     </DropdownMenuItem>
-                  </FeatureInProgress>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
@@ -120,5 +126,3 @@ export default function PostCard({ post, onToggleSave }: PostCardProps) {
     </Card>
   );
 }
-
-    
