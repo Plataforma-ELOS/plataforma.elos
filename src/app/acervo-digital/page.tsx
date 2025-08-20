@@ -217,31 +217,20 @@ function DigitalLibraryContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortOrder, setSortOrder] = useState('recent');
-  const [filteredItems, setFilteredItems] = useState(libraryItems);
-
-  useEffect(() => {
-    const typeFromUrl = searchParams.get('type');
-    if (typeFromUrl === 'video' || typeFromUrl === 'document') {
-      setFilterType(typeFromUrl);
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
+  
+  const filteredItems = useMemo(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
     
     let results = libraryItems.filter(item => {
-      // Filter by type
       const typeMatch = filterType === 'all' || item.type === filterType;
       if (!typeMatch) return false;
-
-      // Filter by search query
+      
       if (!lowercasedQuery) return true;
       const titleMatch = item.title.toLowerCase().includes(lowercasedQuery);
       const tagMatch = item.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery));
       return titleMatch || tagMatch;
     });
 
-    // Sort results
     results.sort((a, b) => {
       const dateA = parseBrazilianDate(a.date).getTime();
       const dateB = parseBrazilianDate(b.date).getTime();
@@ -253,9 +242,15 @@ function DigitalLibraryContent() {
       }
     });
 
-    setFilteredItems(results);
+    return results;
   }, [searchQuery, filterType, sortOrder]);
-
+  
+  useEffect(() => {
+    const typeFromUrl = searchParams.get('type');
+    if (typeFromUrl === 'video' || typeFromUrl === 'document') {
+      setFilterType(typeFromUrl);
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-primary/10 dark:from-background dark:to-primary/20">
