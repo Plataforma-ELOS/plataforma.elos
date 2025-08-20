@@ -1,7 +1,8 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -45,9 +46,10 @@ export default function AiSupport() {
   const [loading, setLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(null);
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
-  const handleSearch = async (e: React.FormEvent, queryString?: string) => {
-    e.preventDefault();
+  const handleSearch = async (e: React.FormEvent | null, queryString?: string) => {
+    if (e) e.preventDefault();
     const currentQuery = queryString || query;
     if (!currentQuery.trim()) return;
 
@@ -85,10 +87,18 @@ export default function AiSupport() {
       setLoading(false);
     }
   };
+  
+  useEffect(() => {
+    const queryFromUrl = searchParams.get('q');
+    if (queryFromUrl) {
+      // Decode the query from URL and automatically trigger the search
+      handleSearch(null, decodeURIComponent(queryFromUrl));
+    }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
-    const fakeEvent = { preventDefault: () => {} } as React.FormEvent;
-    handleSearch(fakeEvent, topic);
+    handleSearch(null, topic);
   }
 
   return (
@@ -106,7 +116,7 @@ export default function AiSupport() {
         <div className="max-w-3xl mx-auto">
             <div className="relative mb-8">
                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-full blur-lg opacity-75 animate-pulse-slow"></div>
-                <form onSubmit={handleSearch} className="relative">
+                <form onSubmit={(e) => handleSearch(e)}>
                     <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                     <Input
                     type="search"
@@ -213,5 +223,3 @@ export default function AiSupport() {
     </section>
   );
 }
-
-    

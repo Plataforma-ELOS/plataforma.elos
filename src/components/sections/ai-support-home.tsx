@@ -1,12 +1,26 @@
+// src/components/sections/ai-support-home.tsx
+"use client";
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Plus } from "lucide-react";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function AiSupportHome() {
+  const [query, setQuery] = useState('');
+  const router = useRouter();
+
+  const handleNavigate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (query.trim()) {
+      const encodedQuery = encodeURIComponent(query);
+      router.push(`/suporte-ia?q=${encodedQuery}`);
+    }
+  };
+
   return (
     <section className="w-full py-24 md:py-32 bg-gradient-to-b from-primary/10 to-background dark:from-primary/20 dark:to-background">
       <div className="container mx-auto px-4 md:px-6 flex justify-center">
@@ -40,12 +54,18 @@ export default function AiSupportHome() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex w-full items-center space-x-2">
-                <Input type="text" placeholder="Deixe sua dúvida aqui..." className="h-12 text-base" />
+              <form onSubmit={handleNavigate} className="flex w-full items-center space-x-2">
+                <Input 
+                  type="text" 
+                  placeholder="Deixe sua dúvida aqui..." 
+                  className="h-12 text-base"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
                 <Button type="submit" size="icon" className="rounded-full h-12 w-12 flex-shrink-0">
                   <ArrowRight className="h-6 w-6 text-white" />
                 </Button>
-              </div>
+              </form>
             </CardContent>
           </Card>
         </div>
