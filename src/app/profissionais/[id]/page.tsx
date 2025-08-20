@@ -14,6 +14,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import Footer from '@/components/layout/footer';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock data, in a real app this would be fetched based on the id
 const professionalsData: { [key: string]: any } = {
@@ -271,6 +275,57 @@ const generateReviews = (professionalName: string) => [
     },
 ];
 
+function LeaveReviewDialog({ children, professionalName }: { children: React.ReactNode, professionalName: string }) {
+  const { toast } = useToast();
+
+  const handleReviewSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    toast({
+      title: "Avaliação Enviada!",
+      description: `Obrigado por avaliar ${professionalName}. Sua contribuição ajuda toda a comunidade.`,
+    });
+    // Aqui você fecharia o Dialog. Como ele é controlado externamente,
+    // a lógica de fechar seria no componente pai.
+    // Para simplificar, o usuário fecha manualmente ou com DialogClose.
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Deixar uma avaliação para {professionalName}</DialogTitle>
+          <DialogDescription>
+            Compartilhe sua experiência para ajudar outros membros da comunidade. Sua avaliação será analisada antes de ser publicada.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleReviewSubmit}>
+          <div className="py-4 space-y-4">
+            <div className="flex items-center justify-center gap-2 text-yellow-400">
+                {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform" />
+                ))}
+            </div>
+            <div>
+              <Label htmlFor="review-text" className="sr-only">Sua avaliação</Label>
+              <Textarea id="review-text" placeholder="Descreva sua experiência..." rows={5} required />
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">Cancelar</Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button type="submit">Enviar Avaliação</Button>
+            </DialogClose>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
   const professionalId = params.id;
   const professional = professionalsData[professionalId] || {
@@ -418,9 +473,9 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                         </div>
                                     ))}
                                 </div>
-                                <FeatureInProgress>
+                                <LeaveReviewDialog professionalName={professional.name}>
                                     <Button variant="outline" className="w-full mt-6">Deixar uma avaliação</Button>
-                                </FeatureInProgress>
+                                </LeaveReviewDialog>
                             </div>
                         </TabsContent>
                     </Tabs>
