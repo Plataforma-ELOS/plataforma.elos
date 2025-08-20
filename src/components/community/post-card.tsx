@@ -5,8 +5,15 @@ import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ThumbsUp, MessageCircle, Share2, MoreHorizontal, Bookmark } from "lucide-react";
+import { ThumbsUp, MessageCircle, Share2, MoreHorizontal, Bookmark, Edit, Trash2 } from "lucide-react";
 import FeatureInProgress from "../feature-in-progress";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 
 export type Author = {
   name: string;
@@ -56,11 +63,27 @@ export default function PostCard({ post, onToggleSave }: PostCardProps) {
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onToggleSave(post.id)}>
                 <Bookmark className={`h-5 w-5 text-muted-foreground ${post.isSaved ? 'fill-primary text-primary' : ''}`} />
               </Button>
-              <FeatureInProgress>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-                </Button>
-              </FeatureInProgress>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <FeatureInProgress>
+                    <DropdownMenuItem>
+                      <Edit className="mr-2 h-4 w-4" />
+                      <span>Editar Post</span>
+                    </DropdownMenuItem>
+                  </FeatureInProgress>
+                  <FeatureInProgress>
+                    <DropdownMenuItem className="text-destructive focus:text-destructive">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      <span>Excluir Post</span>
+                    </DropdownMenuItem>
+                  </FeatureInProgress>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
