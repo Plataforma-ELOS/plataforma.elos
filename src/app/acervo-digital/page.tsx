@@ -1,18 +1,36 @@
-
 // src/app/acervo-digital/page.tsx
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, ArrowUpDown, LayoutGrid, List, Plus, Bookmark } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Search, ArrowUpDown, LayoutGrid, List, Plus, Bookmark, CheckCircle } from 'lucide-react';
 import DigitalLibraryCard from '@/components/sections/digital-library-card';
 import DigitalLibraryListItem from '@/components/sections/digital-library-list-item';
-import FeatureInProgress from '@/components/feature-in-progress';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 // Helper to parse Brazilian dates (dd de MMMM de yyyy)
 const parseBrazilianDate = (dateString: string): Date => {
@@ -90,6 +108,108 @@ const libraryItems = [
   },
 ];
 
+function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Simulate form submission
+    setOpen(false);
+    setShowSuccess(true);
+  };
+
+  return (
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          {children}
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Adicionar ao Acervo</DialogTitle>
+            <DialogDescription>
+              Contribua com a comunidade compartilhando um material relevante. Ele será analisado pela nossa equipe antes de ser publicado.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="title" className="text-right">
+                  Título
+                </Label>
+                <Input id="title" required className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="author" className="text-right">
+                  Autor
+                </Label>
+                <Input id="author" required className="col-span-3" />
+              </div>
+               <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="type" className="text-right">
+                  Tipo
+                </Label>
+                 <Select required>
+                    <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Selecione o tipo de material" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="video">Vídeo</SelectItem>
+                        <SelectItem value="document">Documento</SelectItem>
+                        <SelectItem value="game">Jogo</SelectItem>
+                        <SelectItem value="other">Outro</SelectItem>
+                    </SelectContent>
+                </Select>
+              </div>
+               <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="tags" className="text-right">
+                  Tags
+                </Label>
+                <Input id="tags" placeholder="Separe por vírgulas" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="link" className="text-right">
+                  Link
+                </Label>
+                <Input id="link" type="url" required placeholder="https://..." className="col-span-3" />
+              </div>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                  <Button type="button" variant="secondary">Cancelar</Button>
+              </DialogClose>
+              <Button type="submit">Enviar para análise</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+      
+      <AlertDialog open={showSuccess} onOpenChange={setShowSuccess}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="bg-green-100 p-3 rounded-full">
+                <CheckCircle className="h-12 w-12 text-green-500" />
+              </div>
+            </div>
+            <AlertDialogTitle className="text-center text-2xl">Material Enviado com Sucesso!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-muted-foreground">
+              Obrigado por sua contribuição! Nossa equipe irá analisar o material e, se aprovado, ele aparecerá no acervo em breve.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowSuccess(false)} className="w-full">
+              Ok, entendi!
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}
+
+
 function DigitalLibraryContent() {
   const searchParams = useSearchParams();
   const [view, setView] = useState('grid');
@@ -146,12 +266,12 @@ function DigitalLibraryContent() {
               <h1 className="text-4xl font-bold text-primary dark:text-foreground font-headline">Acervo Digital</h1>
               <p className="text-muted-foreground">A plataforma definitiva para encontrar, compartilhar e colaborar com materiais sobre o TEA.</p>
             </div>
-            <FeatureInProgress>
+            <AddToLibraryDialog>
               <Button size="lg">
                 <Plus className="mr-2" />
                 Adicionar ao Acervo
               </Button>
-            </FeatureInProgress>
+            </AddToLibraryDialog>
           </div>
 
           <div className="bg-card p-4 rounded-xl border mb-8">
