@@ -69,10 +69,6 @@ function UserProfileDropdown() {
                                     <Moon className="mr-2" />
                                     Escuro
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("system")}>
-                                    <Laptop className="mr-2" />
-                                    Sistema
-                                </DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuSub>
                         <DropdownMenuSub>
@@ -163,10 +159,6 @@ function UserProfileDropdown() {
                             <DropdownMenuItem onClick={() => setTheme("dark")}>
                                 <Moon className="mr-2" />
                                 Escuro
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setTheme("system")}>
-                                <Laptop className="mr-2" />
-                                Sistema
                             </DropdownMenuItem>
                         </DropdownMenuSubContent>
                     </DropdownMenuSub>
