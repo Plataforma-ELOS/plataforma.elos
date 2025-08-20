@@ -211,17 +211,33 @@ export default function CommunityPage() {
                              <CardDescription>Participe de conversas focadas em seus interesses.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-3">
-                             <LoginRequiredDialog onConfirm={handleProtectedAction}>
-                                <Button className="w-full">
-                                    Ver meus grupos
+                            {user ? (
+                                <Button className="w-full" asChild>
+                                    <Link href="/comunidade/meus-grupos">Ver meus grupos</Link>
                                 </Button>
-                            </LoginRequiredDialog>
-                             <LoginRequiredDialog onConfirm={handleProtectedAction}>
-                                <Button variant="outline" className="w-full">
-                                    <Plus className="mr-2 h-4 w-4" />
-                                    Criar um Grupo
+                            ) : (
+                                <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                                    <Button className="w-full">
+                                        Ver meus grupos
+                                    </Button>
+                                </LoginRequiredDialog>
+                            )}
+                            
+                            {user ? (
+                                <Button variant="outline" className="w-full" asChild>
+                                    <Link href="/comunidade/criar-grupo">
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Criar um Grupo
+                                    </Link>
                                 </Button>
-                            </LoginRequiredDialog>
+                            ) : (
+                                <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                                    <Button variant="outline" className="w-full">
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        Criar um Grupo
+                                    </Button>
+                                </LoginRequiredDialog>
+                            )}
                         </CardContent>
                     </Card>
                 </div>
