@@ -94,16 +94,18 @@ export default function NewCommunity() {
                           {testimonials.map((testimonial, index) => (
                             <CarouselItem key={index}>
                               <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
-                                <div className="absolute top-6 right-6 flex items-center gap-3">
-                                  <h4 className="font-bold text-base text-right">{testimonial.name}</h4>
-                                  <Avatar className="h-10 w-10">
-                                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
-                                      <AvatarFallback>
-                                          <UserCircle className="h-10 w-10 text-muted-foreground" />
-                                      </AvatarFallback>
-                                  </Avatar>
+                                <div className="w-full flex justify-end">
+                                    <div className="flex items-center gap-3">
+                                      <h4 className="font-bold text-base text-right">{testimonial.name}</h4>
+                                      <Avatar className="h-10 w-10">
+                                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
+                                          <AvatarFallback>
+                                              <UserCircle className="h-10 w-10 text-muted-foreground" />
+                                          </AvatarFallback>
+                                      </Avatar>
+                                    </div>
                                 </div>
-                                <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-16 flex-grow flex items-center">
+                                <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-8 flex-grow flex items-center">
                                     "{testimonial.text}"
                                 </p>
                                 <div className="flex text-yellow-400 gap-1 mt-4">
