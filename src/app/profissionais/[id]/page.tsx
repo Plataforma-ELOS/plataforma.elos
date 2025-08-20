@@ -18,6 +18,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 // Mock data, in a real app this would be fetched based on the id
 const professionalsData: { [key: string]: any } = {
@@ -277,16 +278,28 @@ const generateReviews = (professionalName: string) => [
 
 function LeaveReviewDialog({ children, professionalName }: { children: React.ReactNode, professionalName: string }) {
   const { toast } = useToast();
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
 
   const handleReviewSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (rating === 0) {
+      toast({
+        variant: "destructive",
+        title: "Avaliação incompleta",
+        description: "Por favor, selecione uma nota de 1 a 5 estrelas.",
+      });
+      return;
+    }
+
+    // Fecha o dialog programaticamente ao forçar um click no botão de fechar.
+    document.getElementById('close-dialog-btn')?.click();
+
     toast({
       title: "Avaliação Enviada!",
       description: `Obrigado por avaliar ${professionalName}. Sua contribuição ajuda toda a comunidade.`,
     });
-    // Aqui você fecharia o Dialog. Como ele é controlado externamente,
-    // a lógica de fechar seria no componente pai.
-    // Para simplificar, o usuário fecha manualmente ou com DialogClose.
+    setRating(0);
   };
 
   return (
@@ -301,10 +314,24 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
         </DialogHeader>
         <form onSubmit={handleReviewSubmit}>
           <div className="py-4 space-y-4">
-            <div className="flex items-center justify-center gap-2 text-yellow-400">
-                {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-8 h-8 cursor-pointer hover:scale-110 transition-transform" />
-                ))}
+            <div 
+              className="flex items-center justify-center gap-2 text-yellow-400"
+              onMouseLeave={() => setHoverRating(0)}
+            >
+                {[...Array(5)].map((_, i) => {
+                  const starValue = i + 1;
+                  return (
+                    <Star 
+                      key={i} 
+                      className={cn(
+                        "w-8 h-8 cursor-pointer hover:scale-110 transition-transform",
+                        starValue <= (hoverRating || rating) ? 'fill-current' : 'fill-transparent'
+                      )}
+                      onMouseEnter={() => setHoverRating(starValue)}
+                      onClick={() => setRating(starValue)}
+                    />
+                  );
+                })}
             </div>
             <div>
               <Label htmlFor="review-text" className="sr-only">Sua avaliação</Label>
@@ -313,11 +340,9 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="secondary">Cancelar</Button>
+              <Button id="close-dialog-btn" type="button" variant="secondary">Cancelar</Button>
             </DialogClose>
-            <DialogClose asChild>
-              <Button type="submit">Enviar Avaliação</Button>
-            </DialogClose>
+            <Button type="submit">Enviar Avaliação</Button>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -337,6 +362,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
     contact: {},
     experiences: [],
     skills: [],
+    hint: 'not found',
   };
 
   const reviews = generateReviews(professional.name);
