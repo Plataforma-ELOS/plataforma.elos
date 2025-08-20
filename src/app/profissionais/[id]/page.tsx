@@ -27,7 +27,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman doctor portrait', 
     specialty: 'Psicóloga Especialista em TEA', 
-    crm: 'CRP 06/123456', 
+    crm: 'CRP 08/987654', 
     description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
     contact: {
       phone: '(11) 9 1234-5678',
@@ -56,7 +56,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man doctor portrait', 
     specialty: 'Neuropediatra', 
-    crm: 'CRM/SP 123456', 
+    crm: 'CRM/RJ 543210', 
     description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.',
     contact: {
       phone: '(21) 9 9876-5432',
@@ -114,7 +114,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man therapist portrait', 
     specialty: 'Terapeuta Ocupacional', 
-    crm: 'CREFITO-3/54321', 
+    crm: 'CREFITO-3/112233', 
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
     contact: {
       phone: '(41) 9 7654-3210',
@@ -143,7 +143,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman teacher portrait', 
     specialty: 'Psicopedagoga', 
-    crm: 'ABPp 1234-SP', 
+    crm: 'ABPp 5678-RJ', 
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
      contact: {
       phone: '(51) 9 6543-2109',
