@@ -101,9 +101,7 @@ export default function AiSupport() {
   }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
-    setQuery(topic);
     handleSearch(topic);
-    setQuery('');
   }
 
   return (
