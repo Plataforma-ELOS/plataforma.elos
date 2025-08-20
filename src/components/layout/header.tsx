@@ -115,23 +115,73 @@ function UserProfileDropdown() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                     <DropdownMenuItem>
-                        <Edit className="mr-2" />
-                        <span>Editar Perfil</span>
-                    </DropdownMenuItem>
-                     <DropdownMenuItem>
-                        <Bookmark className="mr-2" />
-                        <span>Itens Salvos</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Settings className="mr-2" />
-                        <span>Configurações</span>
-                    </DropdownMenuItem>
-                     <DropdownMenuItem>
-                        <HelpCircle className="mr-2" />
-                        <span>Ajuda</span>
-                    </DropdownMenuItem>
+                    <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <Edit className="mr-2" />
+                            <span>Editar Perfil</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                     <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <Bookmark className="mr-2" />
+                            <span>Itens Salvos</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                    <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <Settings className="mr-2" />
+                            <span>Configurações</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
+                     <FeatureInProgress>
+                        <DropdownMenuItem>
+                            <HelpCircle className="mr-2" />
+                            <span>Ajuda</span>
+                        </DropdownMenuItem>
+                    </FeatureInProgress>
                 </DropdownMenuGroup>
+                 <DropdownMenuSeparator />
+                 <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Moon className="absolute mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            <span>Tema</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                <Sun className="mr-2" />
+                                Claro
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                <Moon className="mr-2" />
+                                Escuro
+                            </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>
+                            <CaseSensitive className="mr-2" />
+                            <span>Tamanho do Texto</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                             <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
+                                <DropdownMenuRadioItem value="sm">
+                                    <CaseLower className="mr-2"/>
+                                    Pequeno
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="base">
+                                    <CaseSensitive className="mr-2"/>
+                                    Normal
+                                </DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem value="lg">
+                                    <CaseUpper className="mr-2"/>
+                                    Grande
+                                </DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2" />
