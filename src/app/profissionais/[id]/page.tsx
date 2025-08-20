@@ -272,8 +272,7 @@ const generateReviews = (professionalName: string) => [
 ];
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
-  const { id } = params;
-  const professional = professionalsData[id] || {
+  const professional = professionalsData[params.id] || {
     name: "Perfil não encontrado",
     imageUrl: "https://placehold.co/128x128.png",
     specialty: "",
@@ -443,5 +442,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
     </div>
   );
 }
+
+    
 
     
