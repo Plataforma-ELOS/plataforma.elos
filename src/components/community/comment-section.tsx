@@ -1,11 +1,25 @@
 
 "use client";
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import type { Comment, Author } from './post-card';
+import { AuthContext } from '../providers';
+
+
+export type Author = {
+  name: string;
+  avatarUrl: string;
+  hint: string;
+};
+
+export type Comment = {
+  id: string;
+  author: Author;
+  time: string;
+  content: string;
+};
 
 interface CommentSectionProps {
   comments: Comment[];
@@ -30,10 +44,11 @@ const CommentCard = ({ comment }: { comment: Comment }) => (
 
 export default function CommentSection({ comments, onCommentSubmit }: CommentSectionProps) {
   const [newComment, setNewComment] = useState('');
+  const { user } = useContext(AuthContext);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newComment.trim()) {
+    if (newComment.trim() && user) {
       onCommentSubmit(newComment);
       setNewComment('');
     }
@@ -44,8 +59,8 @@ export default function CommentSection({ comments, onCommentSubmit }: CommentSec
       {/* Formulário para adicionar novo comentário */}
       <form onSubmit={handleSubmit} className="flex gap-3 items-start">
         <Avatar className="h-9 w-9">
-          <AvatarImage src="https://placehold.co/48x48.png" alt="Usuário Atual" data-ai-hint="user avatar" />
-          <AvatarFallback>U</AvatarFallback>
+          <AvatarImage src="https://placehold.co/48x48.png" alt={user?.name} data-ai-hint="user avatar" />
+          <AvatarFallback>{user?.name.charAt(0) || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex-1 space-y-2">
             <Textarea
@@ -54,10 +69,11 @@ export default function CommentSection({ comments, onCommentSubmit }: CommentSec
               onChange={(e) => setNewComment(e.target.value)}
               className="min-h-[40px] rounded-lg"
               rows={1}
+              disabled={!user}
             />
             {newComment && (
                 <div className="flex justify-end">
-                    <Button type="submit" size="sm" disabled={!newComment.trim()}>Publicar</Button>
+                    <Button type="submit" size="sm" disabled={!newComment.trim() || !user}>Publicar</Button>
                 </div>
             )}
         </div>

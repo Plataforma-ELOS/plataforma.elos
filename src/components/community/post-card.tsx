@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AuthContext } from "../providers";
 import type { User } from "../providers";
+import CommentSection from "./comment-section";
+import type { Comment } from "./comment-section";
 
 
 export type Author = {
@@ -32,6 +34,7 @@ export type Post = {
   likes: number;
   commentCount: number;
   isSaved: boolean;
+  comments: Comment[];
 };
 
 type PostCardProps = {
@@ -44,11 +47,32 @@ type PostCardProps = {
 export default function PostCard({ post, onToggleSave, onDelete, currentUser }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState<Comment[]>(post.comments || []);
+  const [commentCount, setCommentCount] = useState(post.commentCount);
+
   const isOwner = currentUser?.email === post.author.email;
 
   const handleLike = () => {
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
+  };
+  
+  const handleCommentSubmit = (commentContent: string) => {
+    if (!currentUser) return; // Não permite comentar se não estiver logado
+
+    const newComment: Comment = {
+      id: `comment-${Date.now()}`,
+      author: {
+        name: currentUser.name,
+        avatarUrl: 'https://placehold.co/40x40.png',
+        hint: 'user avatar'
+      },
+      time: 'Agora',
+      content: commentContent,
+    };
+    setComments([...comments, newComment]);
+    setCommentCount(commentCount + 1);
   };
   
   return (
@@ -100,21 +124,19 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser }: 
             <ThumbsUp className="h-4 w-4" />
             <span>{likes}</span>
         </div>
-         <div className="flex gap-1 text-sm items-center">
-            <span>{post.commentCount} comentários</span>
-        </div>
+         <button onClick={() => setShowComments(!showComments)} className="flex gap-1 text-sm items-center hover:underline">
+            <span>{commentCount} comentários</span>
+        </button>
       </div>
       <div className="mt-2 border-t pt-2 flex justify-around">
         <Button variant="ghost" className="w-full" onClick={handleLike}>
           <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary fill-current' : ''}`} />
           Curtir
         </Button>
-        <FeatureInProgress>
-            <Button variant="ghost" className="w-full">
-                <MessageCircle className="h-5 w-5 mr-2" />
-                Comentar
-            </Button>
-        </FeatureInProgress>
+        <Button variant="ghost" className="w-full" onClick={() => setShowComments(!showComments)}>
+            <MessageCircle className="h-5 w-5 mr-2" />
+            Comentar
+        </Button>
         
         <FeatureInProgress>
           <Button variant="ghost" className="w-full">
@@ -123,6 +145,12 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser }: 
           </Button>
         </FeatureInProgress>
       </div>
+      
+      {showComments && (
+        <div className="mt-4 border-t pt-4">
+          <CommentSection comments={comments} onCommentSubmit={handleCommentSubmit} />
+        </div>
+      )}
     </Card>
   );
 }
