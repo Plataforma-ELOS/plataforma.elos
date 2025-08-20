@@ -1,3 +1,4 @@
+// src/components/sections/ai-support.tsx
 
 "use client";
 
@@ -54,7 +55,6 @@ export default function AiSupport() {
     setLoading(true);
     setAiResponse('');
     setLastQuery(queryString);
-    setQuery('');
     
     try {
       const responseStream = await askLegalAssistant(queryString);
@@ -89,18 +89,21 @@ export default function AiSupport() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSearch(query);
+    setQuery('');
   };
   
   useEffect(() => {
     const queryFromUrl = searchParams.get('q');
-    if (queryFromUrl) {
+    if (queryFromUrl && !loading && !aiResponse) {
       handleSearch(decodeURIComponent(queryFromUrl));
     }
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
+    setQuery(topic);
     handleSearch(topic);
+    setQuery('');
   }
 
   return (
