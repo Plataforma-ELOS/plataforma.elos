@@ -1,4 +1,3 @@
-
 // src/app/profissionais/[id]/page.tsx
 "use client";
 
@@ -6,7 +5,7 @@ import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram, Edit2, Check } from 'lucide-react';
 import Link from 'next/link';
 import FeatureInProgress from '@/components/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,6 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Progress } from '@/components/ui/progress';
 
 // Mock data, in a real app this would be fetched based on the id
 const professionalsData: { [key: string]: any } = {
@@ -85,7 +85,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman psychologist portrait', 
     specialty: 'Fonoaudióloga', 
-    crm: 'CRFa 2-12345/SP', 
+    crm: 'CRFa 2-12345/SP',
     description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
     contact: {
       phone: '(31) 9 8765-4321',
@@ -114,7 +114,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'man therapist portrait', 
     specialty: 'Terapeuta Ocupacional', 
-    crm: 'CREFITO-3/112233', 
+    crm: 'CREFITO-3/112233',
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
     contact: {
       phone: '(41) 9 7654-3210',
@@ -143,7 +143,7 @@ const professionalsData: { [key: string]: any } = {
     imageUrl: 'https://placehold.co/128x128.png', 
     hint: 'woman teacher portrait', 
     specialty: 'Psicopedagoga', 
-    crm: 'ABPp 5678-RJ', 
+    crm: 'ABPp 5678-RJ',
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
      contact: {
       phone: '(51) 9 6543-2109',
@@ -276,6 +276,25 @@ const generateReviews = (professionalName: string) => [
     },
 ];
 
+// Mock data for the new review summary
+const reviewSummary = {
+  average: 4.9,
+  total: 37,
+  distribution: [
+    { stars: 5, percentage: 85 },
+    { stars: 4, percentage: 10 },
+    { stars: 3, percentage: 3 },
+    { stars: 2, percentage: 2 },
+    { stars: 1, percentage: 0 },
+  ],
+  criteria: [
+    { name: 'Atendimento', score: 4.9 },
+    { name: 'Empatia', score: 5.0 },
+    { name: 'Clareza', score: 4.9 },
+    { name: 'Organização', score: 4.0 },
+  ]
+};
+
 function LeaveReviewDialog({ children, professionalName }: { children: React.ReactNode, professionalName: string }) {
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
@@ -292,7 +311,6 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
       return;
     }
 
-    // Fecha o dialog programaticamente ao forçar um click no botão de fechar.
     document.getElementById('close-dialog-btn')?.click();
 
     toast({
@@ -325,7 +343,7 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
                       key={i} 
                       className={cn(
                         "w-8 h-8 cursor-pointer hover:scale-110 transition-transform",
-                        starValue <= (hoverRating || rating) ? 'fill-current' : 'fill-transparent'
+                        starValue <= (hoverRating || rating) ? 'fill-current' : 'fill-transparent stroke-current'
                       )}
                       onMouseEnter={() => setHoverRating(starValue)}
                       onClick={() => setRating(starValue)}
@@ -373,7 +391,6 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
       <main className="flex-1 pb-24">
         <div className="container mx-auto px-4 md:px-6 py-8">
           <div className="max-w-2xl mx-auto">
-            {/* Botão de voltar e compartilhar */}
              <div className="flex justify-between items-center mb-4">
                  <Button asChild variant="ghost" className="text-muted-foreground hover:text-foreground">
                     <Link href="/profissionais">
@@ -388,7 +405,6 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                 </FeatureInProgress>
              </div>
 
-            {/* Fundo do card e imagem */}
             <div className="relative">
               <div className="h-28 bg-gradient-to-b from-primary/20 to-muted/40 rounded-t-3xl" />
               <div className="absolute top-28 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -399,25 +415,20 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
               </div>
             </div>
 
-            {/* Conteúdo principal do card */}
             <Card className="rounded-b-3xl rounded-t-none pt-20 text-center shadow-lg">
                 <CardContent className="p-6 md:p-8">
-                     {/* Informações básicas */}
                     <h1 className="text-3xl font-bold font-headline">{professional.name}</h1>
                     <p className="text-primary font-semibold mt-1">{professional.specialty}</p>
                     <p className="text-muted-foreground text-sm">{professional.crm}</p>
 
-                     {/* Navegação por abas */}
                     <Tabs defaultValue="sobre" className="w-full mt-8">
                         <TabsList className="grid w-full grid-cols-3 bg-muted">
                             <TabsTrigger value="sobre">Sobre</TabsTrigger>
                             <TabsTrigger value="contato">Contato</TabsTrigger>
                             <TabsTrigger value="avaliacoes">Avaliações</TabsTrigger>
                         </TabsList>
-                        <Separator className="my-6" />
-
-                        {/* Conteúdo das abas */}
-                        <TabsContent value="sobre" className="text-left space-y-8">
+                        
+                        <TabsContent value="sobre" className="text-left space-y-8 mt-6">
                             <div>
                                 <h3 className="text-xl font-bold mb-3">Apresentação</h3>
                                  <p className="text-muted-foreground">{professional.description}</p>
@@ -437,7 +448,7 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                 </div>
                             </div>
                         </TabsContent>
-                        <TabsContent value="contato" className="text-left space-y-4">
+                        <TabsContent value="contato" className="text-left space-y-4 mt-6">
                            <Card>
                                 <CardContent className="p-6 space-y-6">
                                     <h3 className="font-semibold text-lg">Informações de Contato</h3>
@@ -462,46 +473,65 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
                                 </CardContent>
                            </Card>
                         </TabsContent>
-                         <TabsContent value="avaliacoes" className="text-left space-y-6">
+                         <TabsContent value="avaliacoes" className="text-left space-y-6 mt-6">
+                            <div className="flex justify-between items-baseline mb-4">
+                               <h3 className="text-xl font-bold">Avaliações dos pacientes</h3>
+                               <p className="text-sm text-muted-foreground">Média: {reviewSummary.average} de 5 ({reviewSummary.total} avaliações)</p>
+                            </div>
+
+                            <div className="space-y-2 mb-8">
+                               {reviewSummary.distribution.map((item) => (
+                                <div key={item.stars} className="flex items-center gap-4">
+                                  <div className="flex items-center gap-1 text-yellow-400">
+                                    <span className="text-sm font-medium text-muted-foreground">{item.stars}</span>
+                                    <Star className="w-4 h-4 fill-current"/>
+                                  </div>
+                                  <Progress value={item.percentage} className="w-full h-2" />
+                                  <span className="w-10 text-right text-sm text-muted-foreground">{item.percentage}%</span>
+                                </div>
+                               ))}
+                            </div>
+                            
+                            <Separator />
+
+                            <div className="py-6 space-y-3">
+                              {reviewSummary.criteria.map((criterion) => (
+                                <div key={criterion.name} className="flex justify-between items-center text-muted-foreground">
+                                  <p>{criterion.name}</p>
+                                  <p className="font-semibold text-foreground">{criterion.score.toFixed(1)}</p>
+                                </div>
+                              ))}
+                            </div>
+                            
+                             <LeaveReviewDialog professionalName={professional.name}>
+                                <Button variant="outline" className="w-full h-12 rounded-lg bg-muted hover:bg-muted/80 border-border">
+                                    <Edit2 className="w-4 h-4 mr-2" />
+                                    Deixar minha avaliação
+                                </Button>
+                            </LeaveReviewDialog>
+
+                            <Separator className="my-8" />
+                            
                             <div>
-                                <h3 className="text-xl font-bold mb-4">O que os pacientes dizem</h3>
-                                <div className="flex items-center gap-4 mb-6 p-4 bg-muted rounded-lg">
-                                    <div className='text-center'>
-                                        <p className="text-4xl font-bold text-primary">5.0</p>
-                                        <div className="flex justify-center text-yellow-500">
-                                            <Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" /><Star className="w-4 h-4 fill-current" />
+                                {reviews.map((review: any) => (
+                                    <div key={review.id} className="mb-6">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="flex text-yellow-400">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'text-gray-300'}`} />
+                                                ))}
+                                            </div>
+                                            <p className="font-semibold text-sm">{review.author}</p>
+                                            <p className="text-xs text-muted-foreground">&middot; {review.date}</p>
+                                        </div>
+                                        <p className="text-muted-foreground">{review.content}</p>
+                                        <div className="mt-2">
+                                            <Button variant="ghost" size="sm" className="text-muted-foreground h-auto p-1">
+                                                <ThumbsUp className="w-4 h-4 mr-2"/> {review.likes}
+                                            </Button>
                                         </div>
                                     </div>
-                                    <Separator orientation='vertical' className="h-12"/>
-                                    <div>
-                                        <p className="font-semibold">Excelente</p>
-                                        <p className="text-sm text-muted-foreground">Baseado em {reviews.length} avaliações</p>
-                                    </div>
-                                </div>
-                                <div className="space-y-6">
-                                    {reviews.map((review: any) => (
-                                        <div key={review.id}>
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className="flex text-yellow-500">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'text-gray-300'}`} />
-                                                    ))}
-                                                </div>
-                                                <p className="font-semibold text-sm">{review.author}</p>
-                                                <p className="text-xs text-muted-foreground">&middot; {review.date}</p>
-                                            </div>
-                                            <p className="text-muted-foreground">{review.content}</p>
-                                            <div className="mt-2">
-                                                <Button variant="ghost" size="sm" className="text-muted-foreground h-auto p-1">
-                                                    <ThumbsUp className="w-4 h-4 mr-2"/> {review.likes}
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <LeaveReviewDialog professionalName={professional.name}>
-                                    <Button variant="outline" className="w-full mt-6">Deixar uma avaliação</Button>
-                                </LeaveReviewDialog>
+                                ))}
                             </div>
                         </TabsContent>
                     </Tabs>
@@ -524,5 +554,3 @@ export default function ProfessionalProfilePage({ params }: { params: { id: stri
     </div>
   );
 }
-
-    
