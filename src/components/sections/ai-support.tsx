@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,18 +48,16 @@ export default function AiSupport() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
 
-  const handleSearch = async (e: React.FormEvent | null, queryString?: string) => {
-    if (e) e.preventDefault();
-    const currentQuery = queryString || query;
-    if (!currentQuery.trim()) return;
+  const handleSearch = async (queryString: string) => {
+    if (!queryString.trim()) return;
 
     setLoading(true);
     setAiResponse('');
-    setLastQuery(currentQuery);
+    setLastQuery(queryString);
     setQuery('');
     
     try {
-      const responseStream = await askLegalAssistant(currentQuery);
+      const responseStream = await askLegalAssistant(queryString);
       const reader = responseStream.getReader();
       const decoder = new TextDecoder();
 
@@ -88,17 +86,21 @@ export default function AiSupport() {
     }
   };
   
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch(query);
+  };
+  
   useEffect(() => {
     const queryFromUrl = searchParams.get('q');
     if (queryFromUrl) {
-      // Decode the query from URL and automatically trigger the search
-      handleSearch(null, decodeURIComponent(queryFromUrl));
+      handleSearch(decodeURIComponent(queryFromUrl));
     }
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
-    handleSearch(null, topic);
+    handleSearch(topic);
   }
 
   return (
@@ -116,7 +118,7 @@ export default function AiSupport() {
         <div className="max-w-3xl mx-auto">
             <div className="relative mb-8">
                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-full blur-lg opacity-75 animate-pulse-slow"></div>
-                <form onSubmit={(e) => handleSearch(e)}>
+                <form onSubmit={handleSubmit}>
                     <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
                     <Input
                     type="search"
@@ -126,7 +128,7 @@ export default function AiSupport() {
                     onChange={(e) => setQuery(e.target.value)}
                     disabled={loading}
                     />
-                    <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading}>
+                    <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading || !query.trim()}>
                     <ArrowRight className="h-6 w-6" />
                     <span className="sr-only">Buscar</span>
                     </Button>
