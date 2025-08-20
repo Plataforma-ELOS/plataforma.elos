@@ -76,7 +76,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }), [user, registeredUsers]);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
       <AuthContext.Provider value={authContextValue}>
         <FontSizeContext.Provider value={fontSizeContextValue}>
           {children}
