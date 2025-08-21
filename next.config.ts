@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Adicionado para resolver o aviso de cross-origin no ambiente de desenvolvimento
+  devIndicators: {
+    allowedDevOrigins: ['https://*.cloudworkstations.dev'],
+  }
 };
 
 export default nextConfig;
