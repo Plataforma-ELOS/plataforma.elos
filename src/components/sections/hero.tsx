@@ -29,6 +29,7 @@ export default function Hero() {
                 height={800}
                 data-ai-hint="mother child"
                 className="w-full h-full object-cover"
+                priority
               />
             </div>
           </div>
