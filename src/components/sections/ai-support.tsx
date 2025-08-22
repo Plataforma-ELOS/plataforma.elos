@@ -50,7 +50,7 @@ export default function AiSupport() {
   const searchParams = useSearchParams();
 
   const handleSearch = async (queryString: string) => {
-    if (!queryString.trim()) return;
+    if (!queryString.trim() || loading) return;
 
     setLoading(true);
     setAiResponse('');
@@ -97,12 +97,12 @@ export default function AiSupport() {
     if (queryFromUrl) {
       handleSearch(decodeURIComponent(queryFromUrl));
     }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
-    setQuery(topic);
-    handleSearch(topic);
+    setQuery(topic); // Preenche o input com o tópico clicado
+    handleSearch(topic); // Executa a busca
   }
 
   return (
@@ -160,7 +160,7 @@ export default function AiSupport() {
             </Card>
           )}
 
-          {(loading && !aiResponse) && (
+          {loading && (
             <div className="max-w-3xl mx-auto my-8">
               <Card className="p-6 shadow-lg">
                   <div className="flex items-start space-x-4">
@@ -178,7 +178,7 @@ export default function AiSupport() {
           </div>
           )}
           
-          {aiResponse && (
+          {aiResponse && !loading && (
             <div className="max-w-3xl mx-auto my-8">
               <Card className="p-6 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                  <div className="flex items-start space-x-4">
