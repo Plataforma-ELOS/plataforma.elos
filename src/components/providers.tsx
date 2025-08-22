@@ -2,7 +2,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import React, { createContext, useState, useMemo, useEffect } from "react";
+import React, { createContext, useState, useMemo, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 // --- FONT SIZE CONTEXT ---
@@ -17,7 +17,7 @@ export const FontSizeContext = createContext<{
 });
 
 // --- AUTH CONTEXT ---
-type User = {
+export type User = {
   name: string;
   email: string;
   password?: string; // a senha é opcional aqui, usada apenas para o mock
@@ -62,18 +62,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
     setFontSize,
   }), [fontSize]);
   
-  const handleRegister = (newUser: User) => {
+  const handleRegister = useCallback((newUser: User) => {
     // Adiciona o novo usuário à lista de usuários registrados
     setRegisteredUsers(prevUsers => [...prevUsers, newUser]);
-  };
+  }, []);
+
+  const login = useCallback((loggedInUser: User) => setUser(loggedInUser), []);
+  const logout = useCallback(() => setUser(null), []);
 
   const authContextValue = useMemo(() => ({
     user,
     registeredUsers,
-    login: (loggedInUser: User) => setUser(loggedInUser),
-    logout: () => setUser(null),
+    login,
+    logout,
     register: handleRegister,
-  }), [user, registeredUsers]);
+  }), [user, registeredUsers, login, logout, handleRegister]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
