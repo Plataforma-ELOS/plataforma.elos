@@ -88,8 +88,10 @@ export default function AiSupport() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSearch(query);
-    setQuery('');
+    if (query.trim()) {
+        handleSearch(query);
+        setQuery('');
+    }
   };
   
   useEffect(() => {
