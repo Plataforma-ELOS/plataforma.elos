@@ -88,21 +88,20 @@ export default function AiSupport() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-        handleSearch(query);
-        setQuery('');
-    }
+    handleSearch(query);
+    setQuery('');
   };
   
   useEffect(() => {
     const queryFromUrl = searchParams.get('q');
-    if (queryFromUrl && !loading && !aiResponse) {
+    if (queryFromUrl) {
       handleSearch(decodeURIComponent(queryFromUrl));
     }
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const handleTopicClick = (topic: string) => {
+    setQuery(topic);
     handleSearch(topic);
   }
 
