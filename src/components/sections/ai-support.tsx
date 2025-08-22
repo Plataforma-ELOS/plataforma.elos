@@ -13,7 +13,7 @@ import { askLegalAssistant } from '@/ai/flows/legal-assistant-flow';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import ReactMarkdown from 'react-markdown';
-import { Avatar } from '../ui/avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 import { cn } from '@/lib/utils';
 
 const supportCards = [
@@ -65,7 +65,7 @@ export default function AiSupport() {
   }, [messages, loading]);
 
   const handleSearch = async (queryString: string) => {
-    if (!queryString.trim()) return;
+    if (!queryString.trim() || loading) return;
 
     setLoading(true);
     setMessages(prev => [...prev, { role: 'user', content: queryString }]);
@@ -124,6 +124,29 @@ export default function AiSupport() {
     handleSearch(topic);
   }
 
+  const SearchBar = ({ className } : { className?: string }) => (
+     <div className={className}>
+        <div className="relative">
+            <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-full blur-lg opacity-50 animate-pulse-slow"></div>
+            <form onSubmit={handleSubmit} className="relative">
+                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
+                <Input
+                type="search"
+                placeholder="Deixe sua dúvida aqui..."
+                className="w-full h-16 pl-16 pr-16 rounded-full text-base shadow-lg border-2 border-transparent focus:border-primary focus:ring-primary bg-background"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                disabled={loading}
+                />
+                <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading || !query.trim()}>
+                <ArrowRight className="h-6 w-6" />
+                <span className="sr-only">Buscar</span>
+                </Button>
+            </form>
+        </div>
+    </div>
+  );
+
   const renderWelcomeOrChat = () => {
     if(messages.length > 0) {
         return (
@@ -179,6 +202,9 @@ export default function AiSupport() {
                     A ponte entre você e seus direitos, benefícios e próximos passos. Use nossa busca inteligente ou explore os tópicos abaixo.
                 </p>
             </div>
+            
+            <SearchBar className="mb-12"/>
+
             <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-16">
                 <span className="font-semibold mr-2">Tópicos populares:</span>
                 {popularTopics.map((topic, index) => (
@@ -222,30 +248,11 @@ export default function AiSupport() {
       <div className="container mx-auto px-4 md:px-6">
         
         <div className="max-w-3xl mx-auto">
-            <div className="animate-in fade-in-0 duration-500">
+            <div className="animate-in fade-in-0 duration-500 mb-8">
              {renderWelcomeOrChat()}
             </div>
             
-            <div className="sticky bottom-6 mt-8">
-                <div className="relative">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-purple-500 to-blue-500 rounded-full blur-lg opacity-50 animate-pulse-slow"></div>
-                    <form onSubmit={handleSubmit} className="relative">
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
-                        <Input
-                        type="search"
-                        placeholder="Deixe sua dúvida aqui..."
-                        className="w-full h-16 pl-16 pr-16 rounded-full text-base shadow-lg border-2 border-transparent focus:border-primary focus:ring-primary bg-background"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        disabled={loading}
-                        />
-                        <Button type="submit" size="icon" className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full h-12 w-12" disabled={loading || !query.trim()}>
-                        <ArrowRight className="h-6 w-6" />
-                        <span className="sr-only">Buscar</span>
-                        </Button>
-                    </form>
-                </div>
-            </div>
+            {messages.length > 0 && <SearchBar className="sticky bottom-6 mt-auto" />}
         </div>
       </div>
     </section>
