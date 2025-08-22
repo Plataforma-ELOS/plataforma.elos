@@ -50,7 +50,7 @@ export default function AiSupport() {
   const searchParams = useSearchParams();
 
   const handleSearch = async (queryString: string) => {
-    if (!queryString.trim() || loading) return;
+    if (!queryString.trim()) return;
 
     setLoading(true);
     setAiResponse('');
@@ -71,7 +71,6 @@ export default function AiSupport() {
         accumulatedResponse += chunk;
         setAiResponse(accumulatedResponse);
       }
-
     } catch (error) {
       console.error(error);
       toast({
@@ -88,6 +87,7 @@ export default function AiSupport() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading || !query.trim()) return;
     handleSearch(query);
     setQuery('');
   };
@@ -98,11 +98,12 @@ export default function AiSupport() {
       handleSearch(decodeURIComponent(queryFromUrl));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, []);
 
   const handleTopicClick = (topic: string) => {
-    setQuery(topic); // Preenche o input com o tópico clicado
-    handleSearch(topic); // Executa a busca
+    if (loading) return;
+    setQuery(topic);
+    handleSearch(topic);
   }
 
   return (
