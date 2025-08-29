@@ -1,4 +1,4 @@
-
+// src/app/fale-conosco/page.tsx
 "use client";
 
 import HeaderSecondary from '@/components/layout/header-secondary';
@@ -9,13 +9,35 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { sendContactEmail } from './actions';
+import { useRef } from 'react';
 
 export default function ContactPage() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Lógica de envio do formulário será implementada futuramente.
-    alert('Obrigado pelo seu contato! Mensagem enviada (simulação).');
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    
+    const result = await sendContactEmail(formData);
+
+    if (result.success) {
+      toast({
+        title: "Mensagem Enviada!",
+        description: "Obrigado pelo seu contato. Responderemos em breve.",
+      });
+      formRef.current?.reset();
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Ocorreu um erro",
+        description: "Não foi possível enviar sua mensagem. Tente novamente.",
+      });
+    }
   };
+
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/20">
@@ -75,24 +97,24 @@ export default function ContactPage() {
                             <CardTitle>Envie uma Mensagem</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleSubmit} className="space-y-4">
+                            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="first-name">Nome</Label>
-                                        <Input id="first-name" placeholder="Seu nome" required />
+                                        <Label htmlFor="firstName">Nome</Label>
+                                        <Input id="firstName" name="firstName" placeholder="Seu nome" required />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="last-name">Sobrenome</Label>
-                                        <Input id="last-name" placeholder="Seu sobrenome" required />
+                                        <Label htmlFor="lastName">Sobrenome</Label>
+                                        <Input id="lastName" name="lastName" placeholder="Seu sobrenome" required />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" placeholder="seu@email.com" required />
+                                    <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="message">Mensagem</Label>
-                                    <Textarea id="message" placeholder="Escreva sua mensagem aqui..." className="min-h-[120px]" required />
+                                    <Textarea id="message" name="message" placeholder="Escreva sua mensagem aqui..." className="min-h-[120px]" required />
                                 </div>
                                 <Button type="submit" className="w-full">Enviar Mensagem</Button>
                             </form>
