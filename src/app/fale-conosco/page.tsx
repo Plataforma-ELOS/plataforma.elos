@@ -79,14 +79,6 @@ export default function ContactPage() {
                                     <a href="tel:+5511999998888" className="text-primary hover:underline">(11) 99999-8888</a>
                                 </div>
                             </div>
-                             <div className="flex items-start gap-4">
-                                <MapPin className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
-                                <div>
-                                    <h3 className="font-semibold text-foreground">Endereço</h3>
-                                    <p>Nosso escritório principal.</p>
-                                    <p>Av. Paulista, 1234 - São Paulo/SP</p>
-                                </div>
-                            </div>
                         </CardContent>
                     </Card>
                 </div>
