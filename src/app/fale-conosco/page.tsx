@@ -22,10 +22,9 @@ export default function ContactPage() {
 
     if (!formRef.current) return;
 
-    // Substitua com suas próprias credenciais do EmailJS
-    const serviceID = 'SEU_SERVICE_ID';
-    const templateID = 'SEU_TEMPLATE_ID';
-    const publicKey = 'SUA_PUBLIC_KEY';
+    const serviceID = 'service_5kkqxev';
+    const templateID = 'template_xx64t4a';
+    const publicKey = 'eXCr4crS81wgQRzyP';
 
     emailjs.sendForm(serviceID, templateID, formRef.current, publicKey)
       .then((result) => {
