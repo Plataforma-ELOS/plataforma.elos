@@ -23,15 +23,28 @@ export default function ContactPage() {
     if (!formRef.current) return;
 
     const serviceID = 'service_r3l495y';
-    const templateID = 'template_nr2llgd';
+    const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
+    const autoresponderTemplateID = 'SEU_TEMPLATE_ID_AUTO_RESPOSTA'; // << PREENCHA COM O NOVO ID
     const publicKey = '4FHqCvo8kcV6WkAQ3';
 
-    emailjs.sendForm(serviceID, templateID, formRef.current, publicKey)
-      .then((result) => {
+    // Envia o e-mail de notificação para a plataforma Elos
+    emailjs.sendForm(serviceID, notificationTemplateID, formRef.current, publicKey)
+      .then(() => {
           toast({
             title: "Mensagem Enviada!",
             description: "Obrigado pelo seu contato. Responderemos em breve.",
           });
+
+          // Após o sucesso, envia o e-mail de auto-resposta para o usuário
+          if (formRef.current) {
+            emailjs.sendForm(serviceID, autoresponderTemplateID, formRef.current, publicKey)
+              .then(() => {
+                console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
+              }, (error) => {
+                console.error('Falha ao enviar auto-resposta:', error.text);
+              });
+          }
+
           formRef.current?.reset();
       }, (error) => {
           console.error('FAILED...', error.text);
