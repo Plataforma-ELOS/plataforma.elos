@@ -21,7 +21,8 @@ export default function ContactPage() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formRef.current) return;
+    const currentForm = formRef.current;
+    if (!currentForm) return;
 
     const serviceID = 'service_r3l495y';
     const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
@@ -29,7 +30,7 @@ export default function ContactPage() {
     const publicKey = '4FHqCvo8kcV6WkAQ3';
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
-    emailjs.sendForm(serviceID, notificationTemplateID, formRef.current, publicKey)
+    emailjs.sendForm(serviceID, notificationTemplateID, currentForm, publicKey)
       .then(() => {
           toast({
             title: "Mensagem Enviada!",
@@ -37,23 +38,21 @@ export default function ContactPage() {
           });
 
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
-          if (formRef.current) {
-            // Monta os parâmetros para o e-mail de auto-resposta
-            const templateParams = {
-              from_name: (formRef.current.elements.namedItem('from_name') as HTMLInputElement).value,
-              from_email: (formRef.current.elements.namedItem('from_email') as HTMLInputElement).value,
-              message: (formRef.current.elements.namedItem('message') as HTMLTextAreaElement).value,
-            };
+          // Monta os parâmetros para o e-mail de auto-resposta AQUI DENTRO
+          const templateParams = {
+            from_name: (currentForm.elements.namedItem('from_name') as HTMLInputElement).value,
+            from_email: (currentForm.elements.namedItem('from_email') as HTMLInputElement).value,
+            message: (currentForm.elements.namedItem('message') as HTMLTextAreaElement).value,
+          };
+          
+          emailjs.send(serviceID, autoresponderTemplateID, templateParams, publicKey)
+            .then(() => {
+              console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
+            }, (error) => {
+              console.error('Falha ao enviar auto-resposta:', error.text);
+            });
 
-            emailjs.send(serviceID, autoresponderTemplateID, templateParams, publicKey)
-              .then(() => {
-                console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
-              }, (error) => {
-                console.error('Falha ao enviar auto-resposta:', error.text);
-              });
-          }
-
-          formRef.current?.reset();
+          currentForm.reset();
       }, (error) => {
           console.error('Falha ao enviar notificação:', error.text);
           toast({
