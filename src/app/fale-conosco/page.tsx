@@ -24,7 +24,7 @@ export default function ContactPage() {
 
     const serviceID = 'service_r3l495y';
     const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
-    const autoresponderTemplateID = 'SEU_TEMPLATE_ID_AUTO_RESPOSTA'; // << PREENCHA COM O NOVO ID
+    const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
     const publicKey = '4FHqCvo8kcV6WkAQ3';
 
     // Envia o e-mail de notificação para a plataforma Elos
