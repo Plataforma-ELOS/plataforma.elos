@@ -6,7 +6,7 @@ const contactSchema = z.object({
   firstName: z.string().min(1, { message: "O nome é obrigatório." }),
   lastName: z.string().min(1, { message: "O sobrenome é obrigatório." }),
   email: z.string().email({ message: "Por favor, insira um email válido." }),
-  message: z.string().min(10, { message: "A mensagem deve ter pelo menos 10 caracteres." }),
+  message: z.string().min(1, { message: "A mensagem não pode estar vazia." }),
 });
 
 export async function sendContactEmail(formData: FormData) {
