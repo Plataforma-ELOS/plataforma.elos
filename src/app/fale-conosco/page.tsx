@@ -22,9 +22,9 @@ export default function ContactPage() {
 
     if (!formRef.current) return;
 
-    const serviceID = 'service_5kkqxev';
-    const templateID = 'template_xx64t4a';
-    const publicKey = 'eXCr4crS81wgQRzyP';
+    const serviceID = 'service_r3l495y';
+    const templateID = 'template_nr2llgd';
+    const publicKey = '4FHqCvo8kcV6WkAQ3';
 
     emailjs.sendForm(serviceID, templateID, formRef.current, publicKey)
       .then((result) => {
