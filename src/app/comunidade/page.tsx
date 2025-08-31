@@ -66,7 +66,7 @@ const initialPosts: Post[] = [
       name: 'Admin Elos',
       avatarUrl: 'https://placehold.co/40x40.png',
       hint: 'woman portrait',
-      email: 'admin@elos.com.br'
+      email: 'elosplataforma@gmail.com'
     },
     time: '1d',
     content: 'Alguém aqui já passou pelo processo de solicitação do BPC? Comecei a juntar os papéis e parece uma montanha de coisas. Se alguém tiver um checklist ou alguma dica, agradeceria muito!',

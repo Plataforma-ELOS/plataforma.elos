@@ -27,7 +27,7 @@ export type User = {
 const initialRegisteredUsers: User[] = [
   { email: 'maria.silva@example.com', password: '123', name: 'Maria Silva' },
   { email: 'joao.costa@example.com', password: '123', name: 'João Costa' },
-  { email: 'admin@elos.com.br', password: 'admin', name: 'Admin Elos' },
+  { email: 'elosplataforma@gmail.com', password: 'admin', name: 'Admin Elos' },
 ];
 
 

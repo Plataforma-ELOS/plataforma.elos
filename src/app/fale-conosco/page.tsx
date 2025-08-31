@@ -73,7 +73,7 @@ export default function ContactPage() {
                                 <div>
                                     <h3 className="font-semibold text-foreground">Email</h3>
                                     <p>Para dúvidas e suporte geral.</p>
-                                    <a href="mailto:contato@elos.com.br" className="text-primary hover:underline">contato@elos.com.br</a>
+                                    <a href="mailto:elosplataforma@gmail.com" className="text-primary hover:underline">elosplataforma@gmail.com</a>
                                 </div>
                             </div>
                              <div className="flex items-start gap-4">
