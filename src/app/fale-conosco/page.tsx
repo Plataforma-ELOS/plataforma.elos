@@ -3,39 +3,45 @@
 
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { sendContactEmail } from './actions';
 import { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function ContactPage() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    
-    const result = await sendContactEmail(formData);
 
-    if (result.success) {
-      toast({
-        title: "Mensagem Enviada!",
-        description: "Obrigado pelo seu contato. Responderemos em breve.",
+    if (!formRef.current) return;
+
+    // Substitua com suas próprias credenciais do EmailJS
+    const serviceID = 'SEU_SERVICE_ID';
+    const templateID = 'SEU_TEMPLATE_ID';
+    const publicKey = 'SUA_PUBLIC_KEY';
+
+    emailjs.sendForm(serviceID, templateID, formRef.current, publicKey)
+      .then((result) => {
+          toast({
+            title: "Mensagem Enviada!",
+            description: "Obrigado pelo seu contato. Responderemos em breve.",
+          });
+          formRef.current?.reset();
+      }, (error) => {
+          console.error('FAILED...', error.text);
+          toast({
+            variant: "destructive",
+            title: "Ocorreu um erro",
+            description: "Não foi possível enviar sua mensagem. Tente novamente.",
+          });
       });
-      formRef.current?.reset();
-    } else {
-      toast({
-        variant: "destructive",
-        title: "Ocorreu um erro",
-        description: "Não foi possível enviar sua mensagem. Tente novamente.",
-      });
-    }
   };
 
 
@@ -93,16 +99,16 @@ export default function ContactPage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="firstName">Nome</Label>
-                                        <Input id="firstName" name="firstName" placeholder="Seu nome" required />
+                                        <Input id="firstName" name="from_name" placeholder="Seu nome" required />
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="lastName">Sobrenome</Label>
-                                        <Input id="lastName" name="lastName" placeholder="Seu sobrenome" required />
+                                        <Input id="lastName" name="from_lastname" placeholder="Seu sobrenome" required />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
+                                    <Input id="email" name="from_email" type="email" placeholder="seu@email.com" required />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="message">Mensagem</Label>
