@@ -1,3 +1,4 @@
+
 // src/app/fale-conosco/page.tsx
 "use client";
 
@@ -26,6 +27,12 @@ export default function ContactPage() {
     const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
     const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
     const publicKey = '4FHqCvo8kcV6WkAQ3';
+    
+    const form = formRef.current;
+    const fromName = (form.elements.namedItem('from_name') as HTMLInputElement).value;
+    const fromEmail = (form.elements.namedItem('from_email') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
 
     // Envia o e-mail de notificação para a plataforma Elos
     emailjs.sendForm(serviceID, notificationTemplateID, formRef.current, publicKey)
@@ -36,14 +43,20 @@ export default function ContactPage() {
           });
 
           // Após o sucesso, envia o e-mail de auto-resposta para o usuário
-          if (formRef.current) {
-            emailjs.sendForm(serviceID, autoresponderTemplateID, formRef.current, publicKey)
-              .then(() => {
-                console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
-              }, (error) => {
-                console.error('Falha ao enviar auto-resposta:', error.text);
-              });
-          }
+          // Usando emailjs.send() para o autoresponder
+          const templateParams = {
+            from_name: fromName,
+            to_email: fromEmail,
+            message: message,
+          };
+
+          emailjs.send(serviceID, autoresponderTemplateID, templateParams, publicKey)
+            .then(() => {
+              console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
+            }, (error) => {
+              console.error('Falha ao enviar auto-resposta:', error.text);
+            });
+
 
           formRef.current?.reset();
       }, (error) => {
