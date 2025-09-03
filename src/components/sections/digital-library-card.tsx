@@ -65,7 +65,7 @@ export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {item.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="font-normal border-accent text-accent-foreground">{tag}</Badge>
+              <Badge key={tag} variant="outline" className="font-normal border-primary text-primary">{tag}</Badge>
             ))}
           </div>
         </div>
