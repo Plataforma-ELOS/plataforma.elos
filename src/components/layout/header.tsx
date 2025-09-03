@@ -18,6 +18,7 @@ const navItems = [
   { name: 'Comunidade', href: '/comunidade', isFeature: false },
   { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
   { name: 'Perfis Profissionais', href: '/profissionais', isFeature: false },
+  { name: 'Fale Conosco', href: '/fale-conosco', isFeature: false },
 ];
 
 function UserProfileDropdown() {
