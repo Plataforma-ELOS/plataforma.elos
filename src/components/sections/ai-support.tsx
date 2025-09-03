@@ -193,7 +193,7 @@ export default function AiSupport() {
                 <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto pt-8">
                   {supportCards.map((card, index) => (
                       <Link href={card.href} key={index} className="group">
-                      <Card className="p-8 bg-card dark:bg-card rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer h-full">
+                      <Card className="p-8 bg-card dark:bg-card rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer aspect-square">
                           <div>
                           <CardHeader className="flex flex-col items-start gap-4 p-0">
                               <div className="bg-primary/10 p-4 rounded-xl mb-2">
