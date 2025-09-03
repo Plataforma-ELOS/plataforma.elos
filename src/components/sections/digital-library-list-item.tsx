@@ -1,4 +1,3 @@
-
 // src/components/sections/digital-library-list-item.tsx
 "use client";
 
@@ -71,7 +70,7 @@ export default function DigitalLibraryListItem({ item }: DigitalLibraryListItemP
           
           <div className="flex flex-wrap gap-2 mb-4">
             {item.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="font-normal">{tag}</Badge>
+              <Badge key={tag} variant="outline" className="font-normal border-accent text-accent-foreground">{tag}</Badge>
             ))}
           </div>
         </div>
