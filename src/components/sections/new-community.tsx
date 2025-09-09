@@ -135,7 +135,7 @@ export default function NewCommunity() {
               }}
             >
                <Image
-                src="https://i.ibb.co/8nMd6ZD8/image.png"
+                src="https://i.ibb.co/Kz0yn5bY/O-seu-lugar-ideal.png"
                 alt="Comunidade unida"
                 width={800}
                 height={800}
