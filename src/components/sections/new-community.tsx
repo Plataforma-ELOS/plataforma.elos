@@ -11,16 +11,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const communityPoints = [
   {
-    title: 'Título primeiro',
-    text: 'Texto primeiro',
+    title: 'Conexões que Acolhem',
+    text: 'Encontre e converse com outros cuidadores que entendem sua realidade, em um ambiente seguro e sem julgamentos.',
   },
   {
-    title: 'Título segundo',
-    text: 'Texto segundo',
+    title: 'Informação Confiável',
+    text: 'Acesse um acervo de materiais selecionados e uma lista de profissionais avaliados, tudo em um só lugar.',
   },
   {
-    title: 'Título terceiro',
-    text: 'Texto terceiro',
+    title: 'Ferramentas que Capacitam',
+    text: 'Desde um assistente com IA para tirar dúvidas sobre direitos até recursos práticos para o dia a dia.',
   },
 ];
 
