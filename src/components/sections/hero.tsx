@@ -23,11 +23,11 @@ export default function Hero() {
               }}
             >
               <Image
-                src="https://placehold.co/800x800.png"
+                src="https://i.ibb.co/nszMMxbm/Screenshot-2025-09-09-07-38-39.png"
                 alt="Mãos segurando outras em um gesto de cuidado e apoio"
                 width={800}
                 height={800}
-                data-ai-hint="placeholder image"
+                data-ai-hint="caring hands"
                 className="w-full h-full object-cover"
                 priority
               />
