@@ -1,26 +1,26 @@
 
 import { Card } from '@/components/ui/card';
-import { ArrowRight, BookOpen, Clapperboard, Gamepad2 } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageSquareHeart, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 const collectionItems = [
   { 
-    icon: <Clapperboard className="h-8 w-8 text-primary" />, 
-    title: 'Vídeos Educativos', 
-    description: 'Entendendo a sobrecarga sensorial e mais.',
-    href: '/acervo-digital?type=video',
+    icon: <MessageSquareHeart className="h-8 w-8 text-primary" />, 
+    title: 'Conecte-se na Comunidade', 
+    description: 'Um espaço seguro para compartilhar vitórias, desafios e encontrar apoio mútuo.',
+    href: '/comunidade',
   },
   { 
-    icon: <Gamepad2 className="h-8 w-8 text-primary" />, 
-    title: 'Jogos Interativos',
-    description: 'Aprenda sobre emoções de forma lúdica.',
-    href: '/acervo-digital?type=document', // Assuming games are document types for now
+    icon: <Sparkles className="h-8 w-8 text-primary" />, 
+    title: 'Tire suas dúvidas com a IA',
+    description: 'Receba orientações claras sobre direitos, laudos e o BPC de forma instantânea.',
+    href: '/suporte-ia',
   },
   { 
     icon: <BookOpen className="h-8 w-8 text-primary" />,
-    title: 'Guias Práticos', 
-    description: 'Modelos de rotinas visuais e documentos.',
-    href: '/acervo-digital?type=document',
+    title: 'Explore o Acervo Digital', 
+    description: 'Acesse nossa biblioteca com palestras, artigos e materiais selecionados por especialistas.',
+    href: '/acervo-digital',
   },
 ];
 
@@ -30,10 +30,10 @@ export default function NewDigitalCollection() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
-            Nossos recursos
+            Recursos feitos para você
           </h2>
           <p className="max-w-2xl mx-auto mt-4 text-foreground/80 md:text-xl">
-            O melhor para os melhores.
+            Ferramentas e espaços pensados para fortalecer sua jornada de cuidado.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
