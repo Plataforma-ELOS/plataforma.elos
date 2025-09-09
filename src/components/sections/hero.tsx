@@ -23,11 +23,11 @@ export default function Hero() {
               }}
             >
               <Image
-                src="https://storage.googleapis.com/flutterflow-prod-new-projects/e-l-o-s-l97qr0/assets/images/6g1pcuud5pfo/placeholder_1_(1).jpg"
+                src="https://placehold.co/800x800.png"
                 alt="Mãos segurando outras em um gesto de cuidado e apoio"
                 width={800}
                 height={800}
-                data-ai-hint="caring hands"
+                data-ai-hint="placeholder image"
                 className="w-full h-full object-cover"
                 priority
               />
