@@ -135,7 +135,7 @@ export default function NewCommunity() {
               }}
             >
                <Image
-                src="https://placehold.co/800x800.png"
+                src="https://i.ibb.co/8nMd6ZD8/image.png"
                 alt="Comunidade unida"
                 width={800}
                 height={800}
