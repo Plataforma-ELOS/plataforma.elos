@@ -83,6 +83,9 @@ export default function NewCommunity() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-xl bg-card border-primary/20 p-8 sm:p-10">
+                      <DialogHeader>
+                          <DialogTitle className="text-2xl font-bold text-center mb-4 font-headline">Depoimentos da nossa comunidade</DialogTitle>
+                      </DialogHeader>
                       <Carousel
                         opts={{ align: "start", loop: true, }}
                         plugins={[
