@@ -1,3 +1,4 @@
+
 // src/app/fale-conosco/page.tsx
 "use client";
 
@@ -28,21 +29,8 @@ export default function ContactPage() {
     const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
     const publicKey = '4FHqCvo8kcV6WkAQ3';
 
-    // Captura os dados do formulário
-    const fromName = (currentForm.elements.namedItem('from_name') as HTMLInputElement).value;
-    const fromEmail = (currentForm.elements.namedItem('from_email') as HTMLInputElement).value;
-    const message = (currentForm.elements.namedItem('message') as HTMLTextAreaElement).value;
-
-    // Parâmetros para o e-mail de notificação para a plataforma
-    const notificationParams = {
-      from_name: fromName,
-      from_email: fromEmail,
-      message: message,
-      reply_to: fromEmail, // Adiciona o e-mail do visitante como campo de resposta
-    };
-    
     // 1. Envia o e-mail de notificação para a plataforma Elos
-    emailjs.send(serviceID, notificationTemplateID, notificationParams, publicKey)
+    emailjs.sendForm(serviceID, notificationTemplateID, currentForm, publicKey)
       .then(() => {
           toast({
             title: "Mensagem Enviada!",
@@ -50,13 +38,7 @@ export default function ContactPage() {
           });
 
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
-          const autoresponderParams = {
-            from_name: fromName,
-            from_email: fromEmail,
-            message: message,
-          };
-          
-          emailjs.send(serviceID, autoresponderTemplateID, autoresponderParams, publicKey)
+          emailjs.sendForm(serviceID, autoresponderTemplateID, currentForm, publicKey)
             .then(() => {
               console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
             }, (error) => {
@@ -125,7 +107,7 @@ export default function ContactPage() {
                             <CardTitle>Envie uma Mensagem</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+                            <form ref={formRef} id="contact-form" onSubmit={handleSubmit} className="space-y-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div className="space-y-2">
                                         <Label htmlFor="firstName">Nome</Label>
@@ -138,7 +120,7 @@ export default function ContactPage() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="from_email" type="email" placeholder="seu@email.com" required />
+                                    <Input id="email" name="reply_to" type="email" placeholder="seu@email.com" required />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="message">Mensagem</Label>
