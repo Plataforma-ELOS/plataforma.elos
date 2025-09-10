@@ -38,20 +38,20 @@ export default function NewDigitalCollection() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {collectionItems.map((item, index) => (
-            <Card key={index} className="group overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col p-8 aspect-square justify-between">
-                <div className="bg-primary/10 p-3 rounded-xl mb-4 self-start">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col flex-grow">
-                  <h3 className="text-xl font-bold text-card-foreground">{item.title}</h3>
-                  <p className="text-muted-foreground mt-2 flex-grow">{item.description}</p>
-                </div>
-                <div className="mt-4 flex justify-end">
-                    <Link href={item.href}>
-                        <ArrowRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </Link>
-                </div>
-            </Card>
+            <Link key={index} href={item.href} className="group block">
+              <Card className="overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col p-8 aspect-square justify-between">
+                  <div className="bg-primary/10 p-3 rounded-xl mb-4 self-start">
+                      {item.icon}
+                  </div>
+                  <div className="flex flex-col flex-grow">
+                    <h3 className="text-xl font-bold text-card-foreground">{item.title}</h3>
+                    <p className="text-muted-foreground mt-2 flex-grow">{item.description}</p>
+                  </div>
+                  <div className="mt-4 flex justify-end">
+                      <ArrowRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
