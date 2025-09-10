@@ -1,12 +1,11 @@
 // src/app/suporte-ia/page.tsx
 "use client";
 
-import { Suspense } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import AiSupport from '@/components/sections/ai-support';
 
-function AiSupportPageContent() {
+export default function AiSupportPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -15,13 +14,5 @@ function AiSupportPageContent() {
       </main>
       <Footer />
     </div>
-  );
-}
-
-export default function AiSupportPage() {
-  return (
-    <Suspense fallback={<div>Carregando...</div>}>
-      <AiSupportPageContent />
-    </Suspense>
   );
 }
