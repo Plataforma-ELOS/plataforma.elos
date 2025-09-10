@@ -9,8 +9,8 @@ import FeatureInProgress from '../feature-in-progress';
 export default function Footer({ className }: { className?: string}) {
   return (
     <footer className={cn("w-full bg-primary/20 border-t border-border/50", className)}>
-      <div className="container mx-auto py-16 px-4 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between text-left mb-16 gap-12">
+      <div className="container mx-auto py-20 px-4 md:px-6">
+        <div className="flex flex-col md:flex-row justify-between text-left mb-20 gap-12">
             <div className="space-y-4">
               <h4 className="font-semibold text-foreground">Plataforma E.L.O.S</h4>
               <ul className="space-y-2">
@@ -37,8 +37,8 @@ export default function Footer({ className }: { className?: string}) {
             </div>
         </div>
         
-        <div className="border-t pt-10 text-sm text-foreground/60 flex flex-col items-center gap-10">
-            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="border-t pt-12 text-sm text-foreground/60 flex flex-col items-center gap-10">
+            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-12">
                 <div className="text-center md:text-left max-w-sm">
                     <p className="font-bold text-foreground">Nossa Missão:</p>
                     <p>Cuidar de quem cuida, oferecendo suporte, informação e comunidade para cuidadores de pessoas com TEA.</p>
