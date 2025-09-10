@@ -40,7 +40,8 @@ export default function ContactPage() {
     // Parâmetros para o template de notificação (que você recebe)
     const notificationParams = {
         name: name,
-        email: email, // Este será usado no `reply_to`
+        email: email,
+        reply_to: email,
         message: message,
     };
     
@@ -48,7 +49,6 @@ export default function ContactPage() {
     const autoresponderParams = {
         name: name,
         email: email, // Este será usado como o destinatário `to_email`
-        message: message,
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
