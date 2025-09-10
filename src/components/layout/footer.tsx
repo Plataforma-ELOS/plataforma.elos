@@ -37,9 +37,9 @@ export default function Footer({ className }: { className?: string}) {
             </div>
         </div>
         
-        <div className="border-t pt-8 text-sm text-foreground/60 max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                <div className="text-left max-w-sm">
+        <div className="border-t pt-8 text-sm text-foreground/60 max-w-5xl mx-auto flex flex-col items-center gap-8">
+            <div className="w-full flex flex-col md:flex-row justify-between items-center gap-8">
+                <div className="text-center md:text-left max-w-sm">
                     <p className="font-bold text-foreground">Nossa Missão:</p>
                     <p>Cuidar de quem cuida, oferecendo suporte, informação e comunidade para cuidadores de pessoas com TEA.</p>
                 </div>
@@ -49,7 +49,7 @@ export default function Footer({ className }: { className?: string}) {
                         WCAG
                     </div>
                 </div>
-                <div className="text-right">
+                <div className="text-center md:text-right">
                    <FeatureInProgress>
                      <Button variant="link" className="text-foreground/80 hover:text-foreground px-0">
                         Política de Cookies
@@ -57,7 +57,7 @@ export default function Footer({ className }: { className?: string}) {
                    </FeatureInProgress>
                 </div>
             </div>
-             <p className="text-center mt-10">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
+             <p className="text-center mt-4">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
