@@ -86,7 +86,7 @@ export default function NewCommunity() {
                       <DialogHeader>
                           <DialogTitle className="text-2xl font-bold text-center mb-4 font-headline">Depoimentos da nossa comunidade</DialogTitle>
                       </DialogHeader>
-                      <div className="relative">
+                      <div className="relative px-12">
                           <Carousel
                             opts={{ align: "start", loop: true, }}
                             plugins={[
@@ -121,8 +121,8 @@ export default function NewCommunity() {
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
-                            <CarouselPrevious className="absolute left-[-24px] sm:left-[-32px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                            <CarouselNext className="absolute right-[-24px] sm:right-[-32px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
                           </Carousel>
                       </div>
                   </DialogContent>
