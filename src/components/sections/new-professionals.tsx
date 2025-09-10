@@ -1,4 +1,3 @@
-
 // src/components/sections/new-professionals.tsx
 "use client";
 import Image from 'next/image';
@@ -47,10 +46,10 @@ export default function NewProfessionals() {
               ]}
           className="w-full"
         >
-          <CarouselContent className="-ml-4">
+          <CarouselContent className="-ml-4 px-4">
             {professionals.map((prof, index) => (
                <CarouselItem key={prof.id} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
-                 <Link href={`/profissionais/${prof.id}`} className="group block">
+                 <Link href={`/profissionais/${prof.id}`} className="group block py-4">
                     <Card className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full bg-card border-0">
                         <Avatar className="h-24 w-24 mx-auto mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all">
                             <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} />
