@@ -37,15 +37,22 @@ export default function ContactPage() {
     const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
     const publicKey = '4FHqCvo8kcV6WkAQ3';
 
-    // Parâmetros para ambos os templates
-    const templateParams = {
+    // Parâmetros para o template de notificação (que você recebe)
+    const notificationParams = {
         name: name,
-        email: email,
+        email: email, // Este será usado no `reply_to`
+        message: message,
+    };
+    
+    // Parâmetros para o template de auto-resposta (que o usuário recebe)
+    const autoresponderParams = {
+        name: name,
+        email: email, // Este será usado como o destinatário `to_email`
         message: message,
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
-    emailjs.send(serviceID, notificationTemplateID, templateParams, publicKey)
+    emailjs.send(serviceID, notificationTemplateID, notificationParams, publicKey)
       .then(() => {
           toast({
             title: "Mensagem Enviada!",
@@ -53,7 +60,7 @@ export default function ContactPage() {
           });
           
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
-          emailjs.send(serviceID, autoresponderTemplateID, templateParams, publicKey)
+          emailjs.send(serviceID, autoresponderTemplateID, autoresponderParams, publicKey)
             .then(() => {
               console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
             }, (error) => {
