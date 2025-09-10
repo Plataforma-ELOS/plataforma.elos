@@ -133,7 +133,7 @@ export default function NewCommunity() {
               }}
             >
                <Image
-                src="https://i.ibb.co/Kz0yn5b/O-seu-lugar-ideal.png"
+                src="https://picsum.photos/seed/community/800/800"
                 alt="Comunidade unida"
                 width={800}
                 height={800}
