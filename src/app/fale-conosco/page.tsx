@@ -43,10 +43,10 @@ export default function ContactPage() {
             description: "Obrigado pelo seu contato. Responderemos em breve.",
           });
             
-          // Constrói os parâmetros para a auto-resposta (se necessário)
+          // Constrói os parâmetros para a auto-resposta
           const autoresponderParams = {
             from_name: 'Plataforma E.L.O.S',
-            reply_to: (currentForm.elements.namedItem('email') as HTMLInputElement).value,
+            email: (currentForm.elements.namedItem('email') as HTMLInputElement).value,
             // Adicione outras variáveis que seu template de auto-resposta espera
           };
           
