@@ -10,7 +10,7 @@ export default function Footer({ className }: { className?: string}) {
   return (
     <footer className={cn("w-full bg-primary/20 border-t border-border/50", className)}>
       <div className="container mx-auto py-20 px-4 md:px-6">
-        <div className="flex flex-col md:flex-row justify-between text-left mb-20 gap-12">
+        <div className="flex justify-between text-left mb-20 gap-12">
             <div className="space-y-4">
               <h4 className="font-semibold text-foreground">Plataforma E.L.O.S</h4>
               <ul className="space-y-2">
