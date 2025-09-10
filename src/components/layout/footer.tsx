@@ -10,8 +10,7 @@ export default function Footer({ className }: { className?: string}) {
   return (
     <footer className={cn("w-full bg-primary/20 border-t border-border/50", className)}>
       <div className="container mx-auto py-12 px-4 md:px-6">
-        <div className="grid gap-12 lg:grid-cols-3">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:col-span-3">
+        <div className="grid gap-10 md:gap-16 lg:grid-cols-3 mb-12 max-w-5xl mx-auto">
             <div className="space-y-4">
               <h4 className="font-semibold text-foreground">Plataforma E.L.O.S</h4>
               <ul className="space-y-2">
@@ -36,10 +35,10 @@ export default function Footer({ className }: { className?: string}) {
                 <li><Link href="/politica-de-privacidade" className="text-sm text-foreground/80 hover:text-foreground">Política de Privacidade</Link></li>
               </ul>
             </div>
-          </div>
         </div>
-        <div className="mt-12 border-t pt-8 text-sm text-foreground/60">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        
+        <div className="border-t pt-8 text-sm text-foreground/60 max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
                 <div className="text-left max-w-sm">
                     <p className="font-bold text-foreground">Nossa Missão:</p>
                     <p>Cuidar de quem cuida, oferecendo suporte, informação e comunidade para cuidadores de pessoas com TEA.</p>
@@ -52,13 +51,13 @@ export default function Footer({ className }: { className?: string}) {
                 </div>
                 <div className="text-right">
                    <FeatureInProgress>
-                     <Button variant="link" className="text-foreground/80 hover:text-foreground">
+                     <Button variant="link" className="text-foreground/80 hover:text-foreground px-0">
                         Política de Cookies
                     </Button>
                    </FeatureInProgress>
                 </div>
             </div>
-             <p className="text-center mt-8">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
+             <p className="text-center mt-10">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
