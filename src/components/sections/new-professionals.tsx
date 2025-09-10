@@ -69,11 +69,11 @@ export default function NewProfessionals() {
             ))}
           </CarouselContent>
            <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
-                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent dark:from-black dark:to-transparent"></div>
-                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent dark:from-black dark:to-transparent"></div>
+                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
+                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
             </div>
-          <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
-          <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>
       </div>
     </section>
