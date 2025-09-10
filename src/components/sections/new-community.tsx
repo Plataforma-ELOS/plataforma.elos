@@ -94,35 +94,37 @@ export default function NewCommunity() {
                             ]}
                             className="w-full"
                           >
-                            <CarouselContent className="px-8">
+                            <CarouselContent>
                               {testimonials.map((testimonial, index) => (
                                 <CarouselItem key={index}>
                                   <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
-                                    <div className="w-full flex items-center gap-3">
-                                      <Avatar className="h-10 w-10">
+                                    <div className="w-full flex flex-col items-center gap-4">
+                                      <Avatar className="h-12 w-12">
                                           <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
                                           <AvatarFallback>
-                                              <UserCircle className="h-10 w-10 text-muted-foreground" />
+                                              <UserCircle className="h-12 w-12 text-muted-foreground" />
                                           </AvatarFallback>
                                       </Avatar>
-                                      <h4 className="font-bold text-base">{testimonial.name}</h4>
+                                       <div>
+                                          <h4 className="font-bold text-base">{testimonial.name}</h4>
+                                          <div className="flex text-yellow-400 gap-1 mt-1 justify-center">
+                                              <Star className="w-4 h-4 fill-current" />
+                                              <Star className="w-4 h-4 fill-current" />
+                                              <Star className="w-4 h-4 fill-current" />
+                                              <Star className="w-4 h-4 fill-current" />
+                                              <Star className="w-4 h-4 fill-current" />
+                                          </div>
+                                      </div>
                                     </div>
-                                    <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-8 flex-grow flex items-center">
+                                    <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-6 flex-grow flex items-center">
                                         "{testimonial.text}"
                                     </p>
-                                    <div className="flex text-yellow-400 gap-1 mt-4">
-                                        <Star className="w-5 h-5 fill-current" />
-                                        <Star className="w-5 h-5 fill-current" />
-                                        <Star className="w-5 h-5 fill-current" />
-                                        <Star className="w-5 h-5 fill-current" />
-                                        <Star className="w-5 h-5 fill-current" />
-                                    </div>
                                   </div>
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
-                            <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                            <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselPrevious className="absolute left-[-8px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselNext className="absolute right-[-8px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
                           </Carousel>
                       </div>
                   </DialogContent>
