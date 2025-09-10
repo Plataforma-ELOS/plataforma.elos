@@ -55,7 +55,7 @@ export default function ContactPage() {
       .then(() => {
           toast({
             title: "Mensagem Enviada!",
-            description: "Obrigado pelo seu contato. Responderemos em breve.",
+            description: "Obrigado pelo seu contato. Você receberá uma confirmação no seu e-mail.",
           });
           
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
