@@ -10,29 +10,38 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { useRef } from 'react';
+import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 
 export default function ContactPage() {
   const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const currentForm = formRef.current;
-    if (!currentForm) return;
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Campos obrigatórios",
+        description: "Por favor, preencha todos os campos.",
+      });
+      return;
+    }
+    setLoading(true);
 
     const serviceID = 'service_r3l495y';
     const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
     const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
     const publicKey = '4FHqCvo8kcV6WkAQ3';
 
-    // Construindo os parâmetros para corresponder ao template do EmailJS
+    // Parâmetros para ambos os templates
     const templateParams = {
-        name: `${(currentForm.elements.namedItem('firstName') as HTMLInputElement).value} ${(currentForm.elements.namedItem('lastName') as HTMLInputElement).value}`,
-        email: (currentForm.elements.namedItem('email') as HTMLInputElement).value,
-        message: (currentForm.elements.namedItem('message') as HTMLInputElement).value,
+        name: name,
+        email: email,
+        message: message,
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
@@ -42,23 +51,19 @@ export default function ContactPage() {
             title: "Mensagem Enviada!",
             description: "Obrigado pelo seu contato. Responderemos em breve.",
           });
-            
-          // Constrói os parâmetros para a auto-resposta
-          const autoresponderParams = {
-            from_name: 'Plataforma E.L.O.S',
-            email: (currentForm.elements.namedItem('email') as HTMLInputElement).value,
-            // Adicione outras variáveis que seu template de auto-resposta espera
-          };
           
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
-          emailjs.send(serviceID, autoresponderTemplateID, autoresponderParams, publicKey)
+          emailjs.send(serviceID, autoresponderTemplateID, templateParams, publicKey)
             .then(() => {
               console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
             }, (error) => {
               console.error('Falha ao enviar auto-resposta:', error.text);
             });
 
-          currentForm.reset();
+          // Limpa o formulário
+          setName('');
+          setEmail('');
+          setMessage('');
       }, (error) => {
           console.error('Falha ao enviar notificação:', error.text);
           toast({
@@ -66,6 +71,9 @@ export default function ContactPage() {
             title: "Ocorreu um erro",
             description: "Não foi possível enviar sua mensagem. Tente novamente.",
           });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -120,26 +128,48 @@ export default function ContactPage() {
                             <CardTitle>Envie uma Mensagem</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="firstName">Nome</Label>
-                                        <Input id="firstName" name="firstName" placeholder="Seu nome" required />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="lastName">Sobrenome</Label>
-                                        <Input id="lastName" name="lastName" placeholder="Seu sobrenome" required />
-                                    </div>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="name">Nome Completo</Label>
+                                    <Input 
+                                        id="name" 
+                                        name="name" 
+                                        placeholder="Seu nome completo" 
+                                        required 
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        disabled={loading}
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="email" type="email" placeholder="seu@email.com" required />
+                                    <Input 
+                                        id="email" 
+                                        name="email" 
+                                        type="email" 
+                                        placeholder="seu@email.com" 
+                                        required 
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        disabled={loading}
+                                    />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="message">Mensagem</Label>
-                                    <Textarea id="message" name="message" placeholder="Escreva sua mensagem aqui..." className="min-h-[120px]" required />
+                                    <Textarea 
+                                        id="message" 
+                                        name="message" 
+                                        placeholder="Escreva sua mensagem aqui..." 
+                                        className="min-h-[120px]" 
+                                        required 
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        disabled={loading}
+                                    />
                                 </div>
-                                <Button type="submit" className="w-full">Enviar Mensagem</Button>
+                                <Button type="submit" className="w-full" disabled={loading}>
+                                  {loading ? 'Enviando...' : 'Enviar Mensagem'}
+                                </Button>
                             </form>
                         </CardContent>
                     </Card>
