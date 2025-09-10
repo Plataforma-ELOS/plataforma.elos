@@ -82,7 +82,7 @@ export default function NewCommunity() {
                         Veja o que dizem sobre nós
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-xl bg-card border-primary/20 p-8 sm:p-10">
+                  <DialogContent className="max-w-2xl bg-card border-primary/20 p-8 sm:p-10">
                       <DialogHeader>
                           <DialogTitle className="text-2xl font-bold text-center mb-4 font-headline">Depoimentos da nossa comunidade</DialogTitle>
                       </DialogHeader>
@@ -90,7 +90,7 @@ export default function NewCommunity() {
                           <Carousel
                             opts={{ align: "start", loop: true, }}
                             plugins={[
-                              Autoplay({ delay: 4000, stopOnInteraction: true, playOnInit: true }),
+                              Autoplay({ delay: 5000, stopOnInteraction: true, playOnInit: true }),
                             ]}
                             className="w-full"
                           >
@@ -119,8 +119,8 @@ export default function NewCommunity() {
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
-                            <CarouselPrevious className="absolute left-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
-                            <CarouselNext className="absolute right-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
+                            <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
+                            <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
                           </Carousel>
                       </div>
                   </DialogContent>
