@@ -10,7 +10,7 @@ export default function Footer({ className }: { className?: string}) {
   return (
     <footer className={cn("w-full bg-primary/20 border-t border-border/50", className)}>
       <div className="container mx-auto py-16 px-4 md:px-6">
-        <div className="grid gap-12 md:gap-20 lg:grid-cols-3 mb-16 max-w-5xl mx-auto">
+        <div className="grid gap-12 md:gap-8 lg:grid-cols-3 mb-16">
             <div className="space-y-4">
               <h4 className="font-semibold text-foreground">Plataforma E.L.O.S</h4>
               <ul className="space-y-2">
@@ -37,7 +37,7 @@ export default function Footer({ className }: { className?: string}) {
             </div>
         </div>
         
-        <div className="border-t pt-10 text-sm text-foreground/60 max-w-5xl mx-auto flex flex-col items-center gap-10">
+        <div className="border-t pt-10 text-sm text-foreground/60 flex flex-col items-center gap-10">
             <div className="w-full flex flex-col md:flex-row justify-between items-center gap-8">
                 <div className="text-center md:text-left max-w-sm">
                     <p className="font-bold text-foreground">Nossa Missão:</p>
