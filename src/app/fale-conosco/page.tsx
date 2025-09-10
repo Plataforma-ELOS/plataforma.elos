@@ -1,4 +1,3 @@
-
 // src/app/fale-conosco/page.tsx
 "use client";
 
@@ -48,8 +47,7 @@ export default function ContactPage() {
     // Parâmetros para o template de auto-resposta (que o usuário recebe)
     const autoresponderParams = {
         name: name,
-        email: email,
-        to_email: email, // Chave explícita para o destinatário
+        from_email: email, // Corrigido para corresponder ao template {{from_email}}
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
