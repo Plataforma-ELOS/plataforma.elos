@@ -86,7 +86,7 @@ export default function NewCommunity() {
                       <DialogHeader>
                           <DialogTitle className="text-2xl font-bold text-center mb-4 font-headline">Depoimentos da nossa comunidade</DialogTitle>
                       </DialogHeader>
-                      <div className="relative px-8">
+                      <div className="relative">
                           <Carousel
                             opts={{ align: "start", loop: true, }}
                             plugins={[
@@ -94,7 +94,7 @@ export default function NewCommunity() {
                             ]}
                             className="w-full"
                           >
-                            <CarouselContent>
+                            <CarouselContent className="px-8">
                               {testimonials.map((testimonial, index) => (
                                 <CarouselItem key={index}>
                                   <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
@@ -121,8 +121,8 @@ export default function NewCommunity() {
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
-                            <CarouselPrevious className="absolute left-[-16px] sm:left-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                            <CarouselNext className="absolute right-[-16px] sm:right-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
                           </Carousel>
                       </div>
                   </DialogContent>
