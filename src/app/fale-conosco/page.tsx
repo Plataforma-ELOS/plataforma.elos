@@ -47,29 +47,28 @@ export default function ContactPage() {
     // Parâmetros para o template de auto-resposta (que o usuário recebe)
     const autoresponderParams = {
         name: name,
-        email: email, // Este campo é usado pelo EmailJS para definir o destinatário
+        email: email,
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
     emailjs.send(serviceID, notificationTemplateID, notificationParams, publicKey)
       .then(() => {
-          toast({
-            title: "Mensagem Enviada!",
-            description: "Obrigado pelo seu contato. Você receberá uma confirmação no seu e-mail.",
-          });
-          
           // 2. Após o sucesso, envia o e-mail de auto-resposta para o visitante
           emailjs.send(serviceID, autoresponderTemplateID, autoresponderParams, publicKey)
             .then(() => {
               console.log("E-mail de auto-resposta enviado com sucesso para o visitante.");
+              toast({
+                title: "Mensagem Enviada!",
+                description: "Obrigado pelo seu contato. Você receberá uma confirmação no seu e-mail.",
+              });
             }, (error) => {
               console.error('Falha ao enviar auto-resposta:', error.text);
+               toast({
+                variant: "destructive",
+                title: "Mensagem recebida, mas falha na confirmação",
+                description: "Recebemos sua mensagem, mas houve um erro ao enviar o e-mail de confirmação para você.",
+              });
             });
-
-          // Limpa o formulário
-          setName('');
-          setEmail('');
-          setMessage('');
       }, (error) => {
           console.error('Falha ao enviar notificação:', error.text);
           toast({
@@ -79,6 +78,10 @@ export default function ContactPage() {
           });
       })
       .finally(() => {
+        // Limpa o formulário apenas após todas as operações de envio
+        setName('');
+        setEmail('');
+        setMessage('');
         setLoading(false);
       });
   };
