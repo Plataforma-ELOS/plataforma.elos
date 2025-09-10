@@ -1,3 +1,4 @@
+
 // src/app/fale-conosco/page.tsx
 "use client";
 
@@ -48,6 +49,7 @@ export default function ContactPage() {
     const autoresponderParams = {
         name: name,
         email: email,
+        to_email: email, // Chave explícita para o destinatário
     };
     
     // 1. Envia o e-mail de notificação para a plataforma Elos
