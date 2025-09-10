@@ -97,34 +97,30 @@ export default function NewCommunity() {
                             <CarouselContent>
                               {testimonials.map((testimonial, index) => (
                                 <CarouselItem key={index}>
-                                  <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
-                                    <div className="w-full flex flex-col items-center gap-4">
-                                      <Avatar className="h-12 w-12">
-                                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
-                                          <AvatarFallback>
-                                              <UserCircle className="h-12 w-12 text-muted-foreground" />
-                                          </AvatarFallback>
-                                      </Avatar>
-                                       <div>
-                                          <h4 className="font-bold text-base">{testimonial.name}</h4>
-                                          <div className="flex text-yellow-400 gap-1 mt-1 justify-center">
-                                              <Star className="w-4 h-4 fill-current" />
-                                              <Star className="w-4 h-4 fill-current" />
-                                              <Star className="w-4 h-4 fill-current" />
-                                              <Star className="w-4 h-4 fill-current" />
-                                              <Star className="w-4 h-4 fill-current" />
+                                  <div className="text-center flex flex-col items-center justify-between min-h-[16rem] gap-4">
+                                      <div className="flex flex-col items-center gap-2">
+                                          <Avatar className="h-16 w-16">
+                                              <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
+                                              <AvatarFallback>
+                                                  <UserCircle className="h-16 w-16 text-muted-foreground" />
+                                              </AvatarFallback>
+                                          </Avatar>
+                                          <div>
+                                              <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                                              <div className="flex text-yellow-400 gap-1 mt-1 justify-center">
+                                                  {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
+                                              </div>
                                           </div>
                                       </div>
-                                    </div>
-                                    <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-6 flex-grow flex items-center">
-                                        "{testimonial.text}"
-                                    </p>
+                                      <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto">
+                                          "{testimonial.text}"
+                                      </p>
                                   </div>
                                 </CarouselItem>
                               ))}
                             </CarouselContent>
-                            <CarouselPrevious className="absolute left-[-8px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                            <CarouselNext className="absolute right-[-8px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselPrevious className="absolute left-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
+                            <CarouselNext className="absolute right-[-24px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:bg-muted hover:text-foreground h-10 w-10" />
                           </Carousel>
                       </div>
                   </DialogContent>
