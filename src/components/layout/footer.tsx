@@ -3,6 +3,8 @@
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import FeatureInProgress from '../feature-in-progress';
 
 export default function Footer({ className }: { className?: string}) {
   return (
@@ -36,8 +38,27 @@ export default function Footer({ className }: { className?: string}) {
             </div>
           </div>
         </div>
-        <div className="mt-12 border-t pt-8 text-center text-sm text-foreground/60">
-          <p>&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
+        <div className="mt-12 border-t pt-8 text-sm text-foreground/60">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="text-left max-w-sm">
+                    <p className="font-bold text-foreground">Nossa Missão:</p>
+                    <p>Cuidar de quem cuida, oferecendo suporte, informação e comunidade para cuidadores de pessoas com TEA.</p>
+                </div>
+                <div className="text-center">
+                    <p className="font-semibold text-foreground mb-1">Acessibilidade</p>
+                     <div className="inline-block bg-muted/80 text-muted-foreground border border-border rounded-full px-4 py-1 font-bold">
+                        WCAG
+                    </div>
+                </div>
+                <div className="text-right">
+                   <FeatureInProgress>
+                     <Button variant="link" className="text-foreground/80 hover:text-foreground">
+                        Política de Cookies
+                    </Button>
+                   </FeatureInProgress>
+                </div>
+            </div>
+             <p className="text-center mt-8">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
