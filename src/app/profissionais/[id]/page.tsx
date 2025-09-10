@@ -1,7 +1,7 @@
 // src/app/profissionais/[id]/page.tsx
 "use client";
 
-import { useState, use } from 'react';
+import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -370,8 +370,7 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
 
 
 export default function ProfessionalProfilePage({ params }: { params: { id: string } }) {
-  const resolvedParams = use(Promise.resolve(params));
-  const professional = professionalsData[resolvedParams.id] || {
+  const professional = professionalsData[params.id] || {
     name: "Perfil não encontrado",
     imageUrl: "https://placehold.co/128x128.png",
     specialty: "",
