@@ -86,43 +86,45 @@ export default function NewCommunity() {
                       <DialogHeader>
                           <DialogTitle className="text-2xl font-bold text-center mb-4 font-headline">Depoimentos da nossa comunidade</DialogTitle>
                       </DialogHeader>
-                      <Carousel
-                        opts={{ align: "start", loop: true, }}
-                        plugins={[
-                          Autoplay({ delay: 4000, stopOnInteraction: true, playOnInit: true }),
-                        ]}
-                        className="w-full"
-                      >
-                        <CarouselContent>
-                          {testimonials.map((testimonial, index) => (
-                            <CarouselItem key={index}>
-                              <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
-                                <div className="w-full flex items-center gap-3">
-                                  <Avatar className="h-10 w-10">
-                                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
-                                      <AvatarFallback>
-                                          <UserCircle className="h-10 w-10 text-muted-foreground" />
-                                      </AvatarFallback>
-                                  </Avatar>
-                                  <h4 className="font-bold text-base">{testimonial.name}</h4>
-                                </div>
-                                <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-8 flex-grow flex items-center">
-                                    "{testimonial.text}"
-                                </p>
-                                <div className="flex text-yellow-400 gap-1 mt-4">
-                                    <Star className="w-5 h-5 fill-current" />
-                                    <Star className="w-5 h-5 fill-current" />
-                                    <Star className="w-5 h-5 fill-current" />
-                                    <Star className="w-5 h-5 fill-current" />
-                                    <Star className="w-5 h-5 fill-current" />
-                                </div>
-                              </div>
-                            </CarouselItem>
-                          ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="absolute left-0 sm:left-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                        <CarouselNext className="absolute right-0 sm:right-[-1rem] top-1/2 -translate-y-1/2 z-10 bg-transparent border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
-                      </Carousel>
+                      <div className="relative">
+                          <Carousel
+                            opts={{ align: "start", loop: true, }}
+                            plugins={[
+                              Autoplay({ delay: 4000, stopOnInteraction: true, playOnInit: true }),
+                            ]}
+                            className="w-full"
+                          >
+                            <CarouselContent>
+                              {testimonials.map((testimonial, index) => (
+                                <CarouselItem key={index}>
+                                  <div className="text-center flex flex-col items-center justify-between min-h-[16rem]">
+                                    <div className="w-full flex items-center gap-3">
+                                      <Avatar className="h-10 w-10">
+                                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.hint} />
+                                          <AvatarFallback>
+                                              <UserCircle className="h-10 w-10 text-muted-foreground" />
+                                          </AvatarFallback>
+                                      </Avatar>
+                                      <h4 className="font-bold text-base">{testimonial.name}</h4>
+                                    </div>
+                                    <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto pt-8 flex-grow flex items-center">
+                                        "{testimonial.text}"
+                                    </p>
+                                    <div className="flex text-yellow-400 gap-1 mt-4">
+                                        <Star className="w-5 h-5 fill-current" />
+                                        <Star className="w-5 h-5 fill-current" />
+                                        <Star className="w-5 h-5 fill-current" />
+                                        <Star className="w-5 h-5 fill-current" />
+                                        <Star className="w-5 h-5 fill-current" />
+                                    </div>
+                                  </div>
+                                </CarouselItem>
+                              ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="absolute left-[-24px] sm:left-[-32px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                            <CarouselNext className="absolute right-[-24px] sm:right-[-32px] top-1/2 -translate-y-1/2 z-10 bg-background/50 border-none text-foreground/50 hover:text-foreground/90 h-10 w-10" />
+                          </Carousel>
+                      </div>
                   </DialogContent>
                 </Dialog>
             </div>
