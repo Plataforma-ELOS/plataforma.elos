@@ -15,12 +15,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', imageUrl: 'https://i.ibb.co/bF02GPR/dra-cristiane.jpg', hint: 'woman doctor portrait' },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', imageUrl: 'https://i.ibb.co/P9LpZ2z/dr-fernando.jpg', hint: 'man doctor portrait' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', imageUrl: 'https://i.ibb.co/PNwqd1N/dra-beatriz.jpg', hint: 'woman psychologist portrait' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', imageUrl: 'https://i.ibb.co/G03g1Qc/dr-ricardo.jpg', hint: 'man therapist portrait' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', imageUrl: 'https://i.ibb.co/hKdfWk6/dra-ana.jpg', hint: 'woman teacher portrait' },
-  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', imageUrl: 'https://i.ibb.co/yQcj1n3/dr-marcos.jpg', hint: 'man companion portrait' },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait' },
+  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait' },
+  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait' },
+  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait' },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait' },
+  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', imageUrl: 'https://placehold.co/128x128.png', hint: 'man companion portrait' },
 ];
 
 export default function NewProfessionals() {

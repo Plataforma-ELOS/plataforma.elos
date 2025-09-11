@@ -6,7 +6,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-cristiane': {
     id: 'dra-cristiane',
     name: 'Dra. Cristiane',
-    imageUrl: 'https://i.ibb.co/bF02GPR/dra-cristiane.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'woman doctor portrait',
     specialty: 'Psicóloga Especialista em TEA',
     crm: 'CRP 08/987654',
@@ -36,7 +36,7 @@ const professionalsData: { [key: string]: any } = {
   'dr-fernando': {
     id: 'dr-fernando',
     name: 'Dr. Fernando',
-    imageUrl: 'https://i.ibb.co/P9LpZ2z/dr-fernando.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'man doctor portrait',
     specialty: 'Neuropediatra',
     crm: 'CRM/RJ 543210',
@@ -66,7 +66,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-beatriz': {
     id: 'dra-beatriz',
     name: 'Dra. Beatriz',
-    imageUrl: 'https://i.ibb.co/PNwqd1N/dra-beatriz.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'woman psychologist portrait',
     specialty: 'Fonoaudióloga',
     crm: 'CRFa 2-12345/SP',
@@ -96,7 +96,7 @@ const professionalsData: { [key: string]: any } = {
   'dr-ricardo': {
     id: 'dr-ricardo',
     name: 'Dr. Ricardo',
-    imageUrl: 'https://i.ibb.co/G03g1Qc/dr-ricardo.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'man therapist portrait',
     specialty: 'Terapeuta Ocupacional',
     crm: 'CREFITO-3/112233',
@@ -126,7 +126,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-ana': {
     id: 'dra-ana',
     name: 'Dra. Ana',
-    imageUrl: 'https://i.ibb.co/hKdfWk6/dra-ana.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'woman teacher portrait',
     specialty: 'Psicopedagoga',
     crm: 'ABPp 5678-RJ',
@@ -156,7 +156,7 @@ const professionalsData: { [key: string]: any } = {
   'dr-marcos': {
     id: 'dr-marcos',
     name: 'Dr. Marcos',
-    imageUrl: 'https://i.ibb.co/yQcj1n3/dr-marcos.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'man companion portrait',
     specialty: 'Acompanhante Terapêutico',
     crm: 'N/A',
@@ -186,7 +186,7 @@ const professionalsData: { [key: string]: any } = {
    'clinica-superar': {
     id: 'clinica-superar',
     name: 'Clínica Superar',
-    imageUrl: 'https://i.ibb.co/f2k1g0b/clinica-superar.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'clinic logo',
     specialty: 'Centro Multidisciplinar',
     crm: 'CNPJ: 12.345.678/0001-90',
@@ -217,7 +217,7 @@ const professionalsData: { [key: string]: any } = {
     'espaco-crescer': {
     id: 'espaco-crescer',
     name: 'Espaço Crescer',
-    imageUrl: 'https://i.ibb.co/mXzS9bB/espaco-crescer.jpg',
+    imageUrl: 'https://placehold.co/128x128.png',
     hint: 'child climbing logo',
     specialty: 'Terapia Infantil e Familiar',
     crm: 'CNPJ: 22.333.444/0001-55',
