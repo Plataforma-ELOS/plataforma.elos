@@ -123,7 +123,7 @@ export default function NewCommunity() {
                 </Dialog>
             </div>
           </div>
-           <div className="relative flex items-center justify-center min-h-[500px]">
+           <div className="relative hidden lg:flex items-center justify-center min-h-[500px]">
               <div
               className="absolute w-full h-full"
               style={{

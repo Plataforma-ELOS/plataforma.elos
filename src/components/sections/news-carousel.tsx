@@ -1,4 +1,3 @@
-
 // src/components/sections/news-carousel.tsx
 "use client";
 import Image from 'next/image';
@@ -54,6 +53,14 @@ const newsArticles = [
     alt: 'Notícia 5',
     hint: 'publication'
   },
+    {
+    slug: 'tecnologia-assistiva-para-comunicacao',
+    title: 'Apps para o dia-a-dia',
+    category: 'Tecnologia',
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Notícia 6',
+    hint: 'apps on phone'
+  },
 ];
 
 export default function NewsCarousel() {
@@ -81,14 +88,14 @@ export default function NewsCarousel() {
         >
           <CarouselContent className="-ml-2">
             {newsArticles.concat(newsArticles).map((article, index) => (
-              <CarouselItem key={index} className="pl-2 basis-1/2 md:basis-1/3 lg:basis-1/5">
+              <CarouselItem key={index} className="pl-2 basis-[60%] sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
                 <Link href={`/noticias/${article.slug}`} className="p-1 block group relative overflow-hidden rounded-lg">
                   <Image
                     src={article.src}
                     alt={article.alt}
                     width={600}
                     height={400}
-                    className="rounded-lg object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                    className="rounded-lg object-cover w-full aspect-[3/4] transition-transform duration-300 group-hover:scale-110"
                     data-ai-hint={article.hint}
                   />
                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />

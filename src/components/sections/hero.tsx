@@ -5,16 +5,16 @@ export default function Hero() {
     <section className="w-full py-20 md:py-24 bg-gradient-to-b from-background to-primary/10 dark:to-primary/20 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
-          <div className="flex flex-col justify-center space-y-6">
+          <div className="flex flex-col justify-center space-y-6 text-center lg:text-left">
             <span className="text-lg font-semibold bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">Sua jornada de cuidado começa aqui.</span>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-foreground font-headline">
               Cuidar de alguém começa por cuidar de si.
             </h1>
-            <p className="max-w-[600px] text-foreground/80 md:text-xl">
+            <p className="max-w-[600px] text-foreground/80 md:text-xl mx-auto lg:mx-0">
               Cuidar é ajudar quem você ama a viver melhor. Aqui, você encontra recursos, comunidade e profissionais que entendem sua jornada.
             </p>
           </div>
-          <div className="relative flex items-center justify-end min-h-[500px]">
+          <div className="relative hidden lg:flex items-center justify-center min-h-[500px]">
             <div
               className="absolute w-full h-full"
               style={{
