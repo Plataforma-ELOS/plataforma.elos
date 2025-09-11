@@ -105,7 +105,7 @@ function UserProfileDropdown() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer">
-                    <AvatarImage src="https://i.ibb.co/GQytCWPj/ELOS-Projeto-Integrador-PI.jpg" alt="Avatar" data-ai-hint="user avatar" />
+                    <AvatarImage src="https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg" alt="Avatar" data-ai-hint="user avatar" />
                     <AvatarFallback>
                         {user.name.charAt(0)}
                     </AvatarFallback>
@@ -256,7 +256,7 @@ export default function HeaderSecondary() {
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2">
                 <Link href="/" className="flex items-center gap-2 text-xl font-bold">
-                    <Image src="https://i.ibb.co/GQytCWPj/ELOS-Projeto-Integrador-PI.jpg" width={40} height={40} alt="Logo" className="rounded-full" />
+                    <Image src="https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg" width={40} height={40} alt="Logo" className="rounded-full" />
                     <span className="text-foreground">Plataforma</span>
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                 </Link>
@@ -286,7 +286,7 @@ export default function HeaderSecondary() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
-                        <Image src="https://i.ibb.co/GQytCWPj/ELOS-Projeto-Integrador-PI.jpg" width={40} height={40} alt="Logo" className="rounded-full" />
+                        <Image src="https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg" width={40} height={40} alt="Logo" className="rounded-full" />
                         <span className="text-foreground">Plataforma</span>
                         <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
