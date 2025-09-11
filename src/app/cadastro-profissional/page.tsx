@@ -106,7 +106,7 @@ export default function ProfessionalSignUpPage() {
             <div className="mx-auto grid w-full max-w-md gap-8 mt-16 lg:mt-0">
                 <div className="grid gap-4 text-center">
                     <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
-                        <Image src="https://placehold.co/40x40.png" alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint="logo" />
+                        <Image src="https://i.ibb.co/Sw75Xd7Q/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png" alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint="logo" />
                         <span className="text-foreground">Plataforma</span>
                         <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                     </Link>
@@ -172,3 +172,5 @@ export default function ProfessionalSignUpPage() {
     </div>
   );
 }
+
+    
