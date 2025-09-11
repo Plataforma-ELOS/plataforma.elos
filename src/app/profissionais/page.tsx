@@ -24,17 +24,17 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman doctor portrait' },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man doctor portrait' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman psychologist portrait' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man therapist portrait' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://placehold.co/200x200.png', hint: 'woman teacher portrait' },
-  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.', imageUrl: 'https://placehold.co/200x200.png', hint: 'man companion portrait' },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://i.ibb.co/bF02GPR/dra-cristiane.jpg', hint: 'woman doctor portrait' },
+  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://i.ibb.co/P9LpZ2z/dr-fernando.jpg', hint: 'man doctor portrait' },
+  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://i.ibb.co/PNwqd1N/dra-beatriz.jpg', hint: 'woman psychologist portrait' },
+  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://i.ibb.co/G03g1Qc/dr-ricardo.jpg', hint: 'man therapist portrait' },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://i.ibb.co/hKdfWk6/dra-ana.jpg', hint: 'woman teacher portrait' },
+  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.', imageUrl: 'https://i.ibb.co/yQcj1n3/dr-marcos.jpg', hint: 'man companion portrait' },
 ];
 
 const clinics = [
-    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
-    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
+    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://i.ibb.co/f2k1g0b/clinica-superar.jpg', hint: 'clinic facade' },
+    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://i.ibb.co/mXzS9bB/espaco-crescer.jpg', hint: 'playroom therapy' },
     { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
     { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: 'https://placehold.co/800x450.png', hint: 'group therapy' },
 ];
