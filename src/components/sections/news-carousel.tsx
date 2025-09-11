@@ -72,7 +72,7 @@ export default function NewsCarousel() {
         </h2>
       </div>
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 via-primary/10 to-transparent z-10 dark:from-primary/20 dark:via-primary/20" />
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />
         <Carousel
           opts={{
             align: "start",
@@ -89,7 +89,7 @@ export default function NewsCarousel() {
         >
           <CarouselContent className="-ml-4">
             {newsArticles.concat(newsArticles).map((article, index) => (
-              <CarouselItem key={index} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+              <CarouselItem key={index} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
                 <Link href={`/noticias/${article.slug}`} className="p-1 block group relative overflow-hidden rounded-lg">
                   <Image
                     src={article.src}
@@ -109,7 +109,7 @@ export default function NewsCarousel() {
             ))}
           </CarouselContent>
         </Carousel>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 via-primary/10 to-transparent z-10 dark:from-primary/20 dark:via-primary/20" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10" />
       </div>
     </section>
   );
