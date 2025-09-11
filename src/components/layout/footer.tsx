@@ -48,6 +48,7 @@ export default function Footer({ className }: { className?: string}) {
                      <div className="inline-block bg-muted/80 text-muted-foreground border border-border rounded-full px-4 py-1 font-bold">
                         WCAG
                     </div>
+                    <p className="text-center mt-4">&copy; 2025 Plataforma E.L.O.S. Todos os direitos reservados.</p>
                 </div>
                 <div className="text-center md:text-right">
                    <FeatureInProgress>
@@ -57,7 +58,6 @@ export default function Footer({ className }: { className?: string}) {
                    </FeatureInProgress>
                 </div>
             </div>
-             <p className="text-center mt-4">&copy; {new Date().getFullYear()} Plataforma E.L.O.S. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
