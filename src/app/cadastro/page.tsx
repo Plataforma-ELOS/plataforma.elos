@@ -1,3 +1,4 @@
+
 // src/app/cadastro/page.tsx
 "use client";
 
@@ -44,7 +45,7 @@ export default function CadastroPage() {
             <div className="mx-auto grid w-full max-w-md gap-6">
                 <div className="grid gap-2 text-center">
                     <Link href="/home" className="flex items-center justify-center gap-2 text-2xl font-bold">
-                        <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
+                        <Image src="https://i.ibb.co/p3wFy56/icon-1-removebg-preview.png" width={40} height={40} alt="Logo" className="rounded-full" />
                         <span className="text-foreground">Plataforma</span>
                         <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                     </Link>
@@ -120,3 +121,5 @@ export default function CadastroPage() {
     </div>
   );
 }
+
+    

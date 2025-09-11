@@ -104,7 +104,7 @@ function UserProfileDropdown() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer">
-                    <AvatarImage src="https://placehold.co/40x40.png" alt="Avatar" data-ai-hint="user avatar" />
+                    <AvatarImage src="https://i.ibb.co/p3wFy56/icon-1-removebg-preview.png" alt="Avatar" data-ai-hint="user avatar" />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
@@ -246,7 +246,7 @@ export default function Header() {
     <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-sm shadow-sm' : 'bg-background'}`}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
-          <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
+          <Image src="https://i.ibb.co/p3wFy56/icon-1-removebg-preview.png" width={40} height={40} alt="Logo" className="rounded-full" />
           <span className="text-foreground">Plataforma</span>
           <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
               E.L.O.S
@@ -270,7 +270,7 @@ export default function Header() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
-                    <Image src="https://placehold.co/40x40.png" width={40} height={40} alt="Logo" className="rounded-full" />
+                    <Image src="https://i.ibb.co/p3wFy56/icon-1-removebg-preview.png" width={40} height={40} alt="Logo" className="rounded-full" />
                     <span className="text-foreground">Plataforma</span>
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
@@ -289,3 +289,5 @@ export default function Header() {
     </header>
   );
 }
+
+    
