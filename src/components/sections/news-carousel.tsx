@@ -108,8 +108,8 @@ export default function NewsCarousel() {
             ))}
           </CarouselContent>
         </Carousel>
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 via-primary/10 to-transparent z-10 dark:from-primary/20 dark:via-primary/20 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 via-primary/10 to-transparent z-10 dark:from-primary/20 dark:via-primary/20 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 to-transparent z-10 dark:from-primary/20 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 to-transparent z-10 dark:from-primary/20 pointer-events-none" />
       </div>
     </section>
   );
