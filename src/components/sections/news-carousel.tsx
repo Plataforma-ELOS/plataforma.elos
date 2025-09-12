@@ -65,52 +65,55 @@ const newsArticles = [
 
 export default function NewsCarousel() {
   return (
-    <section className="w-full py-20 md:py-24 bg-primary/10 dark:bg-primary/20 overflow-hidden relative">
+    <section className="w-full py-20 md:py-24 bg-primary/10 dark:bg-primary/20 overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-center mb-16">
           Últimas notícias
         </h2>
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          plugins={[
-            Autoplay({
-              delay: 2000,
-              stopOnInteraction: true,
-              playOnInit: true,
-            }),
-          ]}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-4">
-            {newsArticles.concat(newsArticles).map((article, index) => (
-              <CarouselItem key={index} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
-                <Link href={`/noticias/${article.slug}`} className="p-1 block group relative overflow-hidden rounded-lg">
-                  <Image
-                    src={article.src}
-                    alt={article.alt}
-                    width={600}
-                    height={400}
-                    className="rounded-lg object-cover w-full aspect-video transition-transform duration-300 group-hover:scale-110"
-                    data-ai-hint={article.hint}
-                  />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                   <div className="absolute bottom-0 left-0 p-4 text-white">
-                      <Badge variant="secondary" className="mb-1">{article.category}</Badge>
-                      <h3 className="font-bold text-sm leading-tight">{article.title}</h3>
-                   </div>
-                </Link>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 2000,
+                stopOnInteraction: true,
+                playOnInit: true,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {newsArticles.concat(newsArticles).map((article, index) => (
+                <CarouselItem key={index} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
+                  <Link href={`/noticias/${article.slug}`} className="p-1 block group relative overflow-hidden rounded-lg">
+                    <Image
+                      src={article.src}
+                      alt={article.alt}
+                      width={600}
+                      height={400}
+                      className="rounded-lg object-cover w-full aspect-video transition-transform duration-300 group-hover:scale-110"
+                      data-ai-hint={article.hint}
+                    />
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                     <div className="absolute bottom-0 left-0 p-4 text-white">
+                        <Badge variant="secondary" className="mb-1">{article.category}</Badge>
+                        <h3 className="font-bold text-sm leading-tight">{article.title}</h3>
+                     </div>
+                  </Link>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+             <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+            <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          </Carousel>
+
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none" />
+        </div>
       </div>
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none" />
-      <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
-      <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
     </section>
   );
 }
