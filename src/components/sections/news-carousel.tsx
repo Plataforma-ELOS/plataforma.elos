@@ -80,7 +80,7 @@ export default function NewsCarousel() {
           plugins={[
             Autoplay({
               delay: 2000,
-              stopOnInteraction: false,
+              stopOnInteraction: true,
               playOnInit: true,
             }),
           ]}
@@ -107,9 +107,11 @@ export default function NewsCarousel() {
               </CarouselItem>
             ))}
           </CarouselContent>
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 to-transparent dark:from-primary/20 z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 to-transparent dark:from-primary/20 z-10 pointer-events-none" />
+          <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 to-transparent dark:from-primary/20 z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 to-transparent dark:from-primary/20 z-10 pointer-events-none" />
       </div>
     </section>
   );
