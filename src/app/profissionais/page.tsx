@@ -53,7 +53,6 @@ export default function ProfessionalsPage() {
   const handleSpecialtyClick = (tag: string) => {
     if (searchInputRef.current) {
       searchInputRef.current.value = tag;
-      // You can add logic here to trigger a search/filter
     }
   };
   
@@ -168,9 +167,9 @@ export default function ProfessionalsPage() {
                           playOnInit: true,
                         }),
                       ]}
-                  className="w-full"
+                  className="w-full relative"
                 >
-                  <CarouselContent className="-ml-4">
+                  <CarouselContent className="-ml-4 px-4">
                     {professionals.map((prof, index) => (
                        <CarouselItem key={prof.id} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
                          <Link href={`/profissionais/${prof.id}`} className="group block">
@@ -180,7 +179,7 @@ export default function ProfessionalsPage() {
                                     <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <CardHeader className="p-0">
-                                    <CardTitle className="text-xl group-hover:text-primary">{prof.name}</CardTitle>
+                                    <CardTitle className="text-xl group-hover:text-primary font-bold">{prof.name}</CardTitle>
                                     <CardDescription className="text-primary font-semibold">{prof.specialty}</CardDescription>
                                 </CardHeader>
                                 <div className="mt-4">
@@ -191,12 +190,13 @@ export default function ProfessionalsPage() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                   <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
-                        <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
-                        <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
-                    </div>
-                  <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
-                  <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+                  
+                  {/* Blur effect */}
+                  <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+                  <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+                  
+                  <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+                  <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
                 </Carousel>
             </div>
         </section>
@@ -217,7 +217,7 @@ export default function ProfessionalsPage() {
                                 <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
                                 <div className="p-6 flex flex-col flex-grow">
                                     <CardHeader className="p-0">
-                                        <CardTitle className="text-xl group-hover:text-primary">{clinic.name}</CardTitle>
+                                        <CardTitle className="text-xl group-hover:text-primary font-bold">{clinic.name}</CardTitle>
                                         <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">

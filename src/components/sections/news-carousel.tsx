@@ -65,7 +65,7 @@ const newsArticles = [
 
 export default function NewsCarousel() {
   return (
-    <section className="w-full py-20 md:py-24 bg-primary/10 dark:bg-primary/20 overflow-hidden">
+    <section className="w-full py-20 md:py-24 bg-primary/10 dark:bg-primary/20 overflow-hidden relative">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-center mb-16">
           Últimas notícias
@@ -82,7 +82,7 @@ export default function NewsCarousel() {
               playOnInit: true,
             }),
           ]}
-          className="w-full"
+          className="w-full relative"
         >
           <CarouselContent className="-ml-4 px-4">
             {newsArticles.concat(newsArticles).map((article, index) => (
@@ -105,12 +105,13 @@ export default function NewsCarousel() {
               </CarouselItem>
             ))}
           </CarouselContent>
-           <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
-                <div className="h-full w-32 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-transparent z-10"></div>
-                <div className="h-full w-32 bg-gradient-to-l from-primary/10 dark:from-primary/20 to-transparent z-10"></div>
-            </div>
-          <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
-          <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-20 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          
+          {/* Blur effect */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none"></div>
+          
+          <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>
       </div>
     </section>

@@ -22,10 +22,34 @@ const professionals = [
     imageUrl: 'https://i.ibb.co/VYv0nyfX/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png', 
     hint: 'woman doctor portrait' 
   },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait' },
+  { 
+    id: 'dr-fernando', 
+    name: 'Dr. Fernando', 
+    specialty: 'Neuropediatra', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'man doctor portrait' 
+  },
+  { 
+    id: 'dra-beatriz', 
+    name: 'Dra. Beatriz', 
+    specialty: 'Fonoaudióloga', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'woman psychologist portrait' 
+  },
+  { 
+    id: 'dr-ricardo', 
+    name: 'Dr. Ricardo', 
+    specialty: 'Terapeuta Ocupacional', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'man therapist portrait' 
+  },
+  { 
+    id: 'dra-ana', 
+    name: 'Dra. Ana', 
+    specialty: 'Psicopedagoga', 
+    imageUrl: 'https://placehold.co/128x128.png', 
+    hint: 'woman teacher portrait' 
+  },
 ];
 
 export default function NewProfessionals() {
@@ -49,7 +73,7 @@ export default function NewProfessionals() {
                   playOnInit: true,
                 }),
               ]}
-          className="w-full"
+          className="w-full relative"
         >
           <CarouselContent className="-ml-4 px-4">
             {professionals.map((prof, index) => (
@@ -72,12 +96,13 @@ export default function NewProfessionals() {
               </CarouselItem>
             ))}
           </CarouselContent>
-           <div className="absolute inset-y-0 inset-x-0 flex items-center justify-between pointer-events-none">
-                <div className="h-full w-32 bg-gradient-to-r from-background to-transparent"></div>
-                <div className="h-full w-32 bg-gradient-to-l from-background to-transparent"></div>
-            </div>
-          <CarouselPrevious className="absolute left-0 sm:left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
-          <CarouselNext className="absolute right-0 sm:right-4 top-1/2 -translate-y-1/2 z-10 pointer-events-auto bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          
+          {/* Blur effect */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+          
+          <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
+          <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>
       </div>
     </section>
