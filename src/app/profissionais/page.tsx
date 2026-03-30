@@ -23,12 +23,11 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman doctor portrait' },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://i.ibb.co/VYv0nyfX/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png', hint: 'woman doctor portrait' },
   { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://placehold.co/128x128.png', hint: 'man doctor portrait' },
   { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman psychologist portrait' },
   { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://placehold.co/128x128.png', hint: 'man therapist portrait' },
   { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait' },
-  { id: 'dr-marcos', name: 'Dr. Marcos', specialty: 'Acompanhante Terapêutico', description: 'Auxílio na socialização e participação em atividades cotidianas, dentro e fora de casa.', imageUrl: 'https://placehold.co/128x128.png', hint: 'man companion portrait' },
 ];
 
 const clinics = [
@@ -177,7 +176,7 @@ export default function ProfessionalsPage() {
                          <Link href={`/profissionais/${prof.id}`} className="group block">
                             <Card className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full bg-card border-0">
                                 <Avatar className="h-24 w-24 mx-auto mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all">
-                                    <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} />
+                                    <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} className="object-cover" />
                                     <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <CardHeader className="p-0">
