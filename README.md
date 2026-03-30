@@ -58,16 +58,16 @@ docs/
 1. Clone o repositório.
 2. Instale as dependências:
    ```bash
-   npm install
-   ```
-3. Execute o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
-4. Acesse a aplicação em `http://localhost:9002`.
+      npm install
+         ```
+         3. Execute o servidor de desenvolvimento:
+            ```bash
+               npm run dev
+                  ```
+                  4. Acesse a aplicação em `http://localhost:9002`.
 
----
+                  ---
 
-Para mais detalhes sobre o roadmap e especificações técnicas, consulte o [Documento de Requisitos de Produto (PRD)](docs/PRD.md).
+                  Para mais detalhes sobre o roadmap e especificações técnicas, consulte o [Documento de Requisitos de Produto (PRD)](docs/PRD.md).
 
-*Desenvolvido com carinho para a comunidade TEA.*
+                  *Desenvolvido com carinho para a comunidade TEA.*

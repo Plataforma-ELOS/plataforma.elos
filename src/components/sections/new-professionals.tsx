@@ -41,7 +41,7 @@ const professionals = [
     id: 'dr-ricardo', 
     name: 'Dr. Ricardo', 
     specialty: 'Terapeuta Ocupacional', 
-    imageUrl: 'https://placehold.co/128x128.png', 
+    imageUrl: 'https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png', 
     hint: 'man therapist portrait' 
   },
   { 
