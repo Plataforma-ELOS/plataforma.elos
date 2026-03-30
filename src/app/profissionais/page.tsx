@@ -28,7 +28,7 @@ const professionals = [
   { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png', hint: 'man doctor portrait' },
   { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png', hint: 'woman psychologist portrait' },
   { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png', hint: 'man therapist portrait' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://placehold.co/128x128.png', hint: 'woman teacher portrait' },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg', hint: 'woman teacher portrait' },
 ];
 
 const clinics = [

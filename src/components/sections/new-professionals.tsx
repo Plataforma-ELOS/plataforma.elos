@@ -48,7 +48,7 @@ const professionals = [
     id: 'dra-ana', 
     name: 'Dra. Ana', 
     specialty: 'Psicopedagoga', 
-    imageUrl: 'https://placehold.co/128x128.png', 
+    imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg', 
     hint: 'woman teacher portrait' 
   },
 ];
