@@ -37,7 +37,7 @@ const professionalsData: { [key: string]: any } = {
   'dr-fernando': {
     id: 'dr-fernando',
     name: 'Dr. Fernando',
-    imageUrl: 'https://placehold.co/128x128.png',
+    imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png',
     hint: 'man doctor portrait',
     specialty: 'Neuropediatra',
     crm: 'CRM/RJ 543210',

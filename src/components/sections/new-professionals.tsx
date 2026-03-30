@@ -27,7 +27,7 @@ const professionals = [
     id: 'dr-fernando', 
     name: 'Dr. Fernando', 
     specialty: 'Neuropediatra', 
-    imageUrl: 'https://placehold.co/128x128.png', 
+    imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png', 
     hint: 'man doctor portrait' 
   },
   { 
