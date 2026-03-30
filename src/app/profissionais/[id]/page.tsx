@@ -1,3 +1,4 @@
+
 // src/app/profissionais/[id]/page.tsx
 import ProfessionalProfileClient from './client-page';
 import { notFound } from 'next/navigation';
@@ -66,7 +67,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-beatriz': {
     id: 'dra-beatriz',
     name: 'Dra. Beatriz',
-    imageUrl: 'https://placehold.co/128x128.png',
+    imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png',
     hint: 'woman psychologist portrait',
     specialty: 'Fonoaudióloga',
     crm: 'CRFa 2-12345/SP',

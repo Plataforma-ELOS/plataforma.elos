@@ -1,3 +1,4 @@
+
 // src/components/sections/new-professionals.tsx
 "use client";
 import Image from 'next/image';
@@ -33,7 +34,7 @@ const professionals = [
     id: 'dra-beatriz', 
     name: 'Dra. Beatriz', 
     specialty: 'Fonoaudióloga', 
-    imageUrl: 'https://placehold.co/128x128.png', 
+    imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png', 
     hint: 'woman psychologist portrait' 
   },
   { 
