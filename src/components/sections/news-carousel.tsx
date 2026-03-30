@@ -65,7 +65,7 @@ const newsArticles = [
 
 export default function NewsCarousel() {
   return (
-    <section className="w-full py-20 md:py-24 bg-primary/10 dark:bg-primary/20 overflow-hidden relative">
+    <section className="w-full py-20 md:py-24 bg-background overflow-hidden relative">
       <div className="container mx-auto px-4 md:px-6">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline text-center mb-16">
           Últimas notícias
@@ -85,7 +85,7 @@ export default function NewsCarousel() {
           className="w-full relative"
         >
           <CarouselContent className="-ml-4 px-4">
-            {newsArticles.concat(newsArticles).map((article, index) => (
+            {newsArticles.map((article, index) => (
               <CarouselItem key={index} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
                 <Link href={`/noticias/${article.slug}`} className="p-1 block group relative overflow-hidden rounded-lg">
                   <Image
@@ -106,10 +106,11 @@ export default function NewsCarousel() {
             ))}
           </CarouselContent>
           
-          {/* Blur effect */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-primary/10 dark:from-primary/20 to-transparent z-10 pointer-events-none"></div>
+          {/* Efeito de Desfoque nas laterais - Idêntico aos profissionais */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
           
+          {/* Setas integradas sobre o desfoque */}
           <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
           <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
         </Carousel>

@@ -6,7 +6,7 @@ const professionalsData: { [key: string]: any } = {
   'dra-cristiane': {
     id: 'dra-cristiane',
     name: 'Dra. Cristiane',
-    imageUrl: 'https://i.ibb.co/VYv0nyfX/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png',
+    imageUrl: 'https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png',
     hint: 'woman doctor portrait',
     specialty: 'Psicóloga Especialista em TEA',
     crm: 'CRP 08/987654',

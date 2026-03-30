@@ -19,7 +19,7 @@ const professionals = [
     id: 'dra-cristiane', 
     name: 'Dra. Cristiane', 
     specialty: 'Psicóloga Especialista em TEA', 
-    imageUrl: 'https://i.ibb.co/VYv0nyfX/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png', 
+    imageUrl: 'https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png', 
     hint: 'woman doctor portrait' 
   },
   { 
@@ -97,9 +97,9 @@ export default function NewProfessionals() {
             ))}
           </CarouselContent>
           
-          {/* Blur effect */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+          {/* Efeito de Desfoque nas laterais */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
           
           <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
           <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
