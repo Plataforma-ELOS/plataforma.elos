@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import Link from 'next/link';
-import { Card } from '../ui/card';
+import { Card, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 
@@ -85,10 +85,10 @@ export default function NewProfessionals() {
                             <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} className="object-cover" />
                             <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="p-0">
-                            <div className="text-xl group-hover:text-primary font-bold">{prof.name}</div>
-                            <div className="text-primary font-semibold text-sm">{prof.specialty}</div>
-                        </div>
+                        <CardHeader className="p-0">
+                            <CardTitle className="text-xl group-hover:text-primary font-bold">{prof.name}</CardTitle>
+                            <CardDescription className="text-primary font-semibold text-sm">{prof.specialty}</CardDescription>
+                        </CardHeader>
                         <div className="mt-4">
                              <Button variant="link" className="text-primary">Ver Perfil</Button>
                         </div>
@@ -98,7 +98,6 @@ export default function NewProfessionals() {
             ))}
           </CarouselContent>
           
-          {/* Efeito de Desfoque nas laterais */}
           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none hidden md:block"></div>
           

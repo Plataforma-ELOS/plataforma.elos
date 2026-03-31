@@ -99,12 +99,11 @@ function UserProfileDropdown() {
         );
     }
 
-    // Menu for logged-in user
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer">
-                    <AvatarImage src="https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg" alt="Avatar" data-ai-hint="user avatar" />
+                    <AvatarImage src="https://placehold.co/48x48.png" alt="Avatar" data-ai-hint="user avatar" />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
@@ -289,7 +288,3 @@ export default function Header() {
     </header>
   );
 }
-
-    
-
-    
