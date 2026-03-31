@@ -1,0 +1,29 @@
+
+{
+  "logo": {
+    "url": "https://i.ibb.co/Sw75Xd7Q/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png",
+    "hint": "elos-logo"
+  },
+  "professionals": {
+    "dra-cristiane": {
+      "url": "https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png",
+      "hint": "woman-doctor-portrait"
+    },
+    "dr-fernando": {
+      "url": "https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png",
+      "hint": "man-doctor-portrait"
+    },
+    "dra-beatriz": {
+      "url": "https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png",
+      "hint": "woman-psychologist-portrait"
+    },
+    "dr-ricardo": {
+      "url": "https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png",
+      "hint": "man-therapist-portrait"
+    },
+    "dra-ana": {
+      "url": "https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg",
+      "hint": "ana-portrait"
+    }
+  }
+}

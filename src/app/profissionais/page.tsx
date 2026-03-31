@@ -22,13 +22,14 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import imagesData from '@/app/lib/placeholder-images.json';
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: 'https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png', hint: 'woman doctor portrait' },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png', hint: 'man doctor portrait' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png', hint: 'woman psychologist portrait' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: 'https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png', hint: 'man therapist portrait' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg', hint: 'psychopedagogue portrait' },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: imagesData.professionals["dra-cristiane"].url, hint: imagesData.professionals["dra-cristiane"].hint },
+  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: imagesData.professionals["dr-fernando"].url, hint: imagesData.professionals["dr-fernando"].hint },
+  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: imagesData.professionals["dra-beatriz"].url, hint: imagesData.professionals["dra-beatriz"].hint },
+  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: imagesData.professionals["dr-ricardo"].url, hint: imagesData.professionals["dr-ricardo"].hint },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: imagesData.professionals["dra-ana"].url, hint: imagesData.professionals["dra-ana"].hint },
 ];
 
 const clinics = [
@@ -48,7 +49,6 @@ const specialties = [
 ]
 
 export default function ProfessionalsPage() {
-  const router = useRouter();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleSpecialtyClick = (tag: string) => {

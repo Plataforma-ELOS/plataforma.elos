@@ -2,13 +2,14 @@
 // src/app/profissionais/[id]/page.tsx
 import ProfessionalProfileClient from './client-page';
 import { notFound } from 'next/navigation';
+import imagesData from '@/app/lib/placeholder-images.json';
 
 const professionalsData: { [key: string]: any } = {
   'dra-cristiane': {
     id: 'dra-cristiane',
     name: 'Dra. Cristiane',
-    imageUrl: 'https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png',
-    hint: 'woman doctor portrait',
+    imageUrl: imagesData.professionals["dra-cristiane"].url,
+    hint: imagesData.professionals["dra-cristiane"].hint,
     specialty: 'Psicóloga Especialista em TEA',
     crm: 'CRP 08/987654',
     description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
@@ -37,8 +38,8 @@ const professionalsData: { [key: string]: any } = {
   'dr-fernando': {
     id: 'dr-fernando',
     name: 'Dr. Fernando',
-    imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png',
-    hint: 'man doctor portrait',
+    imageUrl: imagesData.professionals["dr-fernando"].url,
+    hint: imagesData.professionals["dr-fernando"].hint,
     specialty: 'Neuropediatra',
     crm: 'CRM/RJ 543210',
     description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.',
@@ -67,8 +68,8 @@ const professionalsData: { [key: string]: any } = {
   'dra-beatriz': {
     id: 'dra-beatriz',
     name: 'Dra. Beatriz',
-    imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png',
-    hint: 'woman psychologist portrait',
+    imageUrl: imagesData.professionals["dra-beatriz"].url,
+    hint: imagesData.professionals["dra-beatriz"].hint,
     specialty: 'Fonoaudióloga',
     crm: 'CRFa 2-12345/SP',
     description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
@@ -97,8 +98,8 @@ const professionalsData: { [key: string]: any } = {
   'dr-ricardo': {
     id: 'dr-ricardo',
     name: 'Dr. Ricardo',
-    imageUrl: 'https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png',
-    hint: 'man therapist portrait',
+    imageUrl: imagesData.professionals["dr-ricardo"].url,
+    hint: imagesData.professionals["dr-ricardo"].hint,
     specialty: 'Terapeuta Ocupacional',
     crm: 'CREFITO-3/112233',
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
@@ -127,8 +128,8 @@ const professionalsData: { [key: string]: any } = {
   'dra-ana': {
     id: 'dra-ana',
     name: 'Dra. Ana',
-    imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg',
-    hint: 'psychopedagogue portrait',
+    imageUrl: imagesData.professionals["dra-ana"].url,
+    hint: imagesData.professionals["dra-ana"].hint,
     specialty: 'Psicopedagoga',
     crm: 'ABPp 5678-RJ',
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',

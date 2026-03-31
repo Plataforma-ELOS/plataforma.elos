@@ -14,42 +14,43 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
+import imagesData from '@/app/lib/placeholder-images.json';
 
 const professionals = [
   { 
     id: 'dra-cristiane', 
     name: 'Dra. Cristiane', 
     specialty: 'Psicóloga Especialista em TEA', 
-    imageUrl: 'https://i.ibb.co/hJ2yByjq/ELOS-Dra-Cristiane.png', 
-    hint: 'woman doctor portrait' 
+    imageUrl: imagesData.professionals["dra-cristiane"].url, 
+    hint: imagesData.professionals["dra-cristiane"].hint
   },
   { 
     id: 'dr-fernando', 
     name: 'Dr. Fernando', 
     specialty: 'Neuropediatra', 
-    imageUrl: 'https://i.ibb.co/Y4JhVf04/ELOS-Dr-Fernando.png', 
-    hint: 'man doctor portrait' 
+    imageUrl: imagesData.professionals["dr-fernando"].url, 
+    hint: imagesData.professionals["dr-fernando"].hint
   },
   { 
     id: 'dra-beatriz', 
     name: 'Dra. Beatriz', 
     specialty: 'Fonoaudióloga', 
-    imageUrl: 'https://i.ibb.co/sJKRH4y9/ELOS-Dra-Beatriz.png', 
-    hint: 'woman psychologist portrait' 
+    imageUrl: imagesData.professionals["dra-beatriz"].url, 
+    hint: imagesData.professionals["dra-beatriz"].hint
   },
   { 
     id: 'dr-ricardo', 
     name: 'Dr. Ricardo', 
     specialty: 'Terapeuta Ocupacional', 
-    imageUrl: 'https://i.ibb.co/RkPjKsV2/ELOS-Dr-Ricardo.png', 
-    hint: 'man therapist portrait' 
+    imageUrl: imagesData.professionals["dr-ricardo"].url, 
+    hint: imagesData.professionals["dr-ricardo"].hint
   },
   { 
     id: 'dra-ana', 
     name: 'Dra. Ana', 
     specialty: 'Psicopedagoga', 
-    imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg', 
-    hint: 'psychopedagogue portrait' 
+    imageUrl: imagesData.professionals["dra-ana"].url, 
+    hint: imagesData.professionals["dra-ana"].hint
   },
 ];
 

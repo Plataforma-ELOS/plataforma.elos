@@ -13,6 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { useTheme } from 'next-themes';
 import { AuthContext, FontSizeContext } from '../providers';
 import Image from 'next/image';
+import imagesData from '@/app/lib/placeholder-images.json';
 
 
 const navItems = [
@@ -256,7 +257,7 @@ export default function HeaderSecondary() {
         <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-2">
                 <Link href="/" className="flex items-center gap-2 text-xl font-bold">
-                    <Image src="https://i.ibb.co/Sw75Xd7Q/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png" alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint="logo" />
+                    <Image src={imagesData.logo.url} alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint={imagesData.logo.hint} />
                     <span className="text-foreground">Plataforma</span>
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                 </Link>
@@ -286,7 +287,7 @@ export default function HeaderSecondary() {
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
                    <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
-                        <Image src="https://i.ibb.co/Sw75Xd7Q/Chat-GPT-Image-6-de-set-de-2025-17-17-42-20250911-063055-0000-removebg-preview.png" alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint="logo" />
+                        <Image src={imagesData.logo.url} alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint={imagesData.logo.hint} />
                         <span className="text-foreground">Plataforma</span>
                         <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
