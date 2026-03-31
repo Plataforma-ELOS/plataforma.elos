@@ -49,7 +49,7 @@ const professionals = [
     name: 'Dra. Ana', 
     specialty: 'Psicopedagoga', 
     imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg', 
-    hint: 'woman teacher portrait' 
+    hint: 'psychopedagogue portrait' 
   },
 ];
 

@@ -128,7 +128,7 @@ const professionalsData: { [key: string]: any } = {
     id: 'dra-ana',
     name: 'Dra. Ana',
     imageUrl: 'https://i.ibb.co/xqSf2fZn/ELOS-Projeto-Integrador-PI-1.jpg',
-    hint: 'woman teacher portrait',
+    hint: 'psychopedagogue portrait',
     specialty: 'Psicopedagoga',
     crm: 'ABPp 5678-RJ',
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
