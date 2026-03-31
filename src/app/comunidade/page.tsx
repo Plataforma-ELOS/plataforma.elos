@@ -29,7 +29,7 @@ const initialPosts: Post[] = [
     author: {
       name: 'Carlos Souza',
       avatarUrl: 'https://placehold.co/40x40.png',
-      hint: 'man portrait',
+      hint: 'user-carlos-avatar',
       email: 'carlos.souza@example.com',
     },
     time: '5h',
@@ -38,8 +38,8 @@ const initialPosts: Post[] = [
     commentCount: 2,
     isSaved: false,
      comments: [
-      { id: 'c1-1', author: { name: 'Mariana', avatarUrl: 'https://placehold.co/40x40.png', hint: 'woman portrait' }, time: '4h', content: 'Que demais, Carlos! Fico muito feliz por vocês! 🎉' },
-      { id: 'c1-2', author: { name: 'Admin Elos', avatarUrl: 'https://placehold.co/40x40.png', hint: 'logo' }, time: '4h', content: 'Incrível! Compartilhar essas vitórias inspira toda a comunidade. Obrigado!' },
+      { id: 'c1-1', author: { name: 'Mariana', avatarUrl: 'https://placehold.co/40x40.png', hint: 'user-mariana-avatar' }, time: '4h', content: 'Que demais, Carlos! Fico muito feliz por vocês! 🎉' },
+      { id: 'c1-2', author: { name: 'Admin Elos', avatarUrl: 'https://placehold.co/40x40.png', hint: 'user-admin-avatar' }, time: '4h', content: 'Incrível! Compartilhar essas vitórias inspira toda a comunidade. Obrigado!' },
     ],
   },
   {
@@ -47,7 +47,7 @@ const initialPosts: Post[] = [
     author: {
       name: 'Ana Silva',
       avatarUrl: 'https://placehold.co/40x40.png',
-      hint: 'woman portrait',
+      hint: 'user-ana-silva-avatar',
       email: 'ana.silva@example.com',
     },
     time: '2h',
@@ -56,8 +56,8 @@ const initialPosts: Post[] = [
     commentCount: 5,
     isSaved: true,
     comments: [
-       { id: 'c2-1', author: { name: 'Pedro', avatarUrl: 'https://placehold.co/40x40.png', hint: 'man portrait' }, time: '1h', content: 'Estou passando pelo mesmo, Ana. Muita paciência e tentando apresentar os alimentos de formas diferentes.' },
-       { id: 'c2-2', author: { name: 'Juliana', avatarUrl: 'https://placehold.co/40x40.png', hint: 'woman portrait' }, time: '1h', content: 'Uma dica que funcionou foi envolver meu filho no preparo da comida. Ele ficou mais curioso para provar!' },
+       { id: 'c2-1', author: { name: 'Pedro', avatarUrl: 'https://placehold.co/40x40.png', hint: 'user-pedro-avatar' }, time: '1h', content: 'Estou passando pelo mesmo, Ana. Muita paciência e tentando apresentar os alimentos de formas diferentes.' },
+       { id: 'c2-2', author: { name: 'Juliana', avatarUrl: 'https://placehold.co/40x40.png', hint: 'user-juliana-avatar' }, time: '1h', content: 'Uma dica que funcionou foi envolver meu filho no preparo da comida. Ele ficou mais curioso para provar!' },
     ],
   },
    {
@@ -65,7 +65,7 @@ const initialPosts: Post[] = [
     author: {
       name: 'Admin Elos',
       avatarUrl: 'https://placehold.co/40x40.png',
-      hint: 'woman portrait',
+      hint: 'user-admin-avatar',
       email: 'elosplataforma@gmail.com'
     },
     time: '1d',

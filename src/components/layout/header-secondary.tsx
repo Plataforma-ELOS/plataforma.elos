@@ -106,7 +106,7 @@ function UserProfileDropdown() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer">
-                    <AvatarImage src="https://placehold.co/48x48.png" alt="Avatar" data-ai-hint="user avatar" />
+                    <AvatarImage src="https://placehold.co/48x48.png" alt="Avatar" data-ai-hint="user-generic-avatar" />
                     <AvatarFallback>
                         {user.name.charAt(0)}
                     </AvatarFallback>
