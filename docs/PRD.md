@@ -40,13 +40,28 @@ A **E.L.O.S** é uma plataforma digital de apoio integral dedicada a cuidadores 
 - **Feed Atualizado:** Artigos sobre avanços científicos, mudanças na legislação e eventos.
 - **Pílulas de Conhecimento:** Cards de aprendizado rápido e trilhas de conhecimento com barra de progresso.
 
-## 5. Requisitos Não Funcionais
+## 5. Identidade Visual (Paleta de Cores)
+A paleta de cores foi escolhida para transmitir calma, confiança e modernidade, utilizando tons de Lavanda (acolhimento) e Azul (serenidade).
+
+### 5.1. Tema Claro (Light Mode)
+- **Background:** `hsl(257 100% 99%)` - Branco Lavanda (Fundo suave).
+- **Primary:** `hsl(257 70% 75%)` - Lavanda Suave (Botões principais, ícones de destaque).
+- **Secondary:** `hsl(215 68% 90%)` - Azul Céu Pálido (Badges, elementos secundários).
+- **Accent:** `hsl(215 77% 78%)` - Azul Sereno (Hovers e detalhes visuais).
+- **Foreground:** `hsl(256 10% 20%)` - Roxo Acinzentado Escuro (Textos principais).
+
+### 5.2. Tema Escuro (Dark Mode)
+- **Background:** `hsl(257 30% 12%)` - Roxo Profundo Noturno.
+- **Primary:** `hsl(257 80% 80%)` - Lavanda Vibrante.
+- **Accent:** `hsl(215 70% 70%)` - Azul Pastel.
+
+## 6. Requisitos Não Funcionais
 - **Acessibilidade (WCAG):** Interface adaptável com controle de tamanho de fonte e contraste.
 - **Performance:** Carregamento rápido via Server Components e carregamento dinâmico (Skeleton screens).
 - **Segurança da IA:** Instruções de sistema (System Prompts) para evitar diagnósticos médicos ou conselhos jurídicos definitivos.
 - **Design Responsivo:** Otimização para dispositivos móveis e desktop.
 
-## 6. Stack Tecnológica
+## 7. Stack Tecnológica
 - **Framework:** Next.js 15 (App Router).
 - **Linguagem:** TypeScript.
 - **Estilização:** Tailwind CSS e Shadcn UI.
@@ -54,7 +69,7 @@ A **E.L.O.S** é uma plataforma digital de apoio integral dedicada a cuidadores 
 - **Integração de E-mail:** EmailJS.
 - **Iconografia:** Lucide React.
 
-## 7. Roadmap de Desenvolvimento
+## 8. Roadmap de Desenvolvimento
 - [x] **Fase 1: MVP Visual e IA:** Estrutura de navegação, assistentes de IA funcionais e UI/UX base.
 - [ ] **Fase 2: Persistência:** Integração com Firebase Firestore para salvar posts, grupos e usuários de forma real.
 - [ ] **Fase 3: Autenticação:** Implementação do Firebase Auth (Social Login e E-mail/Senha).
