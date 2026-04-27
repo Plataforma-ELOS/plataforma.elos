@@ -34,7 +34,7 @@ export default function Community() {
         </div>
         <div className="grid gap-8 md:grid-cols-3">
           {communities.map((community, index) => (
-            <Card key={index} className="p-6 bg-white rounded-2xl shadow-lg hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-2">
+            <Card key={index} className="p-6 bg-card rounded-2xl shadow-lg hover:shadow-accent/20 transition-all duration-300 transform hover:-translate-y-2">
               <CardHeader className="flex flex-row items-center gap-4 p-0">
                 <div className="bg-accent/10 p-3 rounded-full">
                   {community.icon}

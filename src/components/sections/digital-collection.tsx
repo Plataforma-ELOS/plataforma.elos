@@ -23,7 +23,7 @@ export default function DigitalCollection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {collectionItems.map((item, index) => (
             <Link key={index} href="/acervo-digital" className="group">
-              <Card className="overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 group h-full">
+              <Card className="overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 group h-full">
                 <div className="relative">
                   <Image
                     src={item.imageUrl}
