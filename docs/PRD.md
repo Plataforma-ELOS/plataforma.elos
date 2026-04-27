@@ -12,68 +12,42 @@ A **E.L.O.S** é uma plataforma digital de apoio integral dedicada a cuidadores 
 ## 3. Público-Alvo
 - **Primário:** Pais, mães e responsáveis legais de pessoas com TEA.
 - **Secundário:** Profissionais de saúde e educação que buscam materiais de apoio e rede de contatos.
-- **Terciário:** Pessoas com TEA em busca de autonomia e informação sobre seus direitos.
 
-## 4. Requisitos Funcionais (Principais Módulos)
+## 4. Identidade Visual (Paleta de Cores)
+A paleta de cores foi escolhida para transmitir calma, confiança e modernidade.
 
-### 4.1. Suporte Inteligente (IA)
-- **Assistente Jurídico/Social:** Chatbot alimentado por IA (Gemini) especializado em direitos da comunidade TEA no Brasil.
-- **Streaming de Respostas:** Interface em tempo real para uma experiência de conversação natural.
-- **IA em Notícias:** Resumos automáticos do feed diário e assistente contextual dentro de cada artigo de notícia.
-
-### 4.2. Comunidade E.L.O.S
-- **Feed Social:** Publicação de posts, comentários e sistema de curtidas (Atualmente em modo simulado).
-- **Gestão de Grupos:** Exploração e criação de grupos temáticos (ex: "Dicas de T.O.", "Adolescência e TEA").
-- **Espaço Seguro:** Regras de conduta para garantir acolhimento sem julgamentos.
-
-### 4.3. Acervo Digital
-- **Biblioteca Multimídia:** Repositório categorizado de vídeos, documentos (PDF), jogos e guias.
-- **Busca e Filtros:** Sistema avançado de filtragem por tipo de material e tags.
-- **Contribuição:** Canal para usuários sugerirem novos materiais para análise da equipe.
-
-### 4.4. Rede de Profissionais
-- **Diretório Verificado:** Listagem de especialistas (Psicólogos, Neuropediatras, Fonoaudiólogos, etc.) e clínicas.
-- **Perfis Detalhados:** Exibição de CRM/CRP, especialidades, bio e informações de contato.
-- **Sistema de Avaliação:** Feedback quantitativo e qualitativo da comunidade sobre o atendimento.
-
-### 4.5. Notícias e Gamificação
-- **Feed Atualizado:** Artigos sobre avanços científicos, mudanças na legislação e eventos.
-- **Pílulas de Conhecimento:** Cards de aprendizado rápido e trilhas de conhecimento com barra de progresso.
-
-## 5. Identidade Visual (Paleta de Cores)
-A paleta de cores foi escolhida para transmitir calma, confiança e modernidade, utilizando tons de Lavanda (acolhimento) e Azul (serenidade).
-
-### 5.1. Tema Claro (Light Mode)
+### 4.1. Tema Claro (Light Mode)
 - **Background:** `hsl(257 100% 99%)` - Branco Lavanda (Fundo suave).
-- **Primary:** `hsl(257 70% 75%)` - Lavanda Suave (Botões principais, ícones de destaque).
-- **Secondary:** `hsl(215 68% 90%)` - Azul Céu Pálido (Badges, elementos secundários).
-- **Accent:** `hsl(215 77% 78%)` - Azul Sereno (Hovers e detalhes visuais).
-- **Foreground:** `hsl(256 10% 20%)` - Roxo Acinzentado Escuro (Textos principais).
+- **Primary:** `hsl(257 70% 75%)` - Lavanda (Botões e destaques).
+- **Secondary:** `hsl(215 68% 90%)` - Azul Céu Pálido (Badges).
+- **Accent:** `hsl(215 77% 78%)` - Azul Sereno (Hovers).
+- **Foreground:** `hsl(256 10% 20%)` - Roxo Acinzentado Escuro (Texto).
 
-### 5.2. Tema Escuro (Dark Mode)
+### 4.2. Tema Escuro (Dark Mode)
 - **Background:** `hsl(257 30% 12%)` - Roxo Profundo Noturno.
 - **Primary:** `hsl(257 80% 80%)` - Lavanda Vibrante.
 - **Accent:** `hsl(215 70% 70%)` - Azul Pastel.
 
-## 6. Requisitos Não Funcionais
-- **Acessibilidade (WCAG):** Interface adaptável com controle de tamanho de fonte e contraste.
-- **Performance:** Carregamento rápido via Server Components e carregamento dinâmico (Skeleton screens).
-- **Segurança da IA:** Instruções de sistema (System Prompts) para evitar diagnósticos médicos ou conselhos jurídicos definitivos.
-- **Design Responsivo:** Otimização para dispositivos móveis e desktop.
+## 5. Requisitos Funcionais
 
-## 7. Stack Tecnológica
+### 5.1. Suporte Inteligente (IA)
+- **Assistente Jurídico/Social:** Chatbot especializado em direitos TEA no Brasil.
+- **IA em Notícias:** Resumos e assistente contextual para artigos.
+
+### 5.2. Comunidade E.L.O.S
+- **Feed Social:** Interação entre membros e sistema de posts.
+- **Grupos Temáticos:** Espaços focados em temas específicos (ex: T.O., Adolescência).
+
+### 5.3. Acervo Digital
+- **Biblioteca Multimídia:** Vídeos, PDFs e guias categorizados.
+
+### 5.4. Rede de Profissionais
+- **Diretório Verificado:** Especialistas avaliados pela comunidade com perfis detalhados.
+
+## 6. Stack Tecnológica
 - **Framework:** Next.js 15 (App Router).
-- **Linguagem:** TypeScript.
 - **Estilização:** Tailwind CSS e Shadcn UI.
 - **IA Engine:** Google Gemini 2.0 via Genkit.
-- **Integração de E-mail:** EmailJS.
-- **Iconografia:** Lucide React.
-
-## 8. Roadmap de Desenvolvimento
-- [x] **Fase 1: MVP Visual e IA:** Estrutura de navegação, assistentes de IA funcionais e UI/UX base.
-- [ ] **Fase 2: Persistência:** Integração com Firebase Firestore para salvar posts, grupos e usuários de forma real.
-- [ ] **Fase 3: Autenticação:** Implementação do Firebase Auth (Social Login e E-mail/Senha).
-- [ ] **Fase 4: Serviços:** Funcionalidade real de agendamento de consultas e sistema de gamificação completo.
 
 ---
 *Última atualização: Setembro de 2025*
