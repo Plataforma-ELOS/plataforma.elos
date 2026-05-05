@@ -94,3 +94,10 @@ Este documento cataloga todo o texto visível em cada tela da plataforma, servin
 *   **Título:** "Entre em Contato", "Tem alguma dúvida, sugestão ou precisa de suporte?"
 *   **Informações:** "Nossas Informações", "Email", "Telefone"
 *   **Formulário:** "Envie uma Mensagem", "Nome Completo", "Email", "Mensagem", "Enviar Mensagem", "Enviando..."
+
+## 11. Cadastro Profissional (`/cadastro-profissional`)
+*   **Títulos:** "Cadastro Profissional", "Submeta sua inscrição para participar do time de perfis profissionais..."
+*   **Formulário:**
+    *   Labels: "Nome Completo", "Email", "Tipo de Cadastro", "CNPJ", "Número do Registro Profissional", "Compartilhe sua experiência"
+    *   Placeholders: "Seu nome ou nome da clínica", "seu@email.com", "00.000.000/0000-00", "Ex: 1234567", "Descreva sua especialidade..."
+*   **Feedback:** "Inscrição Realizada com Sucesso!", "Sua inscrição foi recebida e será analisada pela nossa equipe.", "Ok, entendi!"
