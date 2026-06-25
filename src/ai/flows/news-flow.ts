@@ -25,7 +25,7 @@ Títulos das notícias:
 - ${titles.join('\n- ')}
 
 Baseado nestes títulos, gere um resumo do dia.`,
-      model: 'googleai/gemini-2.0-flash',
+      model: 'googleai/gemini-2.5-flash',
       config: {
         temperature: 0.7,
       },
@@ -63,7 +63,7 @@ const articleAssistantFlow = ai.defineFlow(
 {{{question}}}
 
 **Sua Resposta:**`,
-      model: 'googleai/gemini-2.0-flash',
+      model: 'googleai/gemini-2.5-flash',
       config: {
         temperature: 0.3,
       },
