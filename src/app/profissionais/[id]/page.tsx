@@ -189,7 +189,7 @@ export const professionalsData: { [key: string]: any } = {
     'espaco-crescer': {
     id: 'espaco-crescer',
     name: 'Espaço Crescer',
-    imageUrl: '/perfis/clinica/instituicao-5.jpg',
+    imageUrl: '/perfis/clinica/instituicao-2.jpg',
     hint: 'child climbing logo',
     specialty: 'Terapia Infantil e Familiar',
     crm: 'CNPJ: 22.333.444/0001-55',

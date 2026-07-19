@@ -34,7 +34,7 @@ const professionals = [
 
 const clinics = [
     { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: '/perfis/clinicas/instituicao-1.jpg', hint: 'clinic facade' },
-    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: '/perfis/clinicas/instituicao-5.jpg', hint: 'playroom therapy' },
+    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: '/perfis/clinicas/instituicao-2.jpg', hint: 'playroom therapy' },
     { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: '/perfis/clinicas/instituicao-3.jpg', hint: 'sensory room' },
     { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: '/perfis/clinicas/instituicao-4.jpg', hint: 'group therapy' },
 ];
