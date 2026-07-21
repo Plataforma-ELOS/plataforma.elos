@@ -71,7 +71,7 @@ const libraryItems = [
     icon: 'document',
     title: 'Guia de Atividades Sensoriais',
     author: 'Carlos Mendes',
-    avatarUrl: '/acervo/perfil/perfil-02.jpg',
+    avatarUrl: '/acervo/perfil/perfil-2.jpg',
     avatarHint: 'man portrait',
     date: '11 de julho de 2024',
     tags: ['Atividades', 'Sensorial', 'PDF'],
