@@ -1,7 +1,7 @@
 // src/app/suporte-ia/page.tsx
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -236,7 +236,9 @@ export default function AiSupportPage() {
         <div className="flex flex-col min-h-screen bg-background">
             <HeaderSecondary />
             <main className="flex-1">
-                <AiSupportPageContent />
+                <Suspense fallback={null}>
+                    <AiSupportPageContent />
+                </Suspense>
             </main>
             <Footer />
         </div>

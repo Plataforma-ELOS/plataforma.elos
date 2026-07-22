@@ -10,6 +10,10 @@ import { Button } from '@/components/ui/button';
 import { Terminal, Newspaper, Tags, Search } from 'lucide-react';
 import { getNewsSummary } from '@/ai/flows/news-flow';
 
+// Renderiza no momento da requisição (não no build) para não depender da IA
+// durante o "next build" e evitar falhas por cota/rede da API do Gemini.
+export const dynamic = 'force-dynamic';
+
 const newsArticles = [
   {
     slug: 'nova-lei-amplia-direitos-no-trabalho',
@@ -56,7 +60,13 @@ const newsArticles = [
 const allTags = [...new Set(newsArticles.flatMap(a => a.tags))];
 
 async function AiSummaryCard() {
-    const summary = await getNewsSummary(newsArticles.map(a => a.title));
+    let summary: string;
+    try {
+        summary = await getNewsSummary(newsArticles.map(a => a.title));
+    } catch (error) {
+        console.error('Falha ao gerar o resumo de notícias com IA:', error);
+        summary = 'O resumo inteligente das notícias está temporariamente indisponível. Explore os destaques abaixo.';
+    }
     return (
         <Card className="mb-8 bg-primary/10 border-primary/20">
             <CardHeader>

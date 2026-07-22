@@ -33,7 +33,7 @@ const legalAssistantFlow = ai.defineFlow(
     const platformContext = await getPlatformContext();
     const llmResponse = await ai.generate({
       prompt: prompt,
-      model: 'googleai/gemini-2.0-flash',
+      model: 'googleai/gemini-2.5-flash',
       config: {
         temperature: 0.5,
       },
@@ -62,7 +62,7 @@ export async function askLegalAssistant(question: string) {
 
   const { stream } = ai.generateStream({
       prompt: question,
-      model: 'googleai/gemini-2.0-flash',
+      model: 'googleai/gemini-2.5-flash',
       config: {
         temperature: 0.5,
       },

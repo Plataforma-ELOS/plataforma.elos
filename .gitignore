@@ -43,3 +43,8 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+
+# agent skills added locally (AI tooling — keep out of version control)
+.agents/skills/supabase/
+.agents/skills/supabase-postgres-best-practices/
+.claude/skills/
