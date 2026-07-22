@@ -32,15 +32,15 @@ export default function AiSupportHome() {
                <div className="flex items-center justify-center mb-6">
                 <div className="flex -space-x-2">
                     <Avatar className="h-8 w-8 border-2 border-background">
-                        <AvatarImage src="https://placehold.co/40x40.png" alt="User 1" data-ai-hint="generic-user-avatar-1" />
+                        <AvatarImage src="ia/ia-duvidas-1.jpg" alt="User 1" data-ai-hint="generic-user-avatar-1" />
                         <AvatarFallback>U1</AvatarFallback>
                     </Avatar>
                     <Avatar className="h-8 w-8 border-2 border-background">
-                        <AvatarImage src="https://placehold.co/40x40.png" alt="User 2" data-ai-hint="generic-user-avatar-2" />
+                        <AvatarImage src="ia/ia-duvidas-2.jpg" alt="User 2" data-ai-hint="generic-user-avatar-2" />
                         <AvatarFallback>U2</AvatarFallback>
                     </Avatar>
                     <Avatar className="h-8 w-8 border-2 border-background">
-                        <AvatarImage src="https://placehold.co/40x40.png" alt="User 3" data-ai-hint="generic-user-avatar-3" />
+                        <AvatarImage src="ia/ia-duvidas-3.jpg" alt="User 3" data-ai-hint="generic-user-avatar-3" />
                         <AvatarFallback>U3</AvatarFallback>
                     </Avatar>
                     <Avatar className="h-8 w-8 border-2 border-background bg-muted">

@@ -4,12 +4,12 @@ import ProfessionalProfileClient from './client-page';
 import { notFound } from 'next/navigation';
 import imagesData from '@/app/lib/placeholder-images.json';
 
-const professionalsData: { [key: string]: any } = {
+export const professionalsData: { [key: string]: any } = {
   'dra-cristiane': {
     id: 'dra-cristiane',
     name: 'Dra. Cristiane',
-    imageUrl: imagesData.professionals["dra-cristiane"].url,
-    hint: imagesData.professionals["dra-cristiane"].hint,
+    imageUrl: '/perfis/liberais/profissional-1.jpg',
+    hint: 'Dra Cristiane',
     specialty: 'Psicóloga Especialista em TEA',
     crm: 'CRP 08/987654',
     description: 'Com mais de 10 anos de experiência, Dra. Cristiane é especializada em terapias comportamentais e no suporte a famílias, oferecendo uma abordagem acolhedora e baseada em evidências.',
@@ -37,9 +37,9 @@ const professionalsData: { [key: string]: any } = {
   },
   'dr-fernando': {
     id: 'dr-fernando',
-    name: 'Dr. Fernando',
-    imageUrl: imagesData.professionals["dr-fernando"].url,
-    hint: imagesData.professionals["dr-fernando"].hint,
+    name: 'Dr Fernando',
+    imageUrl: '/perfis/liberais/profissional-2.jpg',
+    hint: 'Dr Fernando',
     specialty: 'Neuropediatra',
     crm: 'CRM/RJ 543210',
     description: 'Dr. Fernando foca no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA, trabalhando em conjunto com uma equipe multidisciplinar.',
@@ -68,8 +68,8 @@ const professionalsData: { [key: string]: any } = {
   'dra-beatriz': {
     id: 'dra-beatriz',
     name: 'Dra. Beatriz',
-    imageUrl: imagesData.professionals["dra-beatriz"].url,
-    hint: imagesData.professionals["dra-beatriz"].hint,
+    imageUrl: '/perfis/liberais/profissional-3.jpg',
+    hint: 'Dra Beatriz',
     specialty: 'Fonoaudióloga',
     crm: 'CRFa 2-12345/SP',
     description: 'Dra. Beatriz é especialista em comunicação alternativa e aumentativa, ajudando crianças e adolescentes a desenvolverem suas habilidades de comunicação e interação social.',
@@ -98,8 +98,8 @@ const professionalsData: { [key: string]: any } = {
   'dr-ricardo': {
     id: 'dr-ricardo',
     name: 'Dr. Ricardo',
-    imageUrl: imagesData.professionals["dr-ricardo"].url,
-    hint: imagesData.professionals["dr-ricardo"].hint,
+    imageUrl: '/perfis/liberais/profissional-4.jpg',
+    hint: 'Dr Ricardo',
     specialty: 'Terapeuta Ocupacional',
     crm: 'CREFITO-3/112233',
     description: 'Dr. Ricardo utiliza abordagens lúdicas e criativas para ajudar na integração sensorial e no desenvolvimento da autonomia nas atividades de vida diária.',
@@ -128,8 +128,8 @@ const professionalsData: { [key: string]: any } = {
   'dra-ana': {
     id: 'dra-ana',
     name: 'Dra. Ana',
-    imageUrl: imagesData.professionals["dra-ana"].url,
-    hint: imagesData.professionals["dra-ana"].hint,
+    imageUrl: '/perfis/liberais/profissional-5.jpg',
+    hint: 'Dra Ana',
     specialty: 'Psicopedagoga',
     crm: 'ABPp 5678-RJ',
     description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas, criando estratégias personalizadas para cada aluno.',
@@ -158,7 +158,7 @@ const professionalsData: { [key: string]: any } = {
    'clinica-superar': {
     id: 'clinica-superar',
     name: 'Clínica Superar',
-    imageUrl: 'https://placehold.co/128x128.png',
+    imageUrl: '/perfis/clinica/instituicao-1.jpg',
     hint: 'clinic logo',
     specialty: 'Centro Multidisciplinar',
     crm: 'CNPJ: 12.345.678/0001-90',
@@ -189,7 +189,7 @@ const professionalsData: { [key: string]: any } = {
     'espaco-crescer': {
     id: 'espaco-crescer',
     name: 'Espaço Crescer',
-    imageUrl: 'https://placehold.co/128x128.png',
+    imageUrl: '/perfis/clinica/instituicao-2.jpg',
     hint: 'child climbing logo',
     specialty: 'Terapia Infantil e Familiar',
     crm: 'CNPJ: 22.333.444/0001-55',

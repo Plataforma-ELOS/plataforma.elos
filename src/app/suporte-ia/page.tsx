@@ -43,7 +43,7 @@ const popularTopics = [
     { text: "Direitos na escola: o que eu preciso saber?", icon: <BadgeHelp className="h-4 w-4 mr-2" /> },
 ]
 
-// Moved SearchBar outside to prevent re-creation on every render
+// SearchBar
 const SearchBar = ({ className, onSubmit, query, onQueryChange, loading }: { className?: string, onSubmit: (e: React.FormEvent) => void, query: string, onQueryChange: (value: string) => void, loading: boolean }) => (
     <div className={className}>
        <div className="relative">
@@ -143,12 +143,13 @@ function AiSupportPageContent() {
   }
 
   return (
-    <section className="w-full py-16 md:py-24 lg:py-32 bg-background">
+    <section className="w-full pt-8 md:pt-12 pb-12 bg-background">
       <div className="container mx-auto px-4 md:px-6">
         
+        {/* Container para o Cabeçalho e Busca */}
         <div className="max-w-3xl mx-auto">
-            <div className="animate-in fade-in-0 duration-500 mb-8">
-              <div className="flex flex-col items-center text-center space-y-4 mb-12">
+            <div className="animate-in fade-in-0 duration-500 mb-6">
+              <div className="flex flex-col items-center text-center space-y-2 mb-6">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline">
                       Como podemos te ajudar hoje?
                   </h1>
@@ -165,7 +166,7 @@ function AiSupportPageContent() {
                 loading={loading}
               />
 
-              <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-16">
+              <div className="flex flex-wrap items-center justify-center gap-3 text-sm mb-12">
                   <span className="font-semibold mr-2">Tópicos populares:</span>
                   {popularTopics.map((topic, index) => (
                       <Button key={index} variant="outline" className="rounded-full" onClick={() => handleTopicClick(topic.text)} disabled={loading}>
@@ -197,35 +198,44 @@ function AiSupportPageContent() {
                      <div ref={responseEndRef} />
                 </div>
               )}
-
-              {!(loading || aiResponse) && (
-                <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto pt-8">
-                  {supportCards.map((card, index) => (
-                      <Link href={card.href} key={index} className="group">
-                      <Card className="p-8 bg-card dark:bg-card rounded-2xl shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between text-left cursor-pointer aspect-square">
-                          <div>
-                          <CardHeader className="flex flex-col items-start gap-4 p-0">
-                              <div className="bg-primary/10 p-4 rounded-xl mb-2">
-                              {card.icon}
-                              </div>
-                              <CardTitle className="text-xl font-semibold dark:text-card-foreground">{card.title}</CardTitle>
-                          </CardHeader>
-                          <CardContent className="p-0 mt-3">
-                              <p className="text-foreground/80 dark:text-muted-foreground">{card.description}</p>
-                          </CardContent>
-                          </div>
-                          <div className="mt-6">
-                          <span className="font-semibold text-primary hover:text-primary/80 flex items-center">
-                              Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
-                          </span>
-                          </div>
-                      </Card>
-                      </Link>
-                  ))}
-                </div>
-              )}
             </div>
         </div>
+
+        {/* Container mais amplo exclusivo para os Cards (max-w-5xl) */}
+        {!(loading || aiResponse) && (
+          <div className="max-w-5xl mx-auto pt-4">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-3 items-stretch">
+              {supportCards.map((card, index) => (
+                <Link href={card.href} key={index} className="group flex h-full">
+                  <Card className="p-6 bg-card dark:bg-card rounded-2xl shadow-md hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 transform hover:-translate-y-1 flex flex-col justify-between text-left cursor-pointer w-full h-full border border-border">
+                    <div>
+                      <CardHeader className="flex flex-col items-start gap-3 p-0">
+                        <div className="bg-primary/10 p-3 rounded-xl">
+                          {card.icon}
+                        </div>
+                        <CardTitle className="text-xl font-semibold dark:text-card-foreground">
+                          {card.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0 mt-3">
+                        <p className="text-sm text-foreground/80 dark:text-muted-foreground leading-relaxed">
+                          {card.description}
+                        </p>
+                      </CardContent>
+                    </div>
+                    
+                    <div className="mt-6 pt-2">
+                      <span className="font-semibold text-sm text-primary hover:text-primary/80 flex items-center">
+                        Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   );

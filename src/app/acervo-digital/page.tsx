@@ -48,18 +48,17 @@ const parseBrazilianDate = (dateString: string): Date => {
       return new Date(year, month, day);
     }
   }
-  return new Date(0); // Return an invalid date if parsing fails
+  return new Date(0); 
 };
-
 
 const libraryItems = [
   {
-    type: 'video',
-    imageUrl: 'https://placehold.co/600x400.png',
+    type: 'video' as const, 
+    imageUrl: '/acervo/materias/materia-1.jpg',
     imageHint: 'child behavior',
     title: 'Entendendo o Comportamento no TEA',
     author: 'Dr. Ana Silva',
-    avatarUrl: 'https://placehold.co/32x32.png',
+    avatarUrl: '/acervo/perfil/perfil-1.jpg',
     avatarHint: 'woman doctor portrait',
     date: '14 de julho de 2024',
     tags: ['Comportamento', 'TEA', 'Palestra'],
@@ -68,11 +67,11 @@ const libraryItems = [
     downloadable: true,
   },
   {
-    type: 'document',
+    type: 'document' as const, 
     icon: 'document',
     title: 'Guia de Atividades Sensoriais',
     author: 'Carlos Mendes',
-    avatarUrl: 'https://placehold.co/32x32.png',
+    avatarUrl: '/acervo/perfil/perfil-2.jpg',
     avatarHint: 'man portrait',
     date: '11 de julho de 2024',
     tags: ['Atividades', 'Sensorial', 'PDF'],
@@ -81,11 +80,11 @@ const libraryItems = [
     downloadable: true,
   },
   {
-    type: 'document',
+    type: 'document' as const,
     icon: 'document',
     title: 'Modelo de Plano de Ensino Individualizado (PEI)',
     author: 'Mariana Costa',
-    avatarUrl: 'https://placehold.co/32x32.png',
+    avatarUrl: '/acervo/perfil/perfil-3.jpg',
     avatarHint: 'woman teacher portrait',
     date: '09 de julho de 2024',
     tags: ['Educação', 'PEI', 'Documento'],
@@ -94,12 +93,12 @@ const libraryItems = [
     downloadable: true,
   },
   {
-    type: 'video',
-    imageUrl: 'https://placehold.co/600x400.png',
+    type: 'video' as const,
+    imageUrl: '/acervo/materias/materia-2.jpg',
     imageHint: 'communication signals',
     title: 'Comunicação Alternativa: Primeiros Passos',
     author: 'Juliana Pereira',
-    avatarUrl: 'https://placehold.co/32x32.png',
+    avatarUrl: '/acervo/perfil/perfil-4.jpg',
     avatarHint: 'woman speech therapist',
     date: '07 de julho de 2024',
     tags: ['Comunicação', 'CAA', 'Workshop'],

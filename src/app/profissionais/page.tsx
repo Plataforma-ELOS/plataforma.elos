@@ -25,27 +25,27 @@ import { useRouter } from 'next/navigation';
 import imagesData from '@/app/lib/placeholder-images.json';
 
 const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: imagesData.professionals["dra-cristiane"].url, hint: imagesData.professionals["dra-cristiane"].hint },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: imagesData.professionals["dr-fernando"].url, hint: imagesData.professionals["dr-fernando"].hint },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: imagesData.professionals["dra-beatriz"].url, hint: imagesData.professionals["dra-beatriz"].hint },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: imagesData.professionals["dr-ricardo"].url, hint: imagesData.professionals["dr-ricardo"].hint },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: imagesData.professionals["dra-ana"].url, hint: imagesData.professionals["dra-ana"].hint },
+  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: '/perfis/liberais/profissional-1.jpg', hint: 'Dra Cristiane' },
+  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: '/perfis/liberais/profissional-2.jpg', hint: 'Dr Fernando' },
+  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: '/perfis/liberais/profissional-3.jpg', hint: 'Dra Beatriz' },
+  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: '/perfis/liberais/profissional-4.jpg', hint: 'Dr Ricardo' },
+  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: '/perfis/liberais/profissional-5.jpg', hint: 'Dra Ana' },
 ];
 
 const clinics = [
-    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: 'https://placehold.co/800x450.png', hint: 'clinic facade' },
-    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: 'https://placehold.co/800x450.png', hint: 'playroom therapy' },
-    { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: 'https://placehold.co/800x450.png', hint: 'sensory room' },
-    { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: 'https://placehold.co/800x450.png', hint: 'group therapy' },
+    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: '/perfis/clinicas/instituicao-1.jpg', hint: 'clinic facade' },
+    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: '/perfis/clinicas/instituicao-2.jpg', hint: 'playroom therapy' },
+    { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: '/perfis/clinicas/instituicao-3.jpg', hint: 'sensory room' },
+    { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: '/perfis/clinicas/instituicao-4.jpg', hint: 'group therapy' },
 ];
 
 const specialties = [
-    { name: 'Psicólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'psychology session', tag: 'Psicóloga' },
-    { name: 'Fonoaudiólogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'speech therapy', tag: 'Fonoaudióloga' },
-    { name: 'Terapeutas Ocupacionais', imageUrl: 'https://placehold.co/400x400.png', hint: 'occupational therapy', tag: 'Terapeuta Ocupacional' },
-    { name: 'Neurologistas e Psiquiatras', imageUrl: 'https://placehold.co/400x400.png', hint: 'doctor brain', tag: 'Neuropediatra' },
-    { name: 'Psicopedagogos', imageUrl: 'https://placehold.co/400x400.png', hint: 'educational psychology', tag: 'Psicopedagoga' },
-    { name: 'Acompanhantes Terapêuticos', imageUrl: 'https://placehold.co/400x400.png', hint: 'therapeutic companion', tag: 'Acompanhante Terapêutico' },
+    { name: 'Psicólogos', tag: 'Psicóloga' },
+    { name: 'Fonoaudiólogos', tag: 'Fonoaudióloga' },
+    { name: 'Terapeutas Ocupacionais', tag: 'Terapeuta Ocupacional' },
+    { name: 'Neurologistas e Psiquiatras', tag: 'Neuropediatra' },
+    { name: 'Psicopedagogos', tag: 'Psicopedagoga' },
+    { name: 'Acompanhantes Terapêuticos', tag: 'Acompanhante Terapêutico' },
 ]
 
 export default function ProfessionalsPage() {
@@ -61,29 +61,28 @@ export default function ProfessionalsPage() {
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
       <main className="flex-1">
+
         {/* Hero Section */}
-        <section className="w-full py-16 md:py-24 bg-primary/10">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="bg-primary/20 p-4 rounded-full">
-                        <Users className="h-10 w-10 text-primary" />
-                    </div>
-                    <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Encontre o Profissional Ideal</h1>
-                    <p className="max-w-[700px] text-foreground/80 md:text-xl">
-                        Conectamos você a profissionais e clínicas avaliados e comprometidos com o cuidado no TEA.
-                    </p>
-                    <FeatureInProgress>
-                      <div className="relative w-full max-w-lg mt-4">
-                          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                          <input 
-                            ref={searchInputRef}
-                            placeholder="Buscar por especialidade ou nome..." 
-                            className="w-full h-12 pl-12 pr-4 rounded-full border bg-card text-card-foreground" 
-                           />
-                      </div>
-                    </FeatureInProgress>
-                </div>
+        <section className="w-full py-16 md:py-24 bg-primary/10 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="bg-primary/20 p-4 rounded-full">
+                <Users className="h-10 w-10 text-primary" />
             </div>
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline">
+                Encontre o Profissional Ideal
+            </h1>
+            <p className="max-w-[600px] text-foreground/80 md:text-xl">
+                Conectamos você a profissionais e clínicas avaliados e comprometidos com o cuidado no TEA.
+            </p>
+            <FeatureInProgress>
+                <div className="relative w-full max-w-sm mt-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <input 
+                        ref={searchInputRef}
+                        placeholder="Buscar por especialidade ou nome..." 
+                        className="w-full h-10 pl-9 pr-4 rounded-full border bg-card text-card-foreground" 
+                    />
+                </div>
+            </FeatureInProgress>
         </section>
 
         {/* Quality Section */}
@@ -108,7 +107,7 @@ export default function ProfessionalsPage() {
                         </ul>
                     </div>
                     <div>
-                        <Image src="https://placehold.co/600x400.png" alt="Selo de qualidade" width={600} height={400} className="rounded-2xl shadow-lg" data-ai-hint="quality certificate" />
+                        <Image src="/perfis/compromisso.jpg" alt="Selo de qualidade" width={600} height={400} className="rounded-2xl shadow-lg" data-ai-hint="quality certificate" />
                     </div>
                 </div>
             </div>
@@ -126,19 +125,11 @@ export default function ProfessionalsPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty, index) => (
                         <div key={index} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
-                            <Card className="overflow-hidden rounded-xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
-                                <Image 
-                                    src={specialty.imageUrl} 
-                                    alt={specialty.name} 
-                                    width={400} 
-                                    height={400} 
-                                    className="w-full h-auto object-cover aspect-square group-hover:scale-105 transition-transform duration-300"
-                                    data-ai-hint={specialty.hint}
-                                />
+                           <Card className="p-6 rounded-2xl shadow-lg border bg-card hover:border-primary hover:bg-primary/5 hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex items-center justify-center min-h-[130px] text-center">
+                           <h3 className="font-semibold text-card-foreground text-base group-hover:text-primary transition-colors">
+                                    {specialty.name}
+                                </h3>
                             </Card>
-                            <div className="bg-card p-3 rounded-b-xl -mt-2 relative shadow-sm">
-                                <h3 className="font-semibold text-center text-card-foreground text-sm">{specialty.name}</h3>
-                            </div>
                         </div>
                     ))}
                 </div>
@@ -170,20 +161,20 @@ export default function ProfessionalsPage() {
                       ]}
                   className="w-full relative"
                 >
-                  <CarouselContent className="-ml-4 px-4">
+                  <CarouselContent className="-ml-4 px-4 py-4">
                     {professionals.map((prof, index) => (
                        <CarouselItem key={prof.id} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
-                         <Link href={`/profissionais/${prof.id}`} className="group block">
+                         <Link href={`/profissionais/${prof.id}`} className="group block h-full">
                             <Card className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full bg-card border-0">
                                 <Avatar className="h-24 w-24 mx-auto mb-4 ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all">
                                     <AvatarImage src={prof.imageUrl} alt={prof.name} data-ai-hint={prof.hint} className="object-cover" />
                                     <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
-                                <CardHeader className="p-0">
+                                <CardHeader className="p-0 flex-grow">
                                     <CardTitle className="text-xl group-hover:text-primary font-bold">{prof.name}</CardTitle>
                                     <CardDescription className="text-primary font-semibold">{prof.specialty}</CardDescription>
                                 </CardHeader>
-                                <div className="mt-4">
+                                <div className="mt-auto pt-4">
                                      <Button variant="link" className="text-primary">Ver Perfil</Button>
                                 </div>
                             </Card>
