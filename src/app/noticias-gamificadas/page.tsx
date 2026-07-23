@@ -1,49 +1,52 @@
 
 // src/app/noticias-gamificadas/page.tsx
 import Link from 'next/link';
+import { cookies } from 'next/headers';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle } from 'lucide-react';
+import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
+import { createClient } from '@/utils/supabase/server';
 
-const knowledgePills = [
-  {
-    title: 'Você sabia?',
-    content: 'A Lei Berenice Piana (nº 12.764/2012) garante o direito a um acompanhante especializado na escola para alunos com TEA.',
-    category: 'Direitos',
-    icon: <Award className="h-6 w-6 text-yellow-500" />,
-  },
-  {
-    title: 'Dica Rápida',
-    content: 'Crie um "cantinho da calma" em casa. Um espaço seguro e tranquilo pode ajudar a regular crises sensoriais.',
-    category: 'Bem-estar',
-    icon: <Lightbulb className="h-6 w-6 text-green-500" />,
-  },
-  {
-    title: 'Fato Importante',
-    content: 'O diagnóstico precoce do TEA, idealmente antes dos 3 anos, é crucial para o desenvolvimento de intervenções eficazes.',
-    category: 'Saúde',
-    icon: <CheckCircle className="h-6 w-6 text-blue-500" />,
-  },
-];
+// Nao ha coluna de icone no banco — mapeamos pela categoria (texto livre,
+// mas hoje limitada a estas 3 no seed). Categoria nao mapeada cai no icone
+// padrao.
+const ICONE_POR_CATEGORIA: Record<string, React.ReactNode> = {
+  'Direitos': <Award className="h-6 w-6 text-yellow-500" />,
+  'Bem-estar': <Lightbulb className="h-6 w-6 text-green-500" />,
+  'Saúde': <CheckCircle className="h-6 w-6 text-blue-500" />,
+};
+const ICONE_PADRAO = <Sparkles className="h-6 w-6 text-primary" />;
 
-const knowledgeTrails = [
-  {
-    title: 'Trilha: Entendendo o Laudo de TEA',
-    description: 'Aprenda o passo a passo para obter o laudo, sua importância e como utilizá-lo para garantir direitos.',
-    progress: 33,
-    steps: 3,
-  },
-  {
-    title: 'Trilha: Primeiros Passos na Escola',
-    description: 'Descubra os direitos do seu filho no ambiente escolar, o que é o PEI e como dialogar com a equipe pedagógica.',
-    progress: 0,
-    steps: 5,
-  },
-];
+export default async function NewsGamifiedPage() {
+  const supabase = createClient(await cookies());
 
-export default function NewsGamifiedPage() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const [{ data: pillRows }, { data: trailRows }, { data: progressRows }] = await Promise.all([
+    supabase.from('knowledge_pills').select('title, content, category'),
+    supabase.from('knowledge_trails').select('id, title, description'),
+    user
+      ? supabase.from('trail_progress').select('trail_id, progress').eq('profile_id', user.id)
+      : Promise.resolve({ data: [] as { trail_id: string; progress: number }[] }),
+  ]);
+
+  const knowledgePills = (pillRows ?? []).map((p) => ({
+    title: p.title,
+    content: p.content,
+    category: p.category ?? '',
+    icon: ICONE_POR_CATEGORIA[p.category ?? ''] ?? ICONE_PADRAO,
+  }));
+
+  const progressByTrail = new Map((progressRows ?? []).map((p) => [p.trail_id, p.progress]));
+  const knowledgeTrails = (trailRows ?? []).map((t) => ({
+    id: t.id,
+    title: t.title,
+    description: t.description ?? '',
+    progress: progressByTrail.get(t.id) ?? 0,
+  }));
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -86,8 +89,8 @@ export default function NewsGamifiedPage() {
             {/* Trilhas de Conhecimento */}
             <h2 className="text-2xl font-bold mb-4">Suas Trilhas de Conhecimento</h2>
             <div className="space-y-4 mb-12">
-              {knowledgeTrails.map((trail, index) => (
-                <Card key={index} className="p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
+              {knowledgeTrails.map((trail) => (
+                <Card key={trail.id} className="p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                     <CardHeader className="p-0 mb-4">
                         <CardTitle>{trail.title}</CardTitle>
                         <CardDescription>{trail.description}</CardDescription>
