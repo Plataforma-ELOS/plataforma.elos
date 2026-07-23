@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useRouter } from 'next/navigation';
-import { useState, useContext } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useContext, Suspense } from 'react';
 import Image from 'next/image';
 import {
   AlertDialog,
@@ -21,29 +21,33 @@ import {
 import { CheckCircle, XCircle } from 'lucide-react';
 import { AuthContext } from '@/components/providers';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
-  const { login, registeredUsers } = useContext(AuthContext);
+  const searchParams = useSearchParams();
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [mensagemErro, setMensagemErro] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = registeredUsers.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-      login(user);
+
+    const { ok, erro } = await login(email, password);
+
+    if (ok) {
       setShowSuccessDialog(true);
     } else {
+      setMensagemErro(erro ?? 'Dados inválidos.');
       setShowErrorDialog(true);
     }
   };
 
   const handleContinue = () => {
     setShowSuccessDialog(false);
-    router.push('/home');
+    const destino = searchParams.get('redirect') || '/home';
+    router.push(destino);
   };
 
   return (
@@ -81,7 +85,7 @@ export default function LoginPage() {
             </div>
             <AlertDialogTitle className="text-center text-2xl">Dados inválidos</AlertDialogTitle>
             <AlertDialogDescription className="text-center text-muted-foreground px-4">
-              Os dados inseridos não foram encontrados em nosso sistema. Por favor, verifique suas informações ou crie uma nova conta.
+              {mensagemErro}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -170,5 +174,14 @@ export default function LoginPage() {
         </div>
       </div>
     </>
+  );
+}
+
+// useSearchParams exige Suspense boundary no Next 15.
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
