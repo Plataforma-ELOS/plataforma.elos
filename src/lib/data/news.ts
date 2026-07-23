@@ -3,6 +3,7 @@
 // { slug, title, description, imageUrl, imageHint, category, date }
 import { cookies } from 'next/headers';
 import { createClient } from '@/utils/supabase/server';
+import { formatarDataPtBr } from '../format';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,
 // saude, comunidade) — a tela usa o rótulo em português com acento e
@@ -13,16 +14,6 @@ const CATEGORIA_LABEL: Record<string, string> = {
   saude: 'Saúde',
   comunidade: 'Comunidade',
 };
-
-function formatarDataPtBr(iso: string | null): string {
-  if (!iso) return '';
-  return new Date(iso).toLocaleDateString('pt-BR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: 'America/Sao_Paulo',
-  }).replace(/^(\d+) de (\w)/, (_, d, m) => `${d} de ${m.toUpperCase()}`);
-}
 
 export type NewsCardData = {
   slug: string;

@@ -32,81 +32,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-
-// Helper to parse Brazilian dates (dd de MMMM de yyyy)
-const parseBrazilianDate = (dateString: string): Date => {
-  const months: { [key: string]: number } = {
-    'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3, 'maio': 4, 'junho': 5,
-    'julho': 6, 'agosto': 7, 'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
-  };
-  const parts = dateString.split(' de ');
-  if (parts.length === 3) {
-    const day = parseInt(parts[0], 10);
-    const month = months[parts[1].toLowerCase()];
-    const year = parseInt(parts[2], 10);
-    if (!isNaN(day) && month !== undefined && !isNaN(year)) {
-      return new Date(year, month, day);
-    }
-  }
-  return new Date(0); 
-};
-
-const libraryItems = [
-  {
-    type: 'video' as const, 
-    imageUrl: '/acervo/materias/materia-1.jpg',
-    imageHint: 'child behavior',
-    title: 'Entendendo o Comportamento no TEA',
-    author: 'Dr. Ana Silva',
-    avatarUrl: '/acervo/perfil/perfil-1.jpg',
-    avatarHint: 'woman doctor portrait',
-    date: '14 de julho de 2024',
-    tags: ['Comportamento', 'TEA', 'Palestra'],
-    actionText: 'Assistir Agora',
-    actionUrl: '#',
-    downloadable: true,
-  },
-  {
-    type: 'document' as const, 
-    icon: 'document',
-    title: 'Guia de Atividades Sensoriais',
-    author: 'Carlos Mendes',
-    avatarUrl: '/acervo/perfil/perfil-2.jpg',
-    avatarHint: 'man portrait',
-    date: '11 de julho de 2024',
-    tags: ['Atividades', 'Sensorial', 'PDF'],
-    actionText: 'Fazer Download',
-    actionUrl: '#',
-    downloadable: true,
-  },
-  {
-    type: 'document' as const,
-    icon: 'document',
-    title: 'Modelo de Plano de Ensino Individualizado (PEI)',
-    author: 'Mariana Costa',
-    avatarUrl: '/acervo/perfil/perfil-3.jpg',
-    avatarHint: 'woman teacher portrait',
-    date: '09 de julho de 2024',
-    tags: ['Educação', 'PEI', 'Documento'],
-    actionText: 'Fazer Download',
-    actionUrl: '#',
-    downloadable: true,
-  },
-  {
-    type: 'video' as const,
-    imageUrl: '/acervo/materias/materia-2.jpg',
-    imageHint: 'communication signals',
-    title: 'Comunicação Alternativa: Primeiros Passos',
-    author: 'Juliana Pereira',
-    avatarUrl: '/acervo/perfil/perfil-4.jpg',
-    avatarHint: 'woman speech therapist',
-    date: '07 de julho de 2024',
-    tags: ['Comunicação', 'CAA', 'Workshop'],
-    actionText: 'Assistir Agora',
-    actionUrl: '#',
-    downloadable: true,
-  },
-];
+import { createClient } from '@/utils/supabase/client';
+import { mapLibraryRow, type LibraryItemData } from '@/lib/data/library';
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -216,14 +143,33 @@ function DigitalLibraryContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortOrder, setSortOrder] = useState('recent');
-  
+  const [libraryItems, setLibraryItems] = useState<LibraryItemData[]>([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from('library_items')
+      .select('type, title, author_name, image_url, action_url, downloadable, tags, created_at')
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('[acervo-digital] erro ao buscar itens:', error.message);
+        } else {
+          setLibraryItems((data ?? []).map(mapLibraryRow));
+        }
+        setCarregando(false);
+      });
+  }, []);
+
   const filteredItems = useMemo(() => {
     const lowercasedQuery = searchQuery.toLowerCase();
-    
+
     let results = libraryItems.filter(item => {
       const typeMatch = filterType === 'all' || item.type === filterType;
       if (!typeMatch) return false;
-      
+
       if (!lowercasedQuery) return true;
       const titleMatch = item.title.toLowerCase().includes(lowercasedQuery);
       const tagMatch = item.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery));
@@ -231,9 +177,9 @@ function DigitalLibraryContent() {
     });
 
     results.sort((a, b) => {
-      const dateA = parseBrazilianDate(a.date).getTime();
-      const dateB = parseBrazilianDate(b.date).getTime();
-      
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+
       if (sortOrder === 'recent') {
         return dateB - dateA;
       } else {
@@ -242,8 +188,8 @@ function DigitalLibraryContent() {
     });
 
     return results;
-  }, [searchQuery, filterType, sortOrder]);
-  
+  }, [libraryItems, searchQuery, filterType, sortOrder]);
+
   useEffect(() => {
     const typeFromUrl = searchParams.get('type');
     if (typeFromUrl === 'video' || typeFromUrl === 'document') {
@@ -311,27 +257,32 @@ function DigitalLibraryContent() {
             </div>
           </div>
           
-          {view === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-0 duration-500">
-              {filteredItems.map((item, index) => (
-                <DigitalLibraryCard key={index} item={item} />
-              ))}
-            </div>
+          {carregando ? (
+            <div className="text-center py-16 text-muted-foreground">Carregando acervo...</div>
           ) : (
-            <div className="space-y-4 animate-in fade-in-0 duration-500">
-              {filteredItems.map((item, index) => (
-                <DigitalLibraryListItem key={index} item={item} />
-              ))}
-            </div>
-          )}
+            <>
+              {view === 'grid' ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-0 duration-500">
+                  {filteredItems.map((item, index) => (
+                    <DigitalLibraryCard key={index} item={item} />
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4 animate-in fade-in-0 duration-500">
+                  {filteredItems.map((item, index) => (
+                    <DigitalLibraryListItem key={index} item={item} />
+                  ))}
+                </div>
+              )}
 
-
-          {filteredItems.length === 0 && (
-            <div className="text-center py-16 animate-in fade-in-0 duration-500">
-              <Search className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
-              <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave ou ajuste seus filtros.</p>
-            </div>
+              {filteredItems.length === 0 && (
+                <div className="text-center py-16 animate-in fade-in-0 duration-500">
+                  <Search className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-semibold">Nenhum resultado encontrado</h3>
+                  <p className="text-muted-foreground mt-2">Tente buscar por outras palavras-chave ou ajuste seus filtros.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </main>
