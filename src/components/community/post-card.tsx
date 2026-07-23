@@ -34,6 +34,8 @@ export type Post = {
   likes: number;
   commentCount: number;
   isSaved: boolean;
+  /** Se o usuário logado já curtiu este post. Vem do banco (tabela post_likes). */
+  likedByMe?: boolean;
   comments: Comment[];
 };
 
@@ -42,11 +44,15 @@ type PostCardProps = {
   onToggleSave: (postId: string) => void;
   onDelete: (postId: string) => void;
   currentUser: User | null;
+  /** Curtir/descurtir de verdade (Server Action). Se omitido, cai no comportamento antigo (só local). */
+  onToggleLike?: (postId: string) => void;
+  /** Comentar de verdade (Server Action). Se omitido, cai no comportamento antigo (só local). */
+  onAddComment?: (postId: string, content: string) => void;
 };
 
-export default function PostCard({ post, onToggleSave, onDelete, currentUser }: PostCardProps) {
+export default function PostCard({ post, onToggleSave, onDelete, currentUser, onToggleLike, onAddComment }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.likedByMe ?? false);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [commentCount, setCommentCount] = useState(post.commentCount);
@@ -54,8 +60,11 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser }: 
   const isOwner = currentUser?.email === post.author.email;
 
   const handleLike = () => {
+    // Atualização otimista na tela...
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
+    // ...e persiste de verdade, se a action foi passada pela página pai.
+    onToggleLike?.(post.id);
   };
   
   const handleCommentSubmit = (commentContent: string) => {
@@ -73,6 +82,7 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser }: 
     };
     setComments([...comments, newComment]);
     setCommentCount(commentCount + 1);
+    onAddComment?.(post.id, commentContent);
   };
   
   return (
