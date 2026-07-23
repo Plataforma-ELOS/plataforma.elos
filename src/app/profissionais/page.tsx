@@ -20,24 +20,10 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import imagesData from '@/app/lib/placeholder-images.json';
-
-const professionals = [
-  { id: 'dra-cristiane', name: 'Dra. Cristiane', specialty: 'Psicóloga Especialista em TEA', description: 'Abordagem acolhedora e baseada em evidências para o desenvolvimento infantil e suporte familiar.', imageUrl: '/perfis/liberais/profissional-1.jpg', hint: 'Dra Cristiane' },
-  { id: 'dr-fernando', name: 'Dr. Fernando', specialty: 'Neuropediatra', description: 'Foco no diagnóstico precoce e acompanhamento do desenvolvimento neurológico de crianças com TEA.', imageUrl: '/perfis/liberais/profissional-2.jpg', hint: 'Dr Fernando' },
-  { id: 'dra-beatriz', name: 'Dra. Beatriz', specialty: 'Fonoaudióloga', description: 'Especialista em comunicação alternativa e aumentativa (CAA) para crianças e adolescentes.', imageUrl: '/perfis/liberais/profissional-3.jpg', hint: 'Dra Beatriz' },
-  { id: 'dr-ricardo', name: 'Dr. Ricardo', specialty: 'Terapeuta Ocupacional', description: 'Abordagens lúdicas e criativas para a integração sensorial e autonomia nas atividades diárias.', imageUrl: '/perfis/liberais/profissional-4.jpg', hint: 'Dr Ricardo' },
-  { id: 'dra-ana', name: 'Dra. Ana', specialty: 'Psicopedagoga', description: 'Apoio no processo de aprendizagem e desenvolvimento de habilidades acadêmicas.', imageUrl: '/perfis/liberais/profissional-5.jpg', hint: 'Dra Ana' },
-];
-
-const clinics = [
-    { id: 'clinica-superar', name: 'Clínica Superar', specialty: 'Centro Multidisciplinar', description: 'Oferecemos um ambiente integrado com diversas especialidades para um cuidado completo e humanizado.', imageUrl: '/perfis/clinicas/instituicao-1.jpg', hint: 'clinic facade' },
-    { id: 'espaco-crescer', name: 'Espaço Crescer', specialty: 'Terapia Infantil e Familiar', description: 'Um lugar pensado para o desenvolvimento infantil, com foco na intervenção precoce e no apoio familiar.', imageUrl: '/perfis/clinicas/instituicao-2.jpg', hint: 'playroom therapy' },
-    { id: 'clinica-evoluir', name: 'Clínica Evoluir', specialty: 'Foco em ABA e Integração Sensorial', description: 'Equipe especializada em Terapia Comportamental Aplicada (ABA) e Integração Sensorial.', imageUrl: '/perfis/clinicas/instituicao-3.jpg', hint: 'sensory room' },
-    { id: 'nucleo-conectar', name: 'Núcleo Conectar', specialty: 'Apoio Psicossocial e Educacional', description: 'Promovemos a inclusão e o bem-estar através de programas de apoio psicossocial e educacional para famílias.', imageUrl: '/perfis/clinicas/instituicao-4.jpg', hint: 'group therapy' },
-];
+import { createClient } from '@/utils/supabase/client';
+import { mapProfessionalCard, mapClinicCard, type ProfessionalCardData } from '@/lib/data/professionals';
 
 const specialties = [
     { name: 'Psicólogos', tag: 'Psicóloga' },
@@ -50,13 +36,42 @@ const specialties = [
 
 export default function ProfessionalsPage() {
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [professionals, setProfessionals] = useState<ProfessionalCardData[]>([]);
+  const [clinics, setClinics] = useState<ProfessionalCardData[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase
+      .from('professionals')
+      .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram')
+      .in('kind', ['liberal', 'clinic_professional'])
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('[profissionais] erro ao buscar profissionais:', error.message);
+          return;
+        }
+        setProfessionals((data ?? []).map(mapProfessionalCard));
+      });
+
+    supabase
+      .from('clinics')
+      .select('id, name, specialty, description, image_url, cnpj, phone, email')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('[profissionais] erro ao buscar clinicas:', error.message);
+          return;
+        }
+        setClinics((data ?? []).map(mapClinicCard));
+      });
+  }, []);
 
   const handleSpecialtyClick = (tag: string) => {
     if (searchInputRef.current) {
       searchInputRef.current.value = tag;
     }
   };
-  
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
