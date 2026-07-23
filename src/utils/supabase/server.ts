@@ -26,3 +26,21 @@ export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) =
     },
   );
 };
+
+// Sem acesso a cookies — para uso em generateStaticParams e outros
+// contextos de build, fora do escopo de uma requisição. Só serve para
+// ler dados publicos (sem sessao de usuario).
+export const createStaticClient = () => {
+  return createServerClient(
+    supabaseUrl!,
+    supabaseKey!,
+    {
+      cookies: {
+        getAll() {
+          return [];
+        },
+        setAll() {},
+      },
+    },
+  );
+};

@@ -2,7 +2,7 @@
 // Leitura de notícias do Supabase, já no formato exato que NewsCard espera:
 // { slug, title, description, imageUrl, imageHint, category, date }
 import { cookies } from 'next/headers';
-import { createClient } from '@/utils/supabase/server';
+import { createClient, createStaticClient } from '@/utils/supabase/server';
 import { formatarDataPtBr } from '../format';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,
@@ -76,8 +76,10 @@ export async function getNewsBySlug(slug: string) {
   };
 }
 
+// Usado em generateStaticParams (roda em build time, fora de uma
+// requisição) — por isso usa o client sem cookies em vez de createClient.
 export async function getAllNewsSlugs(): Promise<{ slug: string }[]> {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
   const { data } = await supabase.from('news_articles').select('slug');
   return data ?? [];
 }
