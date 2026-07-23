@@ -28,25 +28,31 @@ import {
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import { inscreverProfissional } from '@/app/actions/professional-signup';
 
 const MAX_WORDS = 200;
 
 export default function ProfessionalSignUpPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [enviando, setEnviando] = useState(false);
   const [experienceText, setExperienceText] = useState('');
-  const [registrationType, setRegistrationType] = useState('liberal');
+  const [registrationType, setRegistrationType] = useState<'liberal' | 'clinic_professional' | 'clinic'>('liberal');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [cnpj, setCnpj] = useState('');
+  const [registrationNumber, setRegistrationNumber] = useState('');
 
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numericValue = value.replace(/\D/g, '');
-    if (numericValue.length <= 7) {
-      e.target.value = numericValue;
-    } else {
-      e.target.value = numericValue.slice(0, 7);
-    }
+    const truncated = numericValue.slice(0, 7);
+    e.target.value = truncated;
+    setRegistrationNumber(truncated);
   };
-  
+
   const handleExperienceChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     const words = text.trim().split(/\s+/).filter(Boolean);
@@ -57,18 +63,39 @@ export default function ProfessionalSignUpPage() {
       setExperienceText(truncatedText);
     }
   };
-  
+
   const wordCount = useMemo(() => {
     return experienceText.trim().split(/\s+/).filter(Boolean).length;
   }, [experienceText]);
 
-  const handleProfessionalSubmit = (e: React.FormEvent) => {
+  const handleProfessionalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const professionalIdInput = document.getElementById('professional-id') as HTMLInputElement;
-    if (professionalIdInput.value.length !== 7) {
-      alert('O número do registro profissional deve ter exatamente 7 dígitos.');
+
+    if (registrationType !== 'clinic' && registrationNumber.length !== 7) {
+      toast({
+        variant: 'destructive',
+        title: 'Registro inválido',
+        description: 'O número do registro profissional deve ter exatamente 7 dígitos.',
+      });
       return;
     }
+
+    setEnviando(true);
+    const { ok, erro } = await inscreverProfissional({
+      fullName,
+      email,
+      registrationType,
+      cnpj,
+      registrationNumber,
+      experience: experienceText,
+    });
+    setEnviando(false);
+
+    if (!ok) {
+      toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
+      return;
+    }
+
     setIsSubmitted(true);
   };
 
@@ -118,15 +145,15 @@ export default function ProfessionalSignUpPage() {
                 <form className="grid gap-6" onSubmit={handleProfessionalSubmit}>
                     <div className="grid gap-2">
                         <Label htmlFor="prof-full-name">Nome Completo</Label>
-                        <Input id="prof-full-name" placeholder="Seu nome ou nome da clínica" required />
+                        <Input id="prof-full-name" placeholder="Seu nome ou nome da clínica" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="prof-email">Email</Label>
-                        <Input id="prof-email" type="email" placeholder="seu@email.com" required />
+                        <Input id="prof-email" type="email" placeholder="seu@email.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="registration-type">Tipo de Cadastro</Label>
-                        <Select onValueChange={setRegistrationType} defaultValue="liberal">
+                        <Select onValueChange={(value) => setRegistrationType(value as typeof registrationType)} defaultValue="liberal">
                         <SelectTrigger id="registration-type">
                             <SelectValue placeholder="Selecione o tipo" />
                         </SelectTrigger>
@@ -137,22 +164,24 @@ export default function ProfessionalSignUpPage() {
                         </SelectContent>
                         </Select>
                     </div>
-                    
+
                     <div className={cn('grid gap-2 transition-opacity duration-300', registrationType === 'clinic' ? 'opacity-100' : 'opacity-50 pointer-events-none')}>
                         <Label htmlFor="cnpj">CNPJ</Label>
-                        <Input id="cnpj" placeholder="00.000.000/0000-00" required={registrationType === 'clinic'} disabled={registrationType !== 'clinic'} />
+                        <Input id="cnpj" placeholder="00.000.000/0000-00" required={registrationType === 'clinic'} disabled={registrationType !== 'clinic'} value={cnpj} onChange={(e) => setCnpj(e.target.value)} />
                     </div>
 
-                    <div className="grid gap-2">
+                    <div className={cn('grid gap-2 transition-opacity duration-300', registrationType === 'clinic' ? 'opacity-50 pointer-events-none' : 'opacity-100')}>
                         <Label htmlFor="professional-id">Número do Registro Profissional (exatamente 7 dígitos)</Label>
-                        <Input id="professional-id" placeholder="Ex: 1234567" required onChange={handleNumericInput} maxLength={7} />
+                        <Input id="professional-id" placeholder="Ex: 1234567" required={registrationType !== 'clinic'} disabled={registrationType === 'clinic'} onChange={handleNumericInput} value={registrationNumber} maxLength={7} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="experience">Compartilhe um pouco de sua experiência</Label>
                         <Textarea id="experience" placeholder="Descreva sua especialidade, abordagem e experiência com TEA." required value={experienceText} onChange={handleExperienceChange} className="min-h-[120px]" />
                         <p className="text-sm text-muted-foreground text-right">{wordCount}/{MAX_WORDS} palavras</p>
                     </div>
-                    <Button type="submit" className="w-full rounded-full" size="lg">Enviar Inscrição</Button>
+                    <Button type="submit" className="w-full rounded-full" size="lg" disabled={enviando}>
+                      {enviando ? 'Enviando...' : 'Enviar Inscrição'}
+                    </Button>
                 </form>
             </div>
         </div>

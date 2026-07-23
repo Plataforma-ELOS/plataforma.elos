@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
+import { createClient } from '@/utils/supabase/client';
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -32,10 +33,10 @@ export default function ContactPage() {
     }
     setLoading(true);
 
-    const serviceID = 'service_r3l495y';
-    const notificationTemplateID = 'template_nr2llgd'; // Template para notificar o admin
-    const autoresponderTemplateID = 'template_bwld3k7'; // Template para o visitante
-    const publicKey = '4FHqCvo8kcV6WkAQ3';
+    const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '';
+    const notificationTemplateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''; // Template para notificar o admin
+    const autoresponderTemplateID = process.env.NEXT_PUBLIC_EMAILJS_AUTORESPONDER_ID ?? ''; // Template para o visitante
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? '';
 
     // Parâmetros para o template de notificação (que você recebe)
     const notificationParams = {
@@ -43,13 +44,21 @@ export default function ContactPage() {
         email: email,
         message: message,
     };
-    
+
     // Parâmetros para o template de auto-resposta (que o usuário recebe)
     const autoresponderParams = {
         name: name,
         from_email: email, // Corrigido para corresponder ao template {{from_email}}
     };
-    
+
+    // Guarda a mensagem no banco (sem .select() — contact_messages so tem
+    // policy de leitura para admin, encadear select() daria erro de RLS
+    // mesmo com o insert valido).
+    const supabase = createClient();
+    supabase.from('contact_messages').insert({ name, email, message }).then(({ error }) => {
+      if (error) console.error('Falha ao registrar mensagem de contato:', error.message);
+    });
+
     // 1. Envia o e-mail de notificação para a plataforma Elos
     emailjs.send(serviceID, notificationTemplateID, notificationParams, publicKey)
       .then(() => {
