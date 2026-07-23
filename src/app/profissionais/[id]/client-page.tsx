@@ -19,57 +19,48 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { criarAvaliacao } from '@/app/actions/reviews';
+import type { ProfessionalDetailData, ReviewData, ReviewSummary } from '@/lib/data/professionals';
 
-const generateReviews = (professionalName: string) => [
-    {
-        id: 1,
-        author: "Mariana S.",
-        date: "15 de Julho, 2024",
-        rating: 5,
-        content: `O(A) ${professionalName} foi um anjo em nossas vidas. A abordagem dele(a) com meu filho foi incrível e vimos um progresso enorme em pouco tempo. Recomendo de olhos fechados!`,
-        likes: 12,
-    },
-    {
-        id: 2,
-        author: "Rafael P.",
-        date: "2 de Julho, 2024",
-        rating: 5,
-        content: `Excelente profissional! Muito atencioso(a) e dedicado(a). Nos ajudou a entender melhor o diagnóstico e os próximos passos. Gratidão!`,
-        likes: 8,
-    },
-];
-
-// Mock data for the new review summary
-const reviewSummary = {
-  average: 4.9,
-  total: 37,
-  distribution: [
-    { stars: 5, percentage: 85 },
-    { stars: 4, percentage: 10 },
-    { stars: 3, percentage: 3 },
-    { stars: 2, percentage: 2 },
-    { stars: 1, percentage: 0 },
-  ],
-  criteria: [
-    { name: 'Atendimento', score: 4.9 },
-    { name: 'Empatia', score: 5.0 },
-    { name: 'Clareza', score: 4.9 },
-    { name: 'Organização', score: 4.0 },
-  ]
-};
-
-function LeaveReviewDialog({ children, professionalName }: { children: React.ReactNode, professionalName: string }) {
+function LeaveReviewDialog({
+  children,
+  professionalName,
+  entityId,
+  entityType,
+}: {
+  children: React.ReactNode;
+  professionalName: string;
+  entityId: string;
+  entityType: 'professional' | 'clinic';
+}) {
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const [enviando, setEnviando] = useState(false);
 
-  const handleReviewSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (rating === 0) {
       toast({
         variant: "destructive",
         title: "Avaliação incompleta",
         description: "Por favor, selecione uma nota de 1 a 5 estrelas.",
+      });
+      return;
+    }
+
+    const content = (e.currentTarget.elements.namedItem('review-text') as HTMLTextAreaElement).value;
+
+    setEnviando(true);
+    const alvo = entityType === 'professional' ? { professionalId: entityId } : { clinicId: entityId };
+    const { ok, erro } = await criarAvaliacao(alvo, rating, content);
+    setEnviando(false);
+
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: "Não foi possível enviar",
+        description: erro,
       });
       return;
     }
@@ -90,7 +81,7 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
         <DialogHeader>
           <DialogTitle>Deixar uma avaliação para {professionalName}</DialogTitle>
           <DialogDescription>
-            Compartilhe sua experiência para ajudar outros membros da comunidade. Sua avaliação será analisada antes de ser publicada.
+            Compartilhe sua experiência para ajudar outros membros da comunidade.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleReviewSubmit}>
@@ -116,14 +107,14 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
             </div>
             <div>
               <Label htmlFor="review-text" className="sr-only">Sua avaliação</Label>
-              <Textarea id="review-text" placeholder="Descreva sua experiência..." rows={5} required />
+              <Textarea id="review-text" name="review-text" placeholder="Descreva sua experiência..." rows={5} required />
             </div>
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <Button id="close-dialog-btn" type="button" variant="secondary">Cancelar</Button>
             </DialogClose>
-            <Button type="submit">Enviar Avaliação</Button>
+            <Button type="submit" disabled={enviando}>{enviando ? 'Enviando...' : 'Enviar Avaliação'}</Button>
           </DialogFooter>
         </form>
       </DialogContent>
@@ -131,10 +122,14 @@ function LeaveReviewDialog({ children, professionalName }: { children: React.Rea
   );
 }
 
+type ProfessionalProfileClientProps = {
+  professional: ProfessionalDetailData;
+  reviews: ReviewData[];
+  reviewSummary: ReviewSummary;
+  entityType: 'professional' | 'clinic';
+};
 
-export default function ProfessionalProfileClient({ professional }: { professional: any }) {
-  const reviews = generateReviews(professional.name);
-
+export default function ProfessionalProfileClient({ professional, reviews, reviewSummary, entityType }: ProfessionalProfileClientProps) {
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
       <HeaderSecondary />
@@ -214,46 +209,56 @@ export default function ProfessionalProfileClient({ professional }: { profession
                                             {professional.contact.email}
                                         </a>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        <Instagram className="h-5 w-5 text-primary flex-shrink-0" />
-                                        <a href={`https://instagram.com/${professional.contact.instagram.substring(1)}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
-                                            {professional.contact.instagram}
-                                        </a>
-                                    </div>
+                                    {professional.contact.instagram && (
+                                      <div className="flex items-center gap-4">
+                                          <Instagram className="h-5 w-5 text-primary flex-shrink-0" />
+                                          <a href={`https://instagram.com/${professional.contact.instagram.replace(/^@/, '')}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                                              {professional.contact.instagram}
+                                          </a>
+                                      </div>
+                                    )}
                                 </CardContent>
                            </Card>
                         </TabsContent>
                          <TabsContent value="avaliacoes" className="text-left space-y-6 mt-6">
                             <div className="flex justify-between items-baseline mb-4">
                                <h3 className="text-xl font-bold">Avaliações dos pacientes</h3>
-                               <p className="text-sm text-muted-foreground">Média: {reviewSummary.average} de 5 ({reviewSummary.total} avaliações)</p>
+                               <p className="text-sm text-muted-foreground">
+                                {reviewSummary.total > 0
+                                  ? `Média: ${reviewSummary.average} de 5 (${reviewSummary.total} avaliações)`
+                                  : 'Ainda sem avaliações'}
+                               </p>
                             </div>
 
-                            <div className="space-y-2 mb-8">
-                               {reviewSummary.distribution.map((item) => (
-                                <div key={item.stars} className="flex items-center gap-4">
-                                  <div className="flex items-center gap-1 text-yellow-400">
-                                    <span className="text-sm font-medium text-muted-foreground">{item.stars}</span>
-                                    <Star className="w-4 h-4 fill-current"/>
-                                  </div>
-                                  <Progress value={item.percentage} className="w-full h-2" />
-                                  <span className="w-10 text-right text-sm text-muted-foreground">{item.percentage}%</span>
+                            {reviewSummary.total > 0 && (
+                              <>
+                                <div className="space-y-2 mb-8">
+                                   {reviewSummary.distribution.map((item) => (
+                                    <div key={item.stars} className="flex items-center gap-4">
+                                      <div className="flex items-center gap-1 text-yellow-400">
+                                        <span className="text-sm font-medium text-muted-foreground">{item.stars}</span>
+                                        <Star className="w-4 h-4 fill-current"/>
+                                      </div>
+                                      <Progress value={item.percentage} className="w-full h-2" />
+                                      <span className="w-10 text-right text-sm text-muted-foreground">{item.percentage}%</span>
+                                    </div>
+                                   ))}
                                 </div>
-                               ))}
-                            </div>
 
-                            <Separator />
+                                <Separator />
 
-                            <div className="py-6 space-y-3">
-                              {reviewSummary.criteria.map((criterion) => (
-                                <div key={criterion.name} className="flex justify-between items-center text-muted-foreground">
-                                  <p>{criterion.name}</p>
-                                  <p className="font-semibold text-foreground">{criterion.score.toFixed(1)}</p>
+                                <div className="py-6 space-y-3">
+                                  {reviewSummary.criteria.map((criterion) => (
+                                    <div key={criterion.name} className="flex justify-between items-center text-muted-foreground">
+                                      <p>{criterion.name}</p>
+                                      <p className="font-semibold text-foreground">{criterion.score.toFixed(1)}</p>
+                                    </div>
+                                  ))}
                                 </div>
-                              ))}
-                            </div>
+                              </>
+                            )}
 
-                             <LeaveReviewDialog professionalName={professional.name}>
+                             <LeaveReviewDialog professionalName={professional.name} entityId={professional.id} entityType={entityType}>
                                 <Button variant="outline" className="w-full h-12 rounded-lg bg-muted hover:bg-muted/80 border-border">
                                     <Edit2 className="w-4 h-4 mr-2" />
                                     Deixar minha avaliação
@@ -262,27 +267,31 @@ export default function ProfessionalProfileClient({ professional }: { profession
 
                             <Separator className="my-8" />
 
-                            <div>
-                                {reviews.map((review: any) => (
-                                    <div key={review.id} className="mb-6">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="flex text-yellow-400">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'text-gray-300'}`} />
-                                                ))}
-                                            </div>
-                                            <p className="font-semibold text-sm">{review.author}</p>
-                                            <p className="text-xs text-muted-foreground">&middot; {review.date}</p>
-                                        </div>
-                                        <p className="text-muted-foreground">{review.content}</p>
-                                        <div className="mt-2">
-                                            <Button variant="ghost" size="sm" className="text-muted-foreground h-auto p-1">
-                                                <ThumbsUp className="w-4 h-4 mr-2"/> {review.likes}
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            {reviews.length === 0 ? (
+                              <p className="text-muted-foreground text-center py-4">Seja o primeiro a avaliar.</p>
+                            ) : (
+                              <div>
+                                  {reviews.map((review) => (
+                                      <div key={review.id} className="mb-6">
+                                          <div className="flex items-center gap-2 mb-2">
+                                              <div className="flex text-yellow-400">
+                                                  {[...Array(5)].map((_, i) => (
+                                                      <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-current' : 'text-gray-300'}`} />
+                                                  ))}
+                                              </div>
+                                              <p className="font-semibold text-sm">{review.author}</p>
+                                              <p className="text-xs text-muted-foreground">&middot; {review.date}</p>
+                                          </div>
+                                          <p className="text-muted-foreground">{review.content}</p>
+                                          <div className="mt-2">
+                                              <Button variant="ghost" size="sm" className="text-muted-foreground h-auto p-1">
+                                                  <ThumbsUp className="w-4 h-4 mr-2"/> {review.likes}
+                                              </Button>
+                                          </div>
+                                      </div>
+                                  ))}
+                              </div>
+                            )}
                         </TabsContent>
                     </Tabs>
                 </CardContent>

@@ -3,10 +3,11 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   eslint: {
+    // ESLint não tem nenhuma configuração neste repo (sem eslint-config-next
+    // instalado, sem .eslintrc/eslint.config.*) — sem esta flag o build trava
+    // no prompt interativo de setup do `next lint`. Configurar ESLint do
+    // zero é um passo separado, fora do escopo desta migração.
     ignoreDuringBuilds: true,
   },
   images: {
@@ -38,9 +39,7 @@ const nextConfig: NextConfig = {
     ],
   },
   // Adicionado para resolver o aviso de cross-origin no ambiente de desenvolvimento
-  devIndicators: {
-    allowedDevOrigins: ['https://*.cloudworkstations.dev'],
-  }
+  allowedDevOrigins: ['https://*.cloudworkstations.dev'],
 };
 
 export default nextConfig;

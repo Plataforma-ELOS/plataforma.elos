@@ -1,21 +1,64 @@
 
 // src/app/comunidade/meus-grupos/page.tsx
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Users, Search } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/utils/supabase/client';
 
-// Mock data, em uma aplicação real viria do backend
-const userGroupsData = [
-  // O usuário não participa de nenhum grupo inicialmente
-]; 
+type UserGroup = {
+  id: string;
+  name: string;
+  description: string;
+  members: number;
+  tags: string[];
+};
 
 export default function MyGroupsPage() {
-  const [userGroups, setUserGroups] = useState<any[]>(userGroupsData);
+  const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) {
+        setCarregando(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('group_members')
+        .select('group:groups!group_members_group_id_fkey ( id, name, description, tags, group_members(count) )')
+        .eq('profile_id', user.id);
+
+      if (error) {
+        console.error('[meus-grupos] erro ao buscar grupos:', error.message);
+        setCarregando(false);
+        return;
+      }
+
+      setUserGroups(
+        (data ?? [])
+          .map((row: any) => row.group)
+          .filter(Boolean)
+          .map((g: any) => ({
+            id: g.id,
+            name: g.name,
+            description: g.description ?? '',
+            members: g.group_members?.[0]?.count ?? 0,
+            tags: g.tags ?? [],
+          }))
+      );
+      setCarregando(false);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
@@ -41,9 +84,31 @@ export default function MyGroupsPage() {
                 </Button>
             </div>
 
-            {userGroups.length > 0 ? (
+            {carregando ? (
+              <p className="text-muted-foreground text-center py-8">Carregando seus grupos...</p>
+            ) : userGroups.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* O mapeamento dos grupos do usuário iria aqui */}
+                {userGroups.map((group) => (
+                  <Card key={group.id} className="flex flex-col p-6 gap-4 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
+                    <div className="flex items-start gap-4">
+                      <Avatar className="h-12 w-12">
+                        <AvatarFallback>
+                          <Users className="w-6 h-6 text-muted-foreground" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-grow">
+                        <CardTitle className="text-lg">{group.name}</CardTitle>
+                        <CardDescription className="mt-1">{group.description}</CardDescription>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>{group.members} membros</span>
+                      <div className="flex gap-2">
+                        {group.tags.map((tag) => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                      </div>
+                    </div>
+                  </Card>
+                ))}
               </div>
             ) : (
               <Card className="text-center p-12 border-dashed shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">

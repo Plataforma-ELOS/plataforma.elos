@@ -80,7 +80,7 @@ function UserProfileDropdown() {
                                 <span>Tamanho do Texto</span>
                             </DropdownMenuSubTrigger>
                             <DropdownMenuSubContent>
-                                 <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
+                                 <DropdownMenuRadioGroup value={fontSize} onValueChange={(value) => setFontSize(value as 'sm' | 'base' | 'lg')}>
                                     <DropdownMenuRadioItem value="sm">
                                         <CaseLower className="mr-2"/>
                                         Pequeno
@@ -171,7 +171,7 @@ function UserProfileDropdown() {
                             <span>Tamanho do Texto</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuSubContent>
-                             <DropdownMenuRadioGroup value={fontSize} onValueChange={setFontSize}>
+                             <DropdownMenuRadioGroup value={fontSize} onValueChange={(value) => setFontSize(value as 'sm' | 'base' | 'lg')}>
                                 <DropdownMenuRadioItem value="sm">
                                     <CaseLower className="mr-2"/>
                                     Pequeno

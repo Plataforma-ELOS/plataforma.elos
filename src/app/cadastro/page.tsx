@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '@/components/providers';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) => (
@@ -22,16 +22,23 @@ const SocialButton = ({ children, icon }: { children: React.ReactNode; icon: Rea
 export default function CadastroPage() {
   const router = useRouter();
   const { register } = useContext(AuthContext);
+  const [erro, setErro] = useState<string | null>(null);
   
-  const handleUserSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = (form.elements.namedItem('name') as HTMLInputElement).value;
     const email = (form.elements.namedItem('email') as HTMLInputElement).value;
     const password = (form.elements.namedItem('password') as HTMLInputElement).value;
-    
-    register({ name, email, password });
-    
+
+    setErro(null);
+    const { ok, erro: mensagemErro } = await register(name, email, password);
+
+    if (!ok) {
+      setErro(mensagemErro ?? 'Não foi possível criar sua conta.');
+      return;
+    }
+
     // Após o cadastro, leva o usuário para a tela de login
     router.push('/login');
   }
@@ -55,6 +62,9 @@ export default function CadastroPage() {
                     </p>
                 </div>
                 <form className="grid gap-4" onSubmit={handleUserSubmit}>
+                    {erro && (
+                      <p className="text-sm text-destructive text-center">{erro}</p>
+                    )}
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nome</Label>
                         <Input id="name" name="name" placeholder="Seu nome completo" required />
@@ -65,7 +75,7 @@ export default function CadastroPage() {
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password">Senha</Label>
-                        <Input id="password" name="password" type="password" required placeholder="••••••••"/>
+                        <Input id="password" name="password" type="password" required placeholder="••••••••" minLength={6}/>
                     </div>
                     <div className="flex items-center space-x-2">
                         <Checkbox id="remember-me" />
@@ -121,7 +131,3 @@ export default function CadastroPage() {
     </div>
   );
 }
-
-    
-
-    

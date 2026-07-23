@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -21,61 +21,12 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/providers';
+import { createClient } from '@/utils/supabase/client';
+import { alternarCurtida, alternarSalvo, comentar, excluirPost } from '@/app/actions/community';
 
-const initialPosts: Post[] = [
-  {
-    id: 'post-1',
-    author: {
-      name: 'Carlos Souza',
-      avatarUrl: 'comunidade/membro-2.jpg',
-      hint: 'user-carlos-avatar',
-      email: 'carlos.souza@example.com',
-    },
-    time: '5h',
-    content: 'Queria compartilhar uma vitória! 🎉 Hoje conseguimos fazer um passeio no parque sem nenhuma crise de sobrecarga sensorial. Usamos os fones de ouvido com cancelamento de ruído e foi um sucesso. Pequenos passos que significam muito!',
-    likes: 35,
-    commentCount: 2,
-    isSaved: false,
-    comments: [
-      { id: 'c1-1', author: { name: 'Mariana', avatarUrl: 'comunidade/membro-4.jpg', hint: 'user-mariana-avatar' }, time: '4h', content: 'Que demais, Carlos! Fico muito feliz por vocês! 🎉' },
-      { id: 'c1-2', author: { name: 'Luiza Gomes', avatarUrl: 'comunidade/membro-3.jpg', hint: 'user-luiza-gomes-avatar' }, time: '4h', content: 'Incrível! Compartilhar essas vitórias inspira toda a comunidade. Obrigado!' },
-    ],
-  },
-  {
-    id: 'post-2',
-    author: {
-      name: 'Ana Silva',
-      avatarUrl: 'comunidade/membro-1.jpg',
-      hint: 'user-ana-silva-avatar',
-      email: 'ana.silva@example.com',
-    },
-    time: '2h',
-    content: 'Olá pessoal! Alguém tem dicas de como lidar com a seletividade alimentar? Meu filho só quer comer as mesmas 3 coisas e estou ficando sem ideias. Qualquer ajuda é bem-vinda! 🙏',
-    likes: 12,
-    commentCount: 5,
-    isSaved: true,
-    comments: [
-      { id: 'c2-1', author: { name: 'Pedro', avatarUrl: 'comunidade/membro-5.jpg', hint: 'user-pedro-avatar' }, time: '1h', content: 'Estou passando pelo mesmo, Ana. Muita paciência e tentando apresentar os alimentos de formas diferentes.' },
-      { id: 'c2-2', author: { name: 'Juliana', avatarUrl: 'comunidade/membro-6.jpg', hint: 'user-juliana-avatar' }, time: '1h', content: 'Uma dica que funcionou foi envolver meu filho no preparo da comida. Ele ficou mais curioso para provar!' },
-    ],
-  },
-  {
-    id: 'post-3',
-    author: {
-      name: 'Luiza Gomes',
-      avatarUrl: 'comunidade/membro-3.jpg',
-      hint: 'user-luiza-gomes-avatar',
-      email: 'luiza.gomes@gmail.com'
-    },
-    time: '1d',
-    content: 'Alguém aqui já passou pelo processo de solicitação do BPC? Comecei a juntar os papéis e parece uma montanha de coisas. Se alguém tiver um checklist ou alguma dica, agradeceria muito!',
-    likes: 48,
-    commentCount: 15,
-    isSaved: false,
-    comments: [],
-  },
-];
-
+// Eventos ainda não têm tela de cadastro própria — mantidos como conteúdo
+// fixo por enquanto. A tabela "events" já existe no banco para quando
+// alguém quiser ligar isso de verdade.
 const allCommunityEvents = [
   {
     title: 'Workshop Online: Introdução à Comunicação Alternativa',
@@ -102,6 +53,16 @@ const allCommunityEvents = [
     type: 'Online',
   },
 ];
+
+function tempoRelativo(iso: string): string {
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const min = Math.floor(diffMs / 60000);
+  if (min < 1) return 'agora';
+  if (min < 60) return `${min}min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `${h}h`;
+  return `${Math.floor(h / 24)}d`;
+}
 
 function LoginRequiredDialog({ children, onConfirm }: { children: React.ReactNode, onConfirm: () => void }) {
   return (
@@ -133,21 +94,100 @@ function LoginRequiredDialog({ children, onConfirm }: { children: React.ReactNod
 }
 
 export default function CommunityPage() {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [carregando, setCarregando] = useState(true);
   const [showAllEvents, setShowAllEvents] = useState(false);
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
+  const carregarPosts = useCallback(async () => {
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('posts')
+      .select(`
+        id, content, created_at, author_id,
+        author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
+        post_likes ( profile_id ),
+        post_saves ( profile_id ),
+        comments (
+          id, content, created_at,
+          author:profiles!comments_author_id_fkey ( full_name, avatar_url )
+        )
+      `)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('[comunidade] erro ao buscar posts:', error.message);
+      setCarregando(false);
+      return;
+    }
+
+    const { data: { user: usuarioAtual } } = await supabase.auth.getUser();
+
+    const postsFormatados: Post[] = (data ?? []).map((p: any) => {
+      const likes = p.post_likes ?? [];
+      const saves = p.post_saves ?? [];
+      const comentarios = (p.comments ?? [])
+        .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
+        .map((c: any) => ({
+          id: c.id,
+          content: c.content,
+          time: tempoRelativo(c.created_at),
+          author: {
+            name: c.author?.full_name ?? 'Usuário',
+            avatarUrl: c.author?.avatar_url ?? 'https://placehold.co/40x40.png',
+            hint: 'user avatar',
+          },
+        }));
+
+      return {
+        id: p.id,
+        author: {
+          name: p.author?.full_name ?? 'Usuário',
+          avatarUrl: p.author?.avatar_url ?? 'https://placehold.co/48x48.png',
+          hint: 'user avatar',
+          // O e-mail não fica em "profiles" (fica em auth.users, que não é
+          // consultável do client). PostCard usa "email" só para saber se
+          // o post é do usuário logado — troco por comparação de id aqui.
+          email: p.author_id === usuarioAtual?.id ? (usuarioAtual?.email ?? '') : `__${p.author_id}`,
+        },
+        time: tempoRelativo(p.created_at),
+        content: p.content,
+        likes: likes.length,
+        commentCount: comentarios.length,
+        isSaved: !!usuarioAtual && saves.some((s: any) => s.profile_id === usuarioAtual.id),
+        likedByMe: !!usuarioAtual && likes.some((l: any) => l.profile_id === usuarioAtual.id),
+        comments: comentarios,
+      };
+    });
+
+    setPosts(postsFormatados);
+    setCarregando(false);
+  }, []);
+
+  useEffect(() => {
+    carregarPosts();
+  }, [carregarPosts]);
+
   const handleToggleSave = (postId: string) => {
     setPosts(posts.map(post =>
-      post.id === postId
-        ? { ...post, isSaved: !post.isSaved }
-        : post
+      post.id === postId ? { ...post, isSaved: !post.isSaved } : post
     ));
+    alternarSalvo(postId);
   };
-  
+
+  const handleToggleLike = (postId: string) => {
+    alternarCurtida(postId);
+  };
+
+  const handleAddComment = (postId: string, content: string) => {
+    comentar(postId, content);
+  };
+
   const handleDeletePost = (postId: string) => {
     setPosts(posts.filter(post => post.id !== postId));
+    excluirPost(postId);
   };
 
   const handleProtectedAction = () => {
@@ -155,6 +195,12 @@ export default function CommunityPage() {
   };
 
   const renderContent = () => {
+    if (carregando) {
+      return <p className="text-muted-foreground text-center py-8">Carregando posts...</p>;
+    }
+    if (posts.length === 0) {
+      return <p className="text-muted-foreground text-center py-8">Ainda não há posts. Seja o primeiro a compartilhar algo!</p>;
+    }
     const featuredPosts = [...posts].sort((a, b) => b.likes - a.likes);
     return (
       <div className="space-y-6 animate-in fade-in-0 duration-500">
@@ -164,6 +210,8 @@ export default function CommunityPage() {
             post={post} 
             onToggleSave={handleToggleSave} 
             onDelete={handleDeletePost}
+            onToggleLike={handleToggleLike}
+            onAddComment={handleAddComment}
             currentUser={user}
           />
         ))}

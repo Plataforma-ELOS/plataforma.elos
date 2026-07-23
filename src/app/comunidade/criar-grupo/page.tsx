@@ -14,6 +14,7 @@ import { ArrowLeft, Check, Copy, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { criarGrupo } from '@/app/actions/groups';
 
 export default function CreateGroupPage() {
   const [groupName, setGroupName] = useState('');
@@ -21,21 +22,29 @@ export default function CreateGroupPage() {
   const [agreedToRules, setAgreedToRules] = useState(false);
   const [isCreated, setIsCreated] = useState(false);
   const [groupLink, setGroupLink] = useState('');
+  const [criando, setCriando] = useState(false);
   const { toast } = useToast();
 
-  const handleCreateGroup = () => {
-    if (groupName.trim() && groupDescription.trim() && agreedToRules) {
-      // Lógica de criação do grupo (simulada)
-      const newLink = `${window.location.origin}/comunidade/grupos/${groupName.toLowerCase().replace(/\s+/g, '-')}`;
-      setGroupLink(newLink);
-      setIsCreated(true);
-      toast({
-        title: "Grupo criado com sucesso!",
-        description: `O grupo "${groupName}" agora está ativo.`,
-      });
+  const handleCreateGroup = async () => {
+    if (!(groupName.trim() && groupDescription.trim() && agreedToRules)) return;
+
+    setCriando(true);
+    const { ok, erro } = await criarGrupo(groupName, groupDescription);
+    setCriando(false);
+
+    if (!ok) {
+      toast({ variant: 'destructive', title: 'Não foi possível criar o grupo', description: erro });
+      return;
     }
+
+    setGroupLink(`${window.location.origin}/comunidade/meus-grupos`);
+    setIsCreated(true);
+    toast({
+      title: "Grupo criado com sucesso!",
+      description: `O grupo "${groupName}" agora está ativo.`,
+    });
   };
-  
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(groupLink);
     toast({
@@ -120,13 +129,13 @@ export default function CreateGroupPage() {
                                     </p>
                                 </div>
                             </div>
-                            <Button 
-                                type="button" 
-                                className="w-full" 
-                                disabled={!groupName.trim() || !groupDescription.trim() || !agreedToRules}
+                            <Button
+                                type="button"
+                                className="w-full"
+                                disabled={!groupName.trim() || !groupDescription.trim() || !agreedToRules || criando}
                                 onClick={handleCreateGroup}
                             >
-                                Criar Grupo
+                                {criando ? 'Criando...' : 'Criar Grupo'}
                             </Button>
                         </form>
                     )}
