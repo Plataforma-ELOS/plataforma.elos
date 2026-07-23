@@ -6,49 +6,26 @@ import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { Newspaper, ArrowRight } from 'lucide-react';
 import NewsCard from '@/components/news/news-card';
+import { getNews } from '@/lib/data/news';
 
-const newsArticles = [
-  {
-    slug: 'nova-lei-amplia-direitos-no-trabalho',
-    title: 'Nova Lei Amplia Direitos para Cuidadores no Ambiente de Trabalho',
-    description: 'Entenda as principais mudanças na legislação que garantem mais flexibilidade e apoio para pais e responsáveis por pessoas com TEA.',
-    imageUrl: '/noticias/noticia-1.jpg',
-    imageHint: 'gavel justice law',
-    category: 'Legislação',
-    date: '1 de Agosto de 2024',
-  },
-  {
-    slug: 'tecnologia-assistiva-para-comunicacao',
-    title: 'Tecnologia Assistiva: Aplicativos que Fazem a Diferença na Comunicação',
-    description: 'Conheça ferramentas e aplicativos inovadores que estão ajudando crianças e adultos com TEA a se comunicarem de forma mais eficaz.',
-    imageUrl: '/noticias/noticia-2.jpg',
-    imageHint: 'tablet communication',
-    category: 'Tecnologia',
-    date: '28 de Julho de 2024',
-  },
-  {
-    slug: 'importancia-diagnostico-precoce',
-    title: 'A Importância do Diagnóstico Precoce e da Intervenção Imediata',
-    description: 'Especialistas destacam como a identificação dos sinais do TEA nos primeiros anos de vida pode transformar o desenvolvimento da criança.',
-    imageUrl: '/noticias/noticia-3.jpg',
-    imageHint: 'child development puzzle',
-    category: 'Saúde',
-    date: '25 de Julho de 2024',
-  },
-  {
-    slug: 'evento-comunitario-promove-inclusao',
-    title: 'Evento Comunitário em São Paulo Promove Inclusão Através da Arte',
-    description: 'Oficinas de arte e música reúnem mais de 200 famílias e reforçam a importância da inclusão social para pessoas com TEA.',
-    imageUrl: '/noticias/noticia-4.jpg',
-    imageHint: 'community art event',
-    category: 'Comunidade',
-    date: '22 de Julho de 2024',
-  }
-];
-
-export default function NewsPage() {
+export default async function NewsPage() {
+  const newsArticles = await getNews();
   const featuredArticle = newsArticles[0];
   const otherArticles = newsArticles.slice(1);
+
+  if (!featuredArticle) {
+    return (
+      <div className="flex flex-col min-h-screen bg-background">
+        <HeaderSecondary />
+        <main className="flex-1 py-16">
+          <div className="container mx-auto px-4 md:px-6 text-center text-muted-foreground">
+            Nenhuma notícia publicada no momento.
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

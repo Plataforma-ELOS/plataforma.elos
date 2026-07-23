@@ -9,57 +9,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Terminal, Newspaper, Tags, Search } from 'lucide-react';
 import { getNewsSummary } from '@/ai/flows/news-flow';
+import { getNews } from '@/lib/data/news';
 
 // Renderiza no momento da requisição (não no build) para não depender da IA
 // durante o "next build" e evitar falhas por cota/rede da API do Gemini.
 export const dynamic = 'force-dynamic';
 
-const newsArticles = [
-  {
-    slug: 'nova-lei-amplia-direitos-no-trabalho',
-    title: 'Nova Lei Amplia Direitos para Cuidadores no Ambiente de Trabalho',
-    description: 'Entenda as principais mudanças na legislação que garantem mais flexibilidade e apoio para pais e responsáveis por pessoas com TEA.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'gavel justice',
-    category: 'Legislação',
-    date: '1 de Agosto de 2024',
-    tags: ['lei', 'trabalho', 'direitos'],
-  },
-  {
-    slug: 'tecnologia-assistiva-para-comunicacao',
-    title: 'Tecnologia Assistiva: Aplicativos que Fazem a Diferença na Comunicação',
-    description: 'Conheça ferramentas e aplicativos inovadores que estão ajudando crianças e adultos com TEA a se comunicarem de forma mais eficaz.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'tablet communication',
-    category: 'Tecnologia',
-    date: '28 de Julho de 2024',
-    tags: ['tecnologia', 'comunicação', 'apps'],
-  },
-  {
-    slug: 'importancia-diagnostico-precoce',
-    title: 'A Importância do Diagnóstico Precoce e da Intervenção Imediata',
-    description: 'Especialistas destacam como a identificação dos sinais do TEA nos primeiros anos de vida pode transformar o desenvolvimento da criança.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'child development puzzle',
-    category: 'Saúde',
-    date: '25 de Julho de 2024',
-    tags: ['diagnóstico', 'saúde', 'intervenção'],
-  },
-  {
-    slug: 'evento-comunitario-promove-inclusao',
-    title: 'Evento Comunitário em São Paulo Promove Inclusão Através da Arte',
-    description: 'Oficinas de arte e música reúnem mais de 200 famílias e reforçam a importância da inclusão social para pessoas com TEA.',
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'community art event',
-    category: 'Comunidade',
-    date: '22 de Julho de 2024',
-    tags: ['evento', 'inclusão', 'comunidade'],
-  }
-];
-
-const allTags = [...new Set(newsArticles.flatMap(a => a.tags))];
-
-async function AiSummaryCard() {
+async function AiSummaryCard({ newsArticles }: { newsArticles: { title: string }[] }) {
     let summary: string;
     try {
         summary = await getNewsSummary(newsArticles.map(a => a.title));
@@ -83,7 +39,10 @@ async function AiSummaryCard() {
 }
 
 
-export default function NewsAiPage() {
+export default async function NewsAiPage() {
+  const newsArticles = await getNews();
+  const allTags = [...new Set(newsArticles.flatMap((a) => a.tags))];
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -102,7 +61,7 @@ export default function NewsAiPage() {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <AiSummaryCard />
+            <AiSummaryCard newsArticles={newsArticles} />
 
             <div className="flex flex-col gap-4 mb-8">
                 <h3 className="text-lg font-semibold flex items-center gap-2"><Tags className="h-5 w-5 text-primary"/> Filtrar por tags</h3>
