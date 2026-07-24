@@ -6,7 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check, Search, ShieldCheck, Star, Users } from 'lucide-react';
+import { ShieldCheck, Star, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,22 +20,28 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useMemo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { mapProfessionalCard, mapClinicCard, type ProfessionalCardData } from '@/lib/data/professionals';
+import SearchBar from '@/components/features/search/search-bar';
+import { useSearch } from '@/hooks/use-search';
+import { cn } from '@/lib/utils';
 
 const specialties = [
     { name: 'Psicólogos', tag: 'Psicóloga' },
-    { name: 'Fonoaudiólogos', tag: 'Fonoaudióloga' },
+    { name: 'Fonoaudiólogos', tag: 'Fonoaudiólog' },
     { name: 'Terapeutas Ocupacionais', tag: 'Terapeuta Ocupacional' },
-    { name: 'Neurologistas e Psiquiatras', tag: 'Neuropediatra' },
-    { name: 'Psicopedagogos', tag: 'Psicopedagoga' },
+    { name: 'Neurologistas e Psiquiatras', tag: 'Neuro' },
+    { name: 'Psicopedagogos', tag: 'Psicopedagog' },
     { name: 'Acompanhantes Terapêuticos', tag: 'Acompanhante Terapêutico' },
 ]
 
+// Lista combinada (profissionais + clínicas) discriminada por tipo, para um
+// único useSearch com estado de busca compartilhado entre as duas seções.
+type SearchableCard = ProfessionalCardData & { kind: 'professional' | 'clinic' };
+const searchProfessionalText = (item: SearchableCard) => [item.name, item.specialty];
+
 export default function ProfessionalsPage() {
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const [professionals, setProfessionals] = useState<ProfessionalCardData[]>([]);
   const [clinics, setClinics] = useState<ProfessionalCardData[]>([]);
 
@@ -66,10 +72,24 @@ export default function ProfessionalsPage() {
       });
   }, []);
 
+  const allCards = useMemo<SearchableCard[]>(
+    () => [
+      ...professionals.map((p) => ({ ...p, kind: 'professional' as const })),
+      ...clinics.map((c) => ({ ...c, kind: 'clinic' as const })),
+    ],
+    [professionals, clinics]
+  );
+
+  const { query, setQuery, results } = useSearch<SearchableCard>({
+    items: allCards,
+    searchableText: searchProfessionalText,
+  });
+
+  const professionalResults = results.filter((r) => r.kind === 'professional');
+  const clinicResults = results.filter((r) => r.kind === 'clinic');
+
   const handleSpecialtyClick = (tag: string) => {
-    if (searchInputRef.current) {
-      searchInputRef.current.value = tag;
-    }
+    setQuery(query === tag ? '' : tag);
   };
 
   return (
@@ -88,16 +108,13 @@ export default function ProfessionalsPage() {
             <p className="max-w-[600px] text-foreground/80 md:text-xl">
                 Conectamos você a profissionais e clínicas avaliados e comprometidos com o cuidado no TEA.
             </p>
-            <FeatureInProgress>
-                <div className="relative w-full max-w-sm mt-4">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <input 
-                        ref={searchInputRef}
-                        placeholder="Buscar por especialidade ou nome..." 
-                        className="w-full h-10 pl-9 pr-4 rounded-full border bg-card text-card-foreground" 
-                    />
-                </div>
-            </FeatureInProgress>
+            <div className="w-full max-w-sm mt-4">
+                <SearchBar
+                    value={query}
+                    onChange={setQuery}
+                    placeholder="Buscar por especialidade ou nome..."
+                />
+            </div>
         </section>
 
         {/* Quality Section */}
@@ -138,15 +155,24 @@ export default function ProfessionalsPage() {
                     </p>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
-                    {specialties.map((specialty, index) => (
-                        <div key={index} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
-                           <Card className="p-6 rounded-2xl shadow-lg border bg-card hover:border-primary hover:bg-primary/5 hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex items-center justify-center min-h-[130px] text-center">
-                           <h3 className="font-semibold text-card-foreground text-base group-hover:text-primary transition-colors">
+                    {specialties.map((specialty) => {
+                        const active = query === specialty.tag;
+                        return (
+                        <div key={specialty.name} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
+                           <Card className={cn(
+                             'p-6 rounded-2xl shadow-lg border bg-card hover:border-primary hover:bg-primary/5 hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex items-center justify-center min-h-[130px] text-center',
+                             active && 'border-primary bg-primary/5 shadow-primary/20'
+                           )}>
+                           <h3 className={cn(
+                             'font-semibold text-card-foreground text-base group-hover:text-primary transition-colors',
+                             active && 'text-primary'
+                           )}>
                                     {specialty.name}
                                 </h3>
                             </Card>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
                 <div className="text-center mt-12">
                     <FeatureInProgress>
@@ -165,6 +191,9 @@ export default function ProfessionalsPage() {
                         Especialistas dedicados e avaliados pela nossa comunidade.
                     </p>
                 </div>
+                {professionalResults.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">Nenhum profissional encontrado para esta busca.</p>
+                ) : (
                 <Carousel
                   opts={{ align: "start", loop: true, }}
                    plugins={[
@@ -177,7 +206,7 @@ export default function ProfessionalsPage() {
                   className="w-full relative"
                 >
                   <CarouselContent className="-ml-4 px-4 py-4">
-                    {professionals.map((prof, index) => (
+                    {professionalResults.map((prof) => (
                        <CarouselItem key={prof.id} className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
                          <Link href={`/profissionais/${prof.id}`} className="group block h-full">
                             <Card className="text-center p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full bg-card border-0">
@@ -205,6 +234,7 @@ export default function ProfessionalsPage() {
                   <CarouselPrevious className="absolute left-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
                   <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
                 </Carousel>
+                )}
             </div>
         </section>
 
@@ -217,9 +247,12 @@ export default function ProfessionalsPage() {
                         Espaços multidisciplinares para um cuidado completo e integrado.
                     </p>
                 </div>
+                 {clinicResults.length === 0 ? (
+                   <p className="text-center text-muted-foreground py-8">Nenhuma clínica encontrada para esta busca.</p>
+                 ) : (
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-                    {clinics.map((clinic, index) => (
-                        <Link href={`/profissionais/${clinic.id}`} key={index} className="group block">
+                    {clinicResults.map((clinic) => (
+                        <Link href={`/profissionais/${clinic.id}`} key={clinic.id} className="group block">
                             <Card className="overflow-hidden rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full cursor-pointer bg-card">
                                 <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
                                 <div className="p-6 flex flex-col flex-grow">
@@ -240,6 +273,7 @@ export default function ProfessionalsPage() {
                         </Link>
                     ))}
                 </div>
+                 )}
                 <div className="text-center mt-12">
                     <FeatureInProgress>
                         <Button size="lg">Explorar mais clínicas</Button>

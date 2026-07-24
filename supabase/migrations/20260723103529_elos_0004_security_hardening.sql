@@ -1,0 +1,22 @@
+-- elos_0004_security_hardening
+--
+-- Migration documental. O histórico remoto (supabase_migrations.schema_
+-- migrations) registra esta versão como já aplicada, mas o diff exato
+-- (o estado "antes" desta migration) não está disponível para reconstrução
+-- — só o estado final do banco, já introspectado em 0001/0002. Ver
+-- supabase/migrations/README.md.
+--
+-- Pelo nome e pela ordem (entre 0003 seed público e 0005 seed demo), esta
+-- versão corresponde ao hardening de segurança já refletido no estado
+-- atual capturado em 0001/0002:
+--   - todas as functions SECURITY DEFINER/STABLE já têm
+--     `set search_path to 'public'` travado (visível em handle_new_user,
+--     set_updated_at, refresh_professional_rating, private.is_admin);
+--   - contact_messages já com as constraints de validação real (nome,
+--     e-mail, assunto, mensagem) em vez de aceitar qualquer entrada;
+--   - profiles com policy de leitura pública (profiles_select) para
+--     permitir exibir nome/avatar de autores em posts/reviews/comentários.
+--
+-- Nenhum DDL adicional é necessário aqui: reaplicar 0001/0002 já deixa o
+-- banco no estado pós-hardening.
+select 1;
