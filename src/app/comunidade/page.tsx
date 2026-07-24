@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Users, Plus, BookOpen, LogIn } from 'lucide-react';
 import PostCard, { Post } from '@/components/features/community/post-card';
+import CreatePost from '@/components/features/community/create-post';
 import Link from 'next/link';
 import {
   AlertDialog,
@@ -22,7 +23,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/common/providers';
 import { createClient } from '@/lib/supabase/client';
-import { alternarCurtida, alternarSalvo, comentar, excluirPost } from '@/app/actions/community';
+import { alternarCurtida, alternarSalvo, comentar, criarPost, excluirPost } from '@/app/actions/community';
 
 // Eventos ainda não têm tela de cadastro própria — mantidos como conteúdo
 // fixo por enquanto. A tabela "events" já existe no banco para quando
@@ -190,6 +191,18 @@ export default function CommunityPage() {
     excluirPost(postId);
   };
 
+  const handleCreatePost = async (content: string) => {
+    const texto = content.trim();
+    if (!texto) return;
+    const { ok, erro } = await criarPost(texto);
+    if (!ok) {
+      console.error('[comunidade] erro ao criar post:', erro);
+      return;
+    }
+    // Recarrega para exibir o post recém-criado já com id/autor reais.
+    await carregarPosts();
+  };
+
   const handleProtectedAction = () => {
     router.push('/login');
   };
@@ -237,7 +250,19 @@ export default function CommunityPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {/* Coluna Principal do Feed */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
+              {user ? (
+                <CreatePost onCreatePost={handleCreatePost} />
+              ) : (
+                <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                  <button
+                    type="button"
+                    className="w-full text-left bg-card p-4 rounded-2xl shadow-lg border text-muted-foreground hover:border-primary transition-colors"
+                  >
+                    Entre para compartilhar algo com a comunidade…
+                  </button>
+                </LoginRequiredDialog>
+              )}
               {renderContent()}
             </div>
 
