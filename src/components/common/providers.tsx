@@ -3,7 +3,7 @@
 
 import { ThemeProvider } from "next-themes";
 import React, { createContext, useState, useMemo, useEffect, useCallback } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 // --- FONT SIZE CONTEXT (inalterado) ---
 type FontSize = "sm" | "base" | "lg";

@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { useTheme } from 'next-themes';
 import { AuthContext, FontSizeContext } from '@/components/common/providers';
 import Image from 'next/image';
-import imagesData from '@/app/lib/placeholder-images.json';
+import imagesData from '@/lib/data/placeholder-images.json';
 
 
 const navItems = [

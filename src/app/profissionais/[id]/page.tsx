@@ -2,7 +2,7 @@
 // src/app/profissionais/[id]/page.tsx
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 import {
   mapProfessionalDetail,
   mapClinicDetail,

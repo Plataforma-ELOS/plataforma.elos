@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useTheme } from 'next-themes';
 import { AuthContext, FontSizeContext } from '@/components/common/providers';
 import Image from 'next/image';
-import imagesData from '@/app/lib/placeholder-images.json';
+import imagesData from '@/lib/data/placeholder-images.json';
 
 const navItems = [
   { name: 'Notícias', href: '/noticias', isFeature: false },

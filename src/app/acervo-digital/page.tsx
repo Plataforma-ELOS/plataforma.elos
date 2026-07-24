@@ -35,7 +35,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { mapLibraryRow, type LibraryItemData } from '@/lib/data/library';
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {

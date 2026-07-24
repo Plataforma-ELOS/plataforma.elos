@@ -22,7 +22,7 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { mapProfessionalCard, mapClinicCard, type ProfessionalCardData } from '@/lib/data/professionals';
 
 const specialties = [

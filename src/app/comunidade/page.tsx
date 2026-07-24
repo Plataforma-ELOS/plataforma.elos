@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/common/providers';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { alternarCurtida, alternarSalvo, comentar, excluirPost } from '@/app/actions/community';
 
 // Eventos ainda não têm tela de cadastro própria — mantidos como conteúdo

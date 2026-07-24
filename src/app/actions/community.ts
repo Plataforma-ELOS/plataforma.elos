@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export type Resultado = { ok: boolean; erro?: string };
 const PRECISA_LOGIN = 'Entre na sua conta para continuar.';
