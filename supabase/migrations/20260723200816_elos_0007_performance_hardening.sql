@@ -1,0 +1,21 @@
+-- elos_0007_performance_hardening
+--
+-- Migration documental (mesma ressalva de 0004/0006 — ver README.md desta
+-- pasta: só temos o estado final, não o diff histórico).
+--
+-- Pelo nome e pela descrição em supabase/migrations/README.md original,
+-- esta versão: parou de reavaliar auth.uid() linha a linha em ~25 policies
+-- (usando `(select auth.uid())` em vez de `auth.uid()` direto — já assim
+-- em todas as policies reconstruídas em 0002), separou policies de SELECT
+-- duplicadas em 11 tabelas, e criou 12 índices de chave estrangeira (já
+-- todos presentes em 0001: idx_clinics_owner, idx_professionals_owner,
+-- idx_professionals_clinic, idx_prof_skill_prof, idx_prof_exp_prof,
+-- idx_posts_author, idx_comments_post/author, idx_post_likes_profile,
+-- idx_post_saves_profile, idx_groups_created_by, idx_group_members_profile,
+-- idx_events_created_by, idx_library_items_suggested,
+-- idx_library_favorites_profile, idx_trail_progress_profile,
+-- idx_reviews_prof/clinic/author, idx_dependents_caregiver,
+-- idx_journal_caregiver).
+--
+-- Nenhum DDL adicional necessário aqui.
+select 1;

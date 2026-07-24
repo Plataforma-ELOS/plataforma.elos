@@ -1,0 +1,13 @@
+-- elos_0006_isolar_is_admin_do_rpc_publico
+--
+-- Migration documental (mesma ressalva de 0004 — ver README.md desta
+-- pasta: só temos o estado final, não o diff histórico).
+--
+-- Pelo nome, esta versão moveu private.is_admin() para fora do schema
+-- `public` para que a função não fique exposta como RPC pelo PostgREST
+-- (só schemas expostos na API do Supabase viram RPC pública). O estado
+-- atual já reflete isso: a função está em `private.is_admin()` (criada
+-- assim diretamente em 0002), não em `public.is_admin()`.
+--
+-- Nenhum DDL adicional necessário aqui.
+select 1;
