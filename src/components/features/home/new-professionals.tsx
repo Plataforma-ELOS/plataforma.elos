@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Avatar, AvatarFallback } from '../ui/avatar';
-import { Button } from '../ui/button';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 
 // 🟢 LISTA LOCAL DEFINITIVA: Puxa as imagens diretamente da pasta public do teu projeto
 const professionals = [

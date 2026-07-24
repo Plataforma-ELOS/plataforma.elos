@@ -5,7 +5,7 @@ import { useState, useContext } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { AuthContext } from '../providers';
+import { AuthContext } from '@/components/common/providers';
 
 
 export type Author = {

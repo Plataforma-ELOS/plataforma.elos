@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
-import FeatureInProgress from '../feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 
 export default function Footer({ className }: { className?: string}) {
   return (

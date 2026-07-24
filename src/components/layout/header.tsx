@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseSensitive, CaseUpper, CaseLower, Edit } from 'lucide-react';
-import FeatureInProgress from '@/components/feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useTheme } from 'next-themes';
-import { AuthContext, FontSizeContext } from '../providers';
+import { AuthContext, FontSizeContext } from '@/components/common/providers';
 import Image from 'next/image';
 import imagesData from '@/app/lib/placeholder-images.json';
 

@@ -19,7 +19,7 @@ import {
   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
 import { CheckCircle, XCircle } from 'lucide-react';
-import { AuthContext } from '@/components/providers';
+import { AuthContext } from '@/components/common/providers';
 
 function LoginForm() {
   const router = useRouter();

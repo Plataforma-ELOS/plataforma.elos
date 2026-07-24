@@ -6,7 +6,7 @@ import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Users, Plus, BookOpen, LogIn } from 'lucide-react';
-import PostCard, { Post } from '@/components/community/post-card';
+import PostCard, { Post } from '@/components/features/community/post-card';
 import Link from 'next/link';
 import {
   AlertDialog,
@@ -20,7 +20,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation';
-import { AuthContext } from '@/components/providers';
+import { AuthContext } from '@/components/common/providers';
 import { createClient } from '@/utils/supabase/client';
 import { alternarCurtida, alternarSalvo, comentar, excluirPost } from '@/app/actions/community';
 

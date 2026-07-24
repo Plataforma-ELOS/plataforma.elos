@@ -5,7 +5,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { Newspaper, ArrowRight } from 'lucide-react';
-import NewsCard from '@/components/news/news-card';
+import NewsCard from '@/components/features/news/news-card';
 import { getNews } from '@/lib/data/news';
 
 export default async function NewsPage() {

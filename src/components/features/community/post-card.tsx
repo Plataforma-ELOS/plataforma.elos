@@ -6,15 +6,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ThumbsUp, MessageCircle, Share2, MoreHorizontal, Bookmark, Edit, Trash2 } from "lucide-react";
-import FeatureInProgress from "../feature-in-progress";
+import FeatureInProgress from "@/components/common/feature-in-progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AuthContext } from "../providers";
-import type { User } from "../providers";
+import { AuthContext } from "@/components/common/providers";
+import type { User } from "@/components/common/providers";
 import CommentSection from "./comment-section";
 import type { Comment } from "./comment-section";
 

@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Bookmark, PlayCircle } from 'lucide-react';
-import FeatureInProgress from '../feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 
 type LibraryItem = {
   type: 'video' | 'document';

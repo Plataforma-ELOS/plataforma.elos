@@ -8,10 +8,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Bell, UserCircle, Bookmark, Settings, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseLower, CaseUpper, CaseSensitive, Edit } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { usePathname } from 'next/navigation';
-import FeatureInProgress from '@/components/feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '../ui/dropdown-menu';
 import { useTheme } from 'next-themes';
-import { AuthContext, FontSizeContext } from '../providers';
+import { AuthContext, FontSizeContext } from '@/components/common/providers';
 import Image from 'next/image';
 import imagesData from '@/app/lib/placeholder-images.json';
 

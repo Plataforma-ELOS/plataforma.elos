@@ -1,7 +1,7 @@
 // src/app/acervo-digital/page.tsx
 "use client";
 
-import { useState, useEffect, Suspense, useMemo } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
@@ -10,9 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, ArrowUpDown, LayoutGrid, List, Plus, Bookmark, CheckCircle } from 'lucide-react';
-import DigitalLibraryCard from '@/components/sections/digital-library-card';
-import DigitalLibraryListItem from '@/components/sections/digital-library-list-item';
+import { Search, Plus, Bookmark, CheckCircle } from 'lucide-react';
+import DigitalLibraryCard from '@/components/features/acervo/digital-library-card';
+import DigitalLibraryListItem from '@/components/features/acervo/digital-library-list-item';
+import SearchBar from '@/components/features/search/search-bar';
+import SearchFilters from '@/components/features/search/search-filters';
+import { useSearch } from '@/hooks/use-search';
 import {
   Dialog,
   DialogContent,
@@ -137,14 +140,37 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
 }
 
 
+// Config de busca do acervo — definida fora do componente para manter as
+// referências estáveis (evita recomputar o memo do useSearch a cada render).
+const LIBRARY_FILTER_OPTIONS = [
+  { value: 'all', label: 'Filtrar: Todos' },
+  { value: 'video', label: 'Vídeos' },
+  { value: 'document', label: 'Documentos' },
+];
+const searchLibraryText = (item: LibraryItemData) => [item.title, ...item.tags];
+const matchesLibraryType = (item: LibraryItemData, filter: string) => filter === 'all' || item.type === filter;
+const libraryDate = (item: LibraryItemData) => new Date(item.createdAt).getTime();
+
 function DigitalLibraryContent() {
   const searchParams = useSearchParams();
-  const [view, setView] = useState('grid');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState('all');
-  const [sortOrder, setSortOrder] = useState('recent');
+  const [view, setView] = useState<'grid' | 'list'>('grid');
   const [libraryItems, setLibraryItems] = useState<LibraryItemData[]>([]);
   const [carregando, setCarregando] = useState(true);
+
+  const {
+    query,
+    setQuery,
+    filter: filterType,
+    setFilter: setFilterType,
+    sortOrder,
+    toggleSort,
+    results: filteredItems,
+  } = useSearch<LibraryItemData>({
+    items: libraryItems,
+    searchableText: searchLibraryText,
+    matchesFilter: matchesLibraryType,
+    sortBy: libraryDate,
+  });
 
   useEffect(() => {
     const supabase = createClient();
@@ -163,39 +189,12 @@ function DigitalLibraryContent() {
       });
   }, []);
 
-  const filteredItems = useMemo(() => {
-    const lowercasedQuery = searchQuery.toLowerCase();
-
-    let results = libraryItems.filter(item => {
-      const typeMatch = filterType === 'all' || item.type === filterType;
-      if (!typeMatch) return false;
-
-      if (!lowercasedQuery) return true;
-      const titleMatch = item.title.toLowerCase().includes(lowercasedQuery);
-      const tagMatch = item.tags.some(tag => tag.toLowerCase().includes(lowercasedQuery));
-      return titleMatch || tagMatch;
-    });
-
-    results.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-
-      if (sortOrder === 'recent') {
-        return dateB - dateA;
-      } else {
-        return dateA - dateB;
-      }
-    });
-
-    return results;
-  }, [libraryItems, searchQuery, filterType, sortOrder]);
-
   useEffect(() => {
     const typeFromUrl = searchParams.get('type');
     if (typeFromUrl === 'video' || typeFromUrl === 'document') {
       setFilterType(typeFromUrl);
     }
-  }, [searchParams]);
+  }, [searchParams, setFilterType]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-primary/10 dark:from-background dark:to-primary/20">
@@ -217,43 +216,20 @@ function DigitalLibraryContent() {
 
           <div className="bg-card p-4 rounded-xl border mb-8">
             <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input 
-                  placeholder="Buscar por título, tag, etc..." 
-                  className="pl-10 h-11"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="outline" 
-                  className="h-11"
-                  onClick={() => setSortOrder(sortOrder === 'recent' ? 'oldest' : 'recent')}
-                >
-                  <ArrowUpDown className="mr-2 h-4 w-4" />
-                  Ordenar: {sortOrder === 'recent' ? 'Mais Recentes' : 'Mais Antigos'}
-                </Button>
-                <Select value={filterType} onValueChange={setFilterType}>
-                  <SelectTrigger className="w-full md:w-[180px] h-11">
-                    <SelectValue placeholder="Filtrar" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Filtrar: Todos</SelectItem>
-                    <SelectItem value="video">Vídeos</SelectItem>
-                    <SelectItem value="document">Documentos</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="bg-muted p-1 rounded-md hidden md:flex">
-                  <Button variant={view === 'grid' ? 'default' : 'ghost'} size="icon" onClick={() => setView('grid')}>
-                    <LayoutGrid />
-                  </Button>
-                  <Button variant={view === 'list' ? 'default' : 'ghost'} size="icon" onClick={() => setView('list')}>
-                    <List />
-                  </Button>
-                </div>
-              </div>
+              <SearchBar
+                value={query}
+                onChange={setQuery}
+                placeholder="Buscar por título, tag, etc..."
+              />
+              <SearchFilters
+                filterOptions={LIBRARY_FILTER_OPTIONS}
+                filterValue={filterType}
+                onFilterChange={setFilterType}
+                sortOrder={sortOrder}
+                onToggleSort={toggleSort}
+                view={view}
+                onViewChange={setView}
+              />
             </div>
           </div>
           
