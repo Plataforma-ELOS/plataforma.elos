@@ -78,8 +78,16 @@ export async function getNewsBySlug(slug: string) {
 
 // Usado em generateStaticParams (roda em build time, fora de uma
 // requisição) — por isso usa o client sem cookies em vez de createClient.
+// try/catch defensivo: se o Supabase estiver inacessível em build (ex.: CI
+// com URL dummy, ou banco fora do ar), o build não deve quebrar — apenas
+// gera 0 páginas estáticas e as rotas passam a renderizar sob demanda.
 export async function getAllNewsSlugs(): Promise<{ slug: string }[]> {
-  const supabase = createStaticClient();
-  const { data } = await supabase.from('news_articles').select('slug');
-  return data ?? [];
+  try {
+    const supabase = createStaticClient();
+    const { data } = await supabase.from('news_articles').select('slug');
+    return data ?? [];
+  } catch (e) {
+    console.error('[getAllNewsSlugs] indisponível em build:', e);
+    return [];
+  }
 }

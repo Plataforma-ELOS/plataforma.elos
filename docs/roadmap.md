@@ -1,0 +1,87 @@
+# Roadmap — Plataforma E.L.O.S
+
+Planejamento de próximos passos, ancorado no estado real do código.
+Última atualização: 2026-07-24 (branch `claude/new-session-8sdpjq`).
+
+## Estado atual (baseline)
+Next.js 15 + shadcn/ui + Supabase, deploy Vercel. `typecheck` ✅, `build` ✅
+(0 avisos), `test` ✅ (16, Vitest). Arquitetura refatorada (feature-based),
+Firebase removido, migrations sincronizadas com o remoto. Sem regressão de
+código — o que resta é config externa e evolução.
+
+Legenda de esforço: 🟢 ≤1h · 🟡 meio dia · 🟠 1–2 dias · 🔴 3+ dias.
+
+---
+
+## Horizonte 0 — Go-live / Estabilização
+Deixar o que já existe operável em produção (quase tudo é config, não código).
+
+| # | Ação | Tipo | Esforço | Status |
+|---|---|---|---|---|
+| 0.1 | Supabase Auth: Site URL `plataforma-elos-app.vercel.app` + Redirect URLs; decidir confirm-email | Painel | 🟢 | ⬜ |
+| 0.2 | Ligar "Criar Post" na `/comunidade` | Código | 🟢 | ✅ feito (`d17d804`) |
+| 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ⬜ |
+| 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
+| 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel | QA | 🟡 | ⬜ |
+| 0.6 | Abrir e mergear o PR → `main` (descrição em `docs/pr-description.md`) | Processo | 🟢 | ⬜ |
+
+---
+
+## Horizonte 1 — Completar o núcleo funcional
+Fechar features meio-prontas e stubs `FeatureInProgress`.
+
+| # | Ação | Esforço | Notas |
+|---|---|---|---|
+| 1.1 | Favoritar acervo (`library_favorites` já existe; botão hoje é stub) | 🟡 | Espelhar `alternarSalvo` |
+| 1.2 | Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
+| 1.3 | Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
+| 1.4 | Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
+| 1.5 | Agendar consulta (stub em `profissionais/[id]`) | 🟠 | Decisão de produto |
+| 1.6 | Área do cuidador — `dependents` e `caregiver_journal` existem, sem UI | 🔴 | RLS já pronta (dono) |
+
+---
+
+## Horizonte 2 — Qualidade & Robustez
+Reduzir risco de regressão e melhorar confiabilidade.
+
+| # | Ação | Esforço | Valor |
+|---|---|---|---|
+| 2.1 | Tipos gerados do Supabase (`supabase gen types`) → eliminar `any` nas queries | 🟡 | Alto |
+| 2.2 | Ampliar testes: Server Actions, `lib/data/*`, componentes (`SearchBar`, `PostCard`) | 🟠 | Alto |
+| 2.3 | `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
+| 2.4 | CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
+| 2.5 | ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
+| 2.6 | E2E (Playwright) dos fluxos críticos (quando rodar contra Supabase real) | 🟠 | Alto |
+
+---
+
+## Horizonte 3 — Arquitetura & Escala
+
+| # | Ação | Esforço | Racional |
+|---|---|---|---|
+| 3.1 | Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`) | 🟠 | SEO + perf; 6 telas buscam no browser |
+| 3.2 | Paginação de posts e profissionais (`useSearch` já preparado p/ `SearchPagination`) | 🟡 | Escala de dados |
+| 3.3 | Supabase Storage para imagens (hoje tudo é `placehold.co`) | 🟠 | Upload de avatar/perfil/acervo |
+| 3.4 | Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Segurança |
+| 3.5 | Consolidar queries inline nas páginas para `lib/data` | 🟡 | Manutenibilidade |
+
+---
+
+## Horizonte 4 — Produto / Features novas
+- Workflow de verificação de profissionais (`verification_status` está `pending` p/ todos).
+- Painel administrativo (`is_admin()`/policies já existem; falta UI).
+- Notificações (curtidas, comentários, aprovações).
+- Trilhas de conhecimento interativas (`trail_progress` existe; falta conteúdo/quiz).
+- Busca server-side com full-text (a atual é client-side sobre dados carregados).
+
+---
+
+## Sequência recomendada (próximas sprints)
+- **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (0.2 já feito.)
+- **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`.
+- **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
+
+## Documentos relacionados
+- `docs/refactor-report.md` — relatório da refatoração/limpeza.
+- `docs/security-checklist.md` — RLS + hardening + passo do leaked-password.
+- `docs/pr-description.md` — corpo do PR.

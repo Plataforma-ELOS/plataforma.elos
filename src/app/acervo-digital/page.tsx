@@ -1,8 +1,8 @@
 // src/app/acervo-digital/page.tsx
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, useContext, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { createClient } from '@/lib/supabase/client';
 import { mapLibraryRow, type LibraryItemData } from '@/lib/data/library';
+import { AuthContext } from '@/components/common/providers';
+import { alternarFavorito } from '@/app/actions/library';
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -153,6 +155,8 @@ const libraryDate = (item: LibraryItemData) => new Date(item.createdAt).getTime(
 
 function DigitalLibraryContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [libraryItems, setLibraryItems] = useState<LibraryItemData[]>([]);
   const [carregando, setCarregando] = useState(true);
@@ -174,20 +178,55 @@ function DigitalLibraryContent() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase
-      .from('library_items')
-      .select('type, title, author_name, image_url, action_url, downloadable, tags, created_at')
-      .eq('approved', true)
-      .order('created_at', { ascending: false })
-      .then(({ data, error }) => {
-        if (error) {
-          console.error('[acervo-digital] erro ao buscar itens:', error.message);
-        } else {
-          setLibraryItems((data ?? []).map(mapLibraryRow));
-        }
+
+    (async () => {
+      const { data, error } = await supabase
+        .from('library_items')
+        .select('id, type, title, author_name, image_url, action_url, downloadable, tags, created_at')
+        .eq('approved', true)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('[acervo-digital] erro ao buscar itens:', error.message);
         setCarregando(false);
-      });
+        return;
+      }
+
+      // Favoritos do usuário logado (RLS libera só as próprias linhas).
+      const { data: { user: usuarioAtual } } = await supabase.auth.getUser();
+      let favoritos = new Set<string>();
+      if (usuarioAtual) {
+        const { data: favs } = await supabase
+          .from('library_favorites')
+          .select('item_id')
+          .eq('profile_id', usuarioAtual.id);
+        favoritos = new Set((favs ?? []).map((f) => f.item_id));
+      }
+
+      setLibraryItems(
+        (data ?? []).map((row) => ({ ...mapLibraryRow(row), isFavorited: favoritos.has(row.id) }))
+      );
+      setCarregando(false);
+    })();
   }, []);
+
+  const handleToggleFavorite = async (itemId: string) => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    // Atualização otimista.
+    setLibraryItems((items) =>
+      items.map((it) => (it.id === itemId ? { ...it, isFavorited: !it.isFavorited } : it))
+    );
+    const { ok } = await alternarFavorito(itemId);
+    if (!ok) {
+      // Reverte se falhou.
+      setLibraryItems((items) =>
+        items.map((it) => (it.id === itemId ? { ...it, isFavorited: !it.isFavorited } : it))
+      );
+    }
+  };
 
   useEffect(() => {
     const typeFromUrl = searchParams.get('type');
@@ -239,14 +278,24 @@ function DigitalLibraryContent() {
             <>
               {view === 'grid' ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in-0 duration-500">
-                  {filteredItems.map((item, index) => (
-                    <DigitalLibraryCard key={index} item={item} />
+                  {filteredItems.map((item) => (
+                    <DigitalLibraryCard
+                      key={item.id}
+                      item={item}
+                      isFavorited={item.isFavorited}
+                      onToggleFavorite={handleToggleFavorite}
+                    />
                   ))}
                 </div>
               ) : (
                 <div className="space-y-4 animate-in fade-in-0 duration-500">
-                  {filteredItems.map((item, index) => (
-                    <DigitalLibraryListItem key={index} item={item} />
+                  {filteredItems.map((item) => (
+                    <DigitalLibraryListItem
+                      key={item.id}
+                      item={item}
+                      isFavorited={item.isFavorited}
+                      onToggleFavorite={handleToggleFavorite}
+                    />
                   ))}
                 </div>
               )}

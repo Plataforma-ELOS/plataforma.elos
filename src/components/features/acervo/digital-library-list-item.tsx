@@ -8,9 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Bookmark, PlayCircle } from 'lucide-react';
-import FeatureInProgress from '@/components/common/feature-in-progress';
+import { cn } from '@/lib/utils';
 
 type LibraryItem = {
+  id: string;
   type: 'video' | 'document';
   imageUrl?: string;
   imageHint?: string;
@@ -28,9 +29,11 @@ type LibraryItem = {
 
 type DigitalLibraryListItemProps = {
   item: LibraryItem;
+  isFavorited?: boolean;
+  onToggleFavorite?: (id: string) => void;
 };
 
-export default function DigitalLibraryListItem({ item }: DigitalLibraryListItemProps) {
+export default function DigitalLibraryListItem({ item, isFavorited, onToggleFavorite }: DigitalLibraryListItemProps) {
   return (
     <Card className="rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
@@ -81,12 +84,15 @@ export default function DigitalLibraryListItem({ item }: DigitalLibraryListItemP
               {item.actionText}
             </Link>
           </Button>
-          <FeatureInProgress>
-            <Button variant="outline" size="icon">
-                <Bookmark className="h-4 w-4" />
-                <span className="sr-only">Favoritar</span>
-            </Button>
-          </FeatureInProgress>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-pressed={isFavorited}
+            onClick={() => onToggleFavorite?.(item.id)}
+          >
+            <Bookmark className={cn('h-4 w-4', isFavorited && 'fill-primary text-primary')} />
+            <span className="sr-only">{isFavorited ? 'Remover dos favoritos' : 'Favoritar'}</span>
+          </Button>
         </div>
       </CardContent>
     </Card>
