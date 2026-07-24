@@ -7,7 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram, Edit2, Check } from 'lucide-react';
 import Link from 'next/link';
-import FeatureInProgress from '@/components/feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';

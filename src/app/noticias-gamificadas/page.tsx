@@ -7,7 +7,7 @@ import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 // Nao ha coluna de icone no banco — mapeamos pela categoria (texto livre,
 // mas hoje limitada a estas 3 no seed). Categoria nao mapeada cai no icone

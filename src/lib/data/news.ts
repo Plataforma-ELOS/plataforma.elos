@@ -2,7 +2,7 @@
 // Leitura de notícias do Supabase, já no formato exato que NewsCard espera:
 // { slug, title, description, imageUrl, imageHint, category, date }
 import { cookies } from 'next/headers';
-import { createClient, createStaticClient } from '@/utils/supabase/server';
+import { createClient, createStaticClient } from '@/lib/supabase/server';
 import { formatarDataPtBr } from '../format';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,

@@ -35,7 +35,7 @@ O projeto nasceu para preencher uma lacuna de suporte emocional e informacional 
 - **Frontend:** [Next.js 15 (App Router)](https://nextjs.org/)
 - **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
 - **Estilização:** [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
-- **IA Engine:** [Google Gemini 2.0](https://deepmind.google/technologies/gemini/) via [Firebase Genkit](https://firebase.google.com/docs/genkit)
+- **IA Engine:** [Google Gemini](https://deepmind.google/technologies/gemini/) via [Genkit](https://genkit.dev/)
 - **Integração de E-mail:** [EmailJS](https://www.emailjs.com/)
 - **Ícones:** [Lucide React](https://lucide.dev/)
 
@@ -46,11 +46,10 @@ src/
 ├── ai/             # Configuração do Genkit e Fluxos de IA
 ├── app/            # Páginas e Rotas (App Router)
 ├── components/     # Componentes de UI e Seções da Página
-├── hooks/          # Hooks customizados (Toast, etc.)
-├── lib/            # Utilitários e configurações
-└── firebase/       # (Em breve) Configurações de persistência
+├── hooks/          # Hooks customizados (useToast, useSearch, etc.)
+└── lib/            # Utilitários, acesso a dados e config do Supabase
 docs/
-└── PRD.md          # Documento de Requisitos de Produto completo
+└── product/prd.md  # Documento de Requisitos de Produto completo
 ```
 
 ## ⚙️ Como Executar
@@ -68,6 +67,6 @@ docs/
 
                   ---
 
-                  Para mais detalhes sobre o roadmap e especificações técnicas, consulte o [Documento de Requisitos de Produto (PRD)](docs/PRD.md).
+                  Para mais detalhes sobre o roadmap e especificações técnicas, consulte o [Documento de Requisitos de Produto (PRD)](docs/product/prd.md).
 
                   *Desenvolvido com carinho para a comunidade TEA.*

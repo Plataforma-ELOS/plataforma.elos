@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
-import { Providers } from '@/components/providers';
+import { Providers } from '@/components/common/providers';
 import { PT_Sans } from 'next/font/google';
 
 const ptSans = PT_Sans({

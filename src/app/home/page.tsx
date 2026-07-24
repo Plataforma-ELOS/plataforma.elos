@@ -3,28 +3,28 @@
 
 import dynamic from 'next/dynamic';
 import HeaderSecondary from '@/components/layout/header-secondary';
-import Hero from '@/components/sections/hero';
+import Hero from '@/components/features/home/hero';
 import Footer from '@/components/layout/footer';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Dynamic imports for components below the fold
-const AiSupportHome = dynamic(() => import('@/components/sections/ai-support-home'), {
+const AiSupportHome = dynamic(() => import('@/components/features/home/ai-support-home'), {
   loading: () => <Skeleton className="h-96 w-full" />,
 });
 
-const NewDigitalCollection = dynamic(() => import('@/components/sections/new-digital-collection'), {
+const NewDigitalCollection = dynamic(() => import('@/components/features/home/new-digital-collection'), {
     loading: () => <Skeleton className="h-96 w-full" />,
 });
 
-const NewCommunity = dynamic(() => import('@/components/sections/new-community'), {
+const NewCommunity = dynamic(() => import('@/components/features/home/new-community'), {
     loading: () => <Skeleton className="h-96 w-full" />,
 });
 
-const NewsCarousel = dynamic(() => import('@/components/sections/news-carousel'), {
+const NewsCarousel = dynamic(() => import('@/components/features/news/news-carousel'), {
     loading: () => <Skeleton className="h-96 w-full" />,
 });
 
-const NewProfessionals = dynamic(() => import('@/components/sections/new-professionals'), {
+const NewProfessionals = dynamic(() => import('@/components/features/home/new-professionals'), {
     loading: () => <Skeleton className="h-96 w-full" />,
 });
 

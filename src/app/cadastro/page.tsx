@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
-import { AuthContext } from '@/components/providers';
+import { AuthContext } from '@/components/common/providers';
 
 const SocialButton = ({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) => (
   <Button variant="outline" className="w-full justify-center gap-3">

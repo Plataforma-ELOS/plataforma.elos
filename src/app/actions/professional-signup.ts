@@ -1,7 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/lib/supabase/server';
 
 export type Resultado = { ok: boolean; erro?: string };
 

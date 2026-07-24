@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 
 export default function ContactPage() {
   const { toast } = useToast();

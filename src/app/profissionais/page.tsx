@@ -10,7 +10,7 @@ import { Check, Search, ShieldCheck, Star, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import FeatureInProgress from '@/components/feature-in-progress';
+import FeatureInProgress from '@/components/common/feature-in-progress';
 import { Badge } from '@/components/ui/badge';
 import {
   Carousel,
@@ -22,7 +22,7 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { mapProfessionalCard, mapClinicCard, type ProfessionalCardData } from '@/lib/data/professionals';
 
 const specialties = [
