@@ -15,5 +15,6 @@ Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 - [`blueprint.md`](./design/blueprint.md) — Blueprint inicial de features e identidade.
 
 ## Fora desta pasta
+- Checklist de segurança e validação de RLS: [`./security-checklist.md`](./security-checklist.md)
 - Histórico de migrations do banco: [`../supabase/migrations/README.md`](../supabase/migrations/README.md)
 - Relatório da última refatoração/limpeza: [`./refactor-report.md`](./refactor-report.md)
