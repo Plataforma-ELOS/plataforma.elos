@@ -8,9 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Download, PlayCircle, Bookmark } from 'lucide-react';
-import FeatureInProgress from '@/components/common/feature-in-progress';
+import { cn } from '@/lib/utils';
 
 type LibraryItem = {
+  id: string;
   type: 'video' | 'document';
   imageUrl?: string;
   imageHint?: string;
@@ -28,9 +29,11 @@ type LibraryItem = {
 
 type DigitalLibraryCardProps = {
   item: LibraryItem;
+  isFavorited?: boolean;
+  onToggleFavorite?: (id: string) => void;
 };
 
-export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
+export default function DigitalLibraryCard({ item, isFavorited, onToggleFavorite }: DigitalLibraryCardProps) {
   return (
     <Card className="flex flex-col rounded-xl overflow-hidden shadow-md hover:shadow-primary/30 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full border animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
       <CardContent className="p-0 flex flex-col flex-grow">
@@ -76,11 +79,15 @@ export default function DigitalLibraryCard({ item }: DigitalLibraryCardProps) {
                     {item.actionText}
                   </Link>
                 </Button>
-                <FeatureInProgress>
-                  <Button variant="outline" size="icon">
-                    <Bookmark className="h-4 w-4" />
-                  </Button>
-                </FeatureInProgress>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-pressed={isFavorited}
+                  onClick={() => onToggleFavorite?.(item.id)}
+                >
+                  <Bookmark className={cn('h-4 w-4', isFavorited && 'fill-primary text-primary')} />
+                  <span className="sr-only">{isFavorited ? 'Remover dos favoritos' : 'Favoritar'}</span>
+                </Button>
             </div>
         </div>
       </CardContent>

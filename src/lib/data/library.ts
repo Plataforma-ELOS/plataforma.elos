@@ -6,6 +6,7 @@
 import { formatarDataPtBr } from '../format';
 
 export type LibraryItemData = {
+  id: string;
   type: 'video' | 'document';
   imageUrl?: string;
   imageHint?: string;
@@ -19,9 +20,12 @@ export type LibraryItemData = {
   actionText: string;
   actionUrl: string;
   downloadable: boolean;
+  /** Se o usuário logado favoritou este item (vem da tabela library_favorites). */
+  isFavorited?: boolean;
 };
 
 export type LibraryRow = {
+  id: string;
   type: string | null;
   title: string;
   author_name: string | null;
@@ -37,6 +41,7 @@ export function mapLibraryRow(row: LibraryRow): LibraryItemData {
   const downloadable = row.downloadable ?? false;
 
   return {
+    id: row.id,
     type: isVideo ? 'video' : 'document',
     imageUrl: isVideo ? row.image_url ?? undefined : undefined,
     imageHint: 'material educativo',
