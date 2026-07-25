@@ -44,7 +44,7 @@ src/app/lib/placeholder-images.json → src/lib/data/placeholder-images.json
 
 ### 5. Documentação
 - `docs/` reorganizado em `product/`, `architecture/`, `design/` (kebab-case) + índice `docs/README.md`.
-- `docs/refactor-report.md` (relatório de limpeza) e `docs/security-checklist.md` (RLS + hardening).
+- `docs/project/refactor-report.md` (relatório de limpeza) e `docs/architecture/security-checklist.md` (RLS + hardening).
 
 ### 6. Testes (Vitest)
 - Vitest + React Testing Library + jsdom; scripts `npm run test` / `test:watch`.
@@ -56,7 +56,7 @@ src/app/lib/placeholder-images.json → src/lib/data/placeholder-images.json
 - `serverExternalPackages: ['isomorphic-dompurify']` para o jsdom não ser empacotado pelo webpack.
 
 ## Segurança (Supabase)
-- RLS validada: **22/22 tabelas** com RLS habilitada + policies (detalhes em `docs/security-checklist.md`).
+- RLS validada: **22/22 tabelas** com RLS habilitada + policies (detalhes em `docs/architecture/security-checklist.md`).
 - Nenhuma query usa `service_role` no frontend; a publishable key respeita RLS.
 - ⚠️ Pendência de painel (1 clique, fora do código): habilitar **Leaked Password Protection** em Authentication → Policies. Link no checklist.
 

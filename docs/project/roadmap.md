@@ -23,7 +23,7 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 | 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ⬜ |
 | 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
 | 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel | QA | 🟡 | ⬜ |
-| 0.6 | Abrir e mergear o PR → `main` (descrição em `docs/pr-description.md`) | Processo | 🟢 | ⬜ |
+| 0.6 | Abrir e mergear o PR → `main` (descrição em `docs/project/pr-description.md`) | Processo | 🟢 | ⬜ |
 
 ---
 
@@ -82,6 +82,6 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
 
 ## Documentos relacionados
-- `docs/refactor-report.md` — relatório da refatoração/limpeza.
-- `docs/security-checklist.md` — RLS + hardening + passo do leaked-password.
-- `docs/pr-description.md` — corpo do PR.
+- `docs/project/refactor-report.md` — relatório da refatoração/limpeza.
+- `docs/architecture/security-checklist.md` — RLS + hardening + passo do leaked-password.
+- `docs/project/pr-description.md` — corpo do PR.

@@ -51,7 +51,7 @@ Nenhum caso deste inventário justifica continuar em um host externo.
 1. Criar buckets no Supabase Storage: `avatars` (fotos de perfil de usuário), `professionals` (fotos de profissionais e clínicas), `library` (capas de itens do acervo), `news` (capas de notícia).
 2. Policy de leitura pública (`select` liberado) e escrita restrita ao dono do registro (RLS baseada em `auth.uid() = owner_id`), no mesmo padrão das policies já existentes nas tabelas.
 3. Trocar os *fallbacks* embutidos no código (`?? 'https://placehold.co/...'` em `news.ts` e `library.ts`, itens 5-6) por um placeholder local simples — por exemplo, reaproveitar o mesmo ícone (`FileText`/`ImageOff` do `lucide-react`) já usado como fallback visual em `digital-library-card.tsx`, em vez de apontar para outro serviço externo.
-4. Substituir os dois registros de `professionals.image_url` e as duas linhas de `clinics.image_url` (itens 7-8) por uploads reais no bucket `professionals`, atualizando a coluna com a URL pública do Storage. Isso deve acontecer junto com o fluxo de cadastro/verificação de profissional (`cadastro-profissional`), que já existe mas hoje não tem upload de imagem — está listado como stub `F7`/`E3` no `docs/PLANO_FINALIZACAO_COMPLETA.md`.
+4. Substituir os dois registros de `professionals.image_url` e as duas linhas de `clinics.image_url` (itens 7-8) por uploads reais no bucket `professionals`, atualizando a coluna com a URL pública do Storage. Isso deve acontecer junto com o fluxo de cadastro/verificação de profissional (`cadastro-profissional`), que já existe mas hoje não tem upload de imagem — está listado como stub `F7`/`E3` no `docs/project/plano-finalizacao-completa.md`.
 
 Esta trilha não depende de nenhum host externo bloqueado — pode ser executada por completo nesta sessão quando for priorizada (criação de bucket e RLS são operações do Supabase MCP, sem rede externa envolvida).
 
@@ -67,4 +67,4 @@ Esta trilha não depende de nenhum host externo bloqueado — pode ser executada
 
 ---
 
-**Documentos relacionados:** [`PLANO_FINALIZACAO_COMPLETA.md`](./PLANO_FINALIZACAO_COMPLETA.md) (task `E3` já menciona sair do `placehold.co` via Storage — este documento detalha o inventário completo e o passo a passo) · [`HARMONIA_SUPABASE_VERCEL.md`](./HARMONIA_SUPABASE_VERCEL.md).
+**Documentos relacionados:** [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) (task `E3` já menciona sair do `placehold.co` via Storage — este documento detalha o inventário completo e o passo a passo) · [`harmonia-supabase-vercel.md`](../architecture/harmonia-supabase-vercel.md).
