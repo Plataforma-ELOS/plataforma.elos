@@ -15,10 +15,10 @@ Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 - [`blueprint.md`](./design/blueprint.md) — Blueprint inicial de features e identidade.
 
 ## Fora desta pasta
-- **🏁 Guia mestre de finalização (do estado atual até produção): [`./PLANO_FINALIZACAO_COMPLETA.md`](./PLANO_FINALIZACAO_COMPLETA.md)**
-- **🔗 Harmonia Supabase ↔ Vercel (varredura + plano de organização de dados/front): [`./HARMONIA_SUPABASE_VERCEL.md`](./HARMONIA_SUPABASE_VERCEL.md)**
-- **🖼️ Imagens hospedadas fora do projeto (inventário + plano de migração): [`./IMAGENS_EXTERNAS.md`](./IMAGENS_EXTERNAS.md)**
-- Roadmap / próximos passos: [`./roadmap.md`](./roadmap.md)
-- Checklist de segurança e validação de RLS: [`./security-checklist.md`](./security-checklist.md)
+- **🏁 Guia mestre de finalização (do estado atual até produção): [`./project/plano-finalizacao-completa.md`](./project/plano-finalizacao-completa.md)**
+- **🔗 Harmonia Supabase ↔ Vercel (varredura + plano de organização de dados/front): [`./architecture/harmonia-supabase-vercel.md`](./architecture/harmonia-supabase-vercel.md)**
+- **🖼️ Imagens hospedadas fora do projeto (inventário + plano de migração): [`./design/imagens-externas.md`](./design/imagens-externas.md)**
+- Roadmap / próximos passos: [`./project/roadmap.md`](./project/roadmap.md)
+- Checklist de segurança e validação de RLS: [`./architecture/security-checklist.md`](./architecture/security-checklist.md)
 - Histórico de migrations do banco: [`../supabase/migrations/README.md`](../supabase/migrations/README.md)
-- Relatório da última refatoração/limpeza: [`./refactor-report.md`](./refactor-report.md)
+- Relatório da última refatoração/limpeza: [`./project/refactor-report.md`](./project/refactor-report.md)

@@ -1,6 +1,6 @@
 # Harmonia Supabase ↔ Vercel — Varredura e Plano de Organização
 
-> **O que é este documento:** uma auditoria da relação entre o banco/API (Supabase) e o front/hosting (Vercel) do E.L.O.S, seguida de um plano de ações para que um lado nunca sobrecarregue o outro. É um documento irmão do [`PLANO_FINALIZACAO_COMPLETA.md`](./PLANO_FINALIZACAO_COMPLETA.md) — aquele cobre "o que falta para produção"; este cobre especificamente "como Supabase e Vercel devem se comportar um em relação ao outro". A tarefa `E1` do guia mestre ("Server Components nas 6 telas client-fetch") é aprofundada aqui como `H2`.
+> **O que é este documento:** uma auditoria da relação entre o banco/API (Supabase) e o front/hosting (Vercel) do E.L.O.S, seguida de um plano de ações para que um lado nunca sobrecarregue o outro. É um documento irmão do [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) — aquele cobre "o que falta para produção"; este cobre especificamente "como Supabase e Vercel devem se comportar um em relação ao outro". A tarefa `E1` do guia mestre ("Server Components nas 6 telas client-fetch") é aprofundada aqui como `H2`.
 >
 > Nenhuma mudança de código foi feita nesta entrega — é só o mapeamento e o plano. As fichas abaixo (H1–H6) descrevem exatamente o que implementar depois.
 
@@ -270,4 +270,4 @@ Sinais de que este documento precisa ser revisitado:
 
 ---
 
-**Documentos relacionados:** [`PLANO_FINALIZACAO_COMPLETA.md`](./PLANO_FINALIZACAO_COMPLETA.md) (guia mestre de finalização — este documento aprofunda a tarefa `E1` dele) · [`roadmap.md`](./roadmap.md) · [`security-checklist.md`](./security-checklist.md).
+**Documentos relacionados:** [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) (guia mestre de finalização — este documento aprofunda a tarefa `E1` dele) · [`roadmap.md`](../project/roadmap.md) · [`security-checklist.md`](./security-checklist.md).

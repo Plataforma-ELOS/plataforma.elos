@@ -161,10 +161,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ### [G5] Abrir PR, validar Preview e mergear em `main`
 - **Categoria:** Processo · **Prio:** P0 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** G1–G4, CI
-- **Relevância:** Publica a branch (16 commits) em produção. Corpo do PR já pronto em `docs/pr-description.md`.
+- **Relevância:** Publica a branch (16 commits) em produção. Corpo do PR já pronto em `docs/project/pr-description.md`.
 
 #### 🎯 Passo a passo
-1. Abrir PR `claude/new-session-8sdpjq → main` (usar `docs/pr-description.md`).
+1. Abrir PR `claude/new-session-8sdpjq → main` (usar `docs/project/pr-description.md`).
 2. Aguardar **CI verde** + Preview Deployment.
 3. Rodar o smoke test da Seção 5 no Preview.
 4. Merge → deploy de produção automático a partir de `main`.
@@ -421,7 +421,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 - [ ] Usuário admin criado e `is_admin()` = true (G4).
 - [ ] `vercel.json` intacto (`{"framework":"nextjs"}`) — define o preset (projeto tem `framework:null`).
 - [ ] Sanitização XSS ativa nas notícias (`isomorphic-dompurify` em `noticias/[slug]` e `noticias-ai/[slug]`).
-- [ ] RLS habilitada nas 22 tabelas (ver `docs/security-checklist.md`).
+- [ ] RLS habilitada nas 22 tabelas (ver `docs/architecture/security-checklist.md`).
 - [ ] **Smoke test no Preview:** cadastro → login → criar post → curtir/comentar → favoritar acervo → entrar/sair de grupo → enviar "Fale conosco" → detalhe de profissional/review → suporte IA responde.
 - [ ] Sem mocks nas telas de dados (após F1, `allCommunityEvents` removido).
 
@@ -429,7 +429,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ## Documentos relacionados
 - Roadmap resumido: [`./roadmap.md`](./roadmap.md)
-- Segurança/RLS + hardening: [`./security-checklist.md`](./security-checklist.md)
+- Segurança/RLS + hardening: [`../architecture/security-checklist.md`](../architecture/security-checklist.md)
 - Corpo do PR: [`./pr-description.md`](./pr-description.md)
-- Histórico de migrations: [`../supabase/migrations/README.md`](../supabase/migrations/README.md)
+- Histórico de migrations: [`../../supabase/migrations/README.md`](../../supabase/migrations/README.md)
 - Relatório da refatoração: [`./refactor-report.md`](./refactor-report.md)
