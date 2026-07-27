@@ -20,7 +20,7 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { mapProfessionalCard, mapClinicCard, type ProfessionalCardData } from '@/lib/data/professionals';
 import SearchBar from '@/components/features/search/search-bar';
@@ -88,8 +88,11 @@ export default function ProfessionalsPage() {
   const professionalResults = results.filter((r) => r.kind === 'professional');
   const clinicResults = results.filter((r) => r.kind === 'clinic');
 
+  const resultsRef = useRef<HTMLElement | null>(null);
+
   const handleSpecialtyClick = (tag: string) => {
     setQuery(query === tag ? '' : tag);
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -183,7 +186,7 @@ export default function ProfessionalsPage() {
         </section>
 
         {/* Professionals Section */}
-        <section className="w-full py-16 md:py-24 relative">
+        <section ref={resultsRef} className="w-full py-16 md:py-24 relative">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Profissionais Liberais</h2>

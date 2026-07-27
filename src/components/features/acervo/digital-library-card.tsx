@@ -75,9 +75,15 @@ export default function DigitalLibraryCard({ item, isFavorited, onToggleFavorite
          <div className="p-4 pt-0 mt-auto">
              <div className='flex gap-2'>
                 <Button asChild className="w-full">
-                  <Link href={item.actionUrl} target="_blank">
-                    {item.actionText}
-                  </Link>
+                  {item.downloadable ? (
+                    <a href={item.actionUrl} download>
+                      {item.actionText}
+                    </a>
+                  ) : (
+                    <Link href={item.actionUrl} target="_blank">
+                      {item.actionText}
+                    </Link>
+                  )}
                 </Button>
                 <Button
                   variant="outline"

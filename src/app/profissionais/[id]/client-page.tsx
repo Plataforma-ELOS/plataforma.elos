@@ -133,7 +133,7 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
       <HeaderSecondary />
-      <main className="flex-1 pb-24">
+      <main className="flex-1">
         <div className="container mx-auto px-4 md:px-6 py-8">
           <div className="max-w-2xl mx-auto">
              <div className="flex justify-between items-center mb-4">
@@ -299,17 +299,6 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
           </div>
         </div>
       </main>
-      <footer className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-t p-4 z-10">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="max-w-2xl mx-auto">
-                    <FeatureInProgress>
-                        <Button size="lg" className="w-full">
-                            Agendar Consulta
-                        </Button>
-                    </FeatureInProgress>
-                </div>
-            </div>
-        </footer>
     </div>
   );
 }

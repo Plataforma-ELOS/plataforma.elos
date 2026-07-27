@@ -201,7 +201,6 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
     *   Sumário: Atendimento, Empatia, Clareza, Organização.
     *   Ação: "Deixar minha avaliação".
 *   **Modal Avaliar:** "Deixar uma avaliação para X", "Compartilhe sua experiência para ajudar...", "Sua avaliação" (Textarea), "Cancelar", "Enviar Avaliação".
-*   **Footer Fixo:** "Agendar Consulta".
 
 ---
 
