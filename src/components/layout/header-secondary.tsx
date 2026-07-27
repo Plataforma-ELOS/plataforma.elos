@@ -12,8 +12,30 @@ import FeatureInProgress from '@/components/common/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '../ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 import { AuthContext, FontSizeContext } from '@/components/common/providers';
+import { useUnreadNotificationsCount } from '@/hooks/use-unread-notifications';
 import Image from 'next/image';
 import imagesData from '@/lib/data/placeholder-images.json';
+
+function NotificationBell() {
+  const { user } = useContext(AuthContext);
+  const naoLidas = useUnreadNotificationsCount(user?.id ?? null);
+
+  if (!user) return null;
+
+  return (
+    <Button variant="ghost" size="icon" className="relative group" asChild>
+      <Link href="/notificacoes">
+        <Bell className="h-6 w-6 group-hover:animate-ring" />
+        {naoLidas > 0 && (
+          <span className="absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-destructive-foreground">
+            {naoLidas > 9 ? '9+' : naoLidas}
+          </span>
+        )}
+        <span className="sr-only">Notificações</span>
+      </Link>
+    </Button>
+  );
+}
 
 
 const navItems = [
@@ -267,12 +289,9 @@ export default function HeaderSecondary() {
           {navItems.map((item) => renderNavItem(item))}
         </nav>
         <div className="flex items-center gap-4">
-          <FeatureInProgress>
-            <Button variant="ghost" size="icon" className="hidden md:inline-flex group">
-                <Bell className="h-6 w-6 group-hover:animate-ring" />
-                <span className="sr-only">Notificações</span>
-            </Button>
-          </FeatureInProgress>
+          <div className="hidden md:inline-flex">
+            <NotificationBell />
+          </div>
           <div className="hidden md:inline-flex">
             <UserProfileDropdown />
           </div>
@@ -296,12 +315,7 @@ export default function HeaderSecondary() {
                   {navItems.map((item) => renderMobileNavItem(item))}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
-                    <FeatureInProgress>
-                      <Button variant="ghost" size="icon" className="group">
-                          <Bell className="h-6 w-6 group-hover:animate-ring" />
-                          <span className="sr-only">Notificações</span>
-                      </Button>
-                    </FeatureInProgress>
+                    <NotificationBell />
                     <UserProfileDropdown />
                 </div>
               </div>
