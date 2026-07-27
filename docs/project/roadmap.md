@@ -86,7 +86,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | 3.1 | Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`) | 🟠 | SEO + perf; 6 telas buscam no browser |
 | 3.2 | Paginação de posts e profissionais (`useSearch` já preparado p/ `SearchPagination`) | 🟡 | Escala de dados |
 | 3.3 | Supabase Storage para imagens (hoje tudo é `placehold.co`) | 🟠 | Upload de avatar/perfil/acervo |
-| 3.4 | Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Segurança |
+| 3.4 | ✅ Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Trigger no banco, não só na Server Action |
 | 3.5 | Consolidar queries inline nas páginas para `lib/data` | 🟡 | Manutenibilidade |
 
 ---
