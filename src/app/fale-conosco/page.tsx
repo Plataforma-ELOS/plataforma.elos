@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { createClient } from '@/lib/supabase/client';
+import { enviarMensagemContato } from '@/app/actions/contact';
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -21,7 +21,7 @@ export default function ContactPage() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name.trim() || !email.trim() || !message.trim()) {
       toast({
@@ -32,6 +32,14 @@ export default function ContactPage() {
       return;
     }
     setLoading(true);
+
+    const { ok, erro } = await enviarMensagemContato(name, email, message);
+    if (!ok && erro?.includes('muitas mensagens')) {
+      setLoading(false);
+      toast({ variant: "destructive", title: "Muitas mensagens", description: erro });
+      return;
+    }
+    if (!ok) console.error('Falha ao registrar mensagem de contato:', erro);
 
     const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '';
     const notificationTemplateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? ''; // Template para notificar o admin
@@ -50,14 +58,6 @@ export default function ContactPage() {
         name: name,
         from_email: email, // Corrigido para corresponder ao template {{from_email}}
     };
-
-    // Guarda a mensagem no banco (sem .select() — contact_messages so tem
-    // policy de leitura para admin, encadear select() daria erro de RLS
-    // mesmo com o insert valido).
-    const supabase = createClient();
-    supabase.from('contact_messages').insert({ name, email, message }).then(({ error }) => {
-      if (error) console.error('Falha ao registrar mensagem de contato:', error.message);
-    });
 
     // 1. Envia o e-mail de notificação para a plataforma Elos
     emailjs.send(serviceID, notificationTemplateID, notificationParams, publicKey)

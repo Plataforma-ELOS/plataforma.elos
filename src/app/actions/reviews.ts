@@ -29,7 +29,12 @@ export async function criarAvaliacao(
     content: texto,
   });
 
-  if (error) return { ok: false, erro: 'Não foi possível enviar sua avaliação agora.' };
+  if (error) {
+    if (error.message.includes('rate_limit_exceeded')) {
+      return { ok: false, erro: 'Você enviou avaliações demais em pouco tempo. Aguarde alguns minutos.' };
+    }
+    return { ok: false, erro: 'Não foi possível enviar sua avaliação agora.' };
+  }
 
   revalidatePath('/profissionais/[id]', 'page');
   return { ok: true };
