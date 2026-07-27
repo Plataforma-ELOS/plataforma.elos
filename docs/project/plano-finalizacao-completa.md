@@ -283,7 +283,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U1] Tela de boas-vindas ao entrar em grupo
+### [U1] ✅ Tela de boas-vindas ao entrar em grupo
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~1 dia · **Dependências:** nenhuma página de detalhe de grupo existe hoje
 - **Relevância:** Hoje `/comunidade/explorar-grupos` só faz `handleJoinToggle` (entrar/sair), sem navegar a lugar nenhum — não existe rota `/comunidade/grupos/[id]`. Construir "boas-vindas" sem essa rota não tem para onde mandar o botão "Acessar Grupo".
 
@@ -292,7 +292,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Ao `entrarGrupo` ter sucesso em `explorar-grupos/page.tsx`, abrir um modal (Dialog) de boas-vindas com regras/diretrizes e botão "Acessar Grupo" → `router.push('/comunidade/grupos/[id]')`.
 
 #### ✅ Critério de aceite
-- [ ] Entrar num grupo mostra o modal; "Acessar Grupo" leva a uma página real do grupo.
+- [x] Entrar num grupo mostra o modal; "Acessar Grupo" leva a uma página real do grupo.
+
+- **Implementado em 2026-07-27:** `src/app/comunidade/grupos/[id]/page.tsx` (Server Component, `notFound()` se o grupo não existir) + `client-page.tsx` (nome/descrição/tags/membros, botão Participar/Sair reaproveitando `entrarNoGrupo`/`sairDoGrupo`). `explorar-grupos/page.tsx`: ao entrar num grupo com sucesso, abre `AlertDialog` de boas-vindas com regras rápidas + botão "Acessar Grupo" → `/comunidade/grupos/[id]`. **Ressalva de teste:** o dev server deste sandbox não alcança `supabase.co` (egress bloqueado, `403 Host not in allowlist`) — o smoke test local não conseguiu carregar dados de verdade. A query (join `group_members`→`profiles`) foi validada rodando o SQL equivalente direto no banco via MCP, confirmando o mesmo formato de dado.
 
 ---
 
