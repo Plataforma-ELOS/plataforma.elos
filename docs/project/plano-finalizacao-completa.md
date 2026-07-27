@@ -456,7 +456,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q2] Tipos gerados do Supabase (eliminar `any`)
+### [Q2] ✅ Tipos gerados do Supabase (eliminar `any`)
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
 - **Relevância:** Várias queries usam `any` (ex.: `comunidade/page.tsx`, `profissionais/[id]/page.tsx`). Tipos gerados pegam erros de schema em tempo de compilação.
 
@@ -465,7 +465,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Tipar os clients (`createBrowserClient<Database>`/`createServerClient<Database>`) e remover os `any` das queries.
 
 #### ✅ Critério de aceite
-- [ ] `tsc` continua limpo; nenhuma query com `any` explícito nas telas migradas.
+- [x] `tsc` continua limpo; nenhuma query com `any` explícito nas telas migradas.
+
+- **Implementado em 2026-07-27:** `src/lib/supabase/database.types.ts` gerado via `mcp__Supabase__generate_typescript_types` (sem precisar de PAT/CLI). `createClient`/`createStaticClient` (`src/lib/supabase/server.ts`) e `createClient` (`src/lib/supabase/client.ts`) agora usam `<Database>`. `any`/`as any` removidos de `src/app/comunidade/page.tsx` (`PostRow`) e `src/app/comunidade/explorar-grupos/page.tsx` (`GroupRow`) — os dois arquivos citados na ficha. Demais arquivos com `any` ficam para uma varredura futura (não é o escopo desta ficha).
 
 ---
 

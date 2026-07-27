@@ -23,6 +23,14 @@ type GroupCardData = {
   tags: string[];
 };
 
+type GroupRow = {
+  id: string;
+  name: string;
+  description: string | null;
+  tags: string[] | null;
+  group_members: { count: number }[] | null;
+};
+
 export default function ExploreGroupsPage() {
     const [groups, setGroups] = useState<GroupCardData[]>([]);
     const [carregando, setCarregando] = useState(true);
@@ -49,7 +57,7 @@ export default function ExploreGroupsPage() {
         const meusGrupos = new Set((membershipRows ?? []).map((m) => m.group_id));
 
         setGroups(
-            (groupRows ?? []).map((g: any) => ({
+            ((groupRows ?? []) as unknown as GroupRow[]).map((g) => ({
                 id: g.id,
                 name: g.name,
                 description: g.description ?? '',
