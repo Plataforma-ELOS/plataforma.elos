@@ -78,7 +78,7 @@ function LoginRequiredDialog({ children, onConfirm }: { children: React.ReactNod
         <AlertDialogHeader>
             <div className="flex justify-center mb-4">
                 <div className="bg-primary/10 p-3 rounded-full">
-                    <LogIn className="h-10 w-10 text-primary" />
+                    <LogIn className="h-10 w-10 text-primary-strong" />
                 </div>
             </div>
           <AlertDialogTitle className="text-center">Acesso Restrito</AlertDialogTitle>
@@ -360,7 +360,7 @@ export default function CommunityPage() {
           
           {/* Cabeçalho alinhado à esquerda */}
           <div className="text-left space-y-2 mb-8">
-            <h1 className="text-4xl font-bold text-primary dark:text-foreground font-headline">
+            <h1 className="text-4xl font-bold text-primary-strong dark:text-foreground font-headline">
               Posts em Destaque
             </h1>
             <p  className="text-muted-foreground">

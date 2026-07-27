@@ -104,7 +104,7 @@ export default function ContactPage() {
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
                 <div className="flex justify-center mb-4">
                     <div className="bg-primary/10 p-4 rounded-full">
-                        <Mail className="h-10 w-10 text-primary" />
+                        <Mail className="h-10 w-10 text-primary-strong" />
                     </div>
                 </div>
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Entre em Contato</h1>
@@ -121,19 +121,19 @@ export default function ContactPage() {
                         </CardHeader>
                         <CardContent className="space-y-4 text-muted-foreground">
                              <div className="flex items-start gap-4">
-                                <Mail className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                                <Mail className="h-6 w-6 text-primary-strong mt-1 flex-shrink-0" />
                                 <div>
                                     <h3 className="font-semibold text-foreground">Email</h3>
                                     <p>Para dúvidas e suporte geral.</p>
-                                    <a href="mailto:elosplataforma@gmail.com" className="text-primary hover:underline">elosplataforma@gmail.com</a>
+                                    <a href="mailto:elosplataforma@gmail.com" className="text-primary-strong hover:underline">elosplataforma@gmail.com</a>
                                 </div>
                             </div>
                              <div className="flex items-start gap-4">
-                                <Phone className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                                <Phone className="h-6 w-6 text-primary-strong mt-1 flex-shrink-0" />
                                 <div>
                                     <h3 className="font-semibold text-foreground">Telefone</h3>
                                     <p>Disponível em horário comercial.</p>
-                                    <a href="tel:+5511999998888" className="text-primary hover:underline">(11) 99999-8888</a>
+                                    <a href="tel:+5511999998888" className="text-primary-strong hover:underline">(11) 99999-8888</a>
                                 </div>
                             </div>
                         </CardContent>

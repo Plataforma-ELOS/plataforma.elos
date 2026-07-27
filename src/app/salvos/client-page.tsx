@@ -43,7 +43,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
         <div className="container mx-auto px-4 md:px-6 space-y-8">
           <div className="flex flex-col items-center text-center space-y-2">
             <div className="bg-primary/10 p-4 rounded-full">
-              <Bookmark className="h-8 w-8 text-primary" />
+              <Bookmark className="h-8 w-8 text-primary-strong" />
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Itens Salvos</h1>
             <p className="max-w-[700px] text-foreground/80 md:text-xl">
@@ -95,7 +95,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
                           </div>
                         </div>
                         <p className="text-sm text-foreground/90 line-clamp-4">{item.content}</p>
-                        <Link href="/comunidade" className="text-sm text-primary hover:underline">
+                        <Link href="/comunidade" className="text-sm text-primary-strong hover:underline">
                           Ver na Comunidade
                         </Link>
                       </CardContent>

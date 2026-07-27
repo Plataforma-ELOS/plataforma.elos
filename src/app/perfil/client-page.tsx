@@ -130,7 +130,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
               <Link href="/salvos">
                 <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
-                    <Bookmark className="h-6 w-6 text-primary" />
+                    <Bookmark className="h-6 w-6 text-primary-strong" />
                     <span className="font-medium">Itens Salvos</span>
                   </CardContent>
                 </Card>
@@ -138,7 +138,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
               <Link href="/configuracoes">
                 <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
-                    <Settings className="h-6 w-6 text-primary" />
+                    <Settings className="h-6 w-6 text-primary-strong" />
                     <span className="font-medium">Configurações</span>
                   </CardContent>
                 </Card>
@@ -146,7 +146,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
               <Link href="/comunidade/meus-grupos">
                 <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
-                    <Users className="h-6 w-6 text-primary" />
+                    <Users className="h-6 w-6 text-primary-strong" />
                     <span className="font-medium">Meus Grupos</span>
                   </CardContent>
                 </Card>
@@ -154,7 +154,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
               <Link href="/meu-espaco">
                 <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
-                    <HeartHandshake className="h-6 w-6 text-primary" />
+                    <HeartHandshake className="h-6 w-6 text-primary-strong" />
                     <span className="font-medium">Meu Espaço</span>
                   </CardContent>
                 </Card>

@@ -46,7 +46,7 @@ export default function SettingsPageClient({ notifyEmail, notifyPush, profilePub
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex items-center gap-3">
               <div className="bg-primary/10 p-3 rounded-full">
-                <Settings className="h-6 w-6 text-primary" />
+                <Settings className="h-6 w-6 text-primary-strong" />
               </div>
               <h1 className="text-3xl font-bold font-headline">Configurações</h1>
             </div>

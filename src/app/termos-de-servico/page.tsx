@@ -12,7 +12,7 @@ export default function TermsPage() {
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
                 <div className="flex justify-center mb-4">
                     <div className="bg-primary/10 p-4 rounded-full">
-                        <FileText className="h-10 w-10 text-primary" />
+                        <FileText className="h-10 w-10 text-primary-strong" />
                     </div>
                 </div>
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Termos de Serviço</h1>
@@ -22,7 +22,7 @@ export default function TermsPage() {
                  <p className="text-sm text-muted-foreground">Última atualização: 1 de Agosto de 2024</p>
             </div>
 
-            <div className="max-w-3xl mx-auto prose prose-lg text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary">
+            <div className="max-w-3xl mx-auto prose prose-lg text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary-strong">
                 <h2>1. Uso da Plataforma</h2>
                 <p>
                     Você concorda em usar a plataforma Elos apenas para fins legais e de acordo com estes Termos de Serviço. Você é responsável por toda a atividade que ocorre em sua conta.

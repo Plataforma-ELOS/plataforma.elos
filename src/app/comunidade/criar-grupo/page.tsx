@@ -66,7 +66,7 @@ export default function CreateGroupPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-2xl font-headline text-primary flex items-center gap-3">
+                    <CardTitle className="text-2xl font-headline text-primary-strong flex items-center gap-3">
                         <Users className="h-8 w-8" />
                         Criar Novo Grupo
                     </CardTitle>
@@ -125,7 +125,7 @@ export default function CreateGroupPage() {
                                     Entendo e concordo com os regulamentos
                                     </label>
                                     <p className="text-sm text-muted-foreground">
-                                    Você leu e concorda com as <Link href="/termos-de-servico" className="text-primary hover:underline">regras da comunidade</Link> para criação de grupos.
+                                    Você leu e concorda com as <Link href="/termos-de-servico" className="text-primary-strong hover:underline">regras da comunidade</Link> para criação de grupos.
                                     </p>
                                 </div>
                             </div>

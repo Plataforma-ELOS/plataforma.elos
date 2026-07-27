@@ -171,7 +171,7 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
             <Card className="rounded-b-3xl rounded-t-none pt-20 text-center shadow-lg">
                 <CardContent className="p-6 md:p-8">
                     <h1 className="text-3xl font-bold font-headline">{professional.name}</h1>
-                    <p className="text-primary font-semibold mt-1">{professional.specialty}</p>
+                    <p className="text-primary-strong font-semibold mt-1">{professional.specialty}</p>
                     <p className="text-muted-foreground text-sm">{professional.crm}</p>
 
                     <Tabs defaultValue="sobre" className="w-full mt-8">
@@ -206,20 +206,20 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
                                 <CardContent className="p-6 space-y-6">
                                     <h3 className="font-semibold text-lg">Informações de Contato</h3>
                                     <div className="flex items-center gap-4">
-                                        <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <Phone className="h-5 w-5 text-primary-strong flex-shrink-0" />
                                         <a href={`tel:${professional.contact.phone}`} className="text-muted-foreground hover:text-primary">
                                             {professional.contact.phone}
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <Mail className="h-5 w-5 text-primary flex-shrink-0" />
+                                        <Mail className="h-5 w-5 text-primary-strong flex-shrink-0" />
                                         <a href={`mailto:${professional.contact.email}`} className="text-muted-foreground hover:text-primary">
                                             {professional.contact.email}
                                         </a>
                                     </div>
                                     {professional.contact.instagram && (
                                       <div className="flex items-center gap-4">
-                                          <Instagram className="h-5 w-5 text-primary flex-shrink-0" />
+                                          <Instagram className="h-5 w-5 text-primary-strong flex-shrink-0" />
                                           <a href={`https://instagram.com/${professional.contact.instagram.replace(/^@/, '')}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
                                               {professional.contact.instagram}
                                           </a>

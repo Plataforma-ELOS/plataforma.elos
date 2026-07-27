@@ -61,7 +61,7 @@ Fichas completas (com diagnóstico do código já investigado) em
 | 1B.9 | 🟡 Clique em "Próximos eventos" → detalhe | 🟢 | Feito o detalhe; RSVP/`.ics` ficaram de fora |
 | 1B.10 | ✅ Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Scroll já existia; sobrava um `setQuery('')` que limpava o campo |
 | 1B.11 | ✅ Bug: clique em especialidade sem scroll até os resultados | 🟢 | Estado ativo já existia; faltava só o scroll |
-| 1B.12 | Auditoria de contraste do tema claro (WCAG AA) | 🟡 | `docs/design/style-guide.md` nunca foi auditado contra 4.5:1 |
+| 1B.12 | ✅ Auditoria de contraste do tema claro (WCAG AA) | 🟡 | Novo token `--primary-strong` + `--destructive` escurecido; ver `docs/design/style-guide.md` |
 
 ---
 
@@ -105,7 +105,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`. Todos já feitos.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
 - **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.4 (configurações)` → `1B.1 (boas-vindas grupo)` → `1B.6 (notificações)` já feitos. Falta apenas `1B.9 (eventos, depois de 1.4)`.
-- **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro). (`1B.7`/`1B.8` já feitos.)
+- **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro) já feito. (`1B.7`/`1B.8` já feitos.)
 
 ## Documentos relacionados
 - `docs/project/refactor-report.md` — relatório da refatoração/limpeza.

@@ -103,7 +103,7 @@ export default function ProfessionalsPage() {
         {/* Hero Section */}
         <section className="w-full py-16 md:py-24 bg-primary/10 flex flex-col items-center justify-center text-center space-y-4">
             <div className="bg-primary/20 p-4 rounded-full">
-                <Users className="h-10 w-10 text-primary" />
+                <Users className="h-10 w-10 text-primary-strong" />
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl font-headline">
                 Encontre o Profissional Ideal
@@ -132,11 +132,11 @@ export default function ProfessionalsPage() {
                         </p>
                         <ul className="space-y-3 pt-2">
                             <li className="flex items-center gap-3">
-                                <ShieldCheck className="h-6 w-6 text-primary" />
+                                <ShieldCheck className="h-6 w-6 text-primary-strong" />
                                 <span className="font-medium">Verificação de Credenciais e Experiência</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Star className="h-6 w-6 text-primary" />
+                                <Star className="h-6 w-6 text-primary-strong" />
                                 <span className="font-medium">Avaliações Reais da Comunidade</span>
                             </li>
                         </ul>
@@ -168,7 +168,7 @@ export default function ProfessionalsPage() {
                            )}>
                            <h3 className={cn(
                              'font-semibold text-card-foreground text-base group-hover:text-primary transition-colors',
-                             active && 'text-primary'
+                             active && 'text-primary-strong'
                            )}>
                                     {specialty.name}
                                 </h3>
@@ -219,10 +219,10 @@ export default function ProfessionalsPage() {
                                 </Avatar>
                                 <CardHeader className="p-0 flex-grow">
                                     <CardTitle className="text-xl group-hover:text-primary font-bold">{prof.name}</CardTitle>
-                                    <CardDescription className="text-primary font-semibold">{prof.specialty}</CardDescription>
+                                    <CardDescription className="text-primary-strong font-semibold">{prof.specialty}</CardDescription>
                                 </CardHeader>
                                 <div className="mt-auto pt-4">
-                                     <Button variant="link" className="text-primary">Ver Perfil</Button>
+                                     <Button variant="link" className="text-primary-strong">Ver Perfil</Button>
                                 </div>
                             </Card>
                          </Link>
@@ -261,7 +261,7 @@ export default function ProfessionalsPage() {
                                 <div className="p-6 flex flex-col flex-grow">
                                     <CardHeader className="p-0">
                                         <CardTitle className="text-xl group-hover:text-primary font-bold">{clinic.name}</CardTitle>
-                                        <CardDescription className="text-primary font-semibold">{clinic.specialty}</CardDescription>
+                                        <CardDescription className="text-primary-strong font-semibold">{clinic.specialty}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
                                         <p>{clinic.description}</p>

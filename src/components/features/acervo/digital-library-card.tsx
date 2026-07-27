@@ -68,7 +68,7 @@ export default function DigitalLibraryCard({ item, isFavorited, onToggleFavorite
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {item.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="font-normal border-primary text-primary">{tag}</Badge>
+              <Badge key={tag} variant="outline" className="font-normal border-primary text-primary-strong">{tag}</Badge>
             ))}
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function DigitalLibraryCard({ item, isFavorited, onToggleFavorite
                   aria-pressed={isFavorited}
                   onClick={() => onToggleFavorite?.(item.id)}
                 >
-                  <Bookmark className={cn('h-4 w-4', isFavorited && 'fill-primary text-primary')} />
+                  <Bookmark className={cn('h-4 w-4', isFavorited && 'fill-primary text-primary-strong')} />
                   <span className="sr-only">{isFavorited ? 'Remover dos favoritos' : 'Favoritar'}</span>
                 </Button>
             </div>

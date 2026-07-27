@@ -51,7 +51,7 @@ export default function FaqPage() {
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
                 <div className="flex justify-center mb-4">
                     <div className="bg-primary/10 p-4 rounded-full">
-                        <HelpCircle className="h-10 w-10 text-primary" />
+                        <HelpCircle className="h-10 w-10 text-primary-strong" />
                     </div>
                 </div>
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Central de Ajuda</h1>
@@ -84,7 +84,7 @@ export default function FaqPage() {
 
                 <Card className="bg-primary/5 border-primary/20">
                     <CardContent className="flex flex-col items-center text-center gap-4 p-8">
-                        <MessageCircle className="h-8 w-8 text-primary" />
+                        <MessageCircle className="h-8 w-8 text-primary-strong" />
                         <div>
                             <h2 className="font-semibold text-lg">Não encontrou o que procurava?</h2>
                             <p className="text-muted-foreground">Fale direto com a nossa equipe de suporte.</p>

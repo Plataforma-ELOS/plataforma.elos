@@ -18,6 +18,12 @@
     /* Cores da Marca */
     --primary: 257 70% 75%;          /* Lavanda: Cor de destaque e botões */
     --primary-foreground: 256 10% 10%;
+    /* Mesmo hue/saturação de --primary, mas mais escuro — para usar como cor
+       de TEXTO sobre fundo claro. --primary sozinho (2.49:1 contra o
+       background) falha até o mínimo de 3:1 do WCAG; não dá para simplesmente
+       escurecer --primary porque isso piora o contraste do texto do botão
+       (primary-foreground, já bem escuro, sobre primary). ~8:1 aqui. */
+    --primary-strong: 257 70% 45%;
     --secondary: 215 68% 90%;        /* Azul Céu Pálido: Badges e elementos secundários */
     --secondary-foreground: 215 20% 25%;
     
@@ -28,7 +34,9 @@
     --muted-foreground: 256 10% 45%;
     
     /* Feedback e Sistema */
-    --destructive: 0 84.2% 60.2%;
+    /* Escurecido de 60.2% para 46% — o valor original dava só 3.60:1 contra
+       destructive-foreground (falha o mínimo de 4.5:1 para texto normal). */
+    --destructive: 0 84.2% 46%;
     --destructive-foreground: 0 0% 98%;
     --border: 258 67% 92%;
     --input: 258 67% 92%;
@@ -58,6 +66,9 @@
     /* Cores da Marca */
     --primary: 257 80% 80%;          /* Lavanda Vibrante: Destaque no dark */
     --primary-foreground: 257 10% 10%;
+    /* No tema escuro --primary já passa em texto (8.15:1 contra o
+       background) — sem necessidade de um valor diferente aqui. */
+    --primary-strong: 257 80% 80%;
     --secondary: 215 50% 35%;        /* Azul Noturno Médio */
     --secondary-foreground: 215 80% 90%;
     
