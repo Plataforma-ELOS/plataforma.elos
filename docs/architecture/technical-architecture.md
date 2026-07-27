@@ -6,6 +6,8 @@ Este documento fornece uma análise técnica das telas da aplicação, servindo 
 
 Padrão de acesso a dados predominante: a maioria das telas é **Client Component** que busca via `createClient()` (browser client, `src/lib/supabase/client.ts`) dentro de `useEffect`. As telas mais recentes (`/perfil`, `/salvos`, `/configuracoes`, `/notificacoes`, `/comunidade/grupos/[id]`, `/profissionais/[id]`) seguem o padrão **Server Component + client-page.tsx**: a página busca os dados no servidor (`createClient(await cookies())`, `src/lib/supabase/server.ts`) e repassa como props para um componente `"use client"` que cuida da interação. Migrar as telas mais antigas para esse segundo padrão é o item `3.1`/`E1` do roadmap.
 
+`src/app/loading.tsx` e `src/app/error.tsx` (raiz) dão fallback global de carregamento/erro para qualquer rota sem um boundary mais específico — cobre as telas Server Component acima sem precisar de um arquivo por rota.
+
 ---
 
 ## 1. Hub Principal (`/home`)
@@ -108,7 +110,11 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
     "pattern": "Client Component com fetch em useEffect (createClient() do browser). Posts trazem author/likes/saves/comments num único select aninhado."
   },
   "state_management": {
-    "local": ["posts (useState, recarregado após criar post)", "events (useState, só futuros: starts_at >= now())"]
+    "local": ["posts (useState, recarregado após criar post)", "events (useState, só futuros: starts_at >= now())", "eventoSelecionado (Dialog de detalhe do evento)"]
+  },
+  "post_card": {
+    "editar": "editarPost (community.ts) — Dialog com Textarea pré-preenchida, só visível para o autor (posts_update_own via RLS).",
+    "compartilhar": "src/lib/share.ts (compartilhar) — Web Share API com fallback de clipboard, também usado em profissionais/[id]."
   }
 }
 ```
@@ -145,7 +151,7 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
     "mapper": "src/lib/data/professionals.ts (mapProfessionalDetail, mapClinicDetail, computeReviewSummary)",
     "actions": "criarAvaliacao em src/app/actions/reviews.ts"
   },
-  "note": "[id] é Server Component: busca em professionals OU clinics (o que existir) + reviews, e repassa para o client-page. Botão 'Agendar consulta' foi removido (decisão de produto, item U12)."
+  "note": "[id] é Server Component: busca em professionals OU clinics (o que existir) + reviews, e repassa para o client-page. Botão 'Agendar consulta' foi removido (decisão de produto, item U12). Botão 'Compartilhar' usa src/lib/share.ts."
 }
 ```
 

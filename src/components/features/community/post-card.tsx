@@ -5,8 +5,16 @@ import { useState, useContext } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { ThumbsUp, MessageCircle, Share2, MoreHorizontal, Bookmark, Edit, Trash2 } from "lucide-react";
-import FeatureInProgress from "@/components/common/feature-in-progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +23,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AuthContext } from "@/components/common/providers";
 import type { User } from "@/components/common/providers";
+import { useToast } from "@/hooks/use-toast";
+import { compartilhar } from "@/lib/share";
 import CommentSection from "./comment-section";
 import type { Comment } from "./comment-section";
 
@@ -48,16 +58,46 @@ type PostCardProps = {
   onToggleLike?: (postId: string) => void;
   /** Comentar de verdade (Server Action). Se omitido, cai no comportamento antigo (só local). */
   onAddComment?: (postId: string, content: string) => void;
+  /** Editar de verdade (Server Action). */
+  onEditPost?: (postId: string, content: string) => Promise<{ ok: boolean; erro?: string }>;
 };
 
-export default function PostCard({ post, onToggleSave, onDelete, currentUser, onToggleLike, onAddComment }: PostCardProps) {
+export default function PostCard({ post, onToggleSave, onDelete, currentUser, onToggleLike, onAddComment, onEditPost }: PostCardProps) {
   const [likes, setLikes] = useState(post.likes);
   const [isLiked, setIsLiked] = useState(post.likedByMe ?? false);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const [commentCount, setCommentCount] = useState(post.commentCount);
+  const [content, setContent] = useState(post.content);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(post.content);
+  const [salvandoEdicao, setSalvandoEdicao] = useState(false);
+  const { toast } = useToast();
 
   const isOwner = currentUser?.email === post.author.email;
+
+  const handleSalvarEdicao = async () => {
+    setSalvandoEdicao(true);
+    const { ok, erro } = (await onEditPost?.(post.id, editText)) ?? { ok: false };
+    setSalvandoEdicao(false);
+
+    if (!ok) {
+      toast({ variant: 'destructive', title: 'Não foi possível salvar', description: erro });
+      return;
+    }
+
+    setContent(editText);
+    setIsEditing(false);
+  };
+
+  const handleShare = async () => {
+    const resultado = await compartilhar(window.location.href, `Post de ${post.author.name} na Comunidade E.L.O.S`);
+    if (resultado === 'copied') {
+      toast({ title: 'Link copiado!', description: 'Cole onde quiser compartilhar.' });
+    } else if (resultado === 'failed') {
+      toast({ variant: 'destructive', title: 'Não foi possível compartilhar' });
+    }
+  };
 
   const handleLike = () => {
     // Atualização otimista na tela...
@@ -111,12 +151,10 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <FeatureInProgress>
-                      <DropdownMenuItem>
-                        <Edit className="mr-2 h-4 w-4" />
-                        <span>Editar Post</span>
-                      </DropdownMenuItem>
-                    </FeatureInProgress>
+                    <DropdownMenuItem onClick={() => { setEditText(content); setIsEditing(true); }}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      <span>Editar Post</span>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onDelete(post.id)} className="text-destructive focus:text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
                       <span>Excluir Post</span>
@@ -126,9 +164,31 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
               )}
             </div>
           </div>
-          <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{post.content}</p>
+          <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{content}</p>
         </div>
       </div>
+
+      <Dialog open={isEditing} onOpenChange={setIsEditing}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar Post</DialogTitle>
+          </DialogHeader>
+          <Textarea
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            rows={4}
+            maxLength={5000}
+          />
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">Cancelar</Button>
+            </DialogClose>
+            <Button onClick={handleSalvarEdicao} disabled={salvandoEdicao || editText.trim().length < 2}>
+              {salvandoEdicao ? 'Salvando...' : 'Salvar'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <div className="mt-4 flex justify-between items-center text-muted-foreground">
         <div className="flex gap-1 text-sm items-center">
             <ThumbsUp className="h-4 w-4" />
@@ -148,12 +208,10 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
             Comentar
         </Button>
         
-        <FeatureInProgress>
-          <Button variant="ghost" className="w-full">
-            <Share2 className="h-5 w-5 mr-2" />
-            Compartilhar
-          </Button>
-        </FeatureInProgress>
+        <Button variant="ghost" className="w-full" onClick={handleShare}>
+          <Share2 className="h-5 w-5 mr-2" />
+          Compartilhar
+        </Button>
       </div>
       
       {showComments && (

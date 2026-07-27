@@ -28,6 +28,26 @@ export async function criarPost(conteudo: string): Promise<Resultado> {
   return { ok: true };
 }
 
+export async function editarPost(postId: string, conteudo: string): Promise<Resultado> {
+  const { supabase, user } = await contexto();
+  if (!user) return { ok: false, erro: PRECISA_LOGIN };
+
+  const texto = conteudo.trim();
+  if (texto.length < 2) return { ok: false, erro: 'Escreva alguma coisa antes de salvar.' };
+  if (texto.length > 5000) return { ok: false, erro: 'Texto muito longo (máximo 5000 caracteres).' };
+
+  const { error } = await supabase
+    .from('posts')
+    .update({ content: texto })
+    .eq('id', postId)
+    .eq('author_id', user.id);
+
+  if (error) return { ok: false, erro: 'Não foi possível salvar as alterações.' };
+
+  revalidatePath('/comunidade');
+  return { ok: true };
+}
+
 export async function excluirPost(postId: string): Promise<Resultado> {
   const { supabase, user } = await contexto();
   if (!user) return { ok: false, erro: PRECISA_LOGIN };

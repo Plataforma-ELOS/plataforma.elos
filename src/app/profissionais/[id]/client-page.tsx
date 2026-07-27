@@ -7,7 +7,6 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram, Edit2, Check } from 'lucide-react';
 import Link from 'next/link';
-import FeatureInProgress from '@/components/common/feature-in-progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -20,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
 import { criarAvaliacao } from '@/app/actions/reviews';
+import { compartilhar } from '@/lib/share';
 import type { ProfessionalDetailData, ReviewData, ReviewSummary } from '@/lib/data/professionals';
 
 function LeaveReviewDialog({
@@ -130,6 +130,17 @@ type ProfessionalProfileClientProps = {
 };
 
 export default function ProfessionalProfileClient({ professional, reviews, reviewSummary, entityType }: ProfessionalProfileClientProps) {
+  const { toast } = useToast();
+
+  const handleShare = async () => {
+    const resultado = await compartilhar(window.location.href, `${professional.name} — Plataforma E.L.O.S`);
+    if (resultado === 'copied') {
+      toast({ title: 'Link copiado!', description: 'Cole onde quiser compartilhar.' });
+    } else if (resultado === 'failed') {
+      toast({ variant: 'destructive', title: 'Não foi possível compartilhar' });
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-muted/40">
       <HeaderSecondary />
@@ -143,11 +154,9 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
                       Voltar
                     </Link>
                 </Button>
-                <FeatureInProgress>
-                    <Button variant="ghost" size="icon">
-                        <Share2 className="w-5 h-5 text-muted-foreground" />
-                    </Button>
-                </FeatureInProgress>
+                <Button variant="ghost" size="icon" onClick={handleShare}>
+                    <Share2 className="w-5 h-5 text-muted-foreground" />
+                </Button>
              </div>
 
             <div className="relative">

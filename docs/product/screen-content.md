@@ -139,13 +139,14 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 
 ### Feed Principal (`/comunidade`)
 *   **Título:** "Posts em Destaque", "As conversas mais populares da comunidade no momento.".
-*   **PostCard:** "Curtir", "Comentar", "Compartilhar", "Editar Post", "Excluir Post".
+*   **PostCard:** "Curtir", "Comentar", "Compartilhar" (Web Share API com fallback de copiar link), "Editar Post" (modal com Textarea pré-preenchida, só para o autor), "Excluir Post".
 *   **Contador:** "X comentários", "X curtidas".
 *   **CommentSection:** "Escreva um comentário...", "Publicar", "Agora".
 *   **Sidebar:**
-    *   "Próximos Eventos" (dados reais da tabela `events`, só futuros), "Ver todos os eventos", "Ver menos eventos", "Criar Evento".
+    *   "Próximos Eventos" (dados reais da tabela `events`, só futuros, clicáveis → modal de detalhe), "Ver todos os eventos", "Ver menos eventos", "Criar Evento".
     *   "Meus Grupos", "Ver meus grupos", "Criar um Grupo".
 *   **Modal Criar Evento:** "Criar Evento", "Divulgue um evento para a comunidade.", "Título", "Descrição", "Data e hora", "Tipo" (Online, Presencial), "Local" (só quando Presencial), "Cancelar", "Criar Evento".
+*   **Modal Detalhe do Evento:** título do evento, badge do tipo, data/hora, local (se presencial), descrição completa, "Fechar".
 *   **Acesso Restrito (Modal):** "Acesso Restrito", "Para acessar esta funcionalidade e interagir com a comunidade, você precisa fazer login ou criar uma conta.", "Agora não", "Fazer Login".
 
 ### Meus Grupos (`/comunidade/meus-grupos`)
@@ -200,7 +201,7 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Cards Clínicas:** "Clínicas Parceiras", "Espaços multidisciplinares...", "Ver Detalhes da Clínica".
 
 ### Perfil do Profissional (`/profissionais/[id]`)
-*   **Navegação:** "Voltar", "Compartilhar" (SR-only).
+*   **Navegação:** "Voltar", ícone "Compartilhar" (Web Share API com fallback de copiar link).
 *   **Identificação:** Nome, Especialidade, CRM/CRP/CRFa.
 *   **Tabs:** "Sobre", "Contato", "Avaliações".
 *   **Sobre:** "Apresentação", "Experiências" (Lista), "Áreas de atuação" (Badges).

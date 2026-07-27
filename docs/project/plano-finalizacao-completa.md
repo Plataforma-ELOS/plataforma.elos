@@ -222,7 +222,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F2] Editar post e comentário
+### [F2] ✅ Editar post e comentário
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** G5
 - **Relevância:** Hoje "Editar Post" é `FeatureInProgress` em `post-card.tsx` (linha ~114). Excluir já funciona.
 
@@ -232,11 +232,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. Atualização otimista + `revalidatePath('/comunidade')`.
 
 #### ✅ Critério de aceite
-- [ ] Autor edita o próprio post; muda no feed. Não-autor não vê a opção.
+- [x] Autor edita o próprio post; muda no feed. Não-autor não vê a opção.
+
+- **Implementado em 2026-07-27:** `editarPost(postId, conteudo)` em `src/app/actions/community.ts` (RLS `posts_update_own` já cobria; `.eq('author_id', user.id)` como defesa em profundidade, mesmo padrão de outras actions do arquivo). `post-card.tsx`: `FeatureInProgress` trocado por `Dialog` com `Textarea` pré-preenchida; atualização otimista do conteúdo local após salvar. Escopo real era só o post (o título da ficha menciona comentário, mas não havia stub de edição de comentário no código — `comment-section.tsx` nunca teve esse `FeatureInProgress`).
 
 ---
 
-### [F3] Compartilhar (post e perfil profissional)
+### [F3] ✅ Compartilhar (post e perfil profissional)
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
 - **Relevância:** Botões "Compartilhar" em `post-card.tsx` e `profissionais/[id]/client-page.tsx` são stub.
 
@@ -245,7 +247,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Ligar os botões (remover `FeatureInProgress`).
 
 #### ✅ Critério de aceite
-- [ ] Em mobile abre o share nativo; em desktop copia o link e avisa.
+- [x] Em mobile abre o share nativo; em desktop copia o link e avisa.
+
+- **Implementado em 2026-07-27:** `src/lib/share.ts` (`compartilhar`, retorna `'shared'|'copied'|'cancelled'|'failed'` — cancelamento do share nativo não dispara toast de erro). Ligado em `post-card.tsx` (compartilha a URL da `/comunidade` com o nome do autor no título) e `profissionais/[id]/client-page.tsx` (nome do profissional/clínica no título).
 
 ---
 
@@ -396,7 +400,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U9] Clique em "Próximos eventos" → detalhe/modal
+### [U9] 🟡 Clique em "Próximos eventos" → detalhe/modal
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** `F1` (eventos ainda são mock)
 - **Relevância:** Os cards de evento hoje vêm de `allCommunityEvents` (mock, sem `onClick`). Não faz sentido implementar o clique antes de `F1` trazer eventos reais — ficaria abrindo detalhe de dado fictício.
 
@@ -405,7 +409,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Botão "Adicionar à agenda" (gerar `.ics`) e "Confirmar presença" (nova tabela `event_attendees` ou reaproveitar `group_members` como padrão).
 
 #### ✅ Critério de aceite
-- [ ] Clique no card abre detalhe com dado real; confirmar presença registra o usuário.
+- [x] Clique no card abre detalhe com dado real.
+- [ ] Confirmar presença registra o usuário (não implementado — ver nota).
+
+- **Implementado parcialmente em 2026-07-27:** cada evento na sidebar de `/comunidade` virou um botão que abre um `Dialog` com tipo (badge), data/hora, local (se presencial) e descrição completa — usa os dados reais já trazidos por `F1`. **Fora de escopo desta rodada:** "Adicionar à agenda" (`.ics`) e "Confirmar presença" (precisaria de tabela nova `event_attendees` e é uma feature de RSVP, não só um detalhe de clique) — ficam para uma entrega futura se houver demanda.
 
 ---
 
@@ -493,12 +500,14 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q4] Estados de erro/carregamento por rota
+### [Q4] ✅ Estados de erro/carregamento por rota
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** meio dia · **Dependências:** —
 - **Relevância:** Hoje só há flags `carregando` manuais. `error.tsx`/`loading.tsx` do App Router dão fallback consistente.
 
 #### ✅ Critério de aceite
-- [ ] Cada rota de dados tem `loading` e `error` boundary.
+- [x] Cada rota de dados tem `loading` e `error` boundary.
+
+- **Implementado em 2026-07-27:** `src/app/loading.tsx` (skeleton genérico) e `src/app/error.tsx` (`"use client"`, com botão "Tentar novamente" chamando `reset()`) na raiz — o App Router do Next.js propaga esses boundaries para toda rota abaixo que não tenha um mais específico, cobrindo as telas Server Component (`/perfil`, `/salvos`, `/configuracoes`, `/notificacoes`, `/comunidade/grupos/[id]`, `/profissionais/[id]`) sem duplicar arquivo por rota. As telas Client Component (que buscam via `useEffect`) já tinham seus próprios estados de "Carregando..." locais — não foi alterado.
 
 ---
 

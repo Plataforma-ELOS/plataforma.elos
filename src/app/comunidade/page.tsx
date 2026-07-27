@@ -5,7 +5,8 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, Plus, BookOpen, LogIn } from 'lucide-react';
+import { Users, Plus, BookOpen, LogIn, Calendar, MapPin } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import PostCard, { Post } from '@/components/features/community/post-card';
 import CreatePost from '@/components/features/community/create-post';
 import Link from 'next/link';
@@ -23,7 +24,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/common/providers';
 import { createClient } from '@/lib/supabase/client';
-import { alternarCurtida, alternarSalvo, comentar, criarPost, excluirPost } from '@/app/actions/community';
+import { alternarCurtida, alternarSalvo, comentar, criarPost, editarPost, excluirPost } from '@/app/actions/community';
 import { criarEvento } from '@/app/actions/events';
 import { mapEventRow, type EventData, type EventRow } from '@/lib/data/events';
 import {
@@ -187,6 +188,7 @@ export default function CommunityPage() {
   const [carregando, setCarregando] = useState(true);
   const [showAllEvents, setShowAllEvents] = useState(false);
   const [events, setEvents] = useState<EventData[]>([]);
+  const [eventoSelecionado, setEventoSelecionado] = useState<EventData | null>(null);
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
@@ -300,6 +302,14 @@ export default function CommunityPage() {
     excluirPost(postId);
   };
 
+  const handleEditPost = async (postId: string, content: string) => {
+    const resultado = await editarPost(postId, content);
+    if (resultado.ok) {
+      setPosts((atual) => atual.map((post) => (post.id === postId ? { ...post, content } : post)));
+    }
+    return resultado;
+  };
+
   const handleCreatePost = async (content: string) => {
     const texto = content.trim();
     if (!texto) return;
@@ -334,6 +344,7 @@ export default function CommunityPage() {
             onDelete={handleDeletePost}
             onToggleLike={handleToggleLike}
             onAddComment={handleAddComment}
+            onEditPost={handleEditPost}
             currentUser={user}
           />
         ))}
@@ -386,10 +397,15 @@ export default function CommunityPage() {
                     <p className="text-sm text-muted-foreground">Nenhum evento agendado no momento.</p>
                   ) : (
                     (showAllEvents ? events : events.slice(0, 2)).map((event) => (
-                      <div key={event.id}>
+                      <button
+                        key={event.id}
+                        type="button"
+                        className="block w-full text-left rounded-md -mx-2 px-2 py-1 hover:bg-muted transition-colors"
+                        onClick={() => setEventoSelecionado(event)}
+                      >
                         <h4 className="font-semibold text-sm">{event.title}</h4>
                         <p className="text-xs text-muted-foreground">{event.date}</p>
-                      </div>
+                      </button>
                     ))
                   )}
                   {events.length > 2 && (
@@ -450,6 +466,34 @@ export default function CommunityPage() {
         </div>
       </main>
       <Footer />
+
+      <Dialog open={!!eventoSelecionado} onOpenChange={(open) => !open && setEventoSelecionado(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{eventoSelecionado?.title}</DialogTitle>
+            <DialogDescription className="sr-only">Detalhes do evento</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Badge variant="secondary">{eventoSelecionado?.type}</Badge>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4" />
+              <span>{eventoSelecionado?.date}</span>
+            </div>
+            {eventoSelecionado?.location && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin className="h-4 w-4" />
+                <span>{eventoSelecionado.location}</span>
+              </div>
+            )}
+            <p className="text-sm text-foreground/90 whitespace-pre-wrap">{eventoSelecionado?.description}</p>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">Fechar</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
