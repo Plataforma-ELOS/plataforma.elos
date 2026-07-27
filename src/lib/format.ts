@@ -10,3 +10,14 @@ export function formatarDataPtBr(iso: string | null): string {
     timeZone: 'America/Sao_Paulo',
   }).replace(/^(\d+) de (\w)/, (_, d, m) => `${d} de ${m.toUpperCase()}`);
 }
+
+export function formatarDataHoraPtBr(iso: string | null): string {
+  if (!iso) return '';
+  const data = formatarDataPtBr(iso);
+  const hora = new Date(iso).toLocaleTimeString('pt-BR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'America/Sao_Paulo',
+  });
+  return `${data} - ${hora}`;
+}

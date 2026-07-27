@@ -35,7 +35,7 @@ Fechar features meio-prontas e stubs `FeatureInProgress`.
 | 1.1 | ✅ Favoritar acervo (`library_favorites` já existe; botão hoje é stub) | 🟡 | Espelhar `alternarSalvo` |
 | 1.2 | Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
 | 1.3 | Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
-| 1.4 | Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
+| 1.4 | ✅ Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
 | 1.5 | ~~Agendar consulta~~ — decisão revertida: **remover** o botão em vez de construir o fluxo | 🟢 | Ver `1.7` |
 | 1.6 | Área do cuidador — `dependents` e `caregiver_journal` existem, sem UI | 🔴 | RLS já pronta (dono) |
 | 1.7 | ✅ Remover "Agendar consulta" dos cards/perfis de profissionais e clínicas | 🟢 | `U12` no guia mestre |

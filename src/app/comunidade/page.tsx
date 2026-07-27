@@ -24,36 +24,22 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/common/providers';
 import { createClient } from '@/lib/supabase/client';
 import { alternarCurtida, alternarSalvo, comentar, criarPost, excluirPost } from '@/app/actions/community';
-
-// Eventos ainda não têm tela de cadastro própria — mantidos como conteúdo
-// fixo por enquanto. A tabela "events" já existe no banco para quando
-// alguém quiser ligar isso de verdade.
-const allCommunityEvents = [
-  {
-    title: 'Workshop Online: Introdução à Comunicação Alternativa',
-    date: '25 de Agosto de 2024 - 19:00',
-    description: 'Aprenda os conceitos básicos e as primeiras estratégias para implementar a comunicação alternativa e aumentativa (CAA) no dia a dia. Evento gratuito e aberto a todos.',
-    type: 'Online',
-  },
-  {
-    title: 'Roda de Conversa: Lidando com a Seletividade Alimentar',
-    date: '02 de Setembro de 2024 - 18:00',
-    description: 'Um encontro para troca de experiências e dicas práticas sobre como ampliar o repertório alimentar das crianças com TEA, com mediação de uma nutricionista convidada.',
-    type: 'Online',
-  },
-  {
-    title: 'Encontro no Parque: Piquenique Inclusivo em São Paulo',
-    date: '14 de Setembro de 2024 - 10:00',
-    description: 'Vamos nos encontrar para uma manhã de socialização e diversão ao ar livre no Parque Ibirapuera. Traga sua toalha, um lanche e venha fazer parte!',
-    type: 'Presencial',
-  },
-  {
-    title: 'Palestra: Direitos da Pessoa com TEA no Mercado de Trabalho',
-    date: '20 de Setembro de 2024 - 20:00',
-    description: 'Conheça a legislação e tire suas dúvidas sobre a inclusão de pessoas com autismo no ambiente profissional.',
-    type: 'Online',
-  },
-];
+import { criarEvento } from '@/app/actions/events';
+import { mapEventRow, type EventData, type EventRow } from '@/lib/data/events';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
 
 type PostRow = {
   id: string;
@@ -110,12 +96,119 @@ function LoginRequiredDialog({ children, onConfirm }: { children: React.ReactNod
   );
 }
 
+function CreateEventDialog({ onCreated }: { onCreated: () => void }) {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [startsAt, setStartsAt] = useState('');
+  const [type, setType] = useState<'online' | 'presencial'>('online');
+  const [location, setLocation] = useState('');
+  const [criando, setCriando] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setCriando(true);
+    const { ok, erro } = await criarEvento(title, description, startsAt, type, location);
+    setCriando(false);
+
+    if (!ok) {
+      toast({ variant: 'destructive', title: 'Não foi possível criar o evento', description: erro });
+      return;
+    }
+
+    toast({ title: 'Evento criado com sucesso!' });
+    setTitle('');
+    setDescription('');
+    setStartsAt('');
+    setLocation('');
+    setOpen(false);
+    onCreated();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setOpen(true)}>
+        <Plus className="mr-2 h-4 w-4" />
+        Criar Evento
+      </Button>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Criar Evento</DialogTitle>
+          <DialogDescription>Divulgue um evento para a comunidade.</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="event-title">Título</Label>
+              <Input id="event-title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="event-description">Descrição</Label>
+              <Textarea id="event-description" value={description} onChange={(e) => setDescription(e.target.value)} rows={3} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="event-starts-at">Data e hora</Label>
+              <Input id="event-starts-at" type="datetime-local" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="event-type">Tipo</Label>
+              <Select value={type} onValueChange={(v) => setType(v as 'online' | 'presencial')}>
+                <SelectTrigger id="event-type">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="online">Online</SelectItem>
+                  <SelectItem value="presencial">Presencial</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {type === 'presencial' && (
+              <div className="space-y-2">
+                <Label htmlFor="event-location">Local</Label>
+                <Input id="event-location" value={location} onChange={(e) => setLocation(e.target.value)} required />
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">Cancelar</Button>
+            </DialogClose>
+            <Button type="submit" disabled={criando}>{criando ? 'Criando...' : 'Criar Evento'}</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function CommunityPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [showAllEvents, setShowAllEvents] = useState(false);
+  const [events, setEvents] = useState<EventData[]>([]);
   const router = useRouter();
   const { user } = useContext(AuthContext);
+
+  const carregarEventos = useCallback(async () => {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('events')
+      .select('id, title, description, starts_at, type, location')
+      .gte('starts_at', new Date().toISOString())
+      .order('starts_at', { ascending: true });
+
+    if (error) {
+      console.error('[comunidade] erro ao buscar eventos:', error.message);
+      return;
+    }
+
+    setEvents(((data ?? []) as unknown as EventRow[]).map(mapEventRow));
+  }, []);
+
+  useEffect(() => {
+    carregarEventos();
+  }, [carregarEventos]);
 
   const carregarPosts = useCallback(async () => {
     const supabase = createClient();
@@ -289,15 +382,31 @@ export default function CommunityPage() {
                   <CardTitle className="text-xl">Próximos Eventos</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {(showAllEvents ? allCommunityEvents : allCommunityEvents.slice(0, 2)).map((event, index) => (
-                    <div key={index}>
-                      <h4 className="font-semibold text-sm">{event.title}</h4>
-                      <p className="text-xs text-muted-foreground">{event.date}</p>
-                    </div>
-                  ))}
-                  <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setShowAllEvents(!showAllEvents)}>
-                    {showAllEvents ? 'Ver menos eventos' : 'Ver todos os eventos'}
-                  </Button>
+                  {events.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Nenhum evento agendado no momento.</p>
+                  ) : (
+                    (showAllEvents ? events : events.slice(0, 2)).map((event) => (
+                      <div key={event.id}>
+                        <h4 className="font-semibold text-sm">{event.title}</h4>
+                        <p className="text-xs text-muted-foreground">{event.date}</p>
+                      </div>
+                    ))
+                  )}
+                  {events.length > 2 && (
+                    <Button variant="outline" size="sm" className="w-full mt-2" onClick={() => setShowAllEvents(!showAllEvents)}>
+                      {showAllEvents ? 'Ver menos eventos' : 'Ver todos os eventos'}
+                    </Button>
+                  )}
+                  {user ? (
+                    <CreateEventDialog onCreated={carregarEventos} />
+                  ) : (
+                    <LoginRequiredDialog onConfirm={handleProtectedAction}>
+                      <Button variant="outline" size="sm" className="w-full mt-2">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Criar Evento
+                      </Button>
+                    </LoginRequiredDialog>
+                  )}
                 </CardContent>
               </Card>
 
