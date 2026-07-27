@@ -249,7 +249,18 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 
 ---
 
-## 9. Informações e Suporte
+## 9. Administração
+
+### Painel Administrativo (`/admin`)
+*   **Acesso:** só usuários com `role = 'admin'`; sem link em nenhum menu, só por URL direta. Quem não é admin é redirecionado silenciosamente para `/home`.
+*   **Header:** "Painel Administrativo", "Verificações e itens do acervo pendentes de aprovação.".
+*   **Abas:** "Verificações", "Acervo".
+*   **Verificações:** lista profissionais e clínicas com verificação pendente (nome, especialidade, badge do tipo), botões "Aprovar"/"Rejeitar". Empty state: "Nenhuma verificação pendente no momento.".
+*   **Acervo:** lista itens sugeridos ainda não aprovados (título, tipo, autor, link de preview), botões "Aprovar"/"Rejeitar". Empty state: "Nenhum item sugerido pendente no momento.".
+
+---
+
+## 10. Informações e Suporte
 
 ### Fale Conosco (`/fale-conosco`)
 *   **Header:** "Entre em Contato", "Tem alguma dúvida, sugestão ou precisa de suporte?".

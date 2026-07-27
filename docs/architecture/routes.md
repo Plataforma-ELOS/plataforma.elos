@@ -40,6 +40,9 @@ Este documento lista todas as rotas e páginas disponíveis na aplicação, orga
 - `/configuracoes` : Tema, tamanho do texto, preferências de notificação (e-mail/push) e privacidade do perfil.
 - `/notificacoes` : Central de notificações (curtidas e comentários em posts próprios), com contagem de não lidas em tempo real no sino do header.
 
+## 🛡️ Administração
+- `/admin` : Painel administrativo — verificação de profissionais/clínicas pendentes e aprovação de itens sugeridos ao Acervo Digital. Acesso restrito a `role = 'admin'`; sem link em nenhum menu, só por URL direta (redireciona silenciosamente para `/home` se o usuário não for admin).
+
 ## ℹ️ Informações e Suporte
 - `/fale-conosco` : Canal direto com a equipe via e-mail.
 - `/faq` : Central de Ajuda — perguntas frequentes sobre TEA e sobre a plataforma, com busca por palavra-chave e CTA para o Fale Conosco.
