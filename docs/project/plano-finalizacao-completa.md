@@ -204,7 +204,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F1] Eventos reais na comunidade
+### [F1] ✅ Eventos reais na comunidade
 - **Categoria:** Código Next.js + Supabase · **Prio:** P1 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** G5
 - **Relevância:** A sidebar da `/comunidade` usa `allCommunityEvents` (mock); a tabela `events` existe e está vazia. É a última tela com mock.
 
@@ -215,8 +215,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 4. (RLS já pronta: leitura pública, escrita do dono/admin.)
 
 #### ✅ Critério de aceite
-- [ ] Sidebar mostra eventos do banco; criar um evento reflete na lista.
-- [ ] `allCommunityEvents` removido; `typecheck`/`build` verdes.
+- [x] Sidebar mostra eventos do banco; criar um evento reflete na lista.
+- [x] `allCommunityEvents` removido; `typecheck`/`build` verdes.
+
+- **Implementado em 2026-07-27:** `src/lib/data/events.ts` (`mapEventRow`, mapper puro) + `src/app/actions/events.ts` (`criarEvento`, mesmo padrão de `criarGrupo`, RLS já permite qualquer autenticado inserir com `created_by = auth.uid()`). `src/app/comunidade/page.tsx`: mock `allCommunityEvents` removido, fetch real via `createClient()` (mesmo padrão client-side já usado nesse arquivo para posts), filtrando só eventos futuros (`starts_at >= now()`), com `Dialog` "Criar Evento" na sidebar (só para logados, com `LoginRequiredDialog` para deslogados). Nova função `formatarDataHoraPtBr` em `src/lib/format.ts` (data + hora, com teste). Fora de escopo: `1B.9` (clique no evento → detalhe) não incluído.
 
 ---
 

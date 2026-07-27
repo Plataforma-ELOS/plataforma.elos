@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatarDataPtBr } from '@/lib/format';
+import { formatarDataPtBr, formatarDataHoraPtBr } from '@/lib/format';
 
 describe('formatarDataPtBr', () => {
   it('formata um ISO em data pt-BR com mês capitalizado', () => {
@@ -18,5 +18,15 @@ describe('formatarDataPtBr', () => {
 
   it('retorna string vazia para string vazia', () => {
     expect(formatarDataPtBr('')).toBe('');
+  });
+});
+
+describe('formatarDataHoraPtBr', () => {
+  it('formata data e hora juntas', () => {
+    expect(formatarDataHoraPtBr('2024-08-25T22:00:00Z')).toBe('25 de Agosto de 2024 - 19:00');
+  });
+
+  it('retorna string vazia para null', () => {
+    expect(formatarDataHoraPtBr(null)).toBe('');
   });
 });
