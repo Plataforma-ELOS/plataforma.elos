@@ -1,7 +1,7 @@
 # Roadmap — Plataforma E.L.O.S
 
 Planejamento de próximos passos, ancorado no estado real do código.
-Última atualização: 2026-07-24 (branch `claude/new-session-8sdpjq`).
+Última atualização: 2026-07-27 (branch `claude/new-session-8sdpjq`).
 
 ## Estado atual (baseline)
 Next.js 15 + shadcn/ui + Supabase, deploy Vercel. `typecheck` ✅, `build` ✅
@@ -36,8 +36,32 @@ Fechar features meio-prontas e stubs `FeatureInProgress`.
 | 1.2 | Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
 | 1.3 | Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
 | 1.4 | Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
-| 1.5 | Agendar consulta (stub em `profissionais/[id]`) | 🟠 | Decisão de produto |
+| 1.5 | ~~Agendar consulta~~ — decisão revertida: **remover** o botão em vez de construir o fluxo | 🟢 | Ver `1.7` |
 | 1.6 | Área do cuidador — `dependents` e `caregiver_journal` existem, sem UI | 🔴 | RLS já pronta (dono) |
+| 1.7 | Remover "Agendar consulta" dos cards/perfis de profissionais e clínicas | 🟢 | `U12` no guia mestre |
+
+---
+
+## Horizonte 1B — Telas de UI/UX faltantes e correções de interação
+Levantamento de produto de 2026-07-27: 6 telas que ainda não existem, 3 fluxos
+de clique a corrigir, 2 bugs de feedback visual e uma auditoria de acessibilidade.
+Fichas completas (com diagnóstico do código já investigado) em
+`docs/project/plano-finalizacao-completa.md`, itens `U1`–`U13`.
+
+| # | Ação | Esforço | Notas |
+|---|---|---|---|
+| 1B.1 | Tela de boas-vindas ao entrar em grupo | 🟠 | Precisa criar `/comunidade/grupos/[id]` (não existe) |
+| 1B.2 | Perfil do usuário (`/perfil`) | 🟡 | Dado já existe em `profiles` |
+| 1B.3 | Itens salvos (`/salvos`) | 🟡 | Unifica `post_saves` + `library_favorites`, ambos já existentes |
+| 1B.4 | Configurações (`/configuracoes`) | 🟡 | Tema/fonte já funcionam hoje (dropdown do header); só falta tela dedicada |
+| 1B.5 | Central de Ajuda | 🟢 | `/faq` já existe — é evolução, não tela nova |
+| 1B.6 | Central de notificações (`/notificacoes`) | 🔴 | Mesmo escopo de `E7`; sem tabela nem UI |
+| 1B.7 | Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
+| 1B.8 | Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existe, só não é usado |
+| 1B.9 | Clique em "Próximos eventos" → detalhe | 🟢 | Depende de `1.4` (eventos reais) |
+| 1B.10 | Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Handler já funciona; falta scroll/feedback |
+| 1B.11 | Bug: clique em especialidade sem feedback visual | 🟢 | Handler e busca já funcionam; falta estado ativo/scroll |
+| 1B.12 | Auditoria de contraste do tema claro (WCAG AA) | 🟡 | `docs/design/style-guide.md` nunca foi auditado contra 4.5:1 |
 
 ---
 
@@ -77,9 +101,11 @@ Reduzir risco de regressão e melhorar confiabilidade.
 ---
 
 ## Sequência recomendada (próximas sprints)
-- **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (0.2 já feito.)
+- **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`, `1.7` (remover agendar consulta), `1B.10`, `1B.11` (bugs de feedback visual). (0.2 já feito.)
 - **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
+- **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.1 (boas-vindas grupo)` → `1B.4 (configurações)` → `1B.9 (eventos, depois de 1.4)` → `1B.6 (notificações)`.
+- **Sprint 5 — Polimento:** `1B.7/1B.8` (loading/acervo) + `1B.12` (contraste do tema claro).
 
 ## Documentos relacionados
 - `docs/project/refactor-report.md` — relatório da refatoração/limpeza.

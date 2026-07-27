@@ -5,7 +5,13 @@
 > Consolida e fica acima de `roadmap.md`, `security-checklist.md` e
 > `pr-description.md`.
 >
-> Branch de trabalho: `claude/new-session-8sdpjq` · Última auditoria: 2026-07-24.
+> Branch de trabalho: `claude/new-session-8sdpjq` · Última auditoria: 2026-07-27.
+>
+> **Atualização 2026-07-27:** incorporado um backlog de UI/UX (categoria `U`)
+> a partir de uma revisão de produto — 6 telas novas, 3 fluxos de navegação a
+> corrigir, 2 bugs de interação e uma auditoria de contraste no tema claro.
+> Nenhum código foi alterado nesta atualização; é só o registro formal do que
+> falta, na Seção 2/3 abaixo. Ver também a reversão do item `F4`.
 
 ---
 
@@ -34,6 +40,12 @@ qualidade/escala** (tipos gerados, mais testes, imagens em Storage).
 | Área do cuidador (dependentes/diário) | 0% | Tabelas existem, **sem UI** (F5) |
 | CI/CD | 100% | `.github/workflows/ci.yml` criado |
 | Banco/RLS/migrations | 100% | 22 tabelas, RLS 22/22, 7 migrations sincronizadas |
+| Perfil do usuário (`/perfil`) | 0% | `profiles` já tem `full_name`/`avatar_url`/`bio`; sem tela (U2) |
+| Itens salvos (`/salvos`) | 20% | Dado já existe (`post_saves`, `library_favorites`); falta tela unificada (U3) |
+| Configurações (`/configuracoes`) | 30% | Tema e tamanho de fonte já funcionam (dropdown do header); falta tela dedicada + notificações/privacidade (U4) |
+| Central de Ajuda (`/ajuda`) | 60% | `/faq` já existe com 6 perguntas; falta busca por tópico + link para contato (U5) |
+| Boas-vindas ao entrar em grupo | 0% | Não existe nem página de detalhe do grupo (`/comunidade/grupos/[id]`) (U1) |
+| Notificações (`/notificacoes`) | 0% | Mesma lacuna do item `E7`; sem tabela nem UI (U6) |
 
 ### Serviços externos integrados
 
@@ -68,9 +80,22 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | F1 | Eventos reais (tabela `events` + criar evento) | Código | P1 | Alta | 1–2 dias | G5 |
 | F2 | Editar post/comentário | Código | P1 | Média | meio dia | G5 |
 | F3 | Compartilhar (Web Share/copiar link) | Código | P1 | Baixa | 2 h | — |
-| F4 | Agendar consulta (profissional) | Código | P1 | Alta | 1–2 dias | decisão produto |
+| F4 | ~~Agendar consulta (profissional)~~ **substituído por U12** | Código | — | — | — | ver U12 |
 | F5 | Área do cuidador (dependentes + diário) | Código | P1 | Muito Alta | 3+ dias | G5 |
 | F6 | Resolver stubs de nav (header/footer) | Código/UX | P1 | Baixa | 2 h | — |
+| U1 | Tela de boas-vindas ao entrar em grupo | Código | P1 | Média | 1 dia | precisa de `/comunidade/grupos/[id]` (não existe) |
+| U2 | Tela de perfil do usuário (`/perfil`) | Código | P1 | Média | meio dia | — |
+| U3 | Itens salvos (`/salvos`) unificando posts + acervo | Código | P1 | Média | meio dia | — |
+| U4 | Tela de configurações (`/configuracoes`) | Código | P2 | Média | meio dia | — |
+| U5 | Central de Ajuda — evoluir `/faq` | Código/UX | P2 | Baixa | meio dia | — |
+| U6 | Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
+| U7 | Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
+| U8 | Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
+| U9 | Clique em "Próximos eventos" → detalhe/modal | Código | P2 | Baixa | 2 h | depende de `F1` (eventos ainda são mock) |
+| U10 | Bug: chips de tópico no Suporte IA parecem não responder | Código | P1 | Baixa | 1 h | — |
+| U11 | Bug: clique em especialidade não dá feedback visível | Código | P1 | Baixa | 2 h | — |
+| U12 | Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
+| U13 | Auditoria de contraste do tema claro (WCAG AA 4.5:1) | Design/CSS | P2 | Média | meio dia | — |
 | Q1 | Validar CI verde no PR | CI/CD | P2 | Baixa | 15 min | G5 |
 | Q2 | Tipos gerados do Supabase (tirar `any`) | Código | P2 | Média | meio dia | — |
 | Q3 | Ampliar testes (actions/data/componentes) | Testes | P2 | Média | 1–2 dias | Q2 |
@@ -218,17 +243,8 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F4] Agendar consulta
-- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** decisão de produto
-- **Relevância:** Stub em `profissionais/[id]/client-page.tsx`. Requer definir o modelo (formulário de contato? calendário? integração externa?).
-
-#### 🎯 Passo a passo
-1. **Decidir escopo** (MVP sugerido: formulário que registra intenção de contato + notifica o profissional por e-mail).
-2. Modelar tabela `appointments` (nova migration) ou reusar contato.
-3. Implementar action + UI.
-
-#### ✅ Critério de aceite
-- [ ] Usuário logado solicita e recebe confirmação; profissional é notificado.
+### [F4] ~~Agendar consulta~~ — substituído por [U12]
+- Decisão de produto revertida em 2026-07-27: em vez de construir o fluxo de agendamento, o botão "Agendar consulta" deve ser **removido** dos cards e perfis de profissionais/clínicas. Ver ficha `U12`.
 
 ---
 
@@ -256,6 +272,180 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 #### ✅ Critério de aceite
 - [ ] Nenhum link de nav leva a "em breve" sem motivo; navegação coerente.
+
+---
+
+### [U1] Tela de boas-vindas ao entrar em grupo
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~1 dia · **Dependências:** nenhuma página de detalhe de grupo existe hoje
+- **Relevância:** Hoje `/comunidade/explorar-grupos` só faz `handleJoinToggle` (entrar/sair), sem navegar a lugar nenhum — não existe rota `/comunidade/grupos/[id]`. Construir "boas-vindas" sem essa rota não tem para onde mandar o botão "Acessar Grupo".
+
+#### 🎯 Passo a passo
+1. Criar `src/app/comunidade/grupos/[id]/page.tsx` — página mínima de detalhe do grupo (nome, descrição, membros, tags), usando `groups`/`group_members` (já existem e têm RLS).
+2. Ao `entrarGrupo` ter sucesso em `explorar-grupos/page.tsx`, abrir um modal (Dialog) de boas-vindas com regras/diretrizes e botão "Acessar Grupo" → `router.push('/comunidade/grupos/[id]')`.
+
+#### ✅ Critério de aceite
+- [ ] Entrar num grupo mostra o modal; "Acessar Grupo" leva a uma página real do grupo.
+
+---
+
+### [U2] Tela de perfil do usuário (`/perfil`)
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
+- **Relevância:** `profiles` já tem `full_name`, `avatar_url`, `bio` — só falta a tela. Hoje esses dados só existem no banco, sem nenhuma UI de visualização/edição.
+
+#### 🎯 Passo a passo
+1. `src/app/perfil/page.tsx` (Server Component) — busca o `profiles` do usuário logado.
+2. Exibir avatar/nome/bio + atalhos para `/salvos`, `/configuracoes`, `/comunidade/meus-grupos`.
+3. Nova Server Action `atualizarPerfil` (nome/bio/avatar) em `src/app/actions/`.
+
+#### ✅ Critério de aceite
+- [ ] Usuário vê seus dados reais; edita nome/bio e salva.
+
+---
+
+### [U3] Itens salvos (`/salvos`)
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
+- **Relevância:** O dado já existe e já é gravado — `post_saves` (comunidade) e `library_favorites` (acervo, feito nesta sessão) — só falta uma tela que junte os dois numa lista só.
+
+#### 🎯 Passo a passo
+1. `src/lib/data/saved.ts` — duas queries (posts salvos via `post_saves`, itens via `library_favorites`), unificadas num único tipo com `kind: 'post' | 'library'`.
+2. `src/app/salvos/page.tsx` — lista com filtro por categoria (`useSearch` com `matchesFilter`) e botão de remover (reusa `alternarSalvo`/`alternarFavorito` já existentes).
+
+#### ✅ Critério de aceite
+- [ ] Posts salvos e itens favoritados do acervo aparecem juntos; remover funciona nos dois tipos.
+
+---
+
+### [U4] Tela de configurações (`/configuracoes`)
+- **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
+- **Relevância:** Tema (claro/escuro) e tamanho de fonte **já funcionam** hoje, só que escondidos num dropdown do header (`next-themes` + `FontSizeContext`, `header.tsx`). Falta uma tela dedicada e as preferências que ainda não existem (notificações push/e-mail, privacidade).
+
+#### 🎯 Passo a passo
+1. `src/app/configuracoes/page.tsx` — reaproveitar `useTheme()`/`FontSizeContext` já existentes para tema e fonte.
+2. Notificações/privacidade: como não existe coluna hoje, começar só com toggles de UI persistidos em `profiles` (nova migration, colunas `notify_email`/`notify_push`/`profile_public` ou similar) — ou, mais simples para uma primeira versão, guardar em `localStorage` até haver necessidade real de sincronizar entre dispositivos.
+
+#### ✅ Critério de aceite
+- [ ] Tema/fonte continuam funcionando, agora também nesta tela; preferências novas persistem.
+
+---
+
+### [U5] Central de Ajuda — evoluir `/faq`
+- **Categoria:** Código/UX · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~meio dia · **Dependências:** —
+- **Relevância:** `/faq` já existe (`src/app/faq/page.tsx`) com 6 perguntas em `Accordion` — a "Central de Ajuda" pedida é essencialmente essa página evoluída, não uma tela nova do zero. Falta: busca por palavra-chave nas perguntas e um link/botão direto para `/fale-conosco`.
+
+#### 🎯 Passo a passo
+1. Adicionar `SearchBar` (já existe, reutilizável) filtrando `faqItems` por texto.
+2. Adicionar CTA "Não encontrou? Fale com a gente" → `/fale-conosco`.
+3. (Opcional) Renomear a rota para `/ajuda` com redirect de `/faq`, ou manter `/faq` e só linkar como "Central de Ajuda" no menu — decisão de nomenclatura, não estrutural.
+
+#### ✅ Critério de aceite
+- [ ] Busca filtra as perguntas; CTA leva ao fale conosco.
+
+---
+
+### [U6] Central de notificações (`/notificacoes`)
+- **Categoria:** Código/Supabase · **Prio:** P2 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** mesmo escopo de `E7`
+- **Relevância:** Não existe tabela `notifications` nem UI. Este item é a tela pedida na nova revisão — é o mesmo trabalho já registrado como `E7`; mantendo os dois IDs ligados para não duplicar o rastreamento.
+
+#### 🎯 Passo a passo
+1. Nova migration: tabela `notifications` (`profile_id`, `type`, `content`, `read_at`, `created_at`), RLS "dono vê as próprias".
+2. Popular via trigger em curtidas/comentários/aprovações (ou Server Action explícita nos pontos existentes).
+3. `src/app/notificacoes/page.tsx` — lista, marcar como lida, filtrar não lidas, limpar.
+
+#### ✅ Critério de aceite
+- [ ] Notificação é criada nos eventos certos; marcar como lida e limpar funcionam; RLS impede ver notificação de outro usuário.
+
+---
+
+### [U7] Loading skeleton ao clicar em manchete de notícia
+- **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** mesmo escopo de `Q4`
+- **Relevância:** `/noticias/[slug]` e `/noticias-ai/[slug]` já existem e já funcionam (são SSG). O que falta é o estado de carregamento entre o clique e a página aparecer — hoje não há `loading.tsx` em nenhuma rota do app.
+
+#### 🎯 Passo a passo
+1. Criar `src/app/noticias/[slug]/loading.tsx` e `src/app/noticias-ai/[slug]/loading.tsx` com skeleton do layout do artigo.
+2. Extensível para as demais rotas listadas em `Q4`.
+
+#### ✅ Critério de aceite
+- [ ] Clique numa manchete mostra skeleton até a página carregar.
+
+---
+
+### [U8] Clique em documento do acervo → preview/download correto
+- **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
+- **Relevância:** `digital-library-card.tsx`/`digital-library-list-item.tsx` já abrem `item.actionUrl` em nova aba (`target="_blank"`) para todo tipo de item — sem diferenciar vídeo/documento nem oferecer download direto quando `downloadable` é `true` (a coluna já existe em `library_items`).
+
+#### 🎯 Passo a passo
+1. Usar o campo `downloadable` já existente: se `true`, renderizar `<a download>` em vez de só abrir em nova aba; se for vídeo, manter abertura normal.
+2. Para documentos não-baixáveis, considerar um preview embutido (iframe) em vez de nova aba.
+
+#### ✅ Critério de aceite
+- [ ] Item marcado como `downloadable` baixa o arquivo; os demais abrem preview/nova aba coerente com o tipo.
+
+---
+
+### [U9] Clique em "Próximos eventos" → detalhe/modal
+- **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** `F1` (eventos ainda são mock)
+- **Relevância:** Os cards de evento hoje vêm de `allCommunityEvents` (mock, sem `onClick`). Não faz sentido implementar o clique antes de `F1` trazer eventos reais — ficaria abrindo detalhe de dado fictício.
+
+#### 🎯 Passo a passo
+1. Depois de `F1`: adicionar `onClick`/`Dialog` no card mostrando data, horário, local/link.
+2. Botão "Adicionar à agenda" (gerar `.ics`) e "Confirmar presença" (nova tabela `event_attendees` ou reaproveitar `group_members` como padrão).
+
+#### ✅ Critério de aceite
+- [ ] Clique no card abre detalhe com dado real; confirmar presença registra o usuário.
+
+---
+
+### [U10] Bug: chips de tópico no Suporte IA parecem não responder
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** —
+- **Relevância:** Investiguei `src/app/suporte-ia/page.tsx`. `handleTopicClick` (linha 138) chama `handleSearch(topic)` corretamente (o parâmetro certo é usado, não há stale closure) — mas a linha seguinte, `setQuery('')`, roda no mesmo batch de render que `setQuery(topic)`, então o campo de busca nunca chega a mostrar visualmente o tópico clicado, e a resposta aparece abaixo da dobra sem scroll automático. Não é uma falha de requisição — é falta de feedback visual, o que dá a impressão de "não fez nada".
+
+#### 🎯 Passo a passo
+1. Remover o `setQuery('')` redundante em `handleTopicClick` (deixar o campo mostrar o tópico clicado enquanto carrega).
+2. Adicionar `scrollIntoView` (ou `ref` + `scroll-margin`) na área de resposta ao iniciar uma busca.
+
+#### ✅ Critério de aceite
+- [ ] Clicar num tópico popular mostra visivelmente o que foi perguntado e rola até a resposta.
+
+---
+
+### [U11] Bug: clique em especialidade não dá feedback visível
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
+- **Relevância:** Investiguei `src/app/profissionais/page.tsx`. `handleSpecialtyClick` (linha 91) e o `useSearch` (`src/hooks/use-search.ts`) estão corretos — o clique atualiza `query` e o filtro por substring funciona. O problema mais provável: nenhum card de especialidade mostra estado "selecionado", e a lista filtrada fica abaixo da dobra, sem scroll — mesma classe de bug do `U10`. Precisa de teste manual em browser para confirmar, já que o código em si não mostra erro.
+
+#### 🎯 Passo a passo
+1. Adicionar classe de estado ativo no card da especialidade clicada (`query === specialty.tag`).
+2. `scrollIntoView` até a seção de resultados ao clicar.
+3. Confirmar em teste manual que não há nenhuma outra causa (ex.: `SearchBar` fora de sincronia).
+
+#### ✅ Critério de aceite
+- [ ] Clicar numa especialidade filtra visivelmente a lista e mostra qual está ativa.
+
+---
+
+### [U12] Remover "Agendar consulta" de profissionais e clínicas
+- **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** substitui `F4`
+- **Relevância:** Decisão de produto: manter o foco em informação institucional/contato direto, não construir um fluxo de agendamento.
+
+#### 🎯 Passo a passo
+1. Remover o botão/stub "Agendar consulta" (`FeatureInProgress`) de `src/app/profissionais/[id]/client-page.tsx`.
+2. Conferir se há menção equivalente em cards de listagem (`profissionais/page.tsx`) e remover também, se houver.
+
+#### ✅ Critério de aceite
+- [ ] Nenhuma tela de profissional/clínica oferece "Agendar consulta"; contatos diretos (telefone/e-mail/Instagram) continuam visíveis.
+
+---
+
+### [U13] Auditoria de contraste do tema claro (WCAG AA)
+- **Categoria:** Design/CSS · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
+- **Relevância:** `docs/design/style-guide.md` documenta as cores HSL do tema claro (`--muted-foreground`, `--foreground`, etc.), mas nunca foram auditadas contra WCAG AA (4.5:1). É comum `text-muted-foreground` sobre `bg-muted`/`bg-card` ficar abaixo do mínimo em temas claros pastel como este (`--muted`: lavanda muito claro).
+
+#### 🎯 Passo a passo
+1. Medir contraste real de cada par texto/fundo do tema claro (`--foreground`/`--background`, `--muted-foreground`/`--muted`, `--muted-foreground`/`--card`) com uma ferramenta de contraste (ex. extensão de DevTools ou Chrome Lighthouse).
+2. Ajustar os HSLs em `globals.css`/`tailwind.config.ts` que ficarem abaixo de 4.5:1 — em geral escurecendo o `L` (lightness) de `--muted-foreground` no tema claro.
+3. Repetir a checagem em qualquer uso direto de `text-gray-400`/`text-slate-300` fora das variáveis do design system (trocar por `text-gray-600`/`text-slate-700` como o pedido original sugere), documentando o ajuste em `docs/design/style-guide.md`.
+
+#### ✅ Critério de aceite
+- [ ] Todos os pares texto/fundo do tema claro medem ≥ 4.5:1; `style-guide.md` atualizado com os valores conferidos.
 
 ---
 
@@ -395,16 +585,19 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 ## 4. Sprints de Execução Sugeridas
 
 ### 🚀 Sprint 0 — Go-Live & Desbloqueio (P0, majoritariamente painel)
-`G1 → G2 → G3 → G4 → G5`. **Resultado:** app operável em produção. Junto: quick wins **F3** (compartilhar) e **F6** (nav).
+`G1 → G2 → G3 → G4 → G5`. **Resultado:** app operável em produção. Junto: quick wins **F3** (compartilhar), **F6** (nav) e os bugs rápidos **U10/U11/U12**.
 
 ### 🧩 Sprint 1 — Conclusão do Núcleo Funcional
-`F1 (eventos)` · `F2 (editar)` · início de `F5 (cuidador)`. **F4** conforme decisão de produto.
+`F1 (eventos)` · `F2 (editar)` · início de `F5 (cuidador)`. `F4` descontinuado — ver `U12`.
+
+### 🎨 Sprint 1B — Telas de UI/UX faltantes
+`U2 (perfil)` · `U3 (salvos)` · `U1 (boas-vindas grupo)` → `U5 (ajuda)` · `U4 (configurações)` → `U9 (eventos, depende de F1)` · `U6 (notificações, mesmo escopo de E7)`.
 
 ### 🛡️ Sprint 2 — Qualidade, CI/CD e Blindagem
-`Q1 (CI verde)` → `Q2 (tipos Supabase)` → `Q3 (testes)` → `Q4/Q5`. `Q6` quando houver ambiente com Supabase acessível.
+`Q1 (CI verde)` → `Q2 (tipos Supabase)` → `Q3 (testes)` → `Q4/Q5` (junto com `U7`, mesma frente de loading states). `Q6` quando houver ambiente com Supabase acessível.
 
 ### 📈 Sprint 3 — Escalabilidade & Polimento de UX
-`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · depois `E6/E5/E7/E8`.
+`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · `U8 (clique no acervo)` · `U13 (contraste tema claro)` · depois `E6/E5/E7/E8`.
 
 ---
 
