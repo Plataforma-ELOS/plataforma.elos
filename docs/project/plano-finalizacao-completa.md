@@ -360,7 +360,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U6] Central de notificações (`/notificacoes`)
+### [U6] ✅ Central de notificações (`/notificacoes`)
 - **Categoria:** Código/Supabase · **Prio:** P2 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** mesmo escopo de `E7`
 - **Relevância:** Não existe tabela `notifications` nem UI. Este item é a tela pedida na nova revisão — é o mesmo trabalho já registrado como `E7`; mantendo os dois IDs ligados para não duplicar o rastreamento.
 
@@ -370,7 +370,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. `src/app/notificacoes/page.tsx` — lista, marcar como lida, filtrar não lidas, limpar.
 
 #### ✅ Critério de aceite
-- [ ] Notificação é criada nos eventos certos; marcar como lida e limpar funcionam; RLS impede ver notificação de outro usuário.
+- [x] Notificação é criada nos eventos certos; marcar como lida e limpar funcionam; RLS impede ver notificação de outro usuário.
+
+- **Implementado em 2026-07-27:** migrations `20260727135431_add_notifications_table` (tabela + RLS dono-só + 2 triggers `security definer` em `post_likes`/`comments`) e `..._revoke_execute_on_notification_triggers[_from_public]` (o Security Advisor acusou as funções de trigger como RPC pública chamável — corrigido revogando `EXECUTE` de `anon`/`authenticated`/`public`; `get_advisors` limpo depois). Sem coluna `content` pré-formatada — a mensagem é montada em `src/lib/data/notifications.ts` (`mapNotificationRow`) juntando `actor.full_name` + trecho do post. `src/app/actions/notifications.ts` (`marcarComoLida`, `marcarTodasComoLidas`, `limparNotificacoes`). `/notificacoes` (Server Component + `client-page.tsx`, com Supabase Realtime — `postgres_changes` INSERT — para notificações chegarem na hora). Sino no header (`header.tsx`: item novo; `header-secondary.tsx`: **substituiu um `FeatureInProgress` que já existia** para isso) com contador de não lidas via `src/hooks/use-unread-notifications.ts`. **Escopo reduzido**: só curtida/comentário — "aprovações" de itens do acervo ficou de fora (não existe UI de aprovação ainda, ver Horizonte 4). **Testado**: os 2 triggers e o guard de auto-notificação foram validados com inserts reais de teste (limpos depois) direto no banco via MCP — like/comentário de terceiro geram notificação, autor curtindo o próprio post não gera. Smoke test do dev server confirmou o redirect para `/login` em `/notificacoes` deslogado (mesma ressalva de rede das etapas anteriores para testar com usuário logado).
 
 ---
 
