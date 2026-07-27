@@ -2,17 +2,28 @@
 // src/app/comunidade/explorar-grupos/page.tsx
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Users, Search, Check, Plus } from 'lucide-react';
+import { ArrowLeft, Users, Search, Check, Plus, PartyPopper } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { createClient } from '@/lib/supabase/client';
 import { entrarNoGrupo, sairDoGrupo } from '@/app/actions/groups';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 type GroupCardData = {
   id: string;
@@ -34,7 +45,9 @@ type GroupRow = {
 export default function ExploreGroupsPage() {
     const [groups, setGroups] = useState<GroupCardData[]>([]);
     const [carregando, setCarregando] = useState(true);
+    const [grupoParaBoasVindas, setGrupoParaBoasVindas] = useState<GroupCardData | null>(null);
     const { toast } = useToast();
+    const router = useRouter();
 
     const carregarGrupos = useCallback(async () => {
         const supabase = createClient();
@@ -88,9 +101,14 @@ export default function ExploreGroupsPage() {
             return;
         }
 
+        if (isNowMember) {
+            setGrupoParaBoasVindas(group);
+            return;
+        }
+
         toast({
-            title: isNowMember ? "Você entrou no grupo!" : "Você saiu do grupo",
-            description: `Agora você ${isNowMember ? "faz parte" : "não faz mais parte"} de "${group.name}".`,
+            title: "Você saiu do grupo",
+            description: `Agora você não faz mais parte de "${group.name}".`,
         });
     };
 
@@ -152,6 +170,30 @@ export default function ExploreGroupsPage() {
         </div>
       </main>
       <Footer />
+
+      <AlertDialog open={!!grupoParaBoasVindas} onOpenChange={(open) => !open && setGrupoParaBoasVindas(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="bg-primary/10 p-3 rounded-full">
+                <PartyPopper className="h-10 w-10 text-primary" />
+              </div>
+            </div>
+            <AlertDialogTitle className="text-center">Bem-vindo(a) a &quot;{grupoParaBoasVindas?.name}&quot;!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center">
+              Você agora faz parte deste grupo. Lembre-se de manter o respeito
+              nas conversas e seguir as regras da comunidade — sem discurso de
+              ódio, spam ou desinformação. Boas trocas!
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-center">
+            <AlertDialogCancel>Continuar explorando</AlertDialogCancel>
+            <AlertDialogAction onClick={() => router.push(`/comunidade/grupos/${grupoParaBoasVindas?.id}`)}>
+              Acessar Grupo
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
