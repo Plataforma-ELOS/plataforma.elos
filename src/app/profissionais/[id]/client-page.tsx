@@ -5,7 +5,7 @@ import { useState } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram, Edit2 } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Share2, Star, ThumbsUp, Instagram, Edit2, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
@@ -170,7 +170,10 @@ export default function ProfessionalProfileClient({ professional, reviews, revie
 
             <Card className="rounded-b-3xl rounded-t-none pt-20 text-center shadow-lg">
                 <CardContent className="p-6 md:p-8">
-                    <h1 className="text-3xl font-bold font-headline">{professional.name}</h1>
+                    <h1 className="text-3xl font-bold font-headline inline-flex items-center justify-center gap-2">
+                      {professional.name}
+                      {professional.verified && <BadgeCheck className="h-6 w-6 text-primary-strong shrink-0" aria-label="Verificado" />}
+                    </h1>
                     <p className="text-primary-strong font-semibold mt-1">{professional.specialty}</p>
                     <p className="text-muted-foreground text-sm">{professional.crm}</p>
 

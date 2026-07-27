@@ -58,7 +58,7 @@ Fichas completas (com diagnóstico do código já investigado) em
 | 1B.6 | ✅ Central de notificações (`/notificacoes`) | 🔴 | Mesmo escopo de `E7`; sem tabela nem UI |
 | 1B.7 | ✅ Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
 | 1B.8 | ✅ Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existia, só não era usado |
-| 1B.9 | 🟡 Clique em "Próximos eventos" → detalhe | 🟢 | Feito o detalhe; RSVP/`.ics` ficaram de fora |
+| 1B.9 | ✅ Clique em "Próximos eventos" → detalhe + `.ics` | 🟢 | RSVP (confirmar presença) fica de fora — exigiria tabela nova |
 | 1B.10 | ✅ Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Scroll já existia; sobrava um `setQuery('')` que limpava o campo |
 | 1B.11 | ✅ Bug: clique em especialidade sem scroll até os resultados | 🟢 | Estado ativo já existia; faltava só o scroll |
 | 1B.12 | ✅ Auditoria de contraste do tema claro (WCAG AA) | 🟡 | Novo token `--primary-strong` + `--destructive` escurecido; ver `docs/design/style-guide.md` |
@@ -92,7 +92,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 ---
 
 ## Horizonte 4 — Produto / Features novas
-- Workflow de verificação de profissionais (`verification_status` está `pending` p/ todos) — aprovar/rejeitar já funciona via `/admin`; falta só o selo "verificado" na UI de `/profissionais`.
+- ✅ Workflow de verificação de profissionais (aprovar/rejeitar via `/admin` + selo "verificado" em `/profissionais`).
 - ✅ Painel administrativo (`/admin` — verificação de profissionais/clínicas + aprovação do acervo).
 - ✅ Notificações (curtidas, comentários).
 - Trilhas de conhecimento interativas (`trail_progress` existe; falta conteúdo/quiz).
@@ -104,7 +104,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (`0.2`, `1.7`, `1B.10`, `1B.11` já feitos.)
 - **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`. Todos já feitos.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
-- **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.4 (configurações)` → `1B.1 (boas-vindas grupo)` → `1B.6 (notificações)` já feitos. Falta apenas `1B.9 (eventos, depois de 1.4)`.
+- **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.4 (configurações)` → `1B.1 (boas-vindas grupo)` → `1B.6 (notificações)` → `1B.9 (eventos + .ics)` já feitos.
 - **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro) já feito. (`1B.7`/`1B.8` já feitos.)
 
 ## Documentos relacionados
