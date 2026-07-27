@@ -34,7 +34,8 @@ Este documento lista todas as rotas e páginas disponíveis na aplicação, orga
 - `/profissionais/[id]` : Perfil detalhado com experiências, competências, contato e avaliações.
 
 ## 👤 Conta e Área Pessoal
-- `/perfil` : Visualização e edição do nome/bio do usuário logado, com atalhos para Salvos, Configurações e Meus Grupos.
+- `/perfil` : Visualização e edição do nome/bio do usuário logado, com atalhos para Salvos, Configurações, Meus Grupos e Meu Espaço.
+- `/meu-espaco` : Área do cuidador — gestão de dependentes (nome, idade, parentesco, notas) e diário pessoal (humor + texto por data).
 - `/salvos` : Itens salvos do usuário — unifica posts salvos da Comunidade e materiais favoritados do Acervo Digital numa lista só, com busca/filtro.
 - `/configuracoes` : Tema, tamanho do texto, preferências de notificação (e-mail/push) e privacidade do perfil.
 - `/notificacoes` : Central de notificações (curtidas e comentários em posts próprios), com contagem de não lidas em tempo real no sino do header.
