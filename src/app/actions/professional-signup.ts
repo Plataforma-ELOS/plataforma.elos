@@ -12,6 +12,7 @@ type Inscricao = {
   cnpj: string;
   registrationNumber: string;
   experience: string;
+  imageUrl?: string;
 };
 
 export async function inscreverProfissional(dados: Inscricao): Promise<Resultado> {
@@ -31,6 +32,7 @@ export async function inscreverProfissional(dados: Inscricao): Promise<Resultado
       cnpj: dados.cnpj.trim(),
       description: dados.experience.trim(),
       email: dados.email.trim(),
+      image_url: dados.imageUrl ?? null,
     });
     if (error) return { ok: false, erro: 'Não foi possível enviar sua inscrição agora.' };
     return { ok: true };
@@ -47,6 +49,7 @@ export async function inscreverProfissional(dados: Inscricao): Promise<Resultado
     registration_number: dados.registrationNumber,
     description: dados.experience.trim(),
     email: dados.email.trim(),
+    image_url: dados.imageUrl ?? null,
   });
   if (error) return { ok: false, erro: 'Não foi possível enviar sua inscrição agora.' };
 

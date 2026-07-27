@@ -33,6 +33,14 @@ const nextConfig: NextConfig = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
+      },
+      {
+        // Supabase Storage — avatares e fotos de profissionais/clínicas
+        // enviados via upload (buckets "avatars" e "professionals").
+        protocol: 'https',
+        hostname: 'azbfrxrqwuhbffofdrct.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
       }
     ],
   },

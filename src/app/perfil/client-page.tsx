@@ -1,7 +1,7 @@
 // src/app/perfil/client-page.tsx
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
@@ -20,28 +20,66 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Bookmark, Settings, Users, Edit, HeartHandshake } from 'lucide-react';
+import { Bookmark, Settings, Users, Edit, HeartHandshake, Camera } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { atualizarPerfil } from '@/app/actions/profile';
+import { createClient } from '@/lib/supabase/client';
 
 type ProfilePageClientProps = {
+  userId: string;
   email: string;
   fullName: string;
   bio: string;
   avatarUrl?: string;
 };
 
-export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: ProfilePageClientProps) {
+const TAMANHO_MAXIMO_AVATAR = 2 * 1024 * 1024;
+
+export default function ProfilePageClient({ userId, email, fullName, bio, avatarUrl }: ProfilePageClientProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [nome, setNome] = useState(fullName);
   const [bioTexto, setBioTexto] = useState(bio);
+  const [avatarAtual, setAvatarAtual] = useState(avatarUrl);
+  const [arquivoAvatar, setArquivoAvatar] = useState<File | null>(null);
   const [salvando, setSalvando] = useState(false);
+
+  const previewAvatar = useMemo(() => (arquivoAvatar ? URL.createObjectURL(arquivoAvatar) : null), [arquivoAvatar]);
+  useEffect(() => {
+    return () => {
+      if (previewAvatar) URL.revokeObjectURL(previewAvatar);
+    };
+  }, [previewAvatar]);
+
+  const handleArquivoSelecionado = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const arquivo = e.target.files?.[0];
+    if (!arquivo) return;
+    if (arquivo.size > TAMANHO_MAXIMO_AVATAR) {
+      toast({ variant: 'destructive', title: 'Imagem muito grande', description: 'Escolha uma imagem de até 2MB.' });
+      return;
+    }
+    setArquivoAvatar(arquivo);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSalvando(true);
-    const { ok, erro } = await atualizarPerfil(nome, bioTexto);
+
+    let novoAvatarUrl: string | undefined;
+    if (arquivoAvatar) {
+      const supabase = createClient();
+      const extensao = arquivoAvatar.name.split('.').pop();
+      const caminho = `${userId}/${crypto.randomUUID()}.${extensao}`;
+      const { error: erroUpload } = await supabase.storage.from('avatars').upload(caminho, arquivoAvatar, { upsert: true });
+      if (erroUpload) {
+        setSalvando(false);
+        toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+        return;
+      }
+      novoAvatarUrl = supabase.storage.from('avatars').getPublicUrl(caminho).data.publicUrl;
+    }
+
+    const { ok, erro } = await atualizarPerfil(nome, bioTexto, novoAvatarUrl);
     setSalvando(false);
 
     if (!ok) {
@@ -49,6 +87,8 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
       return;
     }
 
+    if (novoAvatarUrl) setAvatarAtual(novoAvatarUrl);
+    setArquivoAvatar(null);
     toast({ title: 'Perfil atualizado com sucesso!' });
     setOpen(false);
   };
@@ -62,7 +102,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
             <Card>
               <CardHeader className="flex flex-col items-center text-center space-y-4">
                 <Avatar className="h-24 w-24">
-                  <AvatarImage src={avatarUrl ?? 'https://placehold.co/96x96.png'} alt={fullName} />
+                  <AvatarImage src={avatarAtual ?? 'https://placehold.co/96x96.png'} alt={fullName} />
                   <AvatarFallback className="text-3xl">{fullName.charAt(0).toUpperCase() || '?'}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -89,6 +129,20 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
                       </DialogHeader>
                       <form onSubmit={handleSubmit}>
                         <div className="grid gap-4 py-4">
+                          <div className="flex flex-col items-center gap-2">
+                            <Avatar className="h-20 w-20">
+                              <AvatarImage
+                                src={previewAvatar ?? avatarAtual ?? 'https://placehold.co/96x96.png'}
+                                alt={fullName}
+                              />
+                              <AvatarFallback className="text-2xl">{fullName.charAt(0).toUpperCase() || '?'}</AvatarFallback>
+                            </Avatar>
+                            <Label htmlFor="avatar-file" className="inline-flex items-center gap-2 text-sm text-primary-strong cursor-pointer hover:underline">
+                              <Camera className="h-4 w-4" />
+                              Trocar foto
+                            </Label>
+                            <Input id="avatar-file" type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleArquivoSelecionado} />
+                          </div>
                           <div className="space-y-2">
                             <Label htmlFor="full-name">Nome completo</Label>
                             <Input
