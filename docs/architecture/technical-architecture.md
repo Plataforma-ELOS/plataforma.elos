@@ -254,6 +254,20 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 }
 ```
 
+### Painel Administrativo (`/admin`)
+```json
+{
+  "route": "/admin",
+  "pattern": "Server Component (2 queries em paralelo) + client-page.tsx (Tabs: Verificações | Acervo)",
+  "auth": "checa role = 'admin' em profiles no servidor; redirect('/home') silencioso se não for admin (não revela a existência da rota). Sem link em header/footer — só acessível por URL direta.",
+  "data": {
+    "tables": "professionals/clinics (verification_status = 'pending'), library_items (approved = false)",
+    "rls": "professionals_owner_update/clinics_owner_update já permitem update por dono OU admin; library_admin_write/library_admin_delete já são admin-only — nenhuma migration nova foi necessária"
+  },
+  "actions": "atualizarVerificacao(tipo, id, status), aprovarItemAcervo(id), rejeitarItemAcervo(id) em src/app/actions/admin.ts — cada uma confere role = 'admin' no servidor antes de escrever, defesa em profundidade além da RLS"
+}
+```
+
 ## 13. Legais (`/termos-de-servico`, `/politica-de-privacidade`)
 Conteúdo estático, sem dados de banco.
 

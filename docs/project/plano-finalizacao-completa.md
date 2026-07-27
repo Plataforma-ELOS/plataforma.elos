@@ -111,8 +111,8 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | E3 | Supabase Storage (imagens) + F7 upload | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
 | E5 | Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
-| E6 | Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
-| E7 | Notificações | Código | P3 | Muito Alta | 3+ dias | — |
+| E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
+| E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
 | E8 | Busca server-side (full-text) | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
 
 ---
@@ -580,27 +580,31 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 ---
 
 ### [E5] Workflow de verificação de profissionais
-- **Categoria:** Código · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** E6
+- **Categoria:** Código · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** E6 ✅
 - **Relevância:** Todo `professionals.verification_status` está `pending`; falta o fluxo admin de aprovar/rejeitar e exibir o selo "verificado".
+- **Status:** o lado admin (aprovar/rejeitar) já existe via `/admin` (ver `E6`). Falta só exibir o selo "verificado" nas telas de `/profissionais` — não incluído nesta rodada.
 
 #### ✅ Critério de aceite
-- [ ] Admin aprova/rejeita; UI mostra selo só para `verified`.
+- [x] Admin aprova/rejeita.
+- [ ] UI mostra selo só para `verified`.
 
 ---
 
-### [E6] Painel administrativo
+### [E6] ✅ Painel administrativo
 - **Categoria:** Código · **Prio:** P3 · **Dificuldade:** Muito Alta · **Tempo:** 3+ dias · **Dependências:** G4
-- **Relevância:** `private.is_admin()` e policies já existem; falta a UI (moderar posts, aprovar acervo/profissionais, publicar notícias).
+- **Relevância:** `private.is_admin()` e policies já existem; faltava a UI.
+- **Implementado:** `src/app/admin/page.tsx` + `client-page.tsx` — Server Component que faz `redirect('/home')` silencioso se o usuário não for admin (não expõe a existência da rota), sem link em nenhum header/footer (acesso só por URL direta). Duas abas: **Verificações** (profissionais/clínicas com `verification_status = 'pending'`, botões Aprovar/Rejeitar) e **Acervo** (itens sugeridos com `approved = false`, Aprovar/Rejeitar com preview do link). `src/app/actions/admin.ts`: `atualizarVerificacao`, `aprovarItemAcervo`, `rejeitarItemAcervo` — cada uma confere `role = 'admin'` no servidor antes de escrever (defesa em profundidade, além da RLS já existente). Nenhuma migration nova precisou ser criada — RLS de `professionals`/`clinics` (dono OU admin) e `library_items` (admin-only write/delete) já cobriam tudo.
+- **Escopo reduzido:** moderação de posts e publicação de notícias mencionadas na ficha original ficam fora desta entrega — o painel cobre verificação de profissionais/clínicas e aprovação do acervo, os dois fluxos que hoje não têm nenhuma UI.
 
 #### ✅ Critério de aceite
-- [ ] Rota `/admin` protegida por `is_admin`; CRUD de conteúdo funcionando.
+- [x] Rota `/admin` protegida por `is_admin`; aprovação/rejeição de profissionais, clínicas e itens do acervo funcionando.
 
 ---
 
-### [E7] Notificações · [E8] Busca server-side (full-text)
+### [E7] ✅ Notificações (curtidas/comentários) · [E8] Busca server-side (full-text)
 - **Prio:** P3 · **Dificuldade:** Muito Alta / Alta.
-- **E7:** notificar curtidas/comentários/aprovações (tabela `notifications` + realtime).
-- **E8:** busca full-text no Postgres (`tsvector`) em vez de filtro client-side.
+- **E7:** implementado (mesmo escopo de `1B.6`) — tabela `notifications` + realtime, curtidas e comentários notificam o autor do post. "Aprovações" ficou fora (não havia UI de aprovação quando essa ficha foi feita); agora que `/admin` existe (`E6`), poderia ser adicionado numa rodada futura.
+- **E8:** busca full-text no Postgres (`tsvector`) em vez de filtro client-side — ainda pendente.
 - **Aceite:** [ ] notificações chegam em tempo real · [ ] busca global rápida server-side.
 
 ---

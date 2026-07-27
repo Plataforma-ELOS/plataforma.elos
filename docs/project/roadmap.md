@@ -92,9 +92,9 @@ Reduzir risco de regressão e melhorar confiabilidade.
 ---
 
 ## Horizonte 4 — Produto / Features novas
-- Workflow de verificação de profissionais (`verification_status` está `pending` p/ todos).
-- Painel administrativo (`is_admin()`/policies já existem; falta UI).
-- Notificações (curtidas, comentários, aprovações).
+- Workflow de verificação de profissionais (`verification_status` está `pending` p/ todos) — aprovar/rejeitar já funciona via `/admin`; falta só o selo "verificado" na UI de `/profissionais`.
+- ✅ Painel administrativo (`/admin` — verificação de profissionais/clínicas + aprovação do acervo).
+- ✅ Notificações (curtidas, comentários).
 - Trilhas de conhecimento interativas (`trail_progress` existe; falta conteúdo/quiz).
 - Busca server-side com full-text (a atual é client-side sobre dados carregados).
 
