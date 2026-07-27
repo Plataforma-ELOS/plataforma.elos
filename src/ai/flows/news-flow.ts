@@ -57,10 +57,10 @@ const articleAssistantFlow = ai.defineFlow(
       system: `Você é um assistente de IA da plataforma E.L.O.S. Sua função é responder perguntas sobre um artigo de notícia específico. Seja direto, claro e baseie sua resposta estritamente no conteúdo do artigo fornecido. Não invente informações. Se a resposta não estiver no texto, diga que a informação não foi encontrada no artigo.
 
 **Artigo:**
-{{{article}}}
+${article}
 `,
       prompt: `**Pergunta do usuário:**
-{{{question}}}
+${question}
 
 **Sua Resposta:**`,
       model: 'googleai/gemini-2.5-flash',

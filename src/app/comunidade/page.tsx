@@ -5,7 +5,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, Plus, BookOpen, LogIn, Calendar, MapPin } from 'lucide-react';
+import { Plus, LogIn, Calendar, MapPin } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import PostCard, { Post } from '@/components/features/community/post-card';
 import CreatePost from '@/components/features/community/create-post';

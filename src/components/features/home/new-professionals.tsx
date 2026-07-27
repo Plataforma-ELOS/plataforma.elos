@@ -83,7 +83,7 @@ export default function NewProfessionals() {
           className="w-full relative"
         >
           <CarouselContent className="-ml-4 px-4">
-            {professionals.map((prof: any) => (
+            {professionals.map((prof) => (
               <CarouselItem key={prof.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 p-1">
                 <Link href={`/profissionais/${prof.id}`} className="group block py-4 h-full">
                   

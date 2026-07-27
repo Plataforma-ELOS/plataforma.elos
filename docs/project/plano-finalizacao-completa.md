@@ -513,7 +513,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q5] Configurar ESLint e reativar `lint` no build
+### [Q5] ✅ Configurar ESLint e reativar `lint` no build
 - **Categoria:** Config · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
 - **Relevância:** Repo não tem ESLint (`next.config.ts` usa `eslint.ignoreDuringBuilds`). Sem lint, dívidas passam despercebidas.
 
@@ -522,7 +522,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Corrigir os apontamentos; remover `ignoreDuringBuilds` do `next.config.ts`; adicionar `lint` ao CI.
 
 #### ✅ Critério de aceite
-- [ ] `npm run lint` roda sem prompt e passa; CI inclui o passo.
+- [x] `npm run lint` roda sem prompt e passa; CI inclui o passo.
+
+- **Implementado em 2026-07-27:** `eslint` + `eslint-config-next@15.3.8` instalados, `eslint.config.mjs` (flat config, `next/core-web-vitals` + `next/typescript` via `FlatCompat`, ignora `database.types.ts` gerado). Removido `eslint.ignoreDuringBuilds` de `next.config.ts`. `npx next lint` encontrou ~30 problemas (quase todos import não usado + 4 `any` + 2 aspas não escapadas em JSX) — todos corrigidos; `npm run lint`/`npm run build` limpos. Não precisou de passo novo no CI: `npm run build` já roda lint automaticamente agora (antes dizia "Skipping linting"), e o workflow já chama `npm run build`. **Achado extra corrigido de bônus:** `src/ai/flows/news-flow.ts` usava `{{{article}}}`/`{{{question}}}` (sintaxe Handlebars) dentro de template strings comuns do JS — nunca eram de fato interpolados no prompt enviado à IA (comparado com `newsSummaryFlow`, no mesmo arquivo, que usa `${...}` de verdade). Trocado para interpolação real; `legalAssistantFlow` em `legal-assistant-flow.ts` era código morto (nunca chamado — `askLegalAssistant`, a função de verdade usada por `/suporte-ia`, tem sua própria implementação separada) e foi removido.
 
 ---
 

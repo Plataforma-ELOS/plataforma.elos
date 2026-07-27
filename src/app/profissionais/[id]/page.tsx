@@ -11,6 +11,19 @@ import {
 } from '@/lib/data/professionals';
 import ProfessionalProfileClient from './client-page';
 
+type ReviewRow = {
+  id: string;
+  rating: number;
+  content: string | null;
+  likes: number | null;
+  created_at: string;
+  score_atendimento: number | null;
+  score_empatia: number | null;
+  score_clareza: number | null;
+  score_organizacao: number | null;
+  author: { full_name: string | null } | null;
+};
+
 export default async function ProfessionalProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = createClient(await cookies());
@@ -57,7 +70,7 @@ export default async function ProfessionalProfilePage({ params }: { params: Prom
   const rows = reviewRows ?? [];
 
   const reviewSummary = computeReviewSummary(rows);
-  const reviews: ReviewData[] = rows.map((r: any) => ({
+  const reviews: ReviewData[] = (rows as unknown as ReviewRow[]).map((r) => ({
     id: r.id,
     author: r.author?.full_name ?? 'Membro da comunidade',
     date: new Date(r.created_at).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }),

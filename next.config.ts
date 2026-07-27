@@ -8,13 +8,6 @@ const nextConfig: NextConfig = {
   // browser/default-stylesheet.css), que quebrava o build. É carregado via
   // require nativo em runtime, onde os arquivos existem no node_modules.
   serverExternalPackages: ['isomorphic-dompurify'],
-  eslint: {
-    // ESLint não tem nenhuma configuração neste repo (sem eslint-config-next
-    // instalado, sem .eslintrc/eslint.config.*) — sem esta flag o build trava
-    // no prompt interativo de setup do `next lint`. Configurar ESLint do
-    // zero é um passo separado, fora do escopo desta migração.
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {

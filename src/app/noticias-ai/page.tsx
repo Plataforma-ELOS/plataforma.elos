@@ -7,7 +7,7 @@ import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Terminal, Newspaper, Tags, Search } from 'lucide-react';
+import { Terminal, Newspaper, Tags } from 'lucide-react';
 import { getNewsSummary } from '@/ai/flows/news-flow';
 import { getNews } from '@/lib/data/news';
 
