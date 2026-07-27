@@ -240,8 +240,22 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 }
 ```
 
+### Meu Espaço (`/meu-espaco`)
+```json
+{
+  "route": "/meu-espaco",
+  "pattern": "Server Component (2 queries em paralelo) + client-page.tsx (Tabs: Dependentes | Diário)",
+  "data": {
+    "tables": "dependents (first_name, birth_year, relationship, notes), caregiver_journal (entry_date, mood, content) — ambas RLS FOR ALL restrita ao dono, sem migration nova",
+    "mapper": "src/lib/data/caregiver.ts (mapDependentRow — calcula idade a partir de birth_year; mapJournalEntryRow — formata entry_date ancorando em meio-dia para não deslocar o dia por fuso)"
+  },
+  "actions": "criarDependente, atualizarDependente, excluirDependente, criarEntradaDiario, atualizarEntradaDiario, excluirEntradaDiario em src/app/actions/caregiver.ts",
+  "auth": "redirect('/login') se deslogado; linkado como atalho em /perfil"
+}
+```
+
 ## 13. Legais (`/termos-de-servico`, `/politica-de-privacidade`)
 Conteúdo estático, sem dados de banco.
 
 ---
-*Atualizado em 2026-07-27. Reflete a arquitetura Supabase real (pós-migração completa do Firebase/mocks) e as telas adicionadas na Sprint 5.*
+*Atualizado em 2026-07-27. Reflete a arquitetura Supabase real (pós-migração completa do Firebase/mocks), as telas adicionadas na Sprint 5 e a Área do Cuidador (F5/1.6).*

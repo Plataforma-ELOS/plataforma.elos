@@ -20,7 +20,7 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Bookmark, Settings, Users, Edit } from 'lucide-react';
+import { Bookmark, Settings, Users, Edit, HeartHandshake } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { atualizarPerfil } from '@/app/actions/profile';
 
@@ -126,7 +126,7 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <Link href="/salvos">
                 <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
@@ -148,6 +148,14 @@ export default function ProfilePageClient({ email, fullName, bio, avatarUrl }: P
                   <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
                     <Users className="h-6 w-6 text-primary" />
                     <span className="font-medium">Meus Grupos</span>
+                  </CardContent>
+                </Card>
+              </Link>
+              <Link href="/meu-espaco">
+                <Card className="hover:shadow-primary/20 hover:-translate-y-1 transition-all">
+                  <CardContent className="flex flex-col items-center gap-2 p-6 text-center">
+                    <HeartHandshake className="h-6 w-6 text-primary" />
+                    <span className="font-medium">Meu Espaço</span>
                   </CardContent>
                 </Card>
               </Link>

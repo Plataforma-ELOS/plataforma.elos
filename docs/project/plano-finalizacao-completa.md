@@ -258,7 +258,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F5] Área do cuidador (dependentes + diário)
+### [F5] ✅ Área do cuidador (dependentes + diário)
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Muito Alta · **Tempo:** 3+ dias · **Dependências:** G5
 - **Relevância:** `dependents` e `caregiver_journal` existem com RLS "dono", **sem nenhuma UI**. É uma área nova de produto (o "cuidar de quem cuida").
 
@@ -268,7 +268,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. Telas: lista/edição de dependentes; diário com humor + texto por data.
 
 #### ✅ Critério de aceite
-- [ ] Cuidador cria/edita dependentes e entradas de diário; só vê os próprios dados (RLS).
+- [x] Cuidador cria/edita dependentes e entradas de diário; só vê os próprios dados (RLS).
+
+- **Implementado em 2026-07-27:** `/meu-espaco` (Server Component + `client-page.tsx`, `redirect('/login')` se deslogado) com duas abas — **Dependentes** (nome, ano de nascimento opcional com idade calculada, parentesco, notas; CRUD completo com confirmação de exclusão) e **Diário** (data, humor via `Select` com 5 opções, texto; mesmo CRUD). `src/lib/data/caregiver.ts` (`mapDependentRow`, `mapJournalEntryRow`) + `src/app/actions/caregiver.ts` (6 actions). Nenhuma migration nova — RLS `FOR ALL` já existia (`dependents_own`/`journal_own`, migration `0002`). Atalho novo em `/perfil`. **Cuidado de fuso tratado**: `entry_date` (tipo `date`) é ancorado em meio-dia antes de formatar, para não mostrar o dia anterior por causa da conversão para `America/Sao_Paulo` — coberto por teste (`caregiver.test.ts`). **Validação**: lógica das queries e RLS confirmada com inserts/deletes de teste direto no banco via MCP (limpos depois); `get_advisors` sem novo warning. **Achado de ambiente**: durante o teste desta rodada, `/perfil`, `/salvos`, `/configuracoes` e `/notificacoes` (já em produção, não tocados aqui) passaram a responder `200` em vez do `307` para `/login` esperado quando deslogado — o sandbox parece ter mudado de comportamento de rede desde as rodadas anteriores (não é regressão desta entrega; sinalizado para investigação futura se persistir em produção real).
 
 ---
 

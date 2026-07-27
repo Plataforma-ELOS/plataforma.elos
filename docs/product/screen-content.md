@@ -220,7 +220,7 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Header:** Avatar (fallback com inicial do nome), Nome, E-mail, Bio (ou "Você ainda não escreveu uma bio. Conte um pouco sobre você para a comunidade." quando vazia).
 *   **Ação:** "Editar Perfil" (abre modal).
 *   **Modal Editar:** "Editar Perfil", "Atualize seu nome e sua bio. Essas informações aparecem para outros membros da comunidade.", "Nome completo", "Bio", "Cancelar", "Salvar alterações" / "Salvando...".
-*   **Atalhos:** "Itens Salvos", "Configurações", "Meus Grupos".
+*   **Atalhos:** "Itens Salvos", "Configurações", "Meus Grupos", "Meu Espaço".
 
 ### Itens Salvos (`/salvos`)
 *   **Header:** "Itens Salvos", "Posts e materiais do acervo que você guardou para ver depois.".
@@ -240,6 +240,12 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Itens:** ícone de curtida (coração) ou comentário, mensagem ("Fulano curtiu seu post: '...'." / "Fulano comentou no seu post: '...'."), data/hora. Clicar numa notificação não lida marca como lida.
 *   **Empty State:** "Você ainda não tem notificações. Curtidas e comentários nos seus posts aparecem aqui.".
 *   **Tempo real:** novas notificações aparecem na lista e no contador do sino sem precisar recarregar a página (Supabase Realtime).
+
+### Meu Espaço (`/meu-espaco`)
+*   **Header:** "Meu Espaço", "Cuidar de alguém começa por cuidar de si.".
+*   **Abas:** "Dependentes", "Diário".
+*   **Dependentes:** "Adicionar Dependente", cards com nome/parentesco/idade/notas, editar e excluir (com confirmação). Modal: "Nome", "Ano de nascimento (opcional)", "Parentesco (opcional)", "Anotações (opcional)". Empty state: "Você ainda não cadastrou nenhum dependente.".
+*   **Diário:** "Nova Entrada", lista cronológica (data + badge de humor + texto), editar e excluir (com confirmação). Modal: "Data", "Como você está?" (humor: Tranquilo(a), Feliz, Cansado(a), Sobrecarregado(a), Preocupado(a)), "O que aconteceu?". Empty state: "Seu diário está vazio. Registre como você está se sentindo hoje.".
 
 ---
 
