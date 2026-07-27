@@ -33,8 +33,8 @@ Fechar features meio-prontas e stubs `FeatureInProgress`.
 | # | Ação | Esforço | Notas |
 |---|---|---|---|
 | 1.1 | ✅ Favoritar acervo (`library_favorites` já existe; botão hoje é stub) | 🟡 | Espelhar `alternarSalvo` |
-| 1.2 | Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
-| 1.3 | Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
+| 1.2 | ✅ Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
+| 1.3 | ✅ Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
 | 1.4 | ✅ Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
 | 1.5 | ~~Agendar consulta~~ — decisão revertida: **remover** o botão em vez de construir o fluxo | 🟢 | Ver `1.7` |
 | 1.6 | Área do cuidador — `dependents` e `caregiver_journal` existem, sem UI | 🔴 | RLS já pronta (dono) |
@@ -58,7 +58,7 @@ Fichas completas (com diagnóstico do código já investigado) em
 | 1B.6 | ✅ Central de notificações (`/notificacoes`) | 🔴 | Mesmo escopo de `E7`; sem tabela nem UI |
 | 1B.7 | ✅ Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
 | 1B.8 | ✅ Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existia, só não era usado |
-| 1B.9 | Clique em "Próximos eventos" → detalhe | 🟢 | Depende de `1.4` (eventos reais) |
+| 1B.9 | 🟡 Clique em "Próximos eventos" → detalhe | 🟢 | Feito o detalhe; RSVP/`.ics` ficaram de fora |
 | 1B.10 | ✅ Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Scroll já existia; sobrava um `setQuery('')` que limpava o campo |
 | 1B.11 | ✅ Bug: clique em especialidade sem scroll até os resultados | 🟢 | Estado ativo já existia; faltava só o scroll |
 | 1B.12 | Auditoria de contraste do tema claro (WCAG AA) | 🟡 | `docs/design/style-guide.md` nunca foi auditado contra 4.5:1 |
@@ -72,8 +72,8 @@ Reduzir risco de regressão e melhorar confiabilidade.
 |---|---|---|---|
 | 2.1 | ✅ Tipos gerados do Supabase (`supabase gen types`) → eliminar `any` nas queries | 🟡 | Alto |
 | 2.2 | ✅ Ampliar testes: Server Actions, `lib/data/*`, componentes (`SearchBar`, `PostCard`) | 🟠 | Alto |
-| 2.3 | `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
-| 2.4 | CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
+| 2.3 | ✅ `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
+| 2.4 | ✅ CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
 | 2.5 | ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
 | 2.6 | E2E (Playwright) dos fluxos críticos (quando rodar contra Supabase real) | 🟠 | Alto |
 
