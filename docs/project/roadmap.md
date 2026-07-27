@@ -32,7 +32,7 @@ Fechar features meio-prontas e stubs `FeatureInProgress`.
 
 | # | Ação | Esforço | Notas |
 |---|---|---|---|
-| 1.1 | Favoritar acervo (`library_favorites` já existe; botão hoje é stub) | 🟡 | Espelhar `alternarSalvo` |
+| 1.1 | ✅ Favoritar acervo (`library_favorites` já existe; botão hoje é stub) | 🟡 | Espelhar `alternarSalvo` |
 | 1.2 | Editar post/comentário (excluir já funciona; editar é stub) | 🟡 | Nova action `editarPost` |
 | 1.3 | Compartilhar (stubs em post-card e perfil) → Web Share API / copiar link | 🟢 | — |
 | 1.4 | Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
@@ -70,7 +70,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 
 | # | Ação | Esforço | Valor |
 |---|---|---|---|
-| 2.1 | Tipos gerados do Supabase (`supabase gen types`) → eliminar `any` nas queries | 🟡 | Alto |
+| 2.1 | ✅ Tipos gerados do Supabase (`supabase gen types`) → eliminar `any` nas queries | 🟡 | Alto |
 | 2.2 | Ampliar testes: Server Actions, `lib/data/*`, componentes (`SearchBar`, `PostCard`) | 🟠 | Alto |
 | 2.3 | `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
 | 2.4 | CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |

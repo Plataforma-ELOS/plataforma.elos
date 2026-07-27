@@ -55,6 +55,22 @@ const allCommunityEvents = [
   },
 ];
 
+type PostRow = {
+  id: string;
+  content: string;
+  created_at: string;
+  author_id: string;
+  author: { full_name: string | null; avatar_url: string | null } | null;
+  post_likes: { profile_id: string }[] | null;
+  post_saves: { profile_id: string }[] | null;
+  comments: {
+    id: string;
+    content: string;
+    created_at: string;
+    author: { full_name: string | null; avatar_url: string | null } | null;
+  }[] | null;
+};
+
 function tempoRelativo(iso: string): string {
   const diffMs = Date.now() - new Date(iso).getTime();
   const min = Math.floor(diffMs / 60000);
@@ -126,12 +142,12 @@ export default function CommunityPage() {
 
     const { data: { user: usuarioAtual } } = await supabase.auth.getUser();
 
-    const postsFormatados: Post[] = (data ?? []).map((p: any) => {
+    const postsFormatados: Post[] = ((data ?? []) as unknown as PostRow[]).map((p) => {
       const likes = p.post_likes ?? [];
       const saves = p.post_saves ?? [];
       const comentarios = (p.comments ?? [])
-        .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
-        .map((c: any) => ({
+        .sort((a, b) => a.created_at.localeCompare(b.created_at))
+        .map((c) => ({
           id: c.id,
           content: c.content,
           time: tempoRelativo(c.created_at),
@@ -157,8 +173,8 @@ export default function CommunityPage() {
         content: p.content,
         likes: likes.length,
         commentCount: comentarios.length,
-        isSaved: !!usuarioAtual && saves.some((s: any) => s.profile_id === usuarioAtual.id),
-        likedByMe: !!usuarioAtual && likes.some((l: any) => l.profile_id === usuarioAtual.id),
+        isSaved: !!usuarioAtual && saves.some((s) => s.profile_id === usuarioAtual.id),
+        likedByMe: !!usuarioAtual && likes.some((l) => l.profile_id === usuarioAtual.id),
         comments: comentarios,
       };
     });

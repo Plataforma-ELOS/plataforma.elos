@@ -1,11 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import type { Database } from "./database.types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) => {
-  return createServerClient(
+  return createServerClient<Database>(
     supabaseUrl!,
     supabaseKey!,
     {
@@ -31,7 +32,7 @@ export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) =
 // contextos de build, fora do escopo de uma requisição. Só serve para
 // ler dados publicos (sem sessao de usuario).
 export const createStaticClient = () => {
-  return createServerClient(
+  return createServerClient<Database>(
     supabaseUrl!,
     supabaseKey!,
     {
