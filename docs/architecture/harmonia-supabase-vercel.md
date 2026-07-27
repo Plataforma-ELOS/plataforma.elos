@@ -93,13 +93,14 @@ Atenção: o client Supabase de middleware normalmente também é responsável p
 
 ---
 
-### H2 — Migrar as 6 páginas client-fetch para Server Component
+### H2 — ✅ Migrar as 6 páginas client-fetch para Server Component
 
 - **Categoria:** Arquitetura / Cache
 - **Prioridade:** P1
 - **Dificuldade:** Médio
 - **Tempo estimado:** ~1 dia (6 páginas)
 - **Dependências:** nenhuma (pode ser feito uma página por vez, independente)
+- **Implementado em 2026-07-27** (ver ficha completa em `plano-finalizacao-completa.md`, item `E1`): as 6 páginas migradas para `page.tsx` (Server Component) + `client-page.tsx`. A busca de favoritos/curtidas/membresia do usuário logado (que depende de `auth.getUser()`) **virou uma segunda leitura no Server Component**, como a opção "melhor" já cogitada abaixo — por isso as 6 rotas saem do build como `ƒ Dynamic`, não `○`/`●`, já que leem cookies incondicionalmente (mesmo padrão de `/perfil`/`/salvos`/`/notificacoes`, que já eram assim). O critério de aceite original ("build mostra `○`/`●`") foi corrigido para refletir isso — dado personalizado por usuário não pode ser estático, o ganho real é ter *uma* leitura no servidor por request em vez de N chamadas do browser a cada mount.
 
 **Páginas:** `src/app/fale-conosco/page.tsx`, `src/app/comunidade/page.tsx`, `src/app/comunidade/explorar-grupos/page.tsx`, `src/app/comunidade/meus-grupos/page.tsx`, `src/app/acervo-digital/page.tsx`, `src/app/profissionais/page.tsx`.
 
@@ -142,10 +143,10 @@ function DigitalLibraryContent({ initialItems }: { initialItems: LibraryItemData
 A busca de favoritos do usuário logado (que depende de `auth.getUser()`) pode continuar sendo feita no client, já que é por-usuário e não deve ser cacheada — ou, melhor, pode virar uma segunda leitura no Server Component usando o resultado do middleware/cookies, evitando outra chamada do browser.
 
 **✅ Critérios de aceite**
-- [ ] As 6 páginas buscam o dado inicial no servidor (build mostra `○`/`●` em vez de puro client-render).
-- [ ] Filtros e busca (`useSearch`) continuam funcionando identicamente do ponto de vista do usuário.
-- [ ] Nenhuma regressão visual ou funcional (testar cada página manualmente).
-- [ ] `npm run typecheck` e `npm run build` continuam limpos.
+- [x] As 6 páginas buscam o dado inicial no servidor (build mostra `ƒ Dynamic` — correto para dado personalizado por usuário, não `○`/`●`; ver nota acima).
+- [x] Filtros e busca (`useSearch`) continuam funcionando identicamente do ponto de vista do usuário.
+- [x] Nenhuma regressão visual ou funcional (smoke test via `npm run dev` + curl nas 4 páginas públicas + confirmação do redirect 307 em `meus-grupos` deslogado).
+- [x] `npm run typecheck` e `npm run build` continuam limpos.
 
 ---
 

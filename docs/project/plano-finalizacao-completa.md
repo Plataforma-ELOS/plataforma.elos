@@ -106,7 +106,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q4 | `error.tsx`/`loading.tsx` por rota | Código | P2 | Baixa | meio dia | — |
 | Q5 | ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
 | Q6 | E2E (Playwright) dos fluxos críticos | Testes | P2 | Alta | 1–2 dias | G1 |
-| E1 | Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
+| E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
 | E2 | Paginação (`SearchPagination`) | Código | P3 | Média | meio dia | — |
 | E3 | 🟡 Supabase Storage (avatar + foto profissional/clínica; F7 acervo fora de escopo) | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | ✅ Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
@@ -540,12 +540,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E1] Migrar telas client-fetch → Server Components
+### [E1] ✅ Migrar telas client-fetch → Server Components
 - **Categoria:** Arquitetura · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** Q2
-- **Relevância:** 6 telas buscam no browser (`comunidade`, `profissionais`, `acervo`, `explorar/meus-grupos`, `fale-conosco`). Server Components melhoram SEO/perf e reduzem JS no cliente.
+- **Relevância:** 6 telas buscavam no browser (`comunidade`, `profissionais`, `acervo`, `explorar/meus-grupos`, `fale-conosco`). Server Components melhoram SEO/perf e reduzem JS no cliente.
+- **Implementado em 2026-07-27:** as 6 telas migradas para o padrão já usado em `/perfil`/`/salvos`/`/notificacoes`/`/comunidade/grupos/[id]`/`/profissionais/[id]` — `page.tsx` (Server Component, busca inicial via `createClient(await cookies())`) + `client-page.tsx` (`"use client"`, recebe os dados como prop, mantém busca/filtro local via `useSearch` e os Dialogs de mutação). Mutations continuam por Server Action, sem mudança. Depois de mutar (criar post/evento), o client chama `router.refresh()` em vez de refazer a query no browser — os Server Actions já chamavam `revalidatePath('/comunidade')`, então o refresh busca dado fresco no servidor e sincroniza via um `useEffect` que observa a prop (mesmo padrão de `/notificacoes`). `fale-conosco` não precisou de reestruturação — não busca nenhum dado (é só formulário) e o insert já tinha saído do client no PR de rate limiting (`E4`), então já não sobrava nenhum uso de `createClient()` do browser. `profissionais/page.tsx` também ganhou a busca de `verification_status` nesta migração (mesmo `select` do PR do selo verificado). **Testado**: `npm run build` mostra as 6 rotas como `ƒ` (dynamic, correto — leem cookies para dado personalizado, mesmo padrão das outras já convertidas); smoke test via `npm run dev` + curl confirmou as 4 páginas públicas renderizando conteúdo real (não erro) e `meus-grupos` redirecionando (307) para `/login` quando deslogado.
 
 #### ✅ Critério de aceite
-- [ ] Dados carregam no servidor; interações continuam via Server Actions.
+- [x] Dados carregam no servidor; interações continuam via Server Actions.
 
 ---
 

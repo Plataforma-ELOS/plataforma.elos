@@ -83,7 +83,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 
 | # | Ação | Esforço | Racional |
 |---|---|---|---|
-| 3.1 | Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`) | 🟠 | SEO + perf; 6 telas buscam no browser |
+| 3.1 | ✅ Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`, `explorar-grupos`, `meus-grupos`, `fale-conosco`) | 🟠 | Todas as 6 telas migradas |
 | 3.2 | Paginação de posts e profissionais (`useSearch` já preparado p/ `SearchPagination`) | 🟡 | Escala de dados |
 | 3.3 | 🟡 Supabase Storage para imagens — avatar e foto profissional/clínica | 🟠 | Upload no acervo (F7) e edição de foto pós-cadastro ficam de fora |
 | 3.4 | ✅ Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Trigger no banco, não só na Server Action |
