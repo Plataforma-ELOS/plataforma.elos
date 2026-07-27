@@ -30,7 +30,7 @@ export default async function ProfessionalProfilePage({ params }: { params: Prom
 
   const { data: professionalRow } = await supabase
     .from('professionals')
-    .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram')
+    .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status')
     .eq('id', id)
     .maybeSingle();
 
@@ -54,7 +54,7 @@ export default async function ProfessionalProfilePage({ params }: { params: Prom
   } else {
     const { data: clinicRow } = await supabase
       .from('clinics')
-      .select('id, name, specialty, description, image_url, cnpj, phone, email')
+      .select('id, name, specialty, description, image_url, cnpj, phone, email, verification_status')
       .eq('id', id)
       .maybeSingle();
 

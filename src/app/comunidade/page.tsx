@@ -5,7 +5,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Plus, LogIn, Calendar, MapPin } from 'lucide-react';
+import { Plus, LogIn, Calendar, MapPin, CalendarPlus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import PostCard, { Post } from '@/components/features/community/post-card';
 import CreatePost from '@/components/features/community/create-post';
@@ -27,6 +27,7 @@ import { createClient } from '@/lib/supabase/client';
 import { alternarCurtida, alternarSalvo, comentar, criarPost, editarPost, excluirPost } from '@/app/actions/community';
 import { criarEvento } from '@/app/actions/events';
 import { mapEventRow, type EventData, type EventRow } from '@/lib/data/events';
+import { gerarIcs, baixarIcs } from '@/lib/ics';
 import {
   Dialog,
   DialogContent,
@@ -488,6 +489,17 @@ export default function CommunityPage() {
             <p className="text-sm text-foreground/90 whitespace-pre-wrap">{eventoSelecionado?.description}</p>
           </div>
           <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                if (!eventoSelecionado) return;
+                baixarIcs(`${eventoSelecionado.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.ics`, gerarIcs(eventoSelecionado));
+              }}
+            >
+              <CalendarPlus className="mr-2 h-4 w-4" />
+              Adicionar ao calendário
+            </Button>
             <DialogClose asChild>
               <Button type="button" variant="secondary">Fechar</Button>
             </DialogClose>

@@ -10,6 +10,7 @@ export type ProfessionalCardData = {
   description: string;
   imageUrl: string;
   hint: string;
+  verified: boolean;
 };
 
 export type ProfessionalDetailData = {
@@ -20,6 +21,7 @@ export type ProfessionalDetailData = {
   specialty: string;
   crm: string;
   description: string;
+  verified: boolean;
   contact: {
     phone: string;
     email: string;
@@ -55,6 +57,7 @@ type ProfessionalRow = {
   phone: string | null;
   email: string | null;
   instagram: string | null;
+  verification_status?: string | null;
 };
 
 type ClinicRow = {
@@ -66,6 +69,7 @@ type ClinicRow = {
   cnpj: string | null;
   phone: string | null;
   email: string | null;
+  verification_status?: string | null;
 };
 
 export function mapProfessionalCard(row: ProfessionalRow): ProfessionalCardData {
@@ -76,6 +80,7 @@ export function mapProfessionalCard(row: ProfessionalRow): ProfessionalCardData 
     description: row.description ?? '',
     imageUrl: row.image_url ?? 'https://placehold.co/400x400.png',
     hint: 'profissional',
+    verified: row.verification_status === 'verified',
   };
 }
 
@@ -87,6 +92,7 @@ export function mapClinicCard(row: ClinicRow): ProfessionalCardData {
     description: row.description ?? '',
     imageUrl: row.image_url ?? 'https://placehold.co/800x450.png',
     hint: 'clinica',
+    verified: row.verification_status === 'verified',
   };
 }
 
@@ -103,6 +109,7 @@ export function mapProfessionalDetail(
     specialty: row.specialty ?? '',
     crm: row.registration_number ?? '',
     description: row.description ?? '',
+    verified: row.verification_status === 'verified',
     contact: {
       phone: row.phone ?? '',
       email: row.email ?? '',
@@ -122,6 +129,7 @@ export function mapClinicDetail(row: ClinicRow): ProfessionalDetailData {
     specialty: row.specialty ?? '',
     crm: row.cnpj ? `CNPJ: ${row.cnpj}` : '',
     description: row.description ?? '',
+    verified: row.verification_status === 'verified',
     contact: {
       phone: row.phone ?? '',
       email: row.email ?? '',

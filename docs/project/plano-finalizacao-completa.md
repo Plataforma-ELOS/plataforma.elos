@@ -95,7 +95,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | U6 | Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
 | U7 | ✅ Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
 | U8 | ✅ Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
-| U9 | Clique em "Próximos eventos" → detalhe/modal | Código | P2 | Baixa | 2 h | depende de `F1` (eventos ainda são mock) |
+| U9 | ✅ Clique em "Próximos eventos" → detalhe/modal + `.ics` (RSVP fora de escopo) | Código | P2 | Baixa | 2 h | depende de `F1` (eventos ainda são mock) |
 | U10 | ✅ Bug: chips de tópico no Suporte IA parecem não responder | Código | P1 | Baixa | 1 h | — |
 | U11 | ✅ Bug: clique em especialidade sem scroll até os resultados | Código | P1 | Baixa | 2 h | — |
 | U12 | ✅ Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
@@ -110,7 +110,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | E2 | Paginação (`SearchPagination`) | Código | P3 | Média | meio dia | — |
 | E3 | Supabase Storage (imagens) + F7 upload | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
-| E5 | Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
+| E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
 | E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
 | E8 | Busca server-side (full-text) | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
@@ -402,7 +402,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U9] 🟡 Clique em "Próximos eventos" → detalhe/modal
+### [U9] ✅ Clique em "Próximos eventos" → detalhe/modal (RSVP fora de escopo)
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** `F1` (eventos ainda são mock)
 - **Relevância:** Os cards de evento hoje vêm de `allCommunityEvents` (mock, sem `onClick`). Não faz sentido implementar o clique antes de `F1` trazer eventos reais — ficaria abrindo detalhe de dado fictício.
 
@@ -412,9 +412,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 #### ✅ Critério de aceite
 - [x] Clique no card abre detalhe com dado real.
+- [x] Botão "Adicionar ao calendário" gera e baixa um `.ics` (`src/lib/ics.ts`, sem dependência externa, duração padrão de 1h).
 - [ ] Confirmar presença registra o usuário (não implementado — ver nota).
 
-- **Implementado parcialmente em 2026-07-27:** cada evento na sidebar de `/comunidade` virou um botão que abre um `Dialog` com tipo (badge), data/hora, local (se presencial) e descrição completa — usa os dados reais já trazidos por `F1`. **Fora de escopo desta rodada:** "Adicionar à agenda" (`.ics`) e "Confirmar presença" (precisaria de tabela nova `event_attendees` e é uma feature de RSVP, não só um detalhe de clique) — ficam para uma entrega futura se houver demanda.
+- **Implementado em 2026-07-27:** cada evento na sidebar de `/comunidade` virou um botão que abre um `Dialog` com tipo (badge), data/hora, local (se presencial) e descrição completa — usa os dados reais já trazidos por `F1`. O `DialogFooter` ganhou o botão "Adicionar ao calendário", que monta um `.ics` (`gerarIcs`/`baixarIcs` em `src/lib/ics.ts`) a partir do próprio evento e dispara o download no navegador — sem tabela nova, sem dependência externa. **Fora de escopo:** "Confirmar presença" (RSVP) — exigiria uma tabela nova `event_attendees`, é uma feature própria de RSVP e não um detalhe de clique; fica para uma entrega futura se houver demanda.
 
 ---
 
@@ -579,14 +580,14 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E5] Workflow de verificação de profissionais
+### [E5] ✅ Workflow de verificação de profissionais
 - **Categoria:** Código · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** E6 ✅
-- **Relevância:** Todo `professionals.verification_status` está `pending`; falta o fluxo admin de aprovar/rejeitar e exibir o selo "verificado".
-- **Status:** o lado admin (aprovar/rejeitar) já existe via `/admin` (ver `E6`). Falta só exibir o selo "verificado" nas telas de `/profissionais` — não incluído nesta rodada.
+- **Relevância:** Todo `professionals.verification_status` está `pending`; faltava o fluxo admin de aprovar/rejeitar e exibir o selo "verificado".
+- **Implementado em 2026-07-27:** `src/lib/data/professionals.ts` — os 4 mappers (`mapProfessionalCard`, `mapClinicCard`, `mapProfessionalDetail`, `mapClinicDetail`) agora expõem `verified: boolean` (`verification_status === 'verified'`). `verification_status` adicionado aos `select()` de `/profissionais` (listagem e detalhe). Selo `BadgeCheck` (lucide-react) renderizado ao lado do nome quando `verified` — ícone inline no card compacto de profissional (carrossel), `Badge` com texto "Verificado" no card de clínica (mais espaço), e no `<h1>` da página de detalhe.
 
 #### ✅ Critério de aceite
 - [x] Admin aprova/rejeita.
-- [ ] UI mostra selo só para `verified`.
+- [x] UI mostra selo só para `verified`.
 
 ---
 

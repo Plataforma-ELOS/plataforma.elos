@@ -6,7 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ShieldCheck, Star, Users } from 'lucide-react';
+import { ShieldCheck, Star, Users, BadgeCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -50,7 +50,7 @@ export default function ProfessionalsPage() {
 
     supabase
       .from('professionals')
-      .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram')
+      .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status')
       .in('kind', ['liberal', 'clinic_professional'])
       .then(({ data, error }) => {
         if (error) {
@@ -62,7 +62,7 @@ export default function ProfessionalsPage() {
 
     supabase
       .from('clinics')
-      .select('id, name, specialty, description, image_url, cnpj, phone, email')
+      .select('id, name, specialty, description, image_url, cnpj, phone, email, verification_status')
       .then(({ data, error }) => {
         if (error) {
           console.error('[profissionais] erro ao buscar clinicas:', error.message);
@@ -218,7 +218,10 @@ export default function ProfessionalsPage() {
                                     <AvatarFallback>{prof.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
                                 <CardHeader className="p-0 flex-grow">
-                                    <CardTitle className="text-xl group-hover:text-primary font-bold">{prof.name}</CardTitle>
+                                    <CardTitle className="text-xl group-hover:text-primary font-bold inline-flex items-center justify-center gap-1">
+                                        {prof.name}
+                                        {prof.verified && <BadgeCheck className="h-4 w-4 text-primary-strong shrink-0" aria-label="Verificado" />}
+                                    </CardTitle>
                                     <CardDescription className="text-primary-strong font-semibold">{prof.specialty}</CardDescription>
                                 </CardHeader>
                                 <div className="mt-auto pt-4">
@@ -260,7 +263,15 @@ export default function ProfessionalsPage() {
                                 <Image src={clinic.imageUrl} alt={clinic.name} width={800} height={450} className="w-full h-56 object-cover" data-ai-hint={clinic.hint} />
                                 <div className="p-6 flex flex-col flex-grow">
                                     <CardHeader className="p-0">
-                                        <CardTitle className="text-xl group-hover:text-primary font-bold">{clinic.name}</CardTitle>
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            <CardTitle className="text-xl group-hover:text-primary font-bold">{clinic.name}</CardTitle>
+                                            {clinic.verified && (
+                                                <Badge variant="secondary" className="gap-1 shrink-0">
+                                                    <BadgeCheck className="h-3.5 w-3.5" />
+                                                    Verificado
+                                                </Badge>
+                                            )}
+                                        </div>
                                         <CardDescription className="text-primary-strong font-semibold">{clinic.specialty}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="p-0 mt-3 text-muted-foreground flex-grow">
