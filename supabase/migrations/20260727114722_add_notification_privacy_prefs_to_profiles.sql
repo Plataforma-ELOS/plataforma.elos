@@ -1,4 +1,4 @@
--- elos_0008_preferencias_notificacao_privacidade
+-- add_notification_privacy_prefs_to_profiles (elos_0008)
 --
 -- Adiciona preferências de notificação e privacidade em profiles, usadas
 -- pela tela /configuracoes. Aditivo: não afeta linhas existentes (defaults
