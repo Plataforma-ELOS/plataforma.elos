@@ -477,7 +477,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q3] Ampliar cobertura de testes
+### [Q3] ✅ Ampliar cobertura de testes
 - **Categoria:** Testes · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** 1–2 dias · **Dependências:** Q2
 - **Relevância:** Hoje só `utils`, `format`, `use-search` (16 testes). Falta cobrir Server Actions, camada `lib/data/*` e componentes.
 
@@ -487,7 +487,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. (Opcional) mocks do client Supabase para as actions.
 
 #### ✅ Critério de aceite
-- [ ] Cobertura sobe de forma significativa; `npm run test` verde.
+- [x] Cobertura sobe de forma significativa; `npm run test` verde.
+
+- **Implementado em 2026-07-27:** 16 → 35 testes. Novos: `lib/data/events.test.ts` (`mapEventRow`), `lib/data/notifications.test.ts` (`mapNotificationRow`, incluindo o corte de trecho em 60 caracteres), `lib/data/saved.test.ts` (`mapSavedPost`, criado na sprint anterior sem teste), `lib/data/library.test.ts` (`mapLibraryRow`, vídeo/documento/downloadable/defaults). Um teste de componente representativo com Testing Library: `search-bar.test.tsx` (`@testing-library/react` + `fireEvent`, sem adicionar a dependência `user-event` que não estava instalada). `mapProfessionalCard`/`computeReviewSummary` e os demais componentes (`SearchFilters`, `PostCard`) e mocks de Server Action ficam para uma rodada futura — não é uma varredura completa, só o necessário para validar os mappers criados nesta sprint + um exemplo de teste de componente.
 
 ---
 

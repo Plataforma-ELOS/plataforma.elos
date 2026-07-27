@@ -71,7 +71,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | # | Ação | Esforço | Valor |
 |---|---|---|---|
 | 2.1 | ✅ Tipos gerados do Supabase (`supabase gen types`) → eliminar `any` nas queries | 🟡 | Alto |
-| 2.2 | Ampliar testes: Server Actions, `lib/data/*`, componentes (`SearchBar`, `PostCard`) | 🟠 | Alto |
+| 2.2 | ✅ Ampliar testes: Server Actions, `lib/data/*`, componentes (`SearchBar`, `PostCard`) | 🟠 | Alto |
 | 2.3 | `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
 | 2.4 | CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
 | 2.5 | ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
@@ -102,7 +102,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 
 ## Sequência recomendada (próximas sprints)
 - **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (`0.2`, `1.7`, `1B.10`, `1B.11` já feitos.)
-- **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`.
+- **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`. Todos já feitos.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
 - **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.4 (configurações)` → `1B.1 (boas-vindas grupo)` → `1B.6 (notificações)` já feitos. Falta apenas `1B.9 (eventos, depois de 1.4)`.
 - **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro). (`1B.7`/`1B.8` já feitos.)
