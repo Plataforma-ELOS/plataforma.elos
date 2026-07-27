@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server';
 export type Resultado = { ok: boolean; erro?: string };
 const PRECISA_LOGIN = 'Entre na sua conta para continuar.';
 
-export async function atualizarPerfil(fullName: string, bio: string): Promise<Resultado> {
+export async function atualizarPerfil(fullName: string, bio: string, avatarUrl?: string): Promise<Resultado> {
   const supabase = createClient(await cookies());
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { ok: false, erro: PRECISA_LOGIN };
@@ -18,9 +18,12 @@ export async function atualizarPerfil(fullName: string, bio: string): Promise<Re
   if (name.length > 120) return { ok: false, erro: 'Nome muito longo (máximo 120 caracteres).' };
   if (bioTexto.length > 500) return { ok: false, erro: 'Bio muito longa (máximo 500 caracteres).' };
 
+  const dados: { full_name: string; bio: string; avatar_url?: string } = { full_name: name, bio: bioTexto };
+  if (avatarUrl) dados.avatar_url = avatarUrl;
+
   const { error } = await supabase
     .from('profiles')
-    .update({ full_name: name, bio: bioTexto })
+    .update(dados)
     .eq('id', user.id);
 
   if (error) return { ok: false, erro: 'Não foi possível atualizar seu perfil agora.' };

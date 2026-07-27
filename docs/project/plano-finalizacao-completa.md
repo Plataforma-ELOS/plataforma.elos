@@ -108,7 +108,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q6 | E2E (Playwright) dos fluxos críticos | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
 | E2 | Paginação (`SearchPagination`) | Código | P3 | Média | meio dia | — |
-| E3 | Supabase Storage (imagens) + F7 upload | Código/Infra | P3 | Alta | 1–2 dias | — |
+| E3 | 🟡 Supabase Storage (avatar + foto profissional/clínica; F7 acervo fora de escopo) | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | ✅ Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
 | E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
@@ -558,7 +558,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E3] Supabase Storage para imagens (+ F7 upload no acervo)
+### [E3] 🟡 Supabase Storage para imagens (avatar + foto de profissional/clínica implementados; upload no acervo fora de escopo)
 - **Categoria:** Código/Infra · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** —
 - **Relevância:** Hoje tudo é `placehold.co`. Produto real precisa de upload (avatar, capa de material). O upload no `create-post`/acervo é stub (F7).
 
@@ -567,7 +567,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Componente de upload → URL pública salva na coluna `image_url`/`avatar_url`.
 
 #### ✅ Critério de aceite
-- [ ] Upload funciona; imagens próprias renderizam via `next/image`.
+- [x] Upload funciona; imagens próprias renderizam via `next/image`.
+- [ ] Upload no `create-post`/acervo (`F7`) — fora de escopo, ver nota.
+
+- **Implementado em 2026-07-27:** dois buckets criados via migration (`add_storage_buckets_avatars_professionals`) — `avatars` e `professionals`, ambos `public=true`, limite de 2MB, só `image/png|jpeg|webp`. Path prefixado pelo `auth.uid()` do dono (`{uid}/arquivo.ext`) — padrão recomendado pelo Supabase, RLS de Storage não precisa consultar outras tabelas: `insert`/`update`/`delete` só quando o primeiro segmento do path bate com `auth.uid()`. **Sem policy de `select`** — bucket público já serve os objetos via URL pública no nível do serviço de Storage; uma policy ampla de `select` só permitiria *listar* todos os arquivos via API, exposição desnecessária (migration de correção `drop_broad_select_policies_public_buckets`, depois que o Security Advisor acusou `public_bucket_allows_listing`). `next.config.ts`: hostname do projeto Supabase adicionado a `images.remotePatterns` (só o path `/storage/v1/object/public/**`).
+  - **Avatar (`/perfil`)**: `perfil/page.tsx` passa `userId`; `perfil/client-page.tsx` ganhou input de arquivo no dialog de edição (preview com `URL.createObjectURL`, revogado no cleanup); `atualizarPerfil` (`src/app/actions/profile.ts`) ganhou parâmetro opcional `avatarUrl`.
+  - **Foto de profissional/clínica (`/cadastro-profissional`)**: único ponto de escrita em `professionals`/`clinics` hoje; upload opcional no próprio formulário de inscrição (`useContext(AuthContext)` para o `user.id`); `inscreverProfissional` (`src/app/actions/professional-signup.ts`) ganhou `imageUrl?: string`, gravado em `image_url` nos dois inserts.
+  - **Fora de escopo**: não existe tela de "editar minha ficha profissional depois de cadastrada" (só o cadastro inicial) — trocar a foto depois exigiria essa tela nova. Upload de imagem no `create-post`/sugestão de item do acervo (`F7`) também fica fora — o formulário "Adicionar ao Acervo" continua sendo um stub de UI, sem insert real.
 
 ---
 

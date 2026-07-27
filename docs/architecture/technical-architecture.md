@@ -62,6 +62,7 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 
 ### Cadastro Profissional (`/cadastro-profissional`)
 - Insere em `professionals` ou `clinics` (conforme o tipo escolhido) com `verification_status = 'pending'`.
+- Foto opcional: upload direto do client para o bucket `professionals` (Supabase Storage) em `{auth.uid()}/{uuid}.ext`, URL pública gravada em `image_url` via `inscreverProfissional`.
 
 ## 4. Portal de Notícias (`/noticias`, `/noticias/[slug]`)
 ```json
@@ -196,8 +197,9 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
   "route": "/perfil",
   "pattern": "Server Component (page.tsx) + client-page.tsx",
   "data": { "table": "profiles (full_name, bio, avatar_url)" },
-  "actions": "atualizarPerfil em src/app/actions/profile.ts",
-  "auth": "redirect('/login') se deslogado"
+  "actions": "atualizarPerfil em src/app/actions/profile.ts (avatarUrl opcional)",
+  "auth": "redirect('/login') se deslogado",
+  "storage": "upload direto do client para o bucket avatars (Supabase Storage) em {auth.uid()}/{uuid}.ext antes de chamar atualizarPerfil"
 }
 ```
 

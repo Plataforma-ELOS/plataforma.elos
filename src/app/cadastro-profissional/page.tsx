@@ -4,7 +4,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,17 +25,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Camera } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { inscreverProfissional } from '@/app/actions/professional-signup';
+import { AuthContext } from '@/components/common/providers';
+import { createClient } from '@/lib/supabase/client';
+
+const TAMANHO_MAXIMO_FOTO = 2 * 1024 * 1024;
 
 const MAX_WORDS = 200;
 
 export default function ProfessionalSignUpPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { user } = useContext(AuthContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [experienceText, setExperienceText] = useState('');
@@ -44,6 +49,24 @@ export default function ProfessionalSignUpPage() {
   const [email, setEmail] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+
+  const previewPhoto = useMemo(() => (photoFile ? URL.createObjectURL(photoFile) : null), [photoFile]);
+  useEffect(() => {
+    return () => {
+      if (previewPhoto) URL.revokeObjectURL(previewPhoto);
+    };
+  }, [previewPhoto]);
+
+  const handlePhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const arquivo = e.target.files?.[0];
+    if (!arquivo) return;
+    if (arquivo.size > TAMANHO_MAXIMO_FOTO) {
+      toast({ variant: 'destructive', title: 'Imagem muito grande', description: 'Escolha uma imagem de até 2MB.' });
+      return;
+    }
+    setPhotoFile(arquivo);
+  };
 
   const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -81,6 +104,21 @@ export default function ProfessionalSignUpPage() {
     }
 
     setEnviando(true);
+
+    let imageUrl: string | undefined;
+    if (photoFile && user) {
+      const supabase = createClient();
+      const extensao = photoFile.name.split('.').pop();
+      const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
+      const { error: erroUpload } = await supabase.storage.from('professionals').upload(caminho, photoFile);
+      if (erroUpload) {
+        setEnviando(false);
+        toast({ variant: 'destructive', title: 'Não foi possível enviar a foto', description: erroUpload.message });
+        return;
+      }
+      imageUrl = supabase.storage.from('professionals').getPublicUrl(caminho).data.publicUrl;
+    }
+
     const { ok, erro } = await inscreverProfissional({
       fullName,
       email,
@@ -88,6 +126,7 @@ export default function ProfessionalSignUpPage() {
       cnpj,
       registrationNumber,
       experience: experienceText,
+      imageUrl,
     });
     setEnviando(false);
 
@@ -143,6 +182,20 @@ export default function ProfessionalSignUpPage() {
                     </p>
                 </div>
                 <form className="grid gap-6" onSubmit={handleProfessionalSubmit}>
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="h-20 w-20 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                          {previewPhoto ? (
+                            <Image src={previewPhoto} alt="Prévia da foto" width={80} height={80} className="h-full w-full object-cover" unoptimized />
+                          ) : (
+                            <Camera className="h-8 w-8 text-muted-foreground" />
+                          )}
+                        </div>
+                        <Label htmlFor="prof-photo-file" className="inline-flex items-center gap-2 text-sm text-primary-strong cursor-pointer hover:underline">
+                          <Camera className="h-4 w-4" />
+                          Adicionar foto (opcional)
+                        </Label>
+                        <Input id="prof-photo-file" type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handlePhotoSelected} />
+                    </div>
                     <div className="grid gap-2">
                         <Label htmlFor="prof-full-name">Nome Completo</Label>
                         <Input id="prof-full-name" placeholder="Seu nome ou nome da clínica" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
