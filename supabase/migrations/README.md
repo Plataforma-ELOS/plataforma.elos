@@ -14,6 +14,12 @@ está com o schema completo e testado:
 - `0007`: performance — 25 policies pararam de reavaliar `auth.uid()` linha a
   linha, 11 tabelas com policy duplicada em SELECT foram divididas, 12
   índices de chave estrangeira criados.
+- `0008` (`add_notification_privacy_prefs_to_profiles`): aditiva — adiciona
+  `notify_email`, `notify_push`, `profile_public` (boolean, default `true`)
+  em `profiles`, usadas pela tela `/configuracoes`. Diferente de `0001`-`0007`,
+  esta foi aplicada via `apply_migration` (MCP) e o arquivo local já nasceu
+  com o nome/versão exatos do `supabase_migrations.schema_migrations`
+  remoto — não precisou de reconstrução por introspecção.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

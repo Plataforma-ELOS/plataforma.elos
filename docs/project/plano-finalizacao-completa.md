@@ -336,7 +336,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 #### ✅ Critério de aceite
 - [x] Tema/fonte continuam funcionando, agora também nesta tela; preferências novas persistem.
 
-- **Implementado em 2026-07-27:** migration `20260727120000_elos_0008_preferencias_notificacao_privacidade.sql` adiciona `notify_email`/`notify_push`/`profile_public` (boolean, default `true`) em `profiles`. `src/app/configuracoes/page.tsx` (Server Component) + `client-page.tsx` (tema/fonte via os hooks já existentes, 3 `Switch` com salvamento otimista via `atualizarPreferencias` em `src/app/actions/profile.ts`, com rollback e toast se a gravação falhar).
+- **Implementado em 2026-07-27:** migration `20260727114722_add_notification_privacy_prefs_to_profiles.sql` adiciona `notify_email`/`notify_push`/`profile_public` (boolean, default `true`) em `profiles`. `src/app/configuracoes/page.tsx` (Server Component) + `client-page.tsx` (tema/fonte via os hooks já existentes, 3 `Switch` com salvamento otimista via `atualizarPreferencias` em `src/app/actions/profile.ts`, com rollback e toast se a gravação falhar).
 
 ---
 
