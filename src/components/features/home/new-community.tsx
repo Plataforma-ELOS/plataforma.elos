@@ -109,7 +109,7 @@ export default function NewCommunity() {
                                   </div>
                                 </div>
                                 <p className="text-lg text-muted-foreground italic text-center max-w-md mx-auto">
-                                  "{testimonial.text}"
+                                  &quot;{testimonial.text}&quot;
                                 </p>
                               </div>
                             </CarouselItem>

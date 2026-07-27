@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User, Moon, Laptop, CaseSensitive, CaseUpper, CaseLower, Edit, Bell } from 'lucide-react';
+import { Menu, UserCircle, Settings, Bookmark, Sun, LogOut, HelpCircle, User, Moon, CaseSensitive, CaseUpper, CaseLower, Edit, Bell } from 'lucide-react';
 import FeatureInProgress from '@/components/common/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';

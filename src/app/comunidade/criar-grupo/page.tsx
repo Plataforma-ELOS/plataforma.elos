@@ -79,7 +79,7 @@ export default function CreateGroupPage() {
                         <div className="text-center p-8 border-dashed border-2 rounded-lg bg-primary/5">
                             <Check className="mx-auto h-16 w-16 text-green-500 mb-4 bg-green-100 rounded-full p-2" />
                             <h2 className="text-2xl font-semibold mb-2">Grupo Criado com Sucesso!</h2>
-                            <p className="text-muted-foreground mb-6">O grupo "{groupName}" está pronto. Convide outras pessoas para participar!</p>
+                            <p className="text-muted-foreground mb-6">O grupo &quot;{groupName}&quot; está pronto. Convide outras pessoas para participar!</p>
                             <div className="flex items-center space-x-2 bg-muted p-2 rounded-md">
                                 <Input value={groupLink} readOnly className="flex-1 bg-transparent border-0" />
                                 <Button size="icon" onClick={handleCopyLink}>

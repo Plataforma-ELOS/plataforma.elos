@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +18,16 @@ type UserGroup = {
   description: string;
   members: number;
   tags: string[];
+};
+
+type GroupMemberRow = {
+  group: {
+    id: string;
+    name: string;
+    description: string | null;
+    tags: string[] | null;
+    group_members: { count: number }[] | null;
+  } | null;
 };
 
 export default function MyGroupsPage() {
@@ -45,10 +55,10 @@ export default function MyGroupsPage() {
       }
 
       setUserGroups(
-        (data ?? [])
-          .map((row: any) => row.group)
-          .filter(Boolean)
-          .map((g: any) => ({
+        ((data ?? []) as unknown as GroupMemberRow[])
+          .map((row) => row.group)
+          .filter((g): g is NonNullable<GroupMemberRow['group']> => g !== null)
+          .map((g) => ({
             id: g.id,
             name: g.name,
             description: g.description ?? '',
