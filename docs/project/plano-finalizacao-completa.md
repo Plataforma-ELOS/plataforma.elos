@@ -10,8 +10,12 @@
 > **Atualização 2026-07-27:** incorporado um backlog de UI/UX (categoria `U`)
 > a partir de uma revisão de produto — 6 telas novas, 3 fluxos de navegação a
 > corrigir, 2 bugs de interação e uma auditoria de contraste no tema claro.
-> Nenhum código foi alterado nesta atualização; é só o registro formal do que
-> falta, na Seção 2/3 abaixo. Ver também a reversão do item `F4`.
+> Ver também a reversão do item `F4`.
+>
+> **Atualização 2026-07-27 (2):** implementados os itens mais simples do
+> backlog `U` — `U7`, `U8`, `U10`, `U11`, `U12` (ver fichas abaixo, marcadas
+> ✅). `U10` e `U11` tiveram o diagnóstico corrigido durante a implementação
+> (o código já estava mais correto do que a primeira leitura sugeria).
 
 ---
 
@@ -89,12 +93,12 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | U4 | Tela de configurações (`/configuracoes`) | Código | P2 | Média | meio dia | — |
 | U5 | Central de Ajuda — evoluir `/faq` | Código/UX | P2 | Baixa | meio dia | — |
 | U6 | Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
-| U7 | Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
-| U8 | Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
+| U7 | ✅ Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
+| U8 | ✅ Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
 | U9 | Clique em "Próximos eventos" → detalhe/modal | Código | P2 | Baixa | 2 h | depende de `F1` (eventos ainda são mock) |
-| U10 | Bug: chips de tópico no Suporte IA parecem não responder | Código | P1 | Baixa | 1 h | — |
-| U11 | Bug: clique em especialidade não dá feedback visível | Código | P1 | Baixa | 2 h | — |
-| U12 | Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
+| U10 | ✅ Bug: chips de tópico no Suporte IA parecem não responder | Código | P1 | Baixa | 1 h | — |
+| U11 | ✅ Bug: clique em especialidade sem scroll até os resultados | Código | P1 | Baixa | 2 h | — |
+| U12 | ✅ Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
 | U13 | Auditoria de contraste do tema claro (WCAG AA 4.5:1) | Design/CSS | P2 | Média | meio dia | — |
 | Q1 | Validar CI verde no PR | CI/CD | P2 | Baixa | 15 min | G5 |
 | Q2 | Tipos gerados do Supabase (tirar `any`) | Código | P2 | Média | meio dia | — |
@@ -356,29 +360,23 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U7] Loading skeleton ao clicar em manchete de notícia
+### [U7] ✅ Loading skeleton ao clicar em manchete de notícia
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** mesmo escopo de `Q4`
-- **Relevância:** `/noticias/[slug]` e `/noticias-ai/[slug]` já existem e já funcionam (são SSG). O que falta é o estado de carregamento entre o clique e a página aparecer — hoje não há `loading.tsx` em nenhuma rota do app.
-
-#### 🎯 Passo a passo
-1. Criar `src/app/noticias/[slug]/loading.tsx` e `src/app/noticias-ai/[slug]/loading.tsx` com skeleton do layout do artigo.
-2. Extensível para as demais rotas listadas em `Q4`.
+- **Relevância:** `/noticias/[slug]` e `/noticias-ai/[slug]` já existem e já funcionam (são SSG). O que faltava era o estado de carregamento entre o clique e a página aparecer.
+- **Implementado em 2026-07-27:** criados `src/app/noticias/[slug]/loading.tsx` e `src/app/noticias-ai/[slug]/loading.tsx`, com skeleton (`@/components/ui/skeleton`) espelhando o layout real do artigo (link de volta, badge, título, meta, imagem, parágrafos).
 
 #### ✅ Critério de aceite
-- [ ] Clique numa manchete mostra skeleton até a página carregar.
+- [x] Clique numa manchete mostra skeleton até a página carregar.
 
 ---
 
-### [U8] Clique em documento do acervo → preview/download correto
+### [U8] ✅ Clique em documento do acervo → preview/download correto
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
-- **Relevância:** `digital-library-card.tsx`/`digital-library-list-item.tsx` já abrem `item.actionUrl` em nova aba (`target="_blank"`) para todo tipo de item — sem diferenciar vídeo/documento nem oferecer download direto quando `downloadable` é `true` (a coluna já existe em `library_items`).
-
-#### 🎯 Passo a passo
-1. Usar o campo `downloadable` já existente: se `true`, renderizar `<a download>` em vez de só abrir em nova aba; se for vídeo, manter abertura normal.
-2. Para documentos não-baixáveis, considerar um preview embutido (iframe) em vez de nova aba.
+- **Relevância:** `digital-library-card.tsx`/`digital-library-list-item.tsx` abriam `item.actionUrl` em nova aba (`target="_blank"`) para todo tipo de item, sem oferecer download direto quando `downloadable` era `true`.
+- **Implementado em 2026-07-27:** quando `item.downloadable` é `true`, o botão renderiza `<a href={item.actionUrl} download>` em vez do `<Link target="_blank">`; itens não-baixáveis mantêm o comportamento de abrir em nova aba. Aplicado nos dois componentes (card e list-item).
 
 #### ✅ Critério de aceite
-- [ ] Item marcado como `downloadable` baixa o arquivo; os demais abrem preview/nova aba coerente com o tipo.
+- [x] Item marcado como `downloadable` baixa o arquivo; os demais abrem em nova aba como antes.
 
 ---
 
@@ -395,43 +393,33 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U10] Bug: chips de tópico no Suporte IA parecem não responder
+### [U10] ✅ Bug: chips de tópico no Suporte IA parecem não responder
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** —
-- **Relevância:** Investiguei `src/app/suporte-ia/page.tsx`. `handleTopicClick` (linha 138) chama `handleSearch(topic)` corretamente (o parâmetro certo é usado, não há stale closure) — mas a linha seguinte, `setQuery('')`, roda no mesmo batch de render que `setQuery(topic)`, então o campo de busca nunca chega a mostrar visualmente o tópico clicado, e a resposta aparece abaixo da dobra sem scroll automático. Não é uma falha de requisição — é falta de feedback visual, o que dá a impressão de "não fez nada".
-
-#### 🎯 Passo a passo
-1. Remover o `setQuery('')` redundante em `handleTopicClick` (deixar o campo mostrar o tópico clicado enquanto carrega).
-2. Adicionar `scrollIntoView` (ou `ref` + `scroll-margin`) na área de resposta ao iniciar uma busca.
+- **Diagnóstico corrigido na implementação:** ao reabrir `src/app/suporte-ia/page.tsx` para implementar, vi que a página **já tinha** um `useEffect`/`scrollToBottom` que rola até `responseEndRef` sempre que `aiResponse`/`loading` mudam (linhas 77-88) — isso já funcionava, ao contrário do que eu tinha registrado. O único problema real era `handleTopicClick` chamar `setQuery(topic)` e, na linha seguinte, `setQuery('')` — as duas atualizações batcham no mesmo render, então o campo nunca chegava a mostrar o tópico clicado.
+- **Implementado em 2026-07-27:** removida a chamada `setQuery('')` redundante em `handleTopicClick`. O scroll automático já existente continua funcionando sem alteração.
 
 #### ✅ Critério de aceite
-- [ ] Clicar num tópico popular mostra visivelmente o que foi perguntado e rola até a resposta.
+- [x] Clicar num tópico popular mostra visivelmente o que foi perguntado e rola até a resposta.
 
 ---
 
-### [U11] Bug: clique em especialidade não dá feedback visível
+### [U11] ✅ Bug: clique em especialidade sem scroll até os resultados
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
-- **Relevância:** Investiguei `src/app/profissionais/page.tsx`. `handleSpecialtyClick` (linha 91) e o `useSearch` (`src/hooks/use-search.ts`) estão corretos — o clique atualiza `query` e o filtro por substring funciona. O problema mais provável: nenhum card de especialidade mostra estado "selecionado", e a lista filtrada fica abaixo da dobra, sem scroll — mesma classe de bug do `U10`. Precisa de teste manual em browser para confirmar, já que o código em si não mostra erro.
-
-#### 🎯 Passo a passo
-1. Adicionar classe de estado ativo no card da especialidade clicada (`query === specialty.tag`).
-2. `scrollIntoView` até a seção de resultados ao clicar.
-3. Confirmar em teste manual que não há nenhuma outra causa (ex.: `SearchBar` fora de sincronia).
+- **Diagnóstico corrigido na implementação:** ao reabrir `src/app/profissionais/page.tsx`, vi que o estado "ativo" do card de especialidade **já existia** (`const active = query === specialty.tag`, aplicado via `cn(...)` nas classes do `Card`/`<h3>`) — não era um item faltando, como eu tinha registrado antes. O único gap real: nenhum scroll até a seção de resultados, que fica abaixo da dobra.
+- **Implementado em 2026-07-27:** adicionado `resultsRef` (via `useRef`) na seção "Profissionais Liberais" e `scrollIntoView({ behavior: 'smooth', block: 'start' })` dentro de `handleSpecialtyClick`.
 
 #### ✅ Critério de aceite
-- [ ] Clicar numa especialidade filtra visivelmente a lista e mostra qual está ativa.
+- [x] Clicar numa especialidade filtra a lista, mantém o estado ativo já existente e agora rola até os resultados.
 
 ---
 
-### [U12] Remover "Agendar consulta" de profissionais e clínicas
+### [U12] ✅ Remover "Agendar consulta" de profissionais e clínicas
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** substitui `F4`
 - **Relevância:** Decisão de produto: manter o foco em informação institucional/contato direto, não construir um fluxo de agendamento.
-
-#### 🎯 Passo a passo
-1. Remover o botão/stub "Agendar consulta" (`FeatureInProgress`) de `src/app/profissionais/[id]/client-page.tsx`.
-2. Conferir se há menção equivalente em cards de listagem (`profissionais/page.tsx`) e remover também, se houver.
+- **Implementado em 2026-07-27:** removido o `<footer>` fixo com o botão "Agendar Consulta" (`FeatureInProgress`) de `src/app/profissionais/[id]/client-page.tsx`, junto com o `pb-24` do `<main>` que só existia para compensar esse footer fixo. Não havia menção equivalente em `profissionais/page.tsx` (cards de listagem) — nada a remover lá. `docs/product/screen-content.md` atualizado (removida a linha "Footer Fixo: Agendar Consulta").
 
 #### ✅ Critério de aceite
-- [ ] Nenhuma tela de profissional/clínica oferece "Agendar consulta"; contatos diretos (telefone/e-mail/Instagram) continuam visíveis.
+- [x] Nenhuma tela de profissional/clínica oferece "Agendar consulta"; contatos diretos (telefone/e-mail/Instagram) continuam visíveis.
 
 ---
 
@@ -585,7 +573,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 ## 4. Sprints de Execução Sugeridas
 
 ### 🚀 Sprint 0 — Go-Live & Desbloqueio (P0, majoritariamente painel)
-`G1 → G2 → G3 → G4 → G5`. **Resultado:** app operável em produção. Junto: quick wins **F3** (compartilhar), **F6** (nav) e os bugs rápidos **U10/U11/U12**.
+`G1 → G2 → G3 → G4 → G5`. **Resultado:** app operável em produção. Junto: quick wins **F3** (compartilhar), **F6** (nav). (`U10`/`U11`/`U12` já feitos.)
 
 ### 🧩 Sprint 1 — Conclusão do Núcleo Funcional
 `F1 (eventos)` · `F2 (editar)` · início de `F5 (cuidador)`. `F4` descontinuado — ver `U12`.
@@ -594,10 +582,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 `U2 (perfil)` · `U3 (salvos)` · `U1 (boas-vindas grupo)` → `U5 (ajuda)` · `U4 (configurações)` → `U9 (eventos, depende de F1)` · `U6 (notificações, mesmo escopo de E7)`.
 
 ### 🛡️ Sprint 2 — Qualidade, CI/CD e Blindagem
-`Q1 (CI verde)` → `Q2 (tipos Supabase)` → `Q3 (testes)` → `Q4/Q5` (junto com `U7`, mesma frente de loading states). `Q6` quando houver ambiente com Supabase acessível.
+`Q1 (CI verde)` → `Q2 (tipos Supabase)` → `Q3 (testes)` → `Q4/Q5` (mesma frente de loading states; `U7` já feito).  `Q6` quando houver ambiente com Supabase acessível.
 
 ### 📈 Sprint 3 — Escalabilidade & Polimento de UX
-`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · `U8 (clique no acervo)` · `U13 (contraste tema claro)` · depois `E6/E5/E7/E8`.
+`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · `U13 (contraste tema claro)` · depois `E6/E5/E7/E8`. (`U8` já feito.)
 
 ---
 

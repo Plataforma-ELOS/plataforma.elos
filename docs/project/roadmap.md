@@ -38,7 +38,7 @@ Fechar features meio-prontas e stubs `FeatureInProgress`.
 | 1.4 | Sistema de Eventos — tabela `events` existe e vazia; comunidade mostra eventos mockados | 🟠 | CRUD + `lib/data/events.ts` |
 | 1.5 | ~~Agendar consulta~~ — decisão revertida: **remover** o botão em vez de construir o fluxo | 🟢 | Ver `1.7` |
 | 1.6 | Área do cuidador — `dependents` e `caregiver_journal` existem, sem UI | 🔴 | RLS já pronta (dono) |
-| 1.7 | Remover "Agendar consulta" dos cards/perfis de profissionais e clínicas | 🟢 | `U12` no guia mestre |
+| 1.7 | ✅ Remover "Agendar consulta" dos cards/perfis de profissionais e clínicas | 🟢 | `U12` no guia mestre |
 
 ---
 
@@ -56,11 +56,11 @@ Fichas completas (com diagnóstico do código já investigado) em
 | 1B.4 | Configurações (`/configuracoes`) | 🟡 | Tema/fonte já funcionam hoje (dropdown do header); só falta tela dedicada |
 | 1B.5 | Central de Ajuda | 🟢 | `/faq` já existe — é evolução, não tela nova |
 | 1B.6 | Central de notificações (`/notificacoes`) | 🔴 | Mesmo escopo de `E7`; sem tabela nem UI |
-| 1B.7 | Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
-| 1B.8 | Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existe, só não é usado |
+| 1B.7 | ✅ Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
+| 1B.8 | ✅ Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existia, só não era usado |
 | 1B.9 | Clique em "Próximos eventos" → detalhe | 🟢 | Depende de `1.4` (eventos reais) |
-| 1B.10 | Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Handler já funciona; falta scroll/feedback |
-| 1B.11 | Bug: clique em especialidade sem feedback visual | 🟢 | Handler e busca já funcionam; falta estado ativo/scroll |
+| 1B.10 | ✅ Bug: chips de tópico do Suporte IA sem feedback visual | 🟢 | Scroll já existia; sobrava um `setQuery('')` que limpava o campo |
+| 1B.11 | ✅ Bug: clique em especialidade sem scroll até os resultados | 🟢 | Estado ativo já existia; faltava só o scroll |
 | 1B.12 | Auditoria de contraste do tema claro (WCAG AA) | 🟡 | `docs/design/style-guide.md` nunca foi auditado contra 4.5:1 |
 
 ---
@@ -101,11 +101,11 @@ Reduzir risco de regressão e melhorar confiabilidade.
 ---
 
 ## Sequência recomendada (próximas sprints)
-- **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`, `1.7` (remover agendar consulta), `1B.10`, `1B.11` (bugs de feedback visual). (0.2 já feito.)
+- **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (`0.2`, `1.7`, `1B.10`, `1B.11` já feitos.)
 - **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
 - **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.1 (boas-vindas grupo)` → `1B.4 (configurações)` → `1B.9 (eventos, depois de 1.4)` → `1B.6 (notificações)`.
-- **Sprint 5 — Polimento:** `1B.7/1B.8` (loading/acervo) + `1B.12` (contraste do tema claro).
+- **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro). (`1B.7`/`1B.8` já feitos.)
 
 ## Documentos relacionados
 - `docs/project/refactor-report.md` — relatório da refatoração/limpeza.

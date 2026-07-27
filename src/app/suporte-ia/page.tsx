@@ -139,7 +139,6 @@ function AiSupportPageContent() {
     if (loading) return;
     setQuery(topic);
     handleSearch(topic);
-    setQuery('');
   }
 
   return (
