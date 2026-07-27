@@ -44,10 +44,17 @@ A paleta de cores foi escolhida para transmitir calma, confiança e modernidade.
 ### 5.4. Rede de Profissionais
 - **Diretório Verificado:** Especialistas avaliados pela comunidade com perfis detalhados.
 
+### 5.5. Conta e Notificações
+- **Perfil e Preferências:** Edição de nome/bio, tema, tamanho de texto e preferências de notificação/privacidade.
+- **Itens Salvos:** Lista unificada de posts e materiais do acervo favoritados.
+- **Notificações:** Aviso (em tempo real) de curtidas e comentários em posts próprios.
+
 ## 6. Stack Tecnológica
 - **Framework:** Next.js 15 (App Router).
+- **Backend:** Supabase (Postgres, Auth, Row Level Security, Realtime) — sem backend próprio; toda regra de acesso é aplicada via RLS no banco.
 - **Estilização:** Tailwind CSS e Shadcn UI.
 - **IA Engine:** Google Gemini 2.0 via Genkit.
+- **Deploy:** Vercel.
 
 ---
-*Última atualização: Setembro de 2025*
+*Última atualização: 2026-07-27*
