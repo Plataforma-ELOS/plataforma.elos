@@ -19,7 +19,7 @@ sujeita às policies de RLS do banco.
 
 ## Validação de RLS (todas as tabelas de `public`)
 
-`RLS habilitada` em **22/22** tabelas, cada uma com ≥1 policy:
+`RLS habilitada` em **23/23** tabelas, cada uma com ≥1 policy:
 
 | Tabela | RLS | Policies |
 |---|---|---|
@@ -45,10 +45,29 @@ sujeita às policies de RLS do banco.
 | contact_messages | ✅ | 2 |
 | dependents | ✅ | 1 (FOR ALL, dono) |
 | caregiver_journal | ✅ | 1 (FOR ALL, dono) |
+| notifications | ✅ | 3 (select/update/delete do dono; **sem** policy de insert — só populada pelos triggers abaixo) |
 
 Tabelas com "1 policy" usam uma policy `FOR ALL` restrita ao dono
 (`profile_id = auth.uid()` / `caregiver_id = auth.uid()`) — cobre
 SELECT/INSERT/UPDATE/DELETE numa regra só, é intencional.
+
+### Notas sobre `notifications` e os triggers `SECURITY DEFINER`
+
+`notifications` é populada por 2 triggers `AFTER INSERT` (`notify_post_like`
+em `post_likes`, `notify_post_comment` em `comments`), ambos `SECURITY
+DEFINER` com `search_path` travado — mesmo padrão de `private.is_admin()`
+(migration 0002). Como não há policy de `INSERT` para `authenticated`/`anon`,
+a única forma de criar uma notificação é via esses triggers (que rodam com
+o privilégio do dono da função, ignorando a ausência de policy).
+
+O Security Advisor acusou as duas funções como RPC pública chamável
+(`anon_security_definer_function_executable` /
+`authenticated_security_definer_function_executable`) — corrigido revogando
+`EXECUTE` de `anon`/`authenticated`/`public` nas migrations
+`20260727135450`/`20260727135504`. Isso não afeta o disparo via trigger, só
+impede alguém de chamar `notify_post_like()`/`notify_post_comment()`
+diretamente como RPC (o que já falharia em runtime — são funções de
+trigger, dependem de `new`).
 
 Padrões de policy relevantes já verificados no código:
 - Conteúdo público (news, library, knowledge, professionals, clinics, groups,
@@ -80,6 +99,7 @@ E, para demonstração, o toggle de confirmação de e-mail fica em
 `Authentication → Providers → Email → "Confirm email"`.
 
 ## Resumo
-- ✅ RLS: 22/22 tabelas cobertas — nenhuma correção necessária no banco.
+- ✅ RLS: 23/23 tabelas cobertas — nenhuma correção necessária no banco.
 - ✅ Nenhuma query usa `service_role` no frontend.
+- ✅ Funções `SECURITY DEFINER` sem `EXECUTE` público desnecessário (`notify_post_like`/`notify_post_comment`).
 - ⚠️ Pendência (painel, 1 clique): habilitar Leaked Password Protection.

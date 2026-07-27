@@ -13,7 +13,8 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
     *   *Deslogado:* "Minha Conta", "Fazer Login", "Criar Conta".
     *   *Logado:* [Nome do Usuário], [Email], "Editar Perfil", "Itens Salvos", "Configurações", "Ajuda", "Sair".
     *   *Configurações de Acessibilidade:* "Tema" (Claro, Escuro), "Tamanho do Texto" (Pequeno, Normal, Grande).
-*   **Acessibilidade:** "Notificações" (Sr-only), "Abrir menu" (Mobile).
+*   **Sino de Notificações:** ícone com contador de não lidas (atualizado em tempo real), leva a `/notificacoes`. Visível só para usuário logado.
+*   **Acessibilidade:** "Abrir menu" (Mobile).
 
 ### Footer (Rodapé)
 *   **Missão:** "Nossa Missão: Cuidar de quem cuida, oferecendo suporte, informação e comunidade para cuidadores de pessoas com TEA."
@@ -142,8 +143,9 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Contador:** "X comentários", "X curtidas".
 *   **CommentSection:** "Escreva um comentário...", "Publicar", "Agora".
 *   **Sidebar:**
-    *   "Próximos Eventos", "Ver todos os eventos", "Ver menos eventos".
+    *   "Próximos Eventos" (dados reais da tabela `events`, só futuros), "Ver todos os eventos", "Ver menos eventos", "Criar Evento".
     *   "Meus Grupos", "Ver meus grupos", "Criar um Grupo".
+*   **Modal Criar Evento:** "Criar Evento", "Divulgue um evento para a comunidade.", "Título", "Descrição", "Data e hora", "Tipo" (Online, Presencial), "Local" (só quando Presencial), "Cancelar", "Criar Evento".
 *   **Acesso Restrito (Modal):** "Acesso Restrito", "Para acessar esta funcionalidade e interagir com a comunidade, você precisa fazer login ou criar uma conta.", "Agora não", "Fazer Login".
 
 ### Meus Grupos (`/comunidade/meus-grupos`)
@@ -162,6 +164,13 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Placeholders:** "Ex: Dicas de Terapia Ocupacional...", "Descreva o objetivo do grupo...".
 *   **Botão:** "Criar Grupo".
 *   **Feedback:** "Grupo Criado com Sucesso!", "O grupo X está pronto. Convide outras pessoas!", Link de convite (URL), "Copiar", "Ir para Meus Grupos".
+*   **Modal de Boas-vindas (ao entrar num grupo):** "Bem-vindo(a) a 'X'!", texto sobre respeito e regras da comunidade (sem discurso de ódio, spam ou desinformação), "Continuar explorando", "Acessar Grupo".
+
+### Detalhe do Grupo (`/comunidade/grupos/[id]`)
+*   **Navegação:** "Voltar para Explorar Grupos".
+*   **Header:** Nome do grupo, descrição, tags, "X membros".
+*   **Ação:** "Participar" / "Participando" (entrar/sair).
+*   **Membros:** "Membros", lista com avatar + nome, "Nenhum membro ainda. Seja o primeiro a entrar!".
 
 ---
 
@@ -204,7 +213,36 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 
 ---
 
-## 8. Informações e Suporte
+## 8. Conta e Área Pessoal
+
+### Perfil (`/perfil`)
+*   **Header:** Avatar (fallback com inicial do nome), Nome, E-mail, Bio (ou "Você ainda não escreveu uma bio. Conte um pouco sobre você para a comunidade." quando vazia).
+*   **Ação:** "Editar Perfil" (abre modal).
+*   **Modal Editar:** "Editar Perfil", "Atualize seu nome e sua bio. Essas informações aparecem para outros membros da comunidade.", "Nome completo", "Bio", "Cancelar", "Salvar alterações" / "Salvando...".
+*   **Atalhos:** "Itens Salvos", "Configurações", "Meus Grupos".
+
+### Itens Salvos (`/salvos`)
+*   **Header:** "Itens Salvos", "Posts e materiais do acervo que você guardou para ver depois.".
+*   **Controles:** Busca ("Buscar nos itens salvos..."), Abas "Tudo" / "Posts" / "Acervo".
+*   **Empty State:** "Você ainda não salvou nada. Favorite posts na Comunidade ou materiais no Acervo Digital." / "Nenhum item encontrado para essa busca.".
+*   **Itens:** Posts salvos (autor, data, trecho, "Ver na Comunidade") e materiais do acervo (reaproveita o card do Acervo Digital, com botão de remover dos favoritos).
+
+### Configurações (`/configuracoes`)
+*   **Header:** "Configurações".
+*   **Aparência:** "Tema" (Claro, Escuro), "Tamanho do texto" (Pequeno, Normal, Grande) — mesmas preferências do dropdown do header, agora também aqui.
+*   **Notificações:** "Receber por e-mail", "Notificações no navegador" (toggles).
+*   **Privacidade:** "Perfil visível para a comunidade" (toggle).
+
+### Notificações (`/notificacoes`)
+*   **Header:** "Notificações", "X não lida(s)" quando há pendentes.
+*   **Ações:** "Marcar todas como lidas", "Limpar" (visíveis só quando há notificações).
+*   **Itens:** ícone de curtida (coração) ou comentário, mensagem ("Fulano curtiu seu post: '...'." / "Fulano comentou no seu post: '...'."), data/hora. Clicar numa notificação não lida marca como lida.
+*   **Empty State:** "Você ainda não tem notificações. Curtidas e comentários nos seus posts aparecem aqui.".
+*   **Tempo real:** novas notificações aparecem na lista e no contador do sino sem precisar recarregar a página (Supabase Realtime).
+
+---
+
+## 9. Informações e Suporte
 
 ### Fale Conosco (`/fale-conosco`)
 *   **Header:** "Entre em Contato", "Tem alguma dúvida, sugestão ou precisa de suporte?".
@@ -213,13 +251,15 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Feedback Sucesso:** "Mensagem Enviada!", "Obrigado pelo seu contato. Você receberá uma confirmação no seu e-mail.".
 *   **Erro:** "Campos obrigatórios", "Por favor, preencha todos os campos.", "Ocorreu um erro", "Não foi possível enviar sua mensagem.".
 
-### FAQ (`/faq`)
-*   **Header:** "Perguntas Frequentes (FAQ)", "Respostas rápidas para as dúvidas mais comuns da nossa comunidade.".
+### Central de Ajuda (`/faq`)
+*   **Header:** "Central de Ajuda", "Respostas rápidas para as dúvidas mais comuns da nossa comunidade.".
+*   **Busca:** "Busque por uma palavra-chave...", filtra as perguntas em tempo real; "Nenhuma pergunta encontrada para essa busca." quando a busca não retorna nada.
 *   **Conteúdo (Accordion):** Questões sobre TEA, Sinais, BPC/LOAS, Professor de Apoio, PEI, Plataforma Elos.
+*   **CTA final:** "Não encontrou o que procurava?", "Fale direto com a nossa equipe de suporte.", "Fale com a gente" (leva a `/fale-conosco`).
 
 ### Legais (`/termos-de-servico` e `/politica-de-privacidade`)
 *   **Header:** Título da página, "Última atualização: 1 de Agosto de 2024".
 *   **Estrutura:** Títulos numerados (1. Uso, 2. Conteúdo, etc.).
 
 ---
-*Este inventário reflete fielmente a base de código da versão atual (Setembro de 2025).*
+*Este inventário reflete fielmente a base de código da versão atual (atualizado em 2026-07-27, após a Sprint 5: eventos reais, detalhe de grupo, notificações, perfil/salvos/configurações).*
