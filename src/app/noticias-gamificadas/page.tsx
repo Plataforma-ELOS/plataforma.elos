@@ -17,7 +17,7 @@ const ICONE_POR_CATEGORIA: Record<string, React.ReactNode> = {
   'Bem-estar': <Lightbulb className="h-6 w-6 text-green-500" />,
   'Saúde': <CheckCircle className="h-6 w-6 text-blue-500" />,
 };
-const ICONE_PADRAO = <Sparkles className="h-6 w-6 text-primary" />;
+const ICONE_PADRAO = <Sparkles className="h-6 w-6 text-primary-strong" />;
 
 export default async function NewsGamifiedPage() {
   const supabase = createClient(await cookies());
@@ -55,7 +55,7 @@ export default async function NewsGamifiedPage() {
           <div className="flex flex-col items-center text-center space-y-4 mb-12">
             <div className="flex justify-center mb-4">
               <div className="bg-primary/10 p-4 rounded-full">
-                <Newspaper className="h-10 w-10 text-primary" />
+                <Newspaper className="h-10 w-10 text-primary-strong" />
               </div>
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Pílulas de Conhecimento</h1>
@@ -78,7 +78,7 @@ export default async function NewsGamifiedPage() {
                     <p className="text-muted-foreground">{pill.content}</p>
                   </div>
                   <div className="mt-4">
-                     <Link href="/noticias" className="text-sm font-semibold text-primary hover:underline">
+                     <Link href="/noticias" className="text-sm font-semibold text-primary-strong hover:underline">
                         Saber mais
                     </Link>
                   </div>
@@ -100,7 +100,7 @@ export default async function NewsGamifiedPage() {
                             <div className="w-full bg-muted rounded-full h-2.5">
                                 <div className="bg-primary h-2.5 rounded-full" style={{ width: `${trail.progress}%` }}></div>
                             </div>
-                            <span className="text-sm font-semibold text-primary">{trail.progress}%</span>
+                            <span className="text-sm font-semibold text-primary-strong">{trail.progress}%</span>
                         </div>
                         <Button className="mt-4">Continuar Trilha</Button>
                     </CardContent>
@@ -111,7 +111,7 @@ export default async function NewsGamifiedPage() {
             {/* Quiz Semanal */}
             <h2 className="text-2xl font-bold mb-4">Teste seus Conhecimentos</h2>
             <Card className="p-6 rounded-2xl text-center bg-primary/10 border-primary/20 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
-              <Puzzle className="h-12 w-12 text-primary mx-auto mb-4" />
+              <Puzzle className="h-12 w-12 text-primary-strong mx-auto mb-4" />
               <CardTitle className="text-xl mb-2">Quiz da Semana!</CardTitle>
               <p className="text-muted-foreground mb-4">Acerte as perguntas sobre as notícias da semana e ganhe pontos.</p>
               <Button>Começar Quiz</Button>

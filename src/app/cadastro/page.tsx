@@ -110,7 +110,7 @@ export default function CadastroPage() {
                     </p>
                     <p className="border-t pt-4">
                         É um profissional ou clínica?{' '}
-                        <Link href="/cadastro-profissional" className="underline font-semibold text-primary">Cadastre-se aqui</Link>
+                        <Link href="/cadastro-profissional" className="underline font-semibold text-primary-strong">Cadastre-se aqui</Link>
                     </p>
                 </div>
             </div>

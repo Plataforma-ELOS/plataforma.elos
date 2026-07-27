@@ -99,7 +99,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | U10 | ✅ Bug: chips de tópico no Suporte IA parecem não responder | Código | P1 | Baixa | 1 h | — |
 | U11 | ✅ Bug: clique em especialidade sem scroll até os resultados | Código | P1 | Baixa | 2 h | — |
 | U12 | ✅ Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
-| U13 | Auditoria de contraste do tema claro (WCAG AA 4.5:1) | Design/CSS | P2 | Média | meio dia | — |
+| U13 | ✅ Auditoria de contraste do tema claro (WCAG AA 4.5:1) | Design/CSS | P2 | Média | meio dia | — |
 | Q1 | Validar CI verde no PR | CI/CD | P2 | Baixa | 15 min | G5 |
 | Q2 | Tipos gerados do Supabase (tirar `any`) | Código | P2 | Média | meio dia | — |
 | Q3 | Ampliar testes (actions/data/componentes) | Testes | P2 | Média | 1–2 dias | Q2 |
@@ -448,17 +448,19 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U13] Auditoria de contraste do tema claro (WCAG AA)
+### [U13] ✅ Auditoria de contraste do tema claro (WCAG AA)
 - **Categoria:** Design/CSS · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
 - **Relevância:** `docs/design/style-guide.md` documenta as cores HSL do tema claro (`--muted-foreground`, `--foreground`, etc.), mas nunca foram auditadas contra WCAG AA (4.5:1). É comum `text-muted-foreground` sobre `bg-muted`/`bg-card` ficar abaixo do mínimo em temas claros pastel como este (`--muted`: lavanda muito claro).
 
-#### 🎯 Passo a passo
-1. Medir contraste real de cada par texto/fundo do tema claro (`--foreground`/`--background`, `--muted-foreground`/`--muted`, `--muted-foreground`/`--card`) com uma ferramenta de contraste (ex. extensão de DevTools ou Chrome Lighthouse).
-2. Ajustar os HSLs em `globals.css`/`tailwind.config.ts` que ficarem abaixo de 4.5:1 — em geral escurecendo o `L` (lightness) de `--muted-foreground` no tema claro.
-3. Repetir a checagem em qualquer uso direto de `text-gray-400`/`text-slate-300` fora das variáveis do design system (trocar por `text-gray-600`/`text-slate-700` como o pedido original sugere), documentando o ajuste em `docs/design/style-guide.md`.
+#### 🎯 Passo a passo (implementado)
+1. Medidos os 8 pares texto/fundo do tema claro (fórmula WCAG completa: HSL → RGB → luminância relativa → razão de contraste). Dois falharam: `destructive-foreground`/`destructive` (3.60:1) e `text-primary` sobre fundo claro (2.49:1) — os demais já passavam (≥4.71:1).
+2. `destructive` escurecido de `0 84.2% 60.2%` para `0 84.2% 46%` (agora 5.00:1).
+3. Criado o token `--primary-strong` (mesmo hue/saturação de `--primary`, lightness mais baixa: `257 70% 45%` no claro, igual a `--primary` no escuro) porque escurecer `--primary` diretamente resolveria `text-primary` mas quebraria o contraste de `primary-foreground` sobre `primary` (fundo de botão) — não existe um valor único que satisfaça as duas pontas em 4.5:1. Todos os usos de `text-primary` como texto legível (75 ocorrências em 33 arquivos) trocados para `text-primary-strong` — agora 8.09–8.89:1 conforme o fundo.
+4. Tabela completa de resultados e a explicação de arquitetura documentadas em `docs/design/style-guide.md` (seção "Auditoria de Contraste").
 
 #### ✅ Critério de aceite
-- [ ] Todos os pares texto/fundo do tema claro medem ≥ 4.5:1; `style-guide.md` atualizado com os valores conferidos.
+- [x] Todos os pares texto/fundo do tema claro medem ≥ 4.5:1; `style-guide.md` atualizado com os valores conferidos.
+- **Pendência registrada (fora desta rodada):** `border-primary`/`ring-primary` (contraste não-texto, WCAG 1.4.11) e os estados transitórios `dark:text-primary`/`hover:text-primary`/`group-hover:text-primary` não foram auditados.
 
 ---
 
@@ -618,7 +620,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 `Q1 (CI verde)` → `Q2 (tipos Supabase)` → `Q3 (testes)` → `Q4/Q5` (mesma frente de loading states; `U7` já feito).  `Q6` quando houver ambiente com Supabase acessível.
 
 ### 📈 Sprint 3 — Escalabilidade & Polimento de UX
-`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · `U13 (contraste tema claro)` · depois `E6/E5/E7/E8`. (`U8` já feito.)
+`E3 (Storage/imagens)` · `E2 (paginação)` · `E1 (Server Components)` · `E4` · depois `E6/E5/E7/E8`. (`U8`, `U13` já feitos.)
 
 ---
 

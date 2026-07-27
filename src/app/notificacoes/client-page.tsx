@@ -69,7 +69,7 @@ export default function NotificationsPageClient({
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-3">
                 <div className="bg-primary/10 p-3 rounded-full">
-                  <Bell className="h-6 w-6 text-primary" />
+                  <Bell className="h-6 w-6 text-primary-strong" />
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold font-headline">Notificações</h1>
@@ -108,9 +108,9 @@ export default function NotificationsPageClient({
                   >
                     <CardContent className="flex items-start gap-3 p-4">
                       {n.type === 'post_comment' ? (
-                        <MessageCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <MessageCircle className="h-5 w-5 text-primary-strong shrink-0 mt-0.5" />
                       ) : (
-                        <Heart className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <Heart className="h-5 w-5 text-primary-strong shrink-0 mt-0.5" />
                       )}
                       <div className="flex-grow">
                         <p className={cn('text-sm', !n.isRead && 'font-medium')}>{n.message}</p>

@@ -45,7 +45,7 @@ export function AiChat({ articleContent }: { articleContent: string }) {
   return (
     <Card className="mt-12 bg-muted/40">
         <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-primary">
+            <CardTitle className="flex items-center gap-2 text-primary-strong">
                 <Terminal className="h-6 w-6" />
                 Pergunte à IA sobre esta notícia
             </CardTitle>

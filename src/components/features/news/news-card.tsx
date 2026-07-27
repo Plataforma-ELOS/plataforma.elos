@@ -43,7 +43,7 @@ export default function NewsCard({ article, index }: NewsCardProps) {
           <h3 className="text-xl font-bold mb-2 flex-grow group-hover:text-primary transition-colors">{article.title}</h3>
           <div className="flex justify-between items-center mt-4 pt-4 border-t border-border/40">
               <p className="text-xs text-muted-foreground">{article.date}</p>
-              <div className="flex items-center gap-1 text-sm font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="flex items-center gap-1 text-sm font-semibold text-primary-strong opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Ver mais <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </div>
           </div>

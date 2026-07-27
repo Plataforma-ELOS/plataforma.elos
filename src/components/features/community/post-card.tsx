@@ -140,7 +140,7 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
             
             <div className="flex items-center">
               <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onToggleSave(post.id)}>
-                <Bookmark className={`h-5 w-5 text-muted-foreground ${post.isSaved ? 'fill-primary text-primary' : ''}`} />
+                <Bookmark className={`h-5 w-5 text-muted-foreground ${post.isSaved ? 'fill-primary text-primary-strong' : ''}`} />
               </Button>
               {isOwner && (
                 <DropdownMenu>
@@ -199,7 +199,7 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
       </div>
       <div className="mt-2 border-t pt-2 flex justify-around">
         <Button variant="ghost" className="w-full" onClick={handleLike}>
-          <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary fill-current' : ''}`} />
+          <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary-strong fill-current' : ''}`} />
           Curtir
         </Button>
         <Button variant="ghost" className="w-full" onClick={() => setShowComments(!showComments)}>

@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
                 <div className="flex justify-center mb-4">
                     <div className="bg-primary/10 p-4 rounded-full">
-                        <Shield className="h-10 w-10 text-primary" />
+                        <Shield className="h-10 w-10 text-primary-strong" />
                     </div>
                 </div>
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Política de Privacidade</h1>
@@ -22,7 +22,7 @@ export default function PrivacyPolicyPage() {
                 <p className="text-sm text-muted-foreground">Última atualização: 1 de Agosto de 2024</p>
             </div>
 
-            <div className="max-w-3xl mx-auto prose prose-lg text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary">
+            <div className="max-w-3xl mx-auto prose prose-lg text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary-strong">
                 <h2>1. Coleta de Informações</h2>
                 <p>
                     Coletamos informações que você nos fornece diretamente, como ao criar uma conta, preencher um formulário ou se comunicar conosco. Isso pode incluir seu nome, email e outras informações de contato. Também coletamos dados de uso anônimos para melhorar a plataforma.

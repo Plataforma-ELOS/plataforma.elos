@@ -26,7 +26,7 @@ async function AiSummaryCard({ newsArticles }: { newsArticles: { title: string }
     return (
         <Card className="mb-8 bg-primary/10 border-primary/20">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
+                <CardTitle className="flex items-center gap-2 text-primary-strong">
                     <Terminal className="h-6 w-6" />
                     Resumo do Dia com IA
                 </CardTitle>
@@ -51,7 +51,7 @@ export default async function NewsAiPage() {
           <div className="flex flex-col items-center text-center space-y-4 mb-12">
             <div className="flex justify-center mb-4">
                 <div className="bg-primary/10 p-4 rounded-full">
-                    <Newspaper className="h-10 w-10 text-primary" />
+                    <Newspaper className="h-10 w-10 text-primary-strong" />
                 </div>
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Feed de Notícias Inteligente</h1>
@@ -64,7 +64,7 @@ export default async function NewsAiPage() {
             <AiSummaryCard newsArticles={newsArticles} />
 
             <div className="flex flex-col gap-4 mb-8">
-                <h3 className="text-lg font-semibold flex items-center gap-2"><Tags className="h-5 w-5 text-primary"/> Filtrar por tags</h3>
+                <h3 className="text-lg font-semibold flex items-center gap-2"><Tags className="h-5 w-5 text-primary-strong"/> Filtrar por tags</h3>
                 <div className="flex flex-wrap gap-2">
                     {allTags.map(tag => (
                         <Button key={tag} variant="outline" className="rounded-full">{tag}</Button>

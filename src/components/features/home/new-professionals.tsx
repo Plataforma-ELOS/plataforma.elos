@@ -109,14 +109,14 @@ export default function NewProfessionals() {
                         <CardTitle className="text-xl group-hover:text-primary font-bold line-clamp-1 transition-colors">
                           {prof.name}
                         </CardTitle>
-                        <CardDescription className="text-primary font-semibold text-sm line-clamp-2 min-h-[40px] flex items-center justify-center">
+                        <CardDescription className="text-primary-strong font-semibold text-sm line-clamp-2 min-h-[40px] flex items-center justify-center">
                           {prof.specialty}
                         </CardDescription>
                       </CardHeader>
                     </div>
 
                     <div className="mt-4 pt-2 border-t border-border/50">
-                      <Button variant="link" className="text-primary group-hover:underline p-0 h-auto">
+                      <Button variant="link" className="text-primary-strong group-hover:underline p-0 h-auto">
                         Ver Perfil
                       </Button>
                     </div>

@@ -35,7 +35,7 @@ export default async function NewsPage() {
           <div className="flex flex-col items-center text-center space-y-4 mb-12">
             <div className="flex justify-center mb-4">
                 <div className="bg-primary/10 p-4 rounded-full">
-                    <Newspaper className="h-10 w-10 text-primary" />
+                    <Newspaper className="h-10 w-10 text-primary-strong" />
                 </div>
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Notícias e Artigos</h1>
@@ -62,7 +62,7 @@ export default async function NewsPage() {
                   <Badge variant="default" className="mb-4 bg-primary/90 text-primary-foreground">{featuredArticle.category}</Badge>
                   <h2 className="text-3xl md:text-5xl font-bold font-headline max-w-4xl leading-tight">{featuredArticle.title}</h2>
                   <p className="mt-2 text-lg text-white/80 max-w-2xl hidden md:block">{featuredArticle.description}</p>
-                  <div className="mt-6 flex items-center gap-2 font-semibold text-primary group-hover:underline">
+                  <div className="mt-6 flex items-center gap-2 font-semibold text-primary-strong group-hover:underline">
                       Ler artigo completo <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>

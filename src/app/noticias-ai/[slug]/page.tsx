@@ -59,7 +59,7 @@ export default async function NewsArticleAiPage({ params }: { params: Promise<{ 
               />
 
               <div
-                className="prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary"
+                className="prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary-strong"
                 dangerouslySetInnerHTML={{ __html: conteudoSeguro }}
               />
             </article>

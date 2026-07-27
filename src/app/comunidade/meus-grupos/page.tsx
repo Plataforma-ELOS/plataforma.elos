@@ -83,7 +83,7 @@ export default function MyGroupsPage() {
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h1 className="text-4xl font-bold font-headline text-primary">Meus Grupos</h1>
+                    <h1 className="text-4xl font-bold font-headline text-primary-strong">Meus Grupos</h1>
                     <p className="text-muted-foreground mt-1">Seus espaços para conversas e conexões.</p>
                 </div>
                 <Button variant="outline" asChild>

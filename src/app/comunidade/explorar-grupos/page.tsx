@@ -125,7 +125,7 @@ export default function ExploreGroupsPage() {
             
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <h1 className="text-4xl font-bold font-headline text-primary">Explorar Grupos</h1>
+                    <h1 className="text-4xl font-bold font-headline text-primary-strong">Explorar Grupos</h1>
                     <p className="text-muted-foreground mt-1">Encontre novas comunidades e conecte-se.</p>
                 </div>
             </div>
@@ -176,7 +176,7 @@ export default function ExploreGroupsPage() {
           <AlertDialogHeader>
             <div className="flex justify-center mb-4">
               <div className="bg-primary/10 p-3 rounded-full">
-                <PartyPopper className="h-10 w-10 text-primary" />
+                <PartyPopper className="h-10 w-10 text-primary-strong" />
               </div>
             </div>
             <AlertDialogTitle className="text-center">Bem-vindo(a) a &quot;{grupoParaBoasVindas?.name}&quot;!</AlertDialogTitle>

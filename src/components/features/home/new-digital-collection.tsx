@@ -5,19 +5,19 @@ import Link from 'next/link';
 
 const collectionItems = [
   { 
-    icon: <MessageSquareHeart className="h-8 w-8 text-primary" />, 
+    icon: <MessageSquareHeart className="h-8 w-8 text-primary-strong" />, 
     title: 'Conecte-se na Comunidade', 
     description: 'Um espaço seguro para compartilhar vitórias, desafios e encontrar apoio mútuo.',
     href: '/comunidade',
   },
   { 
-    icon: <Sparkles className="h-8 w-8 text-primary" />, 
+    icon: <Sparkles className="h-8 w-8 text-primary-strong" />, 
     title: 'Tire suas dúvidas com a IA',
     description: 'Receba orientações claras sobre direitos, laudos e o BPC de forma instantânea.',
     href: '/suporte-ia',
   },
   { 
-    icon: <BookOpen className="h-8 w-8 text-primary" />,
+    icon: <BookOpen className="h-8 w-8 text-primary-strong" />,
     title: 'Explore o Acervo Digital', 
     description: 'Acesse nossa biblioteca com palestras, artigos e materiais selecionados por especialistas.',
     href: '/acervo-digital',

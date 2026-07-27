@@ -18,19 +18,19 @@ import Footer from '@/components/layout/footer';
 
 const supportCards = [
   {
-    icon: <FileText className="h-8 w-8 text-primary" />,
+    icon: <FileText className="h-8 w-8 text-primary-strong" />,
     title: 'Conheça seus direitos',
     description: 'Navegue por guias práticos sobre legislação, BPC, laudos e mais.',
     href: '/faq',
   },
   {
-    icon: <AppWindow className="h-8 w-8 text-primary" />,
+    icon: <AppWindow className="h-8 w-8 text-primary-strong" />,
     title: 'Explore o Acervo',
     description: 'Encontre materiais, vídeos e documentos úteis para o dia a dia.',
     href: '/acervo-digital',
   },
   {
-    icon: <HelpCircle className="h-8 w-8 text-primary" />,
+    icon: <HelpCircle className="h-8 w-8 text-primary-strong" />,
     title: 'Perguntas Frequentes',
     description: 'Respostas rápidas para as dúvidas mais comuns da comunidade.',
     href: '/faq',
@@ -178,7 +178,7 @@ function AiSupportPageContent() {
               {(loading || aiResponse) && (
                  <div className="space-y-6 mt-12">
                     <div className="flex items-start gap-4 justify-start">
-                        <Avatar className="w-8 h-8 bg-primary/10 text-primary">
+                        <Avatar className="w-8 h-8 bg-primary/10 text-primary-strong">
                             <AvatarFallback><Sparkles className={loading ? "animate-pulse" : ""}/></AvatarFallback>
                         </Avatar>
                          <div className="max-w-xl rounded-2xl p-4 bg-muted text-foreground rounded-bl-none">
@@ -224,7 +224,7 @@ function AiSupportPageContent() {
                     </div>
                     
                     <div className="mt-6 pt-2">
-                      <span className="font-semibold text-sm text-primary hover:text-primary/80 flex items-center">
+                      <span className="font-semibold text-sm text-primary-strong hover:text-primary/80 flex items-center">
                         Ver mais <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
                       </span>
                     </div>
