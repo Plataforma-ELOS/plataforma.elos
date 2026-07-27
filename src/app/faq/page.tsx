@@ -1,8 +1,14 @@
+"use client";
 
+import Link from 'next/link';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { HelpCircle, MessageCircle } from 'lucide-react';
+import SearchBar from '@/components/features/search/search-bar';
+import { useSearch } from '@/hooks/use-search';
 
 const faqItems = [
     {
@@ -32,6 +38,11 @@ const faqItems = [
 ];
 
 export default function FaqPage() {
+  const { query, setQuery, results } = useSearch({
+    items: faqItems,
+    searchableText: (item) => [item.question, item.answer],
+  });
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <HeaderSecondary />
@@ -43,25 +54,46 @@ export default function FaqPage() {
                         <HelpCircle className="h-10 w-10 text-primary" />
                     </div>
                 </div>
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Perguntas Frequentes (FAQ)</h1>
+                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Central de Ajuda</h1>
                 <p className="max-w-[700px] text-foreground/80 md:text-xl">
                     Respostas rápidas para as dúvidas mais comuns da nossa comunidade.
                 </p>
             </div>
 
-            <div className="max-w-3xl mx-auto">
-                 <Accordion type="single" collapsible className="w-full">
-                    {faqItems.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${index}`}>
-                            <AccordionTrigger className="text-left font-semibold text-lg hover:no-underline">
-                                {item.question}
-                            </AccordionTrigger>
-                            <AccordionContent className="text-base text-muted-foreground">
-                                {item.answer}
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
+            <div className="max-w-3xl mx-auto space-y-8">
+                <SearchBar value={query} onChange={setQuery} placeholder="Busque por uma palavra-chave..." />
+
+                {results.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-8">
+                        Nenhuma pergunta encontrada para essa busca.
+                    </p>
+                ) : (
+                    <Accordion type="single" collapsible className="w-full">
+                        {results.map((item, index) => (
+                            <AccordionItem key={index} value={`item-${index}`}>
+                                <AccordionTrigger className="text-left font-semibold text-lg hover:no-underline">
+                                    {item.question}
+                                </AccordionTrigger>
+                                <AccordionContent className="text-base text-muted-foreground">
+                                    {item.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                )}
+
+                <Card className="bg-primary/5 border-primary/20">
+                    <CardContent className="flex flex-col items-center text-center gap-4 p-8">
+                        <MessageCircle className="h-8 w-8 text-primary" />
+                        <div>
+                            <h2 className="font-semibold text-lg">Não encontrou o que procurava?</h2>
+                            <p className="text-muted-foreground">Fale direto com a nossa equipe de suporte.</p>
+                        </div>
+                        <Button asChild>
+                            <Link href="/fale-conosco">Fale com a gente</Link>
+                        </Button>
+                    </CardContent>
+                </Card>
             </div>
         </div>
       </main>

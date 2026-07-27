@@ -117,30 +117,30 @@ function UserProfileDropdown() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <FeatureInProgress>
-                        <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/perfil">
                             <Edit className="mr-2" />
                             <span>Editar Perfil</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                     <FeatureInProgress>
-                        <DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/salvos">
                             <Bookmark className="mr-2" />
                             <span>Itens Salvos</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                    <FeatureInProgress>
-                        <DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/configuracoes">
                             <Settings className="mr-2" />
                             <span>Configurações</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
-                     <FeatureInProgress>
-                        <DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/faq">
                             <HelpCircle className="mr-2" />
                             <span>Ajuda</span>
-                        </DropdownMenuItem>
-                    </FeatureInProgress>
+                        </Link>
+                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                  <DropdownMenuSeparator />
                  <DropdownMenuGroup>
