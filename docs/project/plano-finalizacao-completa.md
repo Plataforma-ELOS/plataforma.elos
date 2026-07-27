@@ -88,10 +88,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | F5 | Área do cuidador (dependentes + diário) | Código | P1 | Muito Alta | 3+ dias | G5 |
 | F6 | Resolver stubs de nav (header/footer) | Código/UX | P1 | Baixa | 2 h | — |
 | U1 | Tela de boas-vindas ao entrar em grupo | Código | P1 | Média | 1 dia | precisa de `/comunidade/grupos/[id]` (não existe) |
-| U2 | Tela de perfil do usuário (`/perfil`) | Código | P1 | Média | meio dia | — |
-| U3 | Itens salvos (`/salvos`) unificando posts + acervo | Código | P1 | Média | meio dia | — |
-| U4 | Tela de configurações (`/configuracoes`) | Código | P2 | Média | meio dia | — |
-| U5 | Central de Ajuda — evoluir `/faq` | Código/UX | P2 | Baixa | meio dia | — |
+| U2 | ✅ Tela de perfil do usuário (`/perfil`) | Código | P1 | Média | meio dia | — |
+| U3 | ✅ Itens salvos (`/salvos`) unificando posts + acervo | Código | P1 | Média | meio dia | — |
+| U4 | ✅ Tela de configurações (`/configuracoes`) | Código | P2 | Média | meio dia | — |
+| U5 | ✅ Central de Ajuda — evoluir `/faq` | Código/UX | P2 | Baixa | meio dia | — |
 | U6 | Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
 | U7 | ✅ Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
 | U8 | ✅ Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
@@ -277,6 +277,8 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 #### ✅ Critério de aceite
 - [ ] Nenhum link de nav leva a "em breve" sem motivo; navegação coerente.
 
+- **Progresso parcial em 2026-07-27 (efeito colateral de `U2`–`U5`):** os 4 itens do dropdown do usuário logado ("Editar Perfil", "Itens Salvos", "Configurações", "Ajuda") em `header.tsx` **e** `header-secondary.tsx` (duplicados) trocaram `FeatureInProgress` por `Link` real para `/perfil`, `/salvos`, `/configuracoes` e `/faq`. Ainda restam: 1 `FeatureInProgress` em `footer.tsx` e os stubs cobertos por outros itens do backlog (F3 compartilhar, F7 upload).
+
 ---
 
 ### [U1] Tela de boas-vindas ao entrar em grupo
@@ -292,7 +294,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [U2] Tela de perfil do usuário (`/perfil`)
+### [U2] ✅ Tela de perfil do usuário (`/perfil`)
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
 - **Relevância:** `profiles` já tem `full_name`, `avatar_url`, `bio` — só falta a tela. Hoje esses dados só existem no banco, sem nenhuma UI de visualização/edição.
 
@@ -302,11 +304,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. Nova Server Action `atualizarPerfil` (nome/bio/avatar) em `src/app/actions/`.
 
 #### ✅ Critério de aceite
-- [ ] Usuário vê seus dados reais; edita nome/bio e salva.
+- [x] Usuário vê seus dados reais; edita nome/bio e salva.
+
+- **Implementado em 2026-07-27:** `src/app/perfil/page.tsx` (Server Component, redireciona a `/login` se deslogado) + `src/app/perfil/client-page.tsx` (avatar/nome/bio, `Dialog` de edição, atalhos para `/salvos`, `/configuracoes` e `/comunidade/meus-grupos`) + `atualizarPerfil` em `src/app/actions/profile.ts`. Upload de avatar segue como stub (depende de `E3`, Storage ainda não configurado); avatar hoje é só leitura com fallback de inicial.
 
 ---
 
-### [U3] Itens salvos (`/salvos`)
+### [U3] ✅ Itens salvos (`/salvos`)
 - **Categoria:** Código · **Prio:** P1 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
 - **Relevância:** O dado já existe e já é gravado — `post_saves` (comunidade) e `library_favorites` (acervo, feito nesta sessão) — só falta uma tela que junte os dois numa lista só.
 
@@ -315,11 +319,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. `src/app/salvos/page.tsx` — lista com filtro por categoria (`useSearch` com `matchesFilter`) e botão de remover (reusa `alternarSalvo`/`alternarFavorito` já existentes).
 
 #### ✅ Critério de aceite
-- [ ] Posts salvos e itens favoritados do acervo aparecem juntos; remover funciona nos dois tipos.
+- [x] Posts salvos e itens favoritados do acervo aparecem juntos; remover funciona nos dois tipos.
+
+- **Implementado em 2026-07-27:** `src/lib/data/saved.ts` (mapeador `mapSavedPost`) + `src/app/salvos/page.tsx` (Server Component, duas queries em paralelo) + `src/app/salvos/client-page.tsx` (busca/filtro por `post`/`library` via `useSearch`, remoção otimista chamando `alternarSalvo`/`alternarFavorito`, reaproveita `DigitalLibraryCard` para os itens do acervo).
 
 ---
 
-### [U4] Tela de configurações (`/configuracoes`)
+### [U4] ✅ Tela de configurações (`/configuracoes`)
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Média · **Tempo:** ~meio dia · **Dependências:** —
 - **Relevância:** Tema (claro/escuro) e tamanho de fonte **já funcionam** hoje, só que escondidos num dropdown do header (`next-themes` + `FontSizeContext`, `header.tsx`). Falta uma tela dedicada e as preferências que ainda não existem (notificações push/e-mail, privacidade).
 
@@ -328,11 +334,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Notificações/privacidade: como não existe coluna hoje, começar só com toggles de UI persistidos em `profiles` (nova migration, colunas `notify_email`/`notify_push`/`profile_public` ou similar) — ou, mais simples para uma primeira versão, guardar em `localStorage` até haver necessidade real de sincronizar entre dispositivos.
 
 #### ✅ Critério de aceite
-- [ ] Tema/fonte continuam funcionando, agora também nesta tela; preferências novas persistem.
+- [x] Tema/fonte continuam funcionando, agora também nesta tela; preferências novas persistem.
+
+- **Implementado em 2026-07-27:** migration `20260727120000_elos_0008_preferencias_notificacao_privacidade.sql` adiciona `notify_email`/`notify_push`/`profile_public` (boolean, default `true`) em `profiles`. `src/app/configuracoes/page.tsx` (Server Component) + `client-page.tsx` (tema/fonte via os hooks já existentes, 3 `Switch` com salvamento otimista via `atualizarPreferencias` em `src/app/actions/profile.ts`, com rollback e toast se a gravação falhar).
 
 ---
 
-### [U5] Central de Ajuda — evoluir `/faq`
+### [U5] ✅ Central de Ajuda — evoluir `/faq`
 - **Categoria:** Código/UX · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~meio dia · **Dependências:** —
 - **Relevância:** `/faq` já existe (`src/app/faq/page.tsx`) com 6 perguntas em `Accordion` — a "Central de Ajuda" pedida é essencialmente essa página evoluída, não uma tela nova do zero. Falta: busca por palavra-chave nas perguntas e um link/botão direto para `/fale-conosco`.
 
@@ -342,7 +350,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 3. (Opcional) Renomear a rota para `/ajuda` com redirect de `/faq`, ou manter `/faq` e só linkar como "Central de Ajuda" no menu — decisão de nomenclatura, não estrutural.
 
 #### ✅ Critério de aceite
-- [ ] Busca filtra as perguntas; CTA leva ao fale conosco.
+- [x] Busca filtra as perguntas; CTA leva ao fale conosco.
+
+- **Implementado em 2026-07-27:** mantida a rota `/faq` (decisão de nomenclatura: só o título virou "Central de Ajuda", sem criar rota nova/redirect). Página virou Client Component com `useSearch` filtrando `faqItems` por texto via `SearchBar`, e um `Card` de CTA "Não encontrou? Fale com a gente" linkando a `/fale-conosco`.
 
 ---
 

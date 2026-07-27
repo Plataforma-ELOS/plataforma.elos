@@ -51,10 +51,10 @@ Fichas completas (com diagnóstico do código já investigado) em
 | # | Ação | Esforço | Notas |
 |---|---|---|---|
 | 1B.1 | Tela de boas-vindas ao entrar em grupo | 🟠 | Precisa criar `/comunidade/grupos/[id]` (não existe) |
-| 1B.2 | Perfil do usuário (`/perfil`) | 🟡 | Dado já existe em `profiles` |
-| 1B.3 | Itens salvos (`/salvos`) | 🟡 | Unifica `post_saves` + `library_favorites`, ambos já existentes |
-| 1B.4 | Configurações (`/configuracoes`) | 🟡 | Tema/fonte já funcionam hoje (dropdown do header); só falta tela dedicada |
-| 1B.5 | Central de Ajuda | 🟢 | `/faq` já existe — é evolução, não tela nova |
+| 1B.2 | ✅ Perfil do usuário (`/perfil`) | 🟡 | Dado já existe em `profiles` |
+| 1B.3 | ✅ Itens salvos (`/salvos`) | 🟡 | Unifica `post_saves` + `library_favorites`, ambos já existentes |
+| 1B.4 | ✅ Configurações (`/configuracoes`) | 🟡 | Tema/fonte já funcionam hoje (dropdown do header); só falta tela dedicada |
+| 1B.5 | ✅ Central de Ajuda | 🟢 | `/faq` já existe — é evolução, não tela nova |
 | 1B.6 | Central de notificações (`/notificacoes`) | 🔴 | Mesmo escopo de `E7`; sem tabela nem UI |
 | 1B.7 | ✅ Loading skeleton ao abrir notícia | 🟢 | Mesmo escopo de `2.3` (`error.tsx`/`loading.tsx`) |
 | 1B.8 | ✅ Clique em documento do acervo → preview/download | 🟢 | Campo `downloadable` já existia, só não era usado |
@@ -104,7 +104,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - **Sprint 1 — Destravar:** `0.1 → 0.3/0.4 → 0.5 → 0.6` + quick wins `1.1`, `1.3`. (`0.2`, `1.7`, `1B.10`, `1B.11` já feitos.)
 - **Sprint 2 — Blindar:** `2.4 (CI)` → `2.1 (tipos)` → `2.2 (testes)`.
 - **Sprint 3 — Completar núcleo:** `1.4 (eventos)`, `1.2 (editar)`, iniciar `1.6 (cuidador)`.
-- **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.1 (boas-vindas grupo)` → `1B.4 (configurações)` → `1B.9 (eventos, depois de 1.4)` → `1B.6 (notificações)`.
+- **Sprint 4 — Telas de UI/UX:** `1B.2 (perfil)` → `1B.3 (salvos)` → `1B.5 (ajuda)` → `1B.4 (configurações)` já feitos. Falta: `1B.1 (boas-vindas grupo)` → `1B.9 (eventos, depois de 1.4)` → `1B.6 (notificações)`.
 - **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro). (`1B.7`/`1B.8` já feitos.)
 
 ## Documentos relacionados
