@@ -411,6 +411,7 @@ export type Database = {
           downloadable: boolean
           id: string
           image_url: string | null
+          search_vector: unknown
           suggested_by: string | null
           tags: string[]
           title: string
@@ -424,6 +425,7 @@ export type Database = {
           downloadable?: boolean
           id?: string
           image_url?: string | null
+          search_vector?: unknown
           suggested_by?: string | null
           tags?: string[]
           title: string
@@ -437,6 +439,7 @@ export type Database = {
           downloadable?: boolean
           id?: string
           image_url?: string | null
+          search_vector?: unknown
           suggested_by?: string | null
           tags?: string[]
           title?: string
@@ -621,6 +624,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           updated_at: string
         }
         Insert: {
@@ -628,6 +632,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -635,6 +640,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -930,7 +936,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      immutable_array_to_string: { Args: { arr: string[] }; Returns: string }
     }
     Enums: {
       event_type: "online" | "presencial"

@@ -213,10 +213,10 @@ export default function CommunityPageClient({
     return resultado;
   };
 
-  const handleCreatePost = async (content: string) => {
+  const handleCreatePost = async (content: string, imageUrl?: string) => {
     const texto = content.trim();
     if (!texto) return;
-    const { ok, erro } = await criarPost(texto);
+    const { ok, erro } = await criarPost(texto, imageUrl);
     if (!ok) {
       console.error('[comunidade] erro ao criar post:', erro);
       return;

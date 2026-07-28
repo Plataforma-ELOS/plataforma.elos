@@ -108,7 +108,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados fora de escopo | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
 | E2 | 🟡 Paginação (feed de posts feito; profissionais fora de escopo) | Código | P3 | Média | meio dia | — |
-| E3 | 🟡 Supabase Storage (avatar + foto profissional/clínica; F7 acervo fora de escopo) | Código/Infra | P3 | Alta | 1–2 dias | — |
+| E3 | ✅ Supabase Storage (avatar, foto profissional/clínica, acervo, create-post) | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | ✅ Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
 | E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
@@ -568,9 +568,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E3] 🟡 Supabase Storage para imagens (avatar + foto de profissional/clínica implementados; upload de imagem no acervo/create-post fora de escopo)
+### [E3] ✅ Supabase Storage para imagens (avatar, foto de profissional/clínica, acervo e create-post)
 - **Categoria:** Código/Infra · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** —
-- **Relevância:** Hoje tudo é `placehold.co`. Produto real precisa de upload (avatar, capa de material). O upload de imagem no `create-post`/acervo continua fora de escopo.
+- **Relevância:** Hoje tudo é `placehold.co`. Produto real precisa de upload (avatar, capa de material).
 
 #### 🎯 Passo a passo
 1. Criar bucket(s) no Storage com policies; adicionar `*.supabase.co` em `next.config.ts` `images.remotePatterns`.
@@ -578,23 +578,25 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 #### ✅ Critério de aceite
 - [x] Upload funciona; imagens próprias renderizam via `next/image`.
-- [ ] Upload de imagem no `create-post`/acervo — fora de escopo, ver nota.
+- [x] Upload de imagem no `create-post`/acervo.
 
 - **Implementado em 2026-07-27:** dois buckets criados via migration (`add_storage_buckets_avatars_professionals`) — `avatars` e `professionals`, ambos `public=true`, limite de 2MB, só `image/png|jpeg|webp`. Path prefixado pelo `auth.uid()` do dono (`{uid}/arquivo.ext`) — padrão recomendado pelo Supabase, RLS de Storage não precisa consultar outras tabelas: `insert`/`update`/`delete` só quando o primeiro segmento do path bate com `auth.uid()`. **Sem policy de `select`** — bucket público já serve os objetos via URL pública no nível do serviço de Storage; uma policy ampla de `select` só permitiria *listar* todos os arquivos via API, exposição desnecessária (migration de correção `drop_broad_select_policies_public_buckets`, depois que o Security Advisor acusou `public_bucket_allows_listing`). `next.config.ts`: hostname do projeto Supabase adicionado a `images.remotePatterns` (só o path `/storage/v1/object/public/**`).
   - **Avatar (`/perfil`)**: `perfil/page.tsx` passa `userId`; `perfil/client-page.tsx` ganhou input de arquivo no dialog de edição (preview com `URL.createObjectURL`, revogado no cleanup); `atualizarPerfil` (`src/app/actions/profile.ts`) ganhou parâmetro opcional `avatarUrl`.
   - **Foto de profissional/clínica (`/cadastro-profissional`)**: único ponto de escrita em `professionals`/`clinics` hoje; upload opcional no próprio formulário de inscrição (`useContext(AuthContext)` para o `user.id`); `inscreverProfissional` (`src/app/actions/professional-signup.ts`) ganhou `imageUrl?: string`, gravado em `image_url` nos dois inserts.
-  - **Fora de escopo**: não existe tela de "editar minha ficha profissional depois de cadastrada" (só o cadastro inicial) — trocar a foto depois exigiria essa tela nova. Upload de imagem no `create-post`/sugestão de item do acervo continua fora (nenhum dos dois formulários coleta arquivo) — o *insert* de texto do "Adicionar ao Acervo" foi resolvido à parte, ver `F7` abaixo.
+  - **Fora de escopo**: não existe tela de "editar minha ficha profissional depois de cadastrada" (só o cadastro inicial) — trocar a foto depois exigiria essa tela nova.
+- **Implementado em 2026-07-28 (acervo + create-post):** dois buckets novos (`library`, `posts`), mesmo padrão de RLS dos dois primeiros. `AddToLibraryDialog` (`acervo-digital/client-page.tsx`) e `CreatePost` (`create-post.tsx`) ganharam input de arquivo opcional com preview, reaproveitando o mesmo padrão de upload de `cadastro-profissional`. `sugerirItemAcervo` e `criarPost` ganharam `imageUrl?: string`. `posts.image_url` é coluna nova (migration aditiva); `mapLibraryRow` ajustado para popular `imageUrl` para qualquer tipo de item, não só `video`. `mapPostRow`/`Post`/`PostCard` ganharam o campo, renderizado com `next/image` entre o texto e a barra de ações.
 
 ---
 
-### [F7] ✅ Ligar "Adicionar ao Acervo" a um insert real (upload de imagem fora de escopo)
+### [F7] ✅ Ligar "Adicionar ao Acervo" a um insert real (com upload de imagem)
 - **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** —
 - **Relevância:** o formulário "Adicionar ao Acervo" (`AddToLibraryDialog` em `acervo-digital/client-page.tsx`) era 100% stub — `handleSubmit` só fechava o dialog e mostrava o `AlertDialog` de sucesso fixo, sem gravar nada no banco. Era o único fluxo visível ao usuário que fingia funcionar sem funcionar de verdade. A policy `library_suggest` (insert por qualquer autenticado, `suggested_by = auth.uid()`) já existia desde a migration inicial e nunca tinha sido usada.
 - **Implementado em 2026-07-28:** nova Server Action `sugerirItemAcervo(title, authorName, type, tagsTexto, actionUrl)` (`src/app/actions/library.ts`) — checa login, valida campos obrigatórios, separa tags por vírgula, insere em `library_items` com `suggested_by: user.id` (sem setar `approved`, já é `false` por default). `AddToLibraryDialog` ganhou estado controlado nos 5 campos e chama a action de verdade; gate de login reaproveitando o mesmo padrão já usado em `handleToggleFavorite` no mesmo arquivo (redireciona a `/login` se deslogado, em vez de abrir o dialog). Item sugerido passa a aparecer na aba "Acervo" de `/admin` (aprovar/rejeitar já existia desde o painel administrativo) e só entra em `/acervo-digital` depois de aprovado (RLS `library_read` já cobre isso).
+- **Upload de imagem implementado em 2026-07-28 (ver `E3`):** o formulário ganhou um input de arquivo opcional com preview; `sugerirItemAcervo` ganhou `imageUrl?: string`, gravado em `image_url`.
 
 #### ✅ Critério de aceite
 - [x] Enviar o formulário grava de verdade em `library_items` (pendente de aprovação).
-- [ ] Upload de imagem do material — fora de escopo (mesma nota de `E3`).
+- [x] Upload de imagem do material.
 
 ### [E4] ✅ Rate limiting / anti-abuso nos inserts públicos
 - **Categoria:** Supabase/Infra · **Prio:** P3 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —

@@ -14,7 +14,7 @@ export default async function CommunityPage() {
     supabase
       .from('posts')
       .select(`
-        id, content, created_at, author_id,
+        id, content, created_at, author_id, image_url,
         author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
         post_likes ( profile_id ),
         post_saves ( profile_id ),

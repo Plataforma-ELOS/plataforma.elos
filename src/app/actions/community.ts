@@ -21,7 +21,7 @@ export async function buscarMaisPosts(offset: number): Promise<{ posts: Post[]; 
   const { data, error } = await supabase
     .from('posts')
     .select(`
-      id, content, created_at, author_id,
+      id, content, created_at, author_id, image_url,
       author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
       post_likes ( profile_id ),
       post_saves ( profile_id ),
@@ -45,7 +45,7 @@ export async function buscarMaisPosts(offset: number): Promise<{ posts: Post[]; 
   };
 }
 
-export async function criarPost(conteudo: string): Promise<Resultado> {
+export async function criarPost(conteudo: string, imageUrl?: string): Promise<Resultado> {
   const { supabase, user } = await contexto();
   if (!user) return { ok: false, erro: PRECISA_LOGIN };
 
@@ -53,7 +53,9 @@ export async function criarPost(conteudo: string): Promise<Resultado> {
   if (texto.length < 2) return { ok: false, erro: 'Escreva alguma coisa antes de publicar.' };
   if (texto.length > 5000) return { ok: false, erro: 'Texto muito longo (máximo 5000 caracteres).' };
 
-  const { error } = await supabase.from('posts').insert({ author_id: user.id, content: texto });
+  const { error } = await supabase
+    .from('posts')
+    .insert({ author_id: user.id, content: texto, image_url: imageUrl ?? null });
   if (error) return { ok: false, erro: 'Não foi possível publicar agora.' };
 
   revalidatePath('/comunidade');

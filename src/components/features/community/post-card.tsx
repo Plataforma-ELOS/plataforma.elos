@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -40,6 +41,7 @@ export type Post = {
   author: Author;
   time: string;
   content: string;
+  imageUrl?: string;
   likes: number;
   commentCount: number;
   isSaved: boolean;
@@ -164,6 +166,11 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
             </div>
           </div>
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{content}</p>
+          {post.imageUrl && (
+            <div className="mt-3 relative w-full aspect-video rounded-xl overflow-hidden border">
+              <Image src={post.imageUrl} alt="Imagem do post" fill className="object-cover" />
+            </div>
+          )}
         </div>
       </div>
 
