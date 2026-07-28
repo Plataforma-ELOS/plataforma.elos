@@ -81,18 +81,18 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | G3 | Preencher env vars na Vercel (7 chaves, 3 ambientes) | Config Vercel | P0 | Baixa | 30 min | — |
 | G4 | Criar usuário admin (`profiles.role='admin'`) | Painel Supabase | P0 | Baixa | 10 min | G1 |
 | G5 | Abrir PR → validar Preview → merge em `main` | Processo | P0 | Baixa | 1 h | G1–G4, CI |
-| F1 | Eventos reais (tabela `events` + criar evento) | Código | P1 | Alta | 1–2 dias | G5 |
-| F2 | Editar post/comentário | Código | P1 | Média | meio dia | G5 |
-| F3 | Compartilhar (Web Share/copiar link) | Código | P1 | Baixa | 2 h | — |
+| F1 | ✅ Eventos reais (tabela `events` + criar evento) | Código | P1 | Alta | 1–2 dias | G5 |
+| F2 | ✅ Editar post/comentário | Código | P1 | Média | meio dia | G5 |
+| F3 | ✅ Compartilhar (Web Share/copiar link) | Código | P1 | Baixa | 2 h | — |
 | F4 | ~~Agendar consulta (profissional)~~ **substituído por U12** | Código | — | — | — | ver U12 |
-| F5 | Área do cuidador (dependentes + diário) | Código | P1 | Muito Alta | 3+ dias | G5 |
+| F5 | ✅ Área do cuidador (dependentes + diário) | Código | P1 | Muito Alta | 3+ dias | G5 |
 | F6 | ✅ Resolver stubs de nav (header/footer) | Código/UX | P1 | Baixa | 2 h | — |
-| U1 | Tela de boas-vindas ao entrar em grupo | Código | P1 | Média | 1 dia | precisa de `/comunidade/grupos/[id]` (não existe) |
+| U1 | ✅ Tela de boas-vindas ao entrar em grupo | Código | P1 | Média | 1 dia | precisa de `/comunidade/grupos/[id]` (não existe) |
 | U2 | ✅ Tela de perfil do usuário (`/perfil`) | Código | P1 | Média | meio dia | — |
 | U3 | ✅ Itens salvos (`/salvos`) unificando posts + acervo | Código | P1 | Média | meio dia | — |
 | U4 | ✅ Tela de configurações (`/configuracoes`) | Código | P2 | Média | meio dia | — |
 | U5 | ✅ Central de Ajuda — evoluir `/faq` | Código/UX | P2 | Baixa | meio dia | — |
-| U6 | Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
+| U6 | ✅ Central de notificações (`/notificacoes`) | Código/Supabase | P2 | Alta | 1–2 dias | mesmo escopo de `E7` |
 | U7 | ✅ Loading skeleton ao clicar em manchete de notícia | Código | P2 | Baixa | 2 h | mesmo escopo de `Q4` |
 | U8 | ✅ Clique em documento do acervo → preview/download correto | Código | P2 | Baixa | 2 h | — |
 | U9 | ✅ Clique em "Próximos eventos" → detalhe/modal + `.ics` (RSVP fora de escopo) | Código | P2 | Baixa | 2 h | depende de `F1` (eventos ainda são mock) |
@@ -100,11 +100,11 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | U11 | ✅ Bug: clique em especialidade sem scroll até os resultados | Código | P1 | Baixa | 2 h | — |
 | U12 | ✅ Remover "Agendar consulta" de profissionais/clínicas | Código | P1 | Baixa | 1 h | substitui `F4` |
 | U13 | ✅ Auditoria de contraste do tema claro (WCAG AA 4.5:1) | Design/CSS | P2 | Média | meio dia | — |
-| Q1 | Validar CI verde no PR | CI/CD | P2 | Baixa | 15 min | G5 |
-| Q2 | Tipos gerados do Supabase (tirar `any`) | Código | P2 | Média | meio dia | — |
-| Q3 | Ampliar testes (actions/data/componentes) | Testes | P2 | Média | 1–2 dias | Q2 |
-| Q4 | `error.tsx`/`loading.tsx` por rota | Código | P2 | Baixa | meio dia | — |
-| Q5 | ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
+| Q1 | ✅ Validar CI verde no PR | CI/CD | P2 | Baixa | 15 min | G5 |
+| Q2 | ✅ Tipos gerados do Supabase (tirar `any`) | Código | P2 | Média | meio dia | — |
+| Q3 | ✅ Ampliar testes (actions/data/componentes) | Testes | P2 | Média | 1–2 dias | Q2 |
+| Q4 | ✅ `error.tsx`/`loading.tsx` por rota | Código | P2 | Baixa | meio dia | — |
+| Q5 | ✅ ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
 | Q6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados fora de escopo | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
 | E2 | 🟡 Paginação (feed de posts feito; profissionais fora de escopo) | Código | P3 | Média | meio dia | — |
@@ -466,12 +466,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q1] Validar CI verde no PR
+### [Q1] ✅ Validar CI verde no PR
 - **Categoria:** CI/CD · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~15 min · **Dependências:** G5
 - **Relevância:** O workflow `.github/workflows/ci.yml` só executa de fato quando chega ao GitHub (via PR). Confirmar que `typecheck/test/build` passam no runner.
+- **Satisfeito continuamente desde então:** todos os PRs mesclados nesta sessão (dezenas, do PR #7 ao #38) só foram mesclados depois do check "CI" (`typecheck · test · build`) ficar verde — critério cumprido a cada entrega, não é uma tarefa isolada pendente.
 
 #### ✅ Critério de aceite
-- [ ] Check "CI" verde no PR (todos os passos).
+- [x] Check "CI" verde no PR (todos os passos).
 
 ---
 
