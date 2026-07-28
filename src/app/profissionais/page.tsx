@@ -1,6 +1,5 @@
 // src/app/profissionais/page.tsx
-import { cookies } from 'next/headers';
-import { createClient } from '@/lib/supabase/server';
+import { createStaticClient } from '@/lib/supabase/server';
 import {
   mapProfessionalCard,
   mapClinicCard,
@@ -9,8 +8,12 @@ import {
 } from '@/lib/data/professionals';
 import ProfessionalsPageClient from './client-page';
 
+// ISR: listagem pública, sem personalização por usuário logado — pode ser
+// cacheada e revalidada a cada 5 min em vez de renderizar sob demanda.
+export const revalidate = 300;
+
 export default async function ProfessionalsPage() {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
 
   const [{ data: professionalRows, error: professionalsError }, { data: clinicRows, error: clinicsError }] =
     await Promise.all([

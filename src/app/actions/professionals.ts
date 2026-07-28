@@ -1,7 +1,6 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import { createClient } from '@/lib/supabase/server';
+import { createStaticClient } from '@/lib/supabase/server';
 import {
   mapProfessionalCard,
   mapClinicCard,
@@ -17,7 +16,7 @@ const PROFESSIONAL_SELECT =
 const CLINIC_SELECT = 'id, name, specialty, description, image_url, cnpj, phone, email, verification_status';
 
 export async function buscarMaisProfissionais(offset: number): Promise<{ professionais: ProfessionalCardData[]; hasMore: boolean }> {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
 
   const { data, error } = await supabase
     .from('professionals')
@@ -36,7 +35,7 @@ export async function buscarMaisProfissionais(offset: number): Promise<{ profess
 }
 
 export async function buscarMaisClinicas(offset: number): Promise<{ clinicas: ProfessionalCardData[]; hasMore: boolean }> {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
 
   const { data, error } = await supabase
     .from('clinics')
@@ -57,7 +56,7 @@ export async function filtrarProfissionais(
   especialidade?: string,
   query?: string
 ): Promise<{ professionais: ProfessionalCardData[]; clinicas: ProfessionalCardData[] }> {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
 
   let professionalsQuery = supabase
     .from('professionals')
