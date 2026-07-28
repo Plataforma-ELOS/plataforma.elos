@@ -107,7 +107,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q5 | ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
 | Q6 | E2E (Playwright) dos fluxos críticos | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
-| E2 | Paginação (`SearchPagination`) | Código | P3 | Média | meio dia | — |
+| E2 | 🟡 Paginação (feed de posts feito; profissionais fora de escopo) | Código | P3 | Média | meio dia | — |
 | E3 | 🟡 Supabase Storage (avatar + foto profissional/clínica; F7 acervo fora de escopo) | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | ✅ Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
 | E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
@@ -550,12 +550,15 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E2] Paginação
+### [E2] 🟡 Paginação (feed de posts feito; profissionais fora de escopo)
 - **Categoria:** Código · **Prio:** P3 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
-- **Relevância:** Posts e profissionais crescem; o `useSearch` já foi desenhado para receber um `SearchPagination`.
+- **Relevância:** Posts e profissionais crescem; a listagem carregava tudo de uma vez. Nota: `useSearch` não tinha de fato nenhum suporte a paginação pronto (era só um hook de filtro/ordenação em memória) — a paginação real precisou de `.range()` no Postgres, implementada à parte.
+- **Implementado em 2026-07-28:** feed de posts da `/comunidade` — `src/lib/data/community.ts` (novo) extrai `mapPostRow`/`tempoRelativo`/`PostRow` de `comunidade/page.tsx` (mapper puro reaproveitado tanto pela busca inicial quanto pela paginação), com a constante `POSTS_POR_PAGINA = 10`. `page.tsx` busca a primeira página com `.range(0, 9)`; nova Server Action `buscarMaisPosts(offset)` (`src/app/actions/community.ts`) busca as páginas seguintes com a mesma query + mapper. Botão "Carregar mais posts" em `client-page.tsx`, some quando não há mais posts. Validado via `mcp__Supabase__execute_sql` (15 posts de teste inseridos, confirmado que a página 1 traz os 10 mais recentes e a página 2 traz os 5 restantes, sem gap nem duplicata — depois revertido, nenhum dado real ficou gravado).
+- **Fora de escopo:** paginação de `/profissionais` — mesmo padrão pode ser aplicado depois, mas fica pendente; o volume de seed atual não justifica ainda.
 
 #### ✅ Critério de aceite
-- [ ] Listagens paginam (range no Supabase); busca continua funcionando.
+- [x] Feed de posts pagina (`.range()` no Supabase); busca/ordenação por curtidas continuam funcionando sobre os posts já carregados.
+- [ ] `/profissionais` — fora de escopo desta rodada.
 
 ---
 
