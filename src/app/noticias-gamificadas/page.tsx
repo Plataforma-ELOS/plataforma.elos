@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
+import { mapKnowledgePill, mapKnowledgeTrail } from '@/lib/data/knowledge';
 
 // Nao ha coluna de icone no banco — mapeamos pela categoria (texto livre,
 // mas hoje limitada a estas 3 no seed). Categoria nao mapeada cai no icone
@@ -32,20 +33,13 @@ export default async function NewsGamifiedPage() {
       : Promise.resolve({ data: [] as { trail_id: string; progress: number }[] }),
   ]);
 
-  const knowledgePills = (pillRows ?? []).map((p) => ({
-    title: p.title,
-    content: p.content,
-    category: p.category ?? '',
-    icon: ICONE_POR_CATEGORIA[p.category ?? ''] ?? ICONE_PADRAO,
+  const knowledgePills = (pillRows ?? []).map(mapKnowledgePill).map((p) => ({
+    ...p,
+    icon: ICONE_POR_CATEGORIA[p.category] ?? ICONE_PADRAO,
   }));
 
   const progressByTrail = new Map((progressRows ?? []).map((p) => [p.trail_id, p.progress]));
-  const knowledgeTrails = (trailRows ?? []).map((t) => ({
-    id: t.id,
-    title: t.title,
-    description: t.description ?? '',
-    progress: progressByTrail.get(t.id) ?? 0,
-  }));
+  const knowledgeTrails = (trailRows ?? []).map((t) => mapKnowledgeTrail(t, progressByTrail));
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

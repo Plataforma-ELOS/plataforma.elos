@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowLeft, Users, Check, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { entrarNoGrupo, sairDoGrupo } from '@/app/actions/groups';
-import type { GroupMember } from './page';
+import type { GroupMember } from '@/lib/data/groups';
 
 type GroupDetailClientProps = {
   group: { id: string; name: string; description: string; tags: string[] };

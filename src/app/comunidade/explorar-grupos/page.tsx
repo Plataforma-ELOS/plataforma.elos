@@ -1,15 +1,8 @@
 // src/app/comunidade/explorar-grupos/page.tsx
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
-import ExploreGroupsPageClient, { type GroupCardData } from './client-page';
-
-type GroupRow = {
-  id: string;
-  name: string;
-  description: string | null;
-  tags: string[] | null;
-  group_members: { count: number }[] | null;
-};
+import { mapGroupCard, type GroupRow } from '@/lib/data/groups';
+import ExploreGroupsPageClient from './client-page';
 
 export default async function ExploreGroupsPage() {
   const supabase = createClient(await cookies());
@@ -26,14 +19,9 @@ export default async function ExploreGroupsPage() {
 
   const meusGrupos = new Set((membershipRows ?? []).map((m) => m.group_id));
 
-  const gruposIniciais: GroupCardData[] = ((groupRows ?? []) as unknown as GroupRow[]).map((g) => ({
-    id: g.id,
-    name: g.name,
-    description: g.description ?? '',
-    members: g.group_members?.[0]?.count ?? 0,
-    isMember: meusGrupos.has(g.id),
-    tags: g.tags ?? [],
-  }));
+  const gruposIniciais = ((groupRows ?? []) as unknown as GroupRow[]).map((g) =>
+    mapGroupCard(g, meusGrupos.has(g.id))
+  );
 
   return <ExploreGroupsPageClient gruposIniciais={gruposIniciais} />;
 }
