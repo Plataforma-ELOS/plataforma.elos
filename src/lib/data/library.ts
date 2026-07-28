@@ -43,7 +43,7 @@ export function mapLibraryRow(row: LibraryRow): LibraryItemData {
   return {
     id: row.id,
     type: isVideo ? 'video' : 'document',
-    imageUrl: isVideo ? row.image_url ?? undefined : undefined,
+    imageUrl: row.image_url ?? undefined,
     imageHint: 'material educativo',
     title: row.title,
     author: row.author_name ?? 'Equipe Elos',
