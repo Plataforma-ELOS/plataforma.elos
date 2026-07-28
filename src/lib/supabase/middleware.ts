@@ -20,6 +20,14 @@ const ROTAS_PRIVADAS = [
 const ROTAS_DE_AUTH = ["/login", "/cadastro"];
 
 export const createClient = async (request: NextRequest) => {
+  const path = request.nextUrl.pathname;
+  const precisaChecarSessao =
+    ROTAS_PRIVADAS.some((rota) => path.startsWith(rota)) || ROTAS_DE_AUTH.includes(path);
+
+  if (!precisaChecarSessao) {
+    return NextResponse.next({ request: { headers: request.headers } });
+  }
+
   // Create an unmodified response
   let supabaseResponse = NextResponse.next({
     request: {
@@ -53,8 +61,6 @@ export const createClient = async (request: NextRequest) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const path = request.nextUrl.pathname;
 
   if (!user && ROTAS_PRIVADAS.some((rota) => path.startsWith(rota))) {
     const url = request.nextUrl.clone();

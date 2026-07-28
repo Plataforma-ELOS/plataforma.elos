@@ -2,7 +2,7 @@
 
 > **O que é este documento:** uma auditoria da relação entre o banco/API (Supabase) e o front/hosting (Vercel) do E.L.O.S, seguida de um plano de ações para que um lado nunca sobrecarregue o outro. É um documento irmão do [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) — aquele cobre "o que falta para produção"; este cobre especificamente "como Supabase e Vercel devem se comportar um em relação ao outro". A tarefa `E1` do guia mestre ("Server Components nas 6 telas client-fetch") é aprofundada aqui como `H2`.
 >
-> Nenhuma mudança de código foi feita nesta entrega — é só o mapeamento e o plano. As fichas abaixo (H1–H6) descrevem exatamente o que implementar depois.
+> Auditoria original sem nenhuma mudança de código — só o mapeamento e o plano. As fichas abaixo (H1–H6) descrevem exatamente o que implementar; `H1` e `H2` já foram implementados desde então (ver notas em cada ficha).
 
 ---
 
@@ -41,7 +41,7 @@ Regras curtas para guiar toda decisão futura de onde/como buscar dado:
 
 | ID | Achado | Prioridade | Dificuldade | Tempo est. | Arquivos afetados |
 |----|--------|:---:|:---:|:---:|---|
-| H1 | Middleware chama Auth sem necessidade | P0 | Fácil | 30 min | `src/middleware.ts`, `src/lib/supabase/middleware.ts` |
+| H1 | ✅ Middleware chama Auth sem necessidade | P0 | Fácil | 30 min | `src/middleware.ts`, `src/lib/supabase/middleware.ts` |
 | H2 | Páginas client-fetch → Server Component | P1 | Médio | ~1 dia (6 páginas) | `fale-conosco`, `comunidade`, `comunidade/explorar-grupos`, `comunidade/meus-grupos`, `acervo-digital`, `profissionais` (todos em `src/app/`) |
 | H3 | ISR nas rotas de conteúdo público | P1 | Fácil | 1-2h | `src/app/noticias/page.tsx`, `noticias-ai/page.tsx`, `acervo-digital/page.tsx`, `profissionais/page.tsx` |
 | H4 | Unificar queries de `profissionais/[id]` | P2 | Fácil | 1-2h | `src/app/profissionais/[id]/page.tsx` |
@@ -54,13 +54,14 @@ Ordem de execução recomendada: **H1 → H3 → H2 → H4 → H5 → H6**. H1 �
 
 ## 4. Fichas detalhadas
 
-### H1 — Middleware só consulta Auth quando a rota exige
+### H1 — ✅ Middleware só consulta Auth quando a rota exige
 
 - **Categoria:** Performance / Custo de API
 - **Prioridade:** P0
 - **Dificuldade:** Fácil
 - **Tempo estimado:** 30 min
 - **Dependências:** nenhuma
+- **Implementado em 2026-07-28:** `src/lib/supabase/middleware.ts` agora checa `pathname` contra `ROTAS_PRIVADAS`/`ROTAS_DE_AUTH` **antes** de criar o client Supabase — se não bater em nenhuma das duas listas, retorna `NextResponse.next(...)` imediatamente, sem chamar `getUser()`. Validado manualmente (`npm run dev`): login persiste ao navegar entre página pública e privada; deslogado ainda é redirecionado de `/comunidade/criar-grupo` (307); logado ainda é redirecionado de `/login` para `/home`. Efeito colateral positivo: páginas públicas deixam de depender de `supabase.co` estar alcançável só para renderizar — o que também destrava testes E2E confiáveis dessas rotas neste tipo de ambiente restrito de rede (ver `2.6`/`Q6` no guia mestre).
 
 **🎯 Passo a passo**
 
