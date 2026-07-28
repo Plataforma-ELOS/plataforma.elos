@@ -32,10 +32,12 @@ import { useToast } from '@/hooks/use-toast';
 import { inscreverProfissional } from '@/app/actions/professional-signup';
 import { AuthContext } from '@/components/common/providers';
 import { createClient } from '@/lib/supabase/client';
+import { ESPECIALIDADES } from '@/lib/data/specialties';
 
 const TAMANHO_MAXIMO_FOTO = 2 * 1024 * 1024;
 
 const MAX_WORDS = 200;
+const OUTRA_ESPECIALIDADE = 'Outro';
 
 export default function ProfessionalSignUpPage() {
   const router = useRouter();
@@ -50,6 +52,8 @@ export default function ProfessionalSignUpPage() {
   const [cnpj, setCnpj] = useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [specialty, setSpecialty] = useState('');
+  const [customSpecialty, setCustomSpecialty] = useState('');
 
   const previewPhoto = useMemo(() => (photoFile ? URL.createObjectURL(photoFile) : null), [photoFile]);
   useEffect(() => {
@@ -103,6 +107,25 @@ export default function ProfessionalSignUpPage() {
       return;
     }
 
+    const especialidadeFinal =
+      registrationType === 'clinic'
+        ? specialty.trim()
+        : specialty === OUTRA_ESPECIALIDADE
+          ? customSpecialty.trim()
+          : specialty;
+
+    if (!especialidadeFinal) {
+      toast({
+        variant: 'destructive',
+        title: 'Especialidade obrigatória',
+        description:
+          registrationType === 'clinic'
+            ? 'Informe a especialidade/área de atuação da clínica.'
+            : 'Selecione uma especialidade.',
+      });
+      return;
+    }
+
     setEnviando(true);
 
     let imageUrl: string | undefined;
@@ -125,6 +148,7 @@ export default function ProfessionalSignUpPage() {
       registrationType,
       cnpj,
       registrationNumber,
+      specialty: especialidadeFinal,
       experience: experienceText,
       imageUrl,
     });
@@ -217,6 +241,45 @@ export default function ProfessionalSignUpPage() {
                         </SelectContent>
                         </Select>
                     </div>
+
+                    {registrationType === 'clinic' ? (
+                      <div className="grid gap-2">
+                        <Label htmlFor="specialty">Especialidade/Área de Atuação</Label>
+                        <Input
+                          id="specialty"
+                          placeholder="Ex: Neurodesenvolvimento, Multidisciplinar..."
+                          required
+                          value={specialty}
+                          onChange={(e) => setSpecialty(e.target.value)}
+                        />
+                      </div>
+                    ) : (
+                      <div className="grid gap-2">
+                        <Label htmlFor="specialty">Especialidade</Label>
+                        <Select value={specialty} onValueChange={setSpecialty}>
+                          <SelectTrigger id="specialty">
+                            <SelectValue placeholder="Selecione sua especialidade" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {ESPECIALIDADES.map((especialidade) => (
+                              <SelectItem key={especialidade} value={especialidade}>
+                                {especialidade}
+                              </SelectItem>
+                            ))}
+                            <SelectItem value={OUTRA_ESPECIALIDADE}>Outro</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {specialty === OUTRA_ESPECIALIDADE && (
+                          <Input
+                            id="specialty-custom"
+                            placeholder="Qual especialidade?"
+                            required
+                            value={customSpecialty}
+                            onChange={(e) => setCustomSpecialty(e.target.value)}
+                          />
+                        )}
+                      </div>
+                    )}
 
                     <div className={cn('grid gap-2 transition-opacity duration-300', registrationType === 'clinic' ? 'opacity-100' : 'opacity-50 pointer-events-none')}>
                         <Label htmlFor="cnpj">CNPJ</Label>
