@@ -3,8 +3,6 @@
 
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
-import FeatureInProgress from '@/components/common/feature-in-progress';
 
 export default function Footer({ className }: { className?: string}) {
   return (
@@ -51,11 +49,9 @@ export default function Footer({ className }: { className?: string}) {
                     <p className="text-center mt-4">&copy; 2025 Plataforma E.L.O.S. Todos os direitos reservados.</p>
                 </div>
                 <div className="text-center md:text-right">
-                   <FeatureInProgress>
-                     <Button variant="link" className="text-foreground/80 hover:text-foreground px-0">
+                   <Link href="/politica-de-privacidade#cookies" className="text-sm text-foreground/80 hover:text-foreground">
                         Política de Cookies
-                    </Button>
-                   </FeatureInProgress>
+                    </Link>
                 </div>
             </div>
         </div>
