@@ -8,6 +8,10 @@ import { Newspaper, ArrowRight } from 'lucide-react';
 import NewsCard from '@/components/features/news/news-card';
 import { getNews } from '@/lib/data/news';
 
+// ISR: leitura pública, sem sessão de usuário — pode ser cacheada e
+// revalidada a cada 5 min em vez de renderizar sob demanda a cada request.
+export const revalidate = 300;
+
 export default async function NewsPage() {
   const newsArticles = await getNews();
   const featuredArticle = newsArticles[0];

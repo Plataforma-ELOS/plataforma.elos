@@ -1,8 +1,7 @@
 // src/lib/data/news.ts
 // Leitura de notícias do Supabase, já no formato exato que NewsCard espera:
 // { slug, title, description, imageUrl, imageHint, category, date }
-import { cookies } from 'next/headers';
-import { createClient, createStaticClient } from '@/lib/supabase/server';
+import { createStaticClient } from '@/lib/supabase/server';
 import { formatarDataPtBr } from '../format';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,
@@ -27,7 +26,7 @@ export type NewsCardData = {
 };
 
 export async function getNews(): Promise<NewsCardData[]> {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
   const { data, error } = await supabase
     .from('news_articles')
     .select('slug, title, description, image_url, image_hint, category, tags, published_at')
@@ -51,7 +50,7 @@ export async function getNews(): Promise<NewsCardData[]> {
 }
 
 export async function getNewsBySlug(slug: string) {
-  const supabase = createClient(await cookies());
+  const supabase = createStaticClient();
   const { data, error } = await supabase
     .from('news_articles')
     .select('slug, title, description, content, image_url, image_hint, category, author_name, published_at')
@@ -77,7 +76,8 @@ export async function getNewsBySlug(slug: string) {
 }
 
 // Usado em generateStaticParams (roda em build time, fora de uma
-// requisição) — por isso usa o client sem cookies em vez de createClient.
+// requisição) — precisa do client sem cookies (createStaticClient), já que
+// cookies() não existe fora de uma requisição real.
 // try/catch defensivo: se o Supabase estiver inacessível em build (ex.: CI
 // com URL dummy, ou banco fora do ar), o build não deve quebrar — apenas
 // gera 0 páginas estáticas e as rotas passam a renderizar sob demanda.

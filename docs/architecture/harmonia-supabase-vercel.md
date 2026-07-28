@@ -43,9 +43,9 @@ Regras curtas para guiar toda decisão futura de onde/como buscar dado:
 |----|--------|:---:|:---:|:---:|---|
 | H1 | ✅ Middleware chama Auth sem necessidade | P0 | Fácil | 30 min | `src/middleware.ts`, `src/lib/supabase/middleware.ts` |
 | H2 | Páginas client-fetch → Server Component | P1 | Médio | ~1 dia (6 páginas) | `fale-conosco`, `comunidade`, `comunidade/explorar-grupos`, `comunidade/meus-grupos`, `acervo-digital`, `profissionais` (todos em `src/app/`) |
-| H3 | ISR nas rotas de conteúdo público | P1 | Fácil | 1-2h | `src/app/noticias/page.tsx`, `noticias-ai/page.tsx`, `acervo-digital/page.tsx`, `profissionais/page.tsx` |
-| H4 | Unificar queries de `profissionais/[id]` | P2 | Fácil | 1-2h | `src/app/profissionais/[id]/page.tsx` |
-| H5 | Revisar leitura de cookies desnecessária | P2 | Fácil | 1-2h | `src/app/noticias-gamificadas/page.tsx`, `src/lib/data/news.ts`, demais usos de `@/lib/supabase/server` |
+| H3 | ✅ ISR nas rotas de conteúdo público | P1 | Fácil | 1-2h | `src/app/noticias/page.tsx`, `profissionais/page.tsx`, `profissionais/[id]/page.tsx` |
+| H4 | ✅ Unificar queries de `profissionais/[id]` | P2 | Fácil | 1-2h | `src/app/profissionais/[id]/page.tsx` |
+| H5 | ✅ Revisar leitura de cookies desnecessária | P2 | Fácil | 1-2h | `src/lib/data/news.ts`, `src/app/profissionais/page.tsx`, `src/app/profissionais/[id]/page.tsx`, `src/app/actions/professionals.ts` |
 | H6 | Índices não usados — reavaliar após tráfego | P2 | Trivial | 5 min | N/A (observação de processo) |
 
 Ordem de execução recomendada: **H1 → H3 → H2 → H4 → H5 → H6**. H1 é a correção de maior impacto com menor esforço (30 min, remove a chamada de Auth desnecessária de toda navegação pública). H3 dá ganho rápido de cache sem mexer na forma de buscar dado. H2 é o trabalho mais substancial (reescrever 6 páginas como Server Components).
@@ -151,95 +151,94 @@ A busca de favoritos do usuário logado (que depende de `auth.getUser()`) pode c
 
 ---
 
-### H3 — ISR nas rotas de conteúdo público
+### H3 — ✅ ISR nas rotas de conteúdo público
 
 - **Categoria:** Cache
 - **Prioridade:** P1
 - **Dificuldade:** Fácil
 - **Tempo estimado:** 1-2h
 - **Dependências:** idealmente depois de H2 para as páginas que ainda são client-fetch, mas pode ser aplicado desde já nas que já são Server Component
+- **Implementado em 2026-07-28:** `export const revalidate = 300` (5 min) em `src/app/noticias/page.tsx` e `src/app/profissionais/page.tsx` — só possível depois de tirar a leitura de cookies desses dois (ver `H5`), já que `cookies()` força renderização dinâmica mesmo com `revalidate` setado. `npm run build` confirma: as duas rotas saíram de `ƒ Dynamic` para `○ Static` com as colunas `Revalidate 5m` / `Expire 1y` aparecendo na tabela de rotas. `src/app/profissionais/[id]/page.tsx` também ganhou `revalidate = 300` (mesmo motivo), mas continua aparecendo como `ƒ` no build por não ter `generateStaticParams` — o cache por `revalidate` ainda se aplica em runtime por path visitado, só não gera o badge de build-time.
+  - **Escopo reduzido em relação à sugestão original desta ficha:** `noticias-ai/page.tsx` **não** recebeu `revalidate` — tem `export const dynamic = 'force-dynamic'` proposital (decisão de uma entrega anterior, comentário já no arquivo), porque a página chama a IA (Gemini) a cada request e não deve depender de cache/build. `acervo-digital/page.tsx` também ficou de fora — a página busca os favoritos do usuário logado via `auth.getUser()`, uma leitura genuinamente personalizada que não pode virar ISR (ver `H5`).
 
-**🎯 Passo a passo**
-
-Adicionar `export const revalidate = <segundos>` no topo do Server Component da página. Sugestão de valores (ajustar conforme frequência real de publicação):
-
-```ts
-// src/app/noticias/page.tsx, src/app/noticias-ai/page.tsx
-export const revalidate = 300; // 5 min — conteúdo editorial, pouca urgência de estar 100% atual
-```
+**🎯 Passo a passo (como foi feito)**
 
 ```ts
-// src/app/acervo-digital/page.tsx, src/app/profissionais/page.tsx
-export const revalidate = 300;
+// src/app/noticias/page.tsx, src/app/profissionais/page.tsx
+export const revalidate = 300; // 5 min — conteúdo público, pouca urgência de estar 100% atual
 ```
 
-Isso alinha o comportamento da listagem com o do detalhe (`[slug]`, que já é `generateStaticParams`/SSG). O objetivo é o build voltar a mostrar essas rotas como `●`/ISR em vez de `ƒ Dynamic`.
+Isso alinha o comportamento da listagem com o do detalhe (`[slug]`, que já é `generateStaticParams`/SSG).
 
 **✅ Critérios de aceite**
-- [ ] `npm run build` mostra as rotas listadas com indicador de ISR (não mais `ƒ` puro).
-- [ ] Conteúdo novo aparece dentro da janela de revalidação escolhida (testar publicando e aguardando o `revalidate`).
+- [x] `npm run build` mostra `/noticias` e `/profissionais` como `○` com `Revalidate 5m` (não mais `ƒ` puro).
+- [ ] `/noticias-ai` e `/acervo-digital` — fora de escopo por bom motivo (IA sem cache / dado personalizado), ver nota acima.
 
 ---
 
-### H4 — Unificar queries de `profissionais/[id]`
+### H4 — ✅ Unificar queries de `profissionais/[id]`
 
 - **Categoria:** Performance de query
 - **Prioridade:** P2
 - **Dificuldade:** Fácil
 - **Tempo estimado:** 1-2h
 - **Dependências:** nenhuma
+- **Implementado em 2026-07-28:** `src/app/profissionais/[id]/page.tsx` reescrito para 1 query por ramo em vez de até 4 (branch profissional: linha do profissional + `professional_skills` + `professional_experiences` + `reviews`+autor, tudo embutido num único `.select()` com relações aninhadas do PostgREST, ordenando os embeds via `.order(coluna, { foreignTable: '...' })`; branch clínica, só alcançado quando o `id` não é de profissional: linha da clínica + `reviews`+autor num único `.select()`). Sem ambiguidade de FK — `reviews` só tem uma FK para `professionals` (`reviews_professional_id_fkey`) e uma para `clinics` (`reviews_clinic_id_fkey`), então nenhum hint `!fkey` foi necessário no embed a partir de cada tabela (mantido só no embed de `author:profiles!reviews_author_id_fkey`, onde `reviews` tem uma única FK para `profiles`). Validado via `execute_sql` (contagem de `professional_skills`/`professional_experiences`/`reviews` por profissional, confirmando os relacionamentos e o caso de 0 reviews — todas as 5 linhas demo têm 0 avaliações, cobrindo o caminho de array vazio).
 
-**🎯 Passo a passo**
-
-Hoje `src/app/profissionais/[id]/page.tsx` faz: 1 query para o profissional, 1 para reviews, 2 em paralelo (skills + experiences), e condicionalmente 1 para clínica — até 5 idas ao Supabase.
-
-Seguir o padrão já usado em `src/app/comunidade/page.tsx` (select com relações aninhadas do PostgREST) e consolidar em uma única query:
+**🎯 Passo a passo (como foi feito)**
 
 ```ts
-const { data } = await supabase
+const { data: professionalRow } = await supabase
   .from('professionals')
   .select(`
-    *,
-    reviews ( id, rating, comment, created_at, author:profiles!reviews_author_id_fkey ( full_name, avatar_url ) ),
+    id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status,
     professional_skills ( skill ),
     professional_experiences ( description, sort_order ),
-    clinic:clinics ( * )
+    reviews ( id, rating, content, likes, created_at, score_atendimento, score_empatia, score_clareza, score_organizacao, author:profiles!reviews_author_id_fkey ( full_name ) )
   `)
   .eq('id', id)
-  .single();
+  .order('sort_order', { foreignTable: 'professional_experiences' })
+  .order('created_at', { foreignTable: 'reviews', ascending: false })
+  .maybeSingle();
 ```
 
-Ajustar os nomes de foreign key (`!reviews_author_id_fkey` etc.) conforme o schema real — conferir em `supabase/migrations/` os nomes de constraint antes de aplicar.
+Se `professionalRow` vier vazio, cai no branch de clínica com o mesmo padrão (linha da clínica + `reviews` embutido).
 
 **✅ Critérios de aceite**
-- [ ] Página de detalhe do profissional faz 1 query em vez de 4-5.
-- [ ] Todos os dados exibidos hoje (skills, experiências, reviews, clínica) continuam aparecendo corretamente.
-- [ ] `npm run build` e teste manual da página sem regressão.
+- [x] Página de detalhe do profissional faz 1 query em vez de 4 (branch profissional) ou 1 em vez de 2 (branch clínica).
+- [x] Todos os dados exibidos hoje (skills, experiências, reviews, clínica) continuam aparecendo corretamente (`npm run build` + `execute_sql` confirmando os relacionamentos).
+- [x] `npm run typecheck`, `npm run test`, `npm run build` sem regressão.
 
 ---
 
-### H5 — Revisar leitura de cookies desnecessária
+### H5 — ✅ Revisar leitura de cookies desnecessária
 
 - **Categoria:** Renderização estática
 - **Prioridade:** P2
 - **Dificuldade:** Fácil
 - **Tempo estimado:** 1-2h
 - **Dependências:** nenhuma
+- **Implementado em 2026-07-28:** `src/lib/supabase/server.ts` já tinha `createStaticClient()` (client sem `cookies()`, usado por `getAllNewsSlugs` desde a entrega de CI). Migrados para esse client, por não terem nenhuma personalização por usuário: `src/lib/data/news.ts` (`getNews`/`getNewsBySlug` — `news_articles` é leitura 100% pública), `src/app/profissionais/page.tsx` e `src/app/profissionais/[id]/page.tsx` (nenhum dos dois consulta `auth.getUser()` nem filtra por usuário logado) e as 3 Server Actions de `src/app/actions/professionals.ts` (`buscarMaisProfissionais`/`buscarMaisClinicas`/`filtrarProfissionais` — mesma leitura pública, sem gate de sessão).
+  - **Revisão dos demais arquivos que leem cookies hoje (mantidos, com justificativa):** `admin`, `meu-espaco`, `salvos`, `configuracoes`, `notificacoes`, `perfil` — todos exigem saber quem é o usuário logado (dado privado ou redirect se deslogado). `comunidade`, `comunidade/explorar-grupos`, `comunidade/meus-grupos`, `comunidade/grupos/[id]` — precisam do usuário para personalizar UI (curtidas/salvos próprios, "já sou membro?", CTA de criar post/grupo). `acervo-digital` — busca os favoritos do usuário logado (`isFavorited` por item). `noticias-gamificadas` — busca `trail_progress` condicionalmente ao usuário logado; pílulas/trilhas em si são públicas, mas a tela como um todo depende de saber se há sessão, então fica de fora deste corte (seria um corte mais fino — dividir a página em duas partes com granularidade de cache diferente —, não incluído nesta entrega).
+- **Nota:** a lista original desta ficha citava "8 arquivos"; a contagem real no momento da implementação já era 14 (crescimento natural do app entre a escrita desta ficha e a execução) — a revisão acima cobre todos os 14.
 
-**🎯 Passo a passo**
+**🎯 Passo a passo (como foi feito)**
 
-Os 8 arquivos que usam `createClient(await cookies())` (`@/lib/supabase/server`) devem ser revisados um a um: a página realmente precisa saber quem é o usuário logado (para RLS de dado privado, para personalizar UI) ou só usa o Supabase para ler dado público?
+```ts
+// antes
+import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
+const supabase = createClient(await cookies());
 
-Candidatos a não precisar de cookies, a confirmar:
-- `src/app/noticias-gamificadas/page.tsx` — conteúdo provavelmente público.
-- `src/lib/data/news.ts` — leitura de notícias, também público.
-
-Para esses casos, criar/usar um client Supabase sem `cookies()` (client anônimo, usando só a chave pública) — o que permite a página voltar a ser estática/ISR em vez de forçadamente dinâmica. Os arquivos que fazem mutação (`src/app/actions/*.ts`, Server Actions) continuam precisando de cookies normalmente, pois dependem de sessão para RLS de escrita — não fazem parte deste item.
+// depois (só para leitura pública, sem personalização)
+import { createStaticClient } from '@/lib/supabase/server';
+const supabase = createStaticClient();
+```
 
 **✅ Critérios de aceite**
-- [ ] Cada um dos 8 arquivos foi revisado e documentado (mantém cookies com justificativa, ou migra para client anônimo).
-- [ ] Páginas que migraram voltam a aparecer como estáticas/ISR no build.
-- [ ] Nenhuma regressão em página que de fato depende de sessão.
+- [x] Cada arquivo que lê cookies hoje foi revisado (mantém cookies com justificativa, ou migra para client anônimo) — ver lista acima.
+- [x] Páginas migradas (`/noticias`, `/profissionais`) voltam a aparecer como estáticas/ISR no build.
+- [x] Nenhuma regressão em página que de fato depende de sessão (nenhuma delas foi tocada).
 
 ---
 
