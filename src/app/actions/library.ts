@@ -29,3 +29,42 @@ export async function alternarFavorito(itemId: string): Promise<Resultado> {
   revalidatePath('/acervo-digital');
   return { ok: true };
 }
+
+/** Sugere um novo item para o acervo (fica pendente até um admin aprovar em /admin). */
+export async function sugerirItemAcervo(
+  title: string,
+  authorName: string,
+  type: 'video' | 'document' | 'game' | 'other',
+  tagsTexto: string,
+  actionUrl: string
+): Promise<Resultado> {
+  const supabase = createClient(await cookies());
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false, erro: PRECISA_LOGIN };
+
+  const tituloLimpo = title.trim();
+  const autorLimpo = authorName.trim();
+  const linkLimpo = actionUrl.trim();
+  if (!tituloLimpo) return { ok: false, erro: 'Informe o título do material.' };
+  if (!autorLimpo) return { ok: false, erro: 'Informe o autor do material.' };
+  if (!linkLimpo) return { ok: false, erro: 'Informe o link do material.' };
+
+  const tags = tagsTexto
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  const { error } = await supabase.from('library_items').insert({
+    title: tituloLimpo,
+    author_name: autorLimpo,
+    type,
+    tags,
+    action_url: linkLimpo,
+    suggested_by: user.id,
+  });
+
+  if (error) return { ok: false, erro: 'Não foi possível enviar sua sugestão agora.' };
+
+  revalidatePath('/admin');
+  return { ok: true };
+}
