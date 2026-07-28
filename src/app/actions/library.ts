@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
+import { mapLibraryRow, type LibraryItemData, type LibraryRow } from '@/lib/data/library';
 
 export type Resultado = { ok: boolean; erro?: string };
 const PRECISA_LOGIN = 'Entre na sua conta para continuar.';
@@ -67,4 +68,36 @@ export async function sugerirItemAcervo(
 
   revalidatePath('/admin');
   return { ok: true };
+}
+
+/** Busca full-text (Postgres tsvector) nos itens aprovados do acervo. */
+export async function buscarItensAcervo(query: string): Promise<LibraryItemData[]> {
+  const supabase = createClient(await cookies());
+
+  const { data, error } = await supabase
+    .from('library_items')
+    .select('id, type, title, author_name, image_url, action_url, downloadable, tags, created_at')
+    .eq('approved', true)
+    .textSearch('search_vector', query, { type: 'websearch', config: 'portuguese' })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('[buscarItensAcervo] erro na busca:', error.message);
+    return [];
+  }
+
+  const { data: { user } } = await supabase.auth.getUser();
+  let favoritos = new Set<string>();
+  if (user) {
+    const { data: favs } = await supabase
+      .from('library_favorites')
+      .select('item_id')
+      .eq('profile_id', user.id);
+    favoritos = new Set((favs ?? []).map((f) => f.item_id));
+  }
+
+  return ((data ?? []) as unknown as LibraryRow[]).map((row) => ({
+    ...mapLibraryRow(row),
+    isFavorited: favoritos.has(row.id),
+  }));
 }

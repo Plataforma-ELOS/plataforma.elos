@@ -113,7 +113,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
 | E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
-| E8 | Busca server-side (full-text) | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
+| E8 | 🟡 Busca server-side (full-text) — Acervo Digital feito; profissionais fora de escopo | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
 
 ---
 
@@ -627,11 +627,12 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E7] ✅ Notificações (curtidas/comentários) · [E8] Busca server-side (full-text)
+### [E7] ✅ Notificações (curtidas/comentários) · [E8] 🟡 Busca server-side (full-text)
 - **Prio:** P3 · **Dificuldade:** Muito Alta / Alta.
 - **E7:** implementado (mesmo escopo de `1B.6`) — tabela `notifications` + realtime, curtidas e comentários notificam o autor do post. "Aprovações" ficou fora (não havia UI de aprovação quando essa ficha foi feita); agora que `/admin` existe (`E6`), poderia ser adicionado numa rodada futura.
-- **E8:** busca full-text no Postgres (`tsvector`) em vez de filtro client-side — ainda pendente.
-- **Aceite:** [ ] notificações chegam em tempo real · [ ] busca global rápida server-side.
+- **E8 — implementado em 2026-07-28 para `/acervo-digital`:** coluna `search_vector` (`tsvector`, `generated always as`) + índice GIN em `library_items` (migration `add_library_items_search_vector`), combinando `title`+`author_name`+`tags` com `to_tsvector('portuguese', ...)`. **Achado técnico:** `array_to_string` (usado para juntar o array `tags` num texto) é `STABLE`, não `IMMUTABLE` — Postgres rejeita isso em coluna gerada (`generation expression is not immutable`). Corrigido com uma função wrapper `immutable_array_to_string` declarada `immutable` explicitamente (mesma função, só a garantia de pureza é assumida pelo autor — caminho documentado para esse caso específico de full-text search). Nova Server Action `buscarItensAcervo(query)` (`src/app/actions/library.ts`) usa `.textSearch('search_vector', query, { type: 'websearch', config: 'portuguese' })`, reaproveita `mapLibraryRow` e replica o merge de favoritos já existente em `acervo-digital/page.tsx`. `acervo-digital/client-page.tsx`: busca de texto desacoplada do `useSearch` (que ficou só com filtro de tipo + ordenação) — debounce de 300ms chama a Server Action e faz upsert dos resultados em `libraryItems`, preservando o toggle de favorito otimista.
+  - **Fora de escopo, registrado como pendência:** full-text em `/profissionais` — os chips de especialidade usam um prefixo truncado (`'Fonoaudiólog'`) para casar com `.includes()` em JS contra variações de gênero; full-text do Postgres casa por lexema inteiro, não substring, e trocar isso sem cuidado quebraria essa UX. Precisa de uma rodada própria que reavalie esse mecanismo (ex. prefix-matching via `to_tsquery` com `:*`).
+- **Aceite:** [x] notificações chegam em tempo real · [x] busca global rápida server-side no Acervo Digital · [ ] mesmo para `/profissionais` — fora de escopo.
 
 ---
 
