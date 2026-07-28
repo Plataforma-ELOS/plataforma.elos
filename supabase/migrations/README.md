@@ -14,12 +14,30 @@ está com o schema completo e testado:
 - `0007`: performance — 25 policies pararam de reavaliar `auth.uid()` linha a
   linha, 11 tabelas com policy duplicada em SELECT foram divididas, 12
   índices de chave estrangeira criados.
-- `0008` (`add_notification_privacy_prefs_to_profiles`): aditiva — adiciona
-  `notify_email`, `notify_push`, `profile_public` (boolean, default `true`)
-  em `profiles`, usadas pela tela `/configuracoes`. Diferente de `0001`-`0007`,
-  esta foi aplicada via `apply_migration` (MCP) e o arquivo local já nasceu
-  com o nome/versão exatos do `supabase_migrations.schema_migrations`
-  remoto — não precisou de reconstrução por introspecção.
+- `0008` em diante: todas aditivas, aplicadas via `apply_migration` (MCP).
+  **Atenção**: diferente do que o texto anterior deste README sugeria,
+  `apply_migration` **não** grava o arquivo local automaticamente — só
+  aplica no banco remoto. Os arquivos abaixo precisaram ser reconstruídos
+  manualmente (nome/versão batendo com `supabase_migrations.schema_migrations`
+  via `list_migrations`, conteúdo idêntico ao enviado em cada chamada),
+  senão o check "Supabase Preview" do GitHub falha com `Remote migration
+  versions not found in local migrations directory` — foi exatamente o que
+  aconteceu depois das 3 migrations mais recentes (corrigido nesta entrega).
+  Ao aplicar uma migration nova via MCP, **sempre** criar o arquivo `.sql`
+  correspondente nesta pasta no mesmo commit.
+  - `add_notification_privacy_prefs_to_profiles`: `notify_email`,
+    `notify_push`, `profile_public` (boolean, default `true`) em `profiles`,
+    usadas pela tela `/configuracoes`.
+  - `add_notifications_table` + `revoke_execute_on_notification_triggers[_from_public]`:
+    tabela `notifications` + triggers de curtida/comentário.
+  - `add_public_insert_rate_limits` + `revoke_execute_on_rate_limit_triggers[_from_public]`:
+    rate limiting em `contact_messages`/`reviews`.
+  - `add_storage_buckets_avatars_professionals` + `drop_broad_select_policies_public_buckets`:
+    buckets `avatars`/`professionals`.
+  - `add_library_items_search_vector` + `fix_immutable_array_to_string_search_path`:
+    busca full-text (`tsvector`) no Acervo Digital.
+  - `add_posts_image_url_and_buckets`: `posts.image_url` + buckets
+    `library`/`posts` (upload de imagem no acervo e em criar post).
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
