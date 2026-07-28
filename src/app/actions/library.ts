@@ -37,7 +37,8 @@ export async function sugerirItemAcervo(
   authorName: string,
   type: 'video' | 'document' | 'game' | 'other',
   tagsTexto: string,
-  actionUrl: string
+  actionUrl: string,
+  imageUrl?: string
 ): Promise<Resultado> {
   const supabase = createClient(await cookies());
   const { data: { user } } = await supabase.auth.getUser();
@@ -61,6 +62,7 @@ export async function sugerirItemAcervo(
     type,
     tags,
     action_url: linkLimpo,
+    image_url: imageUrl ?? null,
     suggested_by: user.id,
   });
 

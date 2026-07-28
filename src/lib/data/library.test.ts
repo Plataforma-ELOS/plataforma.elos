@@ -34,6 +34,12 @@ describe('mapLibraryRow', () => {
     expect(item.actionText).toBe('Assistir Agora');
   });
 
+  it('popula imageUrl também para documento/jogo com capa (não só vídeo)', () => {
+    const item = mapLibraryRow({ ...baseRow, type: 'document', image_url: 'https://example.com/capa.png' });
+    expect(item.type).toBe('document');
+    expect(item.imageUrl).toBe('https://example.com/capa.png');
+  });
+
   it('usa valores padrão quando campos são nulos', () => {
     const item = mapLibraryRow({ ...baseRow, author_name: null, action_url: null, downloadable: null, tags: null });
     expect(item.author).toBe('Equipe Elos');

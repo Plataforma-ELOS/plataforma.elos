@@ -1,8 +1,9 @@
 // src/app/acervo-digital/client-page.tsx
 "use client";
 
-import { useState, useEffect, useContext, Suspense } from 'react';
+import { useState, useEffect, useContext, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,9 @@ import type { LibraryItemData } from '@/lib/data/library';
 import { AuthContext } from '@/components/common/providers';
 import { alternarFavorito, buscarItensAcervo, sugerirItemAcervo } from '@/app/actions/library';
 import { useToast } from '@/hooks/use-toast';
+import { createClient } from '@/lib/supabase/client';
+
+const TAMANHO_MAXIMO_IMAGEM = 2 * 1024 * 1024;
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -50,7 +54,25 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
   const [type, setType] = useState<'video' | 'document' | 'game' | 'other' | ''>('');
   const [tags, setTags] = useState('');
   const [link, setLink] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [enviando, setEnviando] = useState(false);
+
+  const previewImage = useMemo(() => (imageFile ? URL.createObjectURL(imageFile) : null), [imageFile]);
+  useEffect(() => {
+    return () => {
+      if (previewImage) URL.revokeObjectURL(previewImage);
+    };
+  }, [previewImage]);
+
+  const handleImageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const arquivo = e.target.files?.[0];
+    if (!arquivo) return;
+    if (arquivo.size > TAMANHO_MAXIMO_IMAGEM) {
+      toast({ variant: 'destructive', title: 'Imagem muito grande', description: 'Escolha uma imagem de até 2MB.' });
+      return;
+    }
+    setImageFile(arquivo);
+  };
 
   const handleOpenChange = (novoEstado: boolean) => {
     if (novoEstado && !user) {
@@ -62,9 +84,24 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!type) return;
+    if (!type || !user) return;
     setEnviando(true);
-    const { ok, erro } = await sugerirItemAcervo(title, author, type, tags, link);
+
+    let imageUrl: string | undefined;
+    if (imageFile) {
+      const supabase = createClient();
+      const extensao = imageFile.name.split('.').pop();
+      const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
+      const { error: erroUpload } = await supabase.storage.from('library').upload(caminho, imageFile);
+      if (erroUpload) {
+        setEnviando(false);
+        toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+        return;
+      }
+      imageUrl = supabase.storage.from('library').getPublicUrl(caminho).data.publicUrl;
+    }
+
+    const { ok, erro } = await sugerirItemAcervo(title, author, type, tags, link, imageUrl);
     setEnviando(false);
 
     if (!ok) {
@@ -77,6 +114,7 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
     setType('');
     setTags('');
     setLink('');
+    setImageFile(null);
     setOpen(false);
     setShowSuccess(true);
   };
@@ -135,6 +173,20 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
                   Link
                 </Label>
                 <Input id="link" type="url" required placeholder="https://..." className="col-span-3" value={link} onChange={(e) => setLink(e.target.value)} />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="acervo-image-file" className="text-right">
+                  Imagem
+                </Label>
+                <div className="col-span-3 flex items-center gap-3">
+                  {previewImage && (
+                    <Image src={previewImage} alt="Prévia da imagem" width={40} height={40} className="h-10 w-10 rounded object-cover" unoptimized />
+                  )}
+                  <Label htmlFor="acervo-image-file" className="text-sm text-primary-strong cursor-pointer hover:underline">
+                    {imageFile ? 'Trocar imagem (opcional)' : 'Escolher imagem (opcional)'}
+                  </Label>
+                  <Input id="acervo-image-file" type="file" accept="image/png,image/jpeg,image/webp" className="hidden" onChange={handleImageSelected} />
+                </div>
               </div>
             </div>
             <DialogFooter>
