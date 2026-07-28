@@ -47,7 +47,7 @@ export type ReviewSummary = {
   criteria: { name: string; score: number }[];
 };
 
-type ProfessionalRow = {
+export type ProfessionalRow = {
   id: string;
   display_name: string;
   specialty: string | null;
@@ -60,7 +60,7 @@ type ProfessionalRow = {
   verification_status?: string | null;
 };
 
-type ClinicRow = {
+export type ClinicRow = {
   id: string;
   name: string;
   specialty: string | null;

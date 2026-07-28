@@ -38,6 +38,11 @@ está com o schema completo e testado:
     busca full-text (`tsvector`) no Acervo Digital.
   - `add_posts_image_url_and_buckets`: `posts.image_url` + buckets
     `library`/`posts` (upload de imagem no acervo e em criar post).
+  - `canonicalize_professionals_specialty`: ajusta os 5 valores de
+    `specialty` das linhas demo de `professionals` para a lista canônica de
+    `src/lib/data/specialties.ts` (causa raiz de `/profissionais` — o
+    cadastro real nunca gravava `specialty`, só o seed tinha; ver `E2`/`E8`
+    em `docs/project/plano-finalizacao-completa.md`).
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

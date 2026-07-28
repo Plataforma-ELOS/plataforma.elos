@@ -24,14 +24,15 @@ import type { ProfessionalCardData } from '@/lib/data/professionals';
 import SearchBar from '@/components/features/search/search-bar';
 import { useSearch } from '@/hooks/use-search';
 import { cn } from '@/lib/utils';
+import { ESPECIALIDADES } from '@/lib/data/specialties';
 
 const specialties = [
-    { name: 'Psicólogos', tag: 'Psicóloga' },
-    { name: 'Fonoaudiólogos', tag: 'Fonoaudiólog' },
-    { name: 'Terapeutas Ocupacionais', tag: 'Terapeuta Ocupacional' },
-    { name: 'Neurologistas e Psiquiatras', tag: 'Neuro' },
-    { name: 'Psicopedagogos', tag: 'Psicopedagog' },
-    { name: 'Acompanhantes Terapêuticos', tag: 'Acompanhante Terapêutico' },
+    { name: 'Psicólogos', tag: ESPECIALIDADES[0] },
+    { name: 'Fonoaudiólogos', tag: ESPECIALIDADES[1] },
+    { name: 'Terapeutas Ocupacionais', tag: ESPECIALIDADES[2] },
+    { name: 'Neurologistas e Psiquiatras', tag: ESPECIALIDADES[3] },
+    { name: 'Psicopedagogos', tag: ESPECIALIDADES[4] },
+    { name: 'Acompanhantes Terapêuticos', tag: ESPECIALIDADES[5] },
 ]
 
 // Lista combinada (profissionais + clínicas) discriminada por tipo, para um
@@ -54,9 +55,10 @@ export default function ProfessionalsPageClient({
     [professionaisIniciais, clinicasIniciais]
   );
 
-  const { query, setQuery, results } = useSearch<SearchableCard>({
+  const { query, setQuery, filter, setFilter, results } = useSearch<SearchableCard>({
     items: allCards,
     searchableText: searchProfessionalText,
+    matchesFilter: (item, filterValue) => filterValue === 'all' || item.specialty === filterValue,
   });
 
   const professionalResults = results.filter((r) => r.kind === 'professional');
@@ -65,7 +67,7 @@ export default function ProfessionalsPageClient({
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const handleSpecialtyClick = (tag: string) => {
-    setQuery(query === tag ? '' : tag);
+    setFilter(filter === tag ? 'all' : tag);
     resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
@@ -89,7 +91,7 @@ export default function ProfessionalsPageClient({
                 <SearchBar
                     value={query}
                     onChange={setQuery}
-                    placeholder="Buscar por especialidade ou nome..."
+                    placeholder="Buscar por nome..."
                 />
             </div>
         </section>
@@ -133,7 +135,7 @@ export default function ProfessionalsPageClient({
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty) => {
-                        const active = query === specialty.tag;
+                        const active = filter === specialty.tag;
                         return (
                         <div key={specialty.name} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
                            <Card className={cn(

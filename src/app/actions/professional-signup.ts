@@ -11,6 +11,7 @@ type Inscricao = {
   registrationType: 'liberal' | 'clinic_professional' | 'clinic';
   cnpj: string;
   registrationNumber: string;
+  specialty: string;
   experience: string;
   imageUrl?: string;
 };
@@ -23,6 +24,9 @@ export async function inscreverProfissional(dados: Inscricao): Promise<Resultado
   const fullName = dados.fullName.trim();
   if (!fullName) return { ok: false, erro: 'Informe seu nome ou o nome da clínica.' };
 
+  const specialty = dados.specialty.trim();
+  if (!specialty) return { ok: false, erro: 'Informe a especialidade.' };
+
   if (dados.registrationType === 'clinic') {
     if (!dados.cnpj.trim()) return { ok: false, erro: 'Informe o CNPJ da clínica.' };
 
@@ -30,6 +34,7 @@ export async function inscreverProfissional(dados: Inscricao): Promise<Resultado
       owner_id: user.id,
       name: fullName,
       cnpj: dados.cnpj.trim(),
+      specialty,
       description: dados.experience.trim(),
       email: dados.email.trim(),
       image_url: dados.imageUrl ?? null,
@@ -47,6 +52,7 @@ export async function inscreverProfissional(dados: Inscricao): Promise<Resultado
     kind: dados.registrationType,
     display_name: fullName,
     registration_number: dados.registrationNumber,
+    specialty,
     description: dados.experience.trim(),
     email: dados.email.trim(),
     image_url: dados.imageUrl ?? null,
