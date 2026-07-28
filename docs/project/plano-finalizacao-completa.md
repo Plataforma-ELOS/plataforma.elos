@@ -107,13 +107,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q5 | ✅ ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
 | Q6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados fora de escopo | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
-| E2 | 🟡 Paginação (feed de posts feito; profissionais fora de escopo) | Código | P3 | Média | meio dia | — |
+| E2 | ✅ Paginação (feed de posts + profissionais/clínicas) | Código | P3 | Média | meio dia | — |
 | E3 | ✅ Supabase Storage (avatar, foto profissional/clínica, acervo, create-post) | Código/Infra | P3 | Alta | 1–2 dias | — |
 | E4 | ✅ Rate limiting nos inserts públicos | Supabase/Infra | P3 | Média | meio dia | — |
 | E5 | ✅ Workflow de verificação de profissionais | Código | P3 | Alta | 1–2 dias | E6 |
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
 | E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
-| E8 | 🟡 Busca server-side (full-text) — Acervo Digital feito; profissionais fora de escopo | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
+| E8 | ✅ Busca server-side (full-text) — Acervo Digital e profissionais/clínicas | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
 
 ---
 
