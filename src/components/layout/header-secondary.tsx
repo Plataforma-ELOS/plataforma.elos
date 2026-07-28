@@ -8,7 +8,6 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Bell, UserCircle, Bookmark, Settings, Sun, LogOut, HelpCircle, User, Moon, CaseLower, CaseUpper, CaseSensitive, Edit } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { usePathname } from 'next/navigation';
-import FeatureInProgress from '@/components/common/feature-in-progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '../ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 import { AuthContext, FontSizeContext } from '@/components/common/providers';
@@ -39,12 +38,12 @@ function NotificationBell() {
 
 
 const navItems = [
-  { name: 'Notícias', href: '/noticias', isFeature: false },
-  { name: 'Acervo Digital', href: '/acervo-digital', isFeature: false },
-  { name: 'Comunidade', href: '/comunidade', isFeature: false },
-  { name: 'Suporte IA', href: '/suporte-ia', isFeature: false },
-  { name: 'Perfis Profissionais', href: '/profissionais', isFeature: false },
-  { name: 'Fale Conosco', href: '/fale-conosco', isFeature: false },
+  { name: 'Notícias', href: '/noticias' },
+  { name: 'Acervo Digital', href: '/acervo-digital' },
+  { name: 'Comunidade', href: '/comunidade' },
+  { name: 'Suporte IA', href: '/suporte-ia' },
+  { name: 'Perfis Profissionais', href: '/profissionais' },
+  { name: 'Fale Conosco', href: '/fale-conosco' },
 ];
 
 function UserProfileDropdown() {
@@ -239,33 +238,6 @@ export default function HeaderSecondary() {
 
   const renderNavItem = (item: typeof navItems[0]) => {
     const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
-    if (item.isFeature) {
-      return (
-        <FeatureInProgress key={item.name}>
-          <span className={`${classNames} cursor-pointer`}>
-            {item.name}
-          </span>
-        </FeatureInProgress>
-      );
-    }
-    return (
-      <Link href={item.href} key={item.name} className={classNames}>
-        {item.name}
-      </Link>
-    );
-  };
-  
-  const renderMobileNavItem = (item: typeof navItems[0]) => {
-    const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
-    if (item.isFeature) {
-      return (
-        <FeatureInProgress key={item.name}>
-          <span className={`${classNames} cursor-pointer`}>
-            {item.name}
-          </span>
-        </FeatureInProgress>
-      );
-    }
     return (
       <Link href={item.href} key={item.name} className={classNames}>
         {item.name}
@@ -312,7 +284,7 @@ export default function HeaderSecondary() {
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => renderMobileNavItem(item))}
+                  {navItems.map((item) => renderNavItem(item))}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
                     <NotificationBell />
