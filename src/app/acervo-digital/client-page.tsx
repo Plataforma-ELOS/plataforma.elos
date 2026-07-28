@@ -36,7 +36,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import type { LibraryItemData } from '@/lib/data/library';
 import { AuthContext } from '@/components/common/providers';
-import { alternarFavorito, sugerirItemAcervo } from '@/app/actions/library';
+import { alternarFavorito, buscarItensAcervo, sugerirItemAcervo } from '@/app/actions/library';
 import { useToast } from '@/hooks/use-toast';
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
@@ -190,16 +190,45 @@ function DigitalLibraryContent({ itensIniciais }: { itensIniciais: LibraryItemDa
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [libraryItems, setLibraryItems] = useState<LibraryItemData[]>(itensIniciais);
 
+  // Busca de texto virou full-text server-side (E8) — desacoplada do
+  // useSearch, que continua só com filtro de tipo + ordenação por data.
+  const [query, setQuery] = useState('');
+  const [searchMatchIds, setSearchMatchIds] = useState<Set<string> | null>(null);
+
+  useEffect(() => {
+    const texto = query.trim();
+    if (texto.length < 2) {
+      setSearchMatchIds(null);
+      return;
+    }
+    let cancelado = false;
+    const timer = setTimeout(async () => {
+      const resultados = await buscarItensAcervo(texto);
+      if (cancelado) return;
+      setLibraryItems((atual) => {
+        const porId = new Map(atual.map((it) => [it.id, it]));
+        resultados.forEach((r) => porId.set(r.id, r));
+        return Array.from(porId.values());
+      });
+      setSearchMatchIds(new Set(resultados.map((r) => r.id)));
+    }, 300);
+    return () => {
+      cancelado = true;
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  const itemsParaFiltrar =
+    searchMatchIds === null ? libraryItems : libraryItems.filter((item) => searchMatchIds.has(item.id));
+
   const {
-    query,
-    setQuery,
     filter: filterType,
     setFilter: setFilterType,
     sortOrder,
     toggleSort,
     results: filteredItems,
   } = useSearch<LibraryItemData>({
-    items: libraryItems,
+    items: itemsParaFiltrar,
     searchableText: searchLibraryText,
     matchesFilter: matchesLibraryType,
     sortBy: libraryDate,
