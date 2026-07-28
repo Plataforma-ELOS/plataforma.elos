@@ -6,6 +6,7 @@ const baseRow: PostRow = {
   content: 'Olá, comunidade!',
   created_at: new Date().toISOString(),
   author_id: 'user-1',
+  image_url: null,
   author: { full_name: 'Ana', avatar_url: null },
   post_likes: [{ profile_id: 'user-2' }],
   post_saves: [{ profile_id: 'user-1' }],
@@ -45,5 +46,13 @@ describe('mapPostRow', () => {
     expect(post.isSaved).toBe(false);
     expect(post.likedByMe).toBe(false);
     expect(post.author.email).toBe('__user-1');
+  });
+
+  it('popula imageUrl quando presente e deixa undefined quando null', () => {
+    const semImagem = mapPostRow(baseRow, null);
+    expect(semImagem.imageUrl).toBeUndefined();
+
+    const comImagem = mapPostRow({ ...baseRow, image_url: 'https://example.com/post.png' }, null);
+    expect(comImagem.imageUrl).toBe('https://example.com/post.png');
   });
 });

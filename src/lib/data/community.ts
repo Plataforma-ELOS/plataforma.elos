@@ -11,6 +11,7 @@ export type PostRow = {
   content: string;
   created_at: string;
   author_id: string;
+  image_url: string | null;
   author: { full_name: string | null; avatar_url: string | null } | null;
   post_likes: { profile_id: string }[] | null;
   post_saves: { profile_id: string }[] | null;
@@ -61,6 +62,7 @@ export function mapPostRow(p: PostRow, usuarioAtual: { id: string; email?: strin
     },
     time: tempoRelativo(p.created_at),
     content: p.content,
+    imageUrl: p.image_url ?? undefined,
     likes: likes.length,
     commentCount: comentarios.length,
     isSaved: !!usuarioAtual && saves.some((s) => s.profile_id === usuarioAtual.id),
