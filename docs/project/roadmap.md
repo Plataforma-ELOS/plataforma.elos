@@ -84,7 +84,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | # | Ação | Esforço | Racional |
 |---|---|---|---|
 | 3.1 | ✅ Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`, `explorar-grupos`, `meus-grupos`, `fale-conosco`) | 🟠 | Todas as 6 telas migradas |
-| 3.2 | 🟡 Paginação — feed de posts feito (`.range()` + "carregar mais"); profissionais fora de escopo. Causa raiz que travava reabrir esse escopo (cadastro nunca gravava `specialty`) corrigida em 2026-07-28 (ver `E8`/`plano-finalizacao-completa.md`); paginação em si ainda pendente | 🟡 | Escala de dados |
+| 3.2 | ✅ Paginação — feed de posts e profissionais/clínicas (`.range()` + "carregar mais") | 🟡 | Escala de dados |
 | 3.3 | ✅ Supabase Storage para imagens — avatar, foto profissional/clínica, acervo, create-post | 🟠 | Edição de foto pós-cadastro (profissional) fica de fora |
 | F7 | ✅ Ligar "Adicionar ao Acervo" a um insert real, com upload de imagem | 🟢 | — |
 | 3.4 | ✅ Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Trigger no banco, não só na Server Action |
@@ -97,7 +97,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - ✅ Painel administrativo (`/admin` — verificação de profissionais/clínicas + aprovação do acervo).
 - ✅ Notificações (curtidas, comentários).
 - Trilhas de conhecimento interativas (`trail_progress` existe; falta conteúdo/quiz).
-- Busca server-side com full-text (a atual é client-side sobre dados carregados).
+- ✅ Busca server-side com full-text (Acervo Digital e `/profissionais`, `tsvector`+GIN).
 
 ---
 

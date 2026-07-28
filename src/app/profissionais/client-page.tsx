@@ -9,7 +9,6 @@ import { ShieldCheck, Star, Users, BadgeCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import FeatureInProgress from '@/components/common/feature-in-progress';
 import { Badge } from '@/components/ui/badge';
 import {
   Carousel,
@@ -19,12 +18,12 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { useMemo, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ProfessionalCardData } from '@/lib/data/professionals';
 import SearchBar from '@/components/features/search/search-bar';
-import { useSearch } from '@/hooks/use-search';
 import { cn } from '@/lib/utils';
 import { ESPECIALIDADES } from '@/lib/data/specialties';
+import { buscarMaisProfissionais, buscarMaisClinicas, filtrarProfissionais } from '@/app/actions/professionals';
 
 const specialties = [
     { name: 'Psicólogos', tag: ESPECIALIDADES[0] },
@@ -35,40 +34,82 @@ const specialties = [
     { name: 'Acompanhantes Terapêuticos', tag: ESPECIALIDADES[5] },
 ]
 
-// Lista combinada (profissionais + clínicas) discriminada por tipo, para um
-// único useSearch com estado de busca compartilhado entre as duas seções.
-type SearchableCard = ProfessionalCardData & { kind: 'professional' | 'clinic' };
-const searchProfessionalText = (item: SearchableCard) => [item.name, item.specialty];
+function useDebouncedValue<T>(value: T, delayMs: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const handle = setTimeout(() => setDebounced(value), delayMs);
+    return () => clearTimeout(handle);
+  }, [value, delayMs]);
+  return debounced;
+}
 
 export default function ProfessionalsPageClient({
   professionaisIniciais,
   clinicasIniciais,
+  hasMoreProfissionaisInicial,
+  hasMoreClinicasInicial,
 }: {
   professionaisIniciais: ProfessionalCardData[];
   clinicasIniciais: ProfessionalCardData[];
+  hasMoreProfissionaisInicial: boolean;
+  hasMoreClinicasInicial: boolean;
 }) {
-  const allCards = useMemo<SearchableCard[]>(
-    () => [
-      ...professionaisIniciais.map((p) => ({ ...p, kind: 'professional' as const })),
-      ...clinicasIniciais.map((c) => ({ ...c, kind: 'clinic' as const })),
-    ],
-    [professionaisIniciais, clinicasIniciais]
-  );
+  const [query, setQuery] = useState('');
+  const [activeSpecialty, setActiveSpecialty] = useState<string | null>(null);
+  const debouncedQuery = useDebouncedValue(query, 300);
 
-  const { query, setQuery, filter, setFilter, results } = useSearch<SearchableCard>({
-    items: allCards,
-    searchableText: searchProfessionalText,
-    matchesFilter: (item, filterValue) => filterValue === 'all' || item.specialty === filterValue,
-  });
+  const [professionaisBase, setProfessionaisBase] = useState(professionaisIniciais);
+  const [clinicasBase, setClinicasBase] = useState(clinicasIniciais);
+  const [hasMoreProfissionais, setHasMoreProfissionais] = useState(hasMoreProfissionaisInicial);
+  const [hasMoreClinicas, setHasMoreClinicas] = useState(hasMoreClinicasInicial);
+  const [carregandoProfissionais, setCarregandoProfissionais] = useState(false);
+  const [carregandoClinicas, setCarregandoClinicas] = useState(false);
 
-  const professionalResults = results.filter((r) => r.kind === 'professional');
-  const clinicResults = results.filter((r) => r.kind === 'clinic');
+  const [filteredResult, setFilteredResult] = useState<{
+    professionais: ProfessionalCardData[];
+    clinicas: ProfessionalCardData[];
+  } | null>(null);
+
+  useEffect(() => {
+    const texto = debouncedQuery.trim();
+    if (!activeSpecialty && texto.length < 2) {
+      setFilteredResult(null);
+      return;
+    }
+    let cancelado = false;
+    filtrarProfissionais(activeSpecialty ?? undefined, texto || undefined).then((resultado) => {
+      if (!cancelado) setFilteredResult(resultado);
+    });
+    return () => {
+      cancelado = true;
+    };
+  }, [debouncedQuery, activeSpecialty]);
+
+  const filtroAtivo = filteredResult !== null;
+  const professionalResults = filteredResult ? filteredResult.professionais : professionaisBase;
+  const clinicResults = filteredResult ? filteredResult.clinicas : clinicasBase;
 
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const handleSpecialtyClick = (tag: string) => {
-    setFilter(filter === tag ? 'all' : tag);
+    setActiveSpecialty((atual) => (atual === tag ? null : tag));
     resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleLoadMoreProfissionais = async () => {
+    setCarregandoProfissionais(true);
+    const { professionais: mais, hasMore } = await buscarMaisProfissionais(professionaisBase.length);
+    setProfessionaisBase((atual) => [...atual, ...mais]);
+    setHasMoreProfissionais(hasMore);
+    setCarregandoProfissionais(false);
+  };
+
+  const handleLoadMoreClinicas = async () => {
+    setCarregandoClinicas(true);
+    const { clinicas: mais, hasMore } = await buscarMaisClinicas(clinicasBase.length);
+    setClinicasBase((atual) => [...atual, ...mais]);
+    setHasMoreClinicas(hasMore);
+    setCarregandoClinicas(false);
   };
 
   return (
@@ -135,7 +176,7 @@ export default function ProfessionalsPageClient({
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 max-w-7xl mx-auto">
                     {specialties.map((specialty) => {
-                        const active = filter === specialty.tag;
+                        const active = activeSpecialty === specialty.tag;
                         return (
                         <div key={specialty.name} className="group cursor-pointer" onClick={() => handleSpecialtyClick(specialty.tag)}>
                            <Card className={cn(
@@ -152,11 +193,6 @@ export default function ProfessionalsPageClient({
                         </div>
                         );
                     })}
-                </div>
-                <div className="text-center mt-12">
-                    <FeatureInProgress>
-                        <Button variant="outline" size="lg">Não encontrou o que procurava? Veja mais!</Button>
-                    </FeatureInProgress>
                 </div>
             </div>
         </section>
@@ -217,6 +253,13 @@ export default function ProfessionalsPageClient({
                   <CarouselNext className="absolute right-[-1rem] top-1/2 -translate-y-1/2 z-20 bg-background/50 border-none text-foreground hover:bg-background/80 hover:text-foreground" />
                 </Carousel>
                 )}
+                {!filtroAtivo && hasMoreProfissionais && (
+                  <div className="text-center mt-12">
+                      <Button variant="outline" size="lg" onClick={handleLoadMoreProfissionais} disabled={carregandoProfissionais}>
+                        {carregandoProfissionais ? 'Carregando...' : 'Ver mais profissionais'}
+                      </Button>
+                  </div>
+                )}
             </div>
         </section>
 
@@ -264,11 +307,13 @@ export default function ProfessionalsPageClient({
                     ))}
                 </div>
                  )}
-                <div className="text-center mt-12">
-                    <FeatureInProgress>
-                        <Button size="lg">Explorar mais clínicas</Button>
-                    </FeatureInProgress>
-                </div>
+                {!filtroAtivo && hasMoreClinicas && (
+                  <div className="text-center mt-12">
+                      <Button size="lg" onClick={handleLoadMoreClinicas} disabled={carregandoClinicas}>
+                        {carregandoClinicas ? 'Carregando...' : 'Explorar mais clínicas'}
+                      </Button>
+                  </div>
+                )}
             </div>
         </section>
       </main>
