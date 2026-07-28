@@ -85,7 +85,8 @@ Reduzir risco de regressão e melhorar confiabilidade.
 |---|---|---|---|
 | 3.1 | ✅ Migrar fetch client-side → Server Components (`comunidade`, `profissionais`, `acervo`, `explorar-grupos`, `meus-grupos`, `fale-conosco`) | 🟠 | Todas as 6 telas migradas |
 | 3.2 | Paginação de posts e profissionais (`useSearch` já preparado p/ `SearchPagination`) | 🟡 | Escala de dados |
-| 3.3 | 🟡 Supabase Storage para imagens — avatar e foto profissional/clínica | 🟠 | Upload no acervo (F7) e edição de foto pós-cadastro ficam de fora |
+| 3.3 | 🟡 Supabase Storage para imagens — avatar e foto profissional/clínica | 🟠 | Upload de imagem no acervo e edição de foto pós-cadastro ficam de fora |
+| F7 | ✅ Ligar "Adicionar ao Acervo" a um insert real | 🟢 | Upload de imagem do material fica de fora (mesma nota de `3.3`) |
 | 3.4 | ✅ Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Trigger no banco, não só na Server Action |
 | 3.5 | Consolidar queries inline nas páginas para `lib/data` | 🟡 | Manutenibilidade |
 

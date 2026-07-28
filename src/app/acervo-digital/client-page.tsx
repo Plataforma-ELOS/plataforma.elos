@@ -36,22 +36,54 @@ import {
 } from '@/components/ui/alert-dialog';
 import type { LibraryItemData } from '@/lib/data/library';
 import { AuthContext } from '@/components/common/providers';
-import { alternarFavorito } from '@/app/actions/library';
+import { alternarFavorito, sugerirItemAcervo } from '@/app/actions/library';
+import { useToast } from '@/hooks/use-toast';
 
 function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [type, setType] = useState<'video' | 'document' | 'game' | 'other' | ''>('');
+  const [tags, setTags] = useState('');
+  const [link, setLink] = useState('');
+  const [enviando, setEnviando] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOpenChange = (novoEstado: boolean) => {
+    if (novoEstado && !user) {
+      router.push('/login');
+      return;
+    }
+    setOpen(novoEstado);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate form submission
+    if (!type) return;
+    setEnviando(true);
+    const { ok, erro } = await sugerirItemAcervo(title, author, type, tags, link);
+    setEnviando(false);
+
+    if (!ok) {
+      toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
+      return;
+    }
+
+    setTitle('');
+    setAuthor('');
+    setType('');
+    setTags('');
+    setLink('');
     setOpen(false);
     setShowSuccess(true);
   };
 
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
@@ -68,19 +100,19 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
                 <Label htmlFor="title" className="text-right">
                   Título
                 </Label>
-                <Input id="title" required className="col-span-3" />
+                <Input id="title" required className="col-span-3" value={title} onChange={(e) => setTitle(e.target.value)} />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="author" className="text-right">
                   Autor
                 </Label>
-                <Input id="author" required className="col-span-3" />
+                <Input id="author" required className="col-span-3" value={author} onChange={(e) => setAuthor(e.target.value)} />
               </div>
                <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="type" className="text-right">
                   Tipo
                 </Label>
-                 <Select required>
+                 <Select required value={type} onValueChange={(v) => setType(v as typeof type)}>
                     <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Selecione o tipo de material" />
                     </SelectTrigger>
@@ -96,20 +128,20 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
                 <Label htmlFor="tags" className="text-right">
                   Tags
                 </Label>
-                <Input id="tags" placeholder="Separe por vírgulas" className="col-span-3" />
+                <Input id="tags" placeholder="Separe por vírgulas" className="col-span-3" value={tags} onChange={(e) => setTags(e.target.value)} />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="link" className="text-right">
                   Link
                 </Label>
-                <Input id="link" type="url" required placeholder="https://..." className="col-span-3" />
+                <Input id="link" type="url" required placeholder="https://..." className="col-span-3" value={link} onChange={(e) => setLink(e.target.value)} />
               </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>
                   <Button type="button" variant="secondary">Cancelar</Button>
               </DialogClose>
-              <Button type="submit">Enviar para análise</Button>
+              <Button type="submit" disabled={enviando}>{enviando ? 'Enviando...' : 'Enviar para análise'}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

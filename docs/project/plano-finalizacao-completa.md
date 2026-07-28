@@ -37,7 +37,7 @@ qualidade/escala** (tipos gerados, mais testes, imagens em Storage).
 | Grupos (explorar/meus/criar) | 100% | Completo |
 | Notícias + Notícias IA | 90% | Precisa `GEMINI_API_KEY` p/ resumo IA (G3) |
 | Notícias gamificadas | 85% | Trilhas exibem progresso; sem conteúdo/quiz (E-extra) |
-| Acervo digital (+ **favoritar**) | 95% | Upload de material ainda é stub (F7/E3) |
+| Acervo digital (+ **favoritar** e **sugerir item**) | 98% | Upload de imagem do material ainda é stub (E3) |
 | Profissionais (listagem/busca/detalhe/reviews) | 95% | "Agendar consulta" e "compartilhar" em stub (F3/F4) |
 | Fale conosco | 85% | Grava no banco; e-mail depende de `EMAILJS_*` (G3) |
 | Cadastro profissional | 100% | Completo |
@@ -285,7 +285,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 #### ✅ Critério de aceite
 - [ ] Nenhum link de nav leva a "em breve" sem motivo; navegação coerente.
 
-- **Progresso parcial em 2026-07-27 (efeito colateral de `U2`–`U5`):** os 4 itens do dropdown do usuário logado ("Editar Perfil", "Itens Salvos", "Configurações", "Ajuda") em `header.tsx` **e** `header-secondary.tsx` (duplicados) trocaram `FeatureInProgress` por `Link` real para `/perfil`, `/salvos`, `/configuracoes` e `/faq`. Ainda restam: 1 `FeatureInProgress` em `footer.tsx` e os stubs cobertos por outros itens do backlog (F3 compartilhar, F7 upload).
+- **Progresso parcial em 2026-07-27 (efeito colateral de `U2`–`U5`):** os 4 itens do dropdown do usuário logado ("Editar Perfil", "Itens Salvos", "Configurações", "Ajuda") em `header.tsx` **e** `header-secondary.tsx` (duplicados) trocaram `FeatureInProgress` por `Link` real para `/perfil`, `/salvos`, `/configuracoes` e `/faq`. Ainda restam: 1 `FeatureInProgress` em `footer.tsx` e os stubs cobertos por outros itens do backlog (F3 compartilhar — já feito; F7 — já feito).
 
 ---
 
@@ -559,9 +559,9 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [E3] 🟡 Supabase Storage para imagens (avatar + foto de profissional/clínica implementados; upload no acervo fora de escopo)
+### [E3] 🟡 Supabase Storage para imagens (avatar + foto de profissional/clínica implementados; upload de imagem no acervo/create-post fora de escopo)
 - **Categoria:** Código/Infra · **Prio:** P3 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** —
-- **Relevância:** Hoje tudo é `placehold.co`. Produto real precisa de upload (avatar, capa de material). O upload no `create-post`/acervo é stub (F7).
+- **Relevância:** Hoje tudo é `placehold.co`. Produto real precisa de upload (avatar, capa de material). O upload de imagem no `create-post`/acervo continua fora de escopo.
 
 #### 🎯 Passo a passo
 1. Criar bucket(s) no Storage com policies; adicionar `*.supabase.co` em `next.config.ts` `images.remotePatterns`.
@@ -569,14 +569,23 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 #### ✅ Critério de aceite
 - [x] Upload funciona; imagens próprias renderizam via `next/image`.
-- [ ] Upload no `create-post`/acervo (`F7`) — fora de escopo, ver nota.
+- [ ] Upload de imagem no `create-post`/acervo — fora de escopo, ver nota.
 
 - **Implementado em 2026-07-27:** dois buckets criados via migration (`add_storage_buckets_avatars_professionals`) — `avatars` e `professionals`, ambos `public=true`, limite de 2MB, só `image/png|jpeg|webp`. Path prefixado pelo `auth.uid()` do dono (`{uid}/arquivo.ext`) — padrão recomendado pelo Supabase, RLS de Storage não precisa consultar outras tabelas: `insert`/`update`/`delete` só quando o primeiro segmento do path bate com `auth.uid()`. **Sem policy de `select`** — bucket público já serve os objetos via URL pública no nível do serviço de Storage; uma policy ampla de `select` só permitiria *listar* todos os arquivos via API, exposição desnecessária (migration de correção `drop_broad_select_policies_public_buckets`, depois que o Security Advisor acusou `public_bucket_allows_listing`). `next.config.ts`: hostname do projeto Supabase adicionado a `images.remotePatterns` (só o path `/storage/v1/object/public/**`).
   - **Avatar (`/perfil`)**: `perfil/page.tsx` passa `userId`; `perfil/client-page.tsx` ganhou input de arquivo no dialog de edição (preview com `URL.createObjectURL`, revogado no cleanup); `atualizarPerfil` (`src/app/actions/profile.ts`) ganhou parâmetro opcional `avatarUrl`.
   - **Foto de profissional/clínica (`/cadastro-profissional`)**: único ponto de escrita em `professionals`/`clinics` hoje; upload opcional no próprio formulário de inscrição (`useContext(AuthContext)` para o `user.id`); `inscreverProfissional` (`src/app/actions/professional-signup.ts`) ganhou `imageUrl?: string`, gravado em `image_url` nos dois inserts.
-  - **Fora de escopo**: não existe tela de "editar minha ficha profissional depois de cadastrada" (só o cadastro inicial) — trocar a foto depois exigiria essa tela nova. Upload de imagem no `create-post`/sugestão de item do acervo (`F7`) também fica fora — o formulário "Adicionar ao Acervo" continua sendo um stub de UI, sem insert real.
+  - **Fora de escopo**: não existe tela de "editar minha ficha profissional depois de cadastrada" (só o cadastro inicial) — trocar a foto depois exigiria essa tela nova. Upload de imagem no `create-post`/sugestão de item do acervo continua fora (nenhum dos dois formulários coleta arquivo) — o *insert* de texto do "Adicionar ao Acervo" foi resolvido à parte, ver `F7` abaixo.
 
 ---
+
+### [F7] ✅ Ligar "Adicionar ao Acervo" a um insert real (upload de imagem fora de escopo)
+- **Categoria:** Código · **Prio:** P2 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** —
+- **Relevância:** o formulário "Adicionar ao Acervo" (`AddToLibraryDialog` em `acervo-digital/client-page.tsx`) era 100% stub — `handleSubmit` só fechava o dialog e mostrava o `AlertDialog` de sucesso fixo, sem gravar nada no banco. Era o único fluxo visível ao usuário que fingia funcionar sem funcionar de verdade. A policy `library_suggest` (insert por qualquer autenticado, `suggested_by = auth.uid()`) já existia desde a migration inicial e nunca tinha sido usada.
+- **Implementado em 2026-07-28:** nova Server Action `sugerirItemAcervo(title, authorName, type, tagsTexto, actionUrl)` (`src/app/actions/library.ts`) — checa login, valida campos obrigatórios, separa tags por vírgula, insere em `library_items` com `suggested_by: user.id` (sem setar `approved`, já é `false` por default). `AddToLibraryDialog` ganhou estado controlado nos 5 campos e chama a action de verdade; gate de login reaproveitando o mesmo padrão já usado em `handleToggleFavorite` no mesmo arquivo (redireciona a `/login` se deslogado, em vez de abrir o dialog). Item sugerido passa a aparecer na aba "Acervo" de `/admin` (aprovar/rejeitar já existia desde o painel administrativo) e só entra em `/acervo-digital` depois de aprovado (RLS `library_read` já cobre isso).
+
+#### ✅ Critério de aceite
+- [x] Enviar o formulário grava de verdade em `library_items` (pendente de aprovação).
+- [ ] Upload de imagem do material — fora de escopo (mesma nota de `E3`).
 
 ### [E4] ✅ Rate limiting / anti-abuso nos inserts públicos
 - **Categoria:** Supabase/Infra · **Prio:** P3 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
