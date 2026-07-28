@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/common/providers';
-import { alternarCurtida, alternarSalvo, comentar, criarPost, editarPost, excluirPost } from '@/app/actions/community';
+import { alternarCurtida, alternarSalvo, buscarMaisPosts, comentar, criarPost, editarPost, excluirPost } from '@/app/actions/community';
 import { criarEvento } from '@/app/actions/events';
 import type { EventData } from '@/lib/data/events';
 import { gerarIcs, baixarIcs } from '@/lib/ics';
@@ -161,20 +161,25 @@ function CreateEventDialog({ onCreated }: { onCreated: () => void }) {
 export default function CommunityPageClient({
   postsIniciais,
   eventosIniciais,
+  hasMoreIniciais,
 }: {
   postsIniciais: Post[];
   eventosIniciais: EventData[];
+  hasMoreIniciais: boolean;
 }) {
   const [posts, setPosts] = useState<Post[]>(postsIniciais);
   const [events, setEvents] = useState<EventData[]>(eventosIniciais);
   const [showAllEvents, setShowAllEvents] = useState(false);
   const [eventoSelecionado, setEventoSelecionado] = useState<EventData | null>(null);
+  const [hasMore, setHasMore] = useState(hasMoreIniciais);
+  const [carregandoMais, setCarregandoMais] = useState(false);
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
     setPosts(postsIniciais);
-  }, [postsIniciais]);
+    setHasMore(hasMoreIniciais);
+  }, [postsIniciais, hasMoreIniciais]);
 
   useEffect(() => {
     setEvents(eventosIniciais);
@@ -224,6 +229,14 @@ export default function CommunityPageClient({
 
   const handleProtectedAction = () => {
     router.push('/login');
+  };
+
+  const handleLoadMore = async () => {
+    setCarregandoMais(true);
+    const { posts: maisPosts, hasMore: aindaTemMais } = await buscarMaisPosts(posts.length);
+    setPosts((atual) => [...atual, ...maisPosts]);
+    setHasMore(aindaTemMais);
+    setCarregandoMais(false);
   };
 
   const renderContent = () => {
@@ -281,6 +294,13 @@ export default function CommunityPageClient({
                 </LoginRequiredDialog>
               )}
               {renderContent()}
+              {hasMore && (
+                <div className="text-center">
+                  <Button variant="outline" onClick={handleLoadMore} disabled={carregandoMais}>
+                    {carregandoMais ? 'Carregando...' : 'Carregar mais posts'}
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Barra Lateral */}

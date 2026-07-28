@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
+import { mapPostRow, POSTS_POR_PAGINA, type PostRow } from '@/lib/data/community';
+import type { Post } from '@/components/features/community/post-card';
 
 export type Resultado = { ok: boolean; erro?: string };
 const PRECISA_LOGIN = 'Entre na sua conta para continuar.';
@@ -11,6 +13,36 @@ async function contexto() {
   const supabase = createClient(await cookies());
   const { data: { user } } = await supabase.auth.getUser();
   return { supabase, user };
+}
+
+export async function buscarMaisPosts(offset: number): Promise<{ posts: Post[]; hasMore: boolean }> {
+  const { supabase, user } = await contexto();
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select(`
+      id, content, created_at, author_id,
+      author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
+      post_likes ( profile_id ),
+      post_saves ( profile_id ),
+      comments (
+        id, content, created_at,
+        author:profiles!comments_author_id_fkey ( full_name, avatar_url )
+      )
+    `)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + POSTS_POR_PAGINA - 1);
+
+  if (error) {
+    console.error('[buscarMaisPosts] erro ao buscar posts:', error.message);
+    return { posts: [], hasMore: false };
+  }
+
+  const rows = (data ?? []) as unknown as PostRow[];
+  return {
+    posts: rows.map((p) => mapPostRow(p, user)),
+    hasMore: rows.length === POSTS_POR_PAGINA,
+  };
 }
 
 export async function criarPost(conteudo: string): Promise<Resultado> {
