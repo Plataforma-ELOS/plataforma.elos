@@ -2,17 +2,10 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import MyGroupsPageClient, { type UserGroup } from './client-page';
+import { mapGroupCard, type GroupRow } from '@/lib/data/groups';
+import MyGroupsPageClient from './client-page';
 
-type GroupMemberRow = {
-  group: {
-    id: string;
-    name: string;
-    description: string | null;
-    tags: string[] | null;
-    group_members: { count: number }[] | null;
-  } | null;
-};
+type GroupMemberRow = { group: GroupRow | null };
 
 export default async function MyGroupsPage() {
   const supabase = createClient(await cookies());
@@ -26,16 +19,10 @@ export default async function MyGroupsPage() {
 
   if (error) console.error('[meus-grupos] erro ao buscar grupos:', error.message);
 
-  const gruposIniciais: UserGroup[] = ((data ?? []) as unknown as GroupMemberRow[])
+  const gruposIniciais = ((data ?? []) as unknown as GroupMemberRow[])
     .map((row) => row.group)
-    .filter((g): g is NonNullable<GroupMemberRow['group']> => g !== null)
-    .map((g) => ({
-      id: g.id,
-      name: g.name,
-      description: g.description ?? '',
-      members: g.group_members?.[0]?.count ?? 0,
-      tags: g.tags ?? [],
-    }));
+    .filter((g): g is GroupRow => g !== null)
+    .map((g) => mapGroupCard(g, true));
 
   return <MyGroupsPageClient gruposIniciais={gruposIniciais} />;
 }

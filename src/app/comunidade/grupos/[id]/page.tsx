@@ -2,13 +2,8 @@
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { mapGroupMember, type GroupMemberRow } from '@/lib/data/groups';
 import GroupDetailClient from './client-page';
-
-export type GroupMember = {
-  profileId: string;
-  name: string;
-  avatarUrl: string;
-};
 
 export default async function GroupDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -30,16 +25,7 @@ export default async function GroupDetailPage({ params }: { params: Promise<{ id
     .eq('group_id', id)
     .order('joined_at', { ascending: true });
 
-  const rows = (memberRows ?? []) as unknown as {
-    profile_id: string;
-    profile: { full_name: string | null; avatar_url: string | null } | null;
-  }[];
-
-  const members: GroupMember[] = rows.map((r) => ({
-    profileId: r.profile_id,
-    name: r.profile?.full_name ?? 'Membro',
-    avatarUrl: r.profile?.avatar_url ?? 'https://placehold.co/40x40.png',
-  }));
+  const members = ((memberRows ?? []) as unknown as GroupMemberRow[]).map(mapGroupMember);
 
   const isMember = !!user && members.some((m) => m.profileId === user.id);
 
