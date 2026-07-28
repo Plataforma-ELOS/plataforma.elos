@@ -66,6 +66,7 @@ export type Database = {
           name: string
           owner_id: string | null
           phone: string | null
+          search_vector: unknown
           specialty: string | null
           updated_at: string
           verification_status: Database["public"]["Enums"]["verification_status"]
@@ -80,6 +81,7 @@ export type Database = {
           name: string
           owner_id?: string | null
           phone?: string | null
+          search_vector?: unknown
           specialty?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]
@@ -94,6 +96,7 @@ export type Database = {
           name?: string
           owner_id?: string | null
           phone?: string | null
+          search_vector?: unknown
           specialty?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]
@@ -725,6 +728,7 @@ export type Database = {
           rating_avg: number
           rating_count: number
           registration_number: string | null
+          search_vector: unknown
           specialty: string | null
           updated_at: string
           verification_status: Database["public"]["Enums"]["verification_status"]
@@ -745,6 +749,7 @@ export type Database = {
           rating_avg?: number
           rating_count?: number
           registration_number?: string | null
+          search_vector?: unknown
           specialty?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]
@@ -765,6 +770,7 @@ export type Database = {
           rating_avg?: number
           rating_count?: number
           registration_number?: string | null
+          search_vector?: unknown
           specialty?: string | null
           updated_at?: string
           verification_status?: Database["public"]["Enums"]["verification_status"]

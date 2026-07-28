@@ -3,6 +3,9 @@
 // reaproveitados tanto pela listagem (Client Component, browser client)
 // quanto pelo detalhe (Server Component, server client).
 
+export const PROFISSIONAIS_POR_PAGINA = 10;
+export const CLINICAS_POR_PAGINA = 6;
+
 export type ProfessionalCardData = {
   id: string;
   name: string;

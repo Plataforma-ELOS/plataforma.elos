@@ -43,6 +43,10 @@ está com o schema completo e testado:
     `src/lib/data/specialties.ts` (causa raiz de `/profissionais` — o
     cadastro real nunca gravava `specialty`, só o seed tinha; ver `E2`/`E8`
     em `docs/project/plano-finalizacao-completa.md`).
+  - `add_professionals_clinics_search_vector`: `search_vector` (`tsvector`
+    gerado) + índice GIN em `professionals` e `clinics`, mesmo padrão de
+    `add_library_items_search_vector`, para paginação + busca full-text em
+    `/profissionais`.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
