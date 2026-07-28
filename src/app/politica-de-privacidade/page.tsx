@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
                     Empregamos medidas de segurança padrão do setor para proteger seus dados contra acesso não autorizado, alteração ou destruição. No entanto, nenhum método de transmissão pela Internet ou armazenamento eletrônico é 100% seguro.
                 </p>
 
-                <h2>4. Cookies</h2>
+                <h2 id="cookies">4. Cookies</h2>
                 <p>
                     Usamos cookies e tecnologias semelhantes para rastrear a atividade em nosso serviço e reter certas informações. Os cookies são arquivos com uma pequena quantidade de dados que podem incluir um identificador exclusivo anônimo.
                 </p>

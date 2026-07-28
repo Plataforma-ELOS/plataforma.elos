@@ -86,7 +86,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | F3 | Compartilhar (Web Share/copiar link) | Código | P1 | Baixa | 2 h | — |
 | F4 | ~~Agendar consulta (profissional)~~ **substituído por U12** | Código | — | — | — | ver U12 |
 | F5 | Área do cuidador (dependentes + diário) | Código | P1 | Muito Alta | 3+ dias | G5 |
-| F6 | Resolver stubs de nav (header/footer) | Código/UX | P1 | Baixa | 2 h | — |
+| F6 | ✅ Resolver stubs de nav (header/footer) | Código/UX | P1 | Baixa | 2 h | — |
 | U1 | Tela de boas-vindas ao entrar em grupo | Código | P1 | Média | 1 dia | precisa de `/comunidade/grupos/[id]` (não existe) |
 | U2 | ✅ Tela de perfil do usuário (`/perfil`) | Código | P1 | Média | meio dia | — |
 | U3 | ✅ Itens salvos (`/salvos`) unificando posts + acervo | Código | P1 | Média | meio dia | — |
@@ -274,7 +274,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F6] Resolver stubs de navegação (header/footer)
+### [F6] ✅ Resolver stubs de navegação (header/footer)
 - **Categoria:** Código/UX · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~2 h · **Dependências:** —
 - **Relevância:** `header.tsx`, `header-secondary.tsx` e `footer.tsx` têm vários itens de menu/links em `FeatureInProgress` ("em breve"). Decidir por item: ligar à rota existente **ou** ocultar até existir.
 
@@ -283,9 +283,10 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 2. Ligar os que têm destino; ocultar os sem destino.
 
 #### ✅ Critério de aceite
-- [ ] Nenhum link de nav leva a "em breve" sem motivo; navegação coerente.
+- [x] Nenhum link de nav leva a "em breve" sem motivo; navegação coerente.
 
 - **Progresso parcial em 2026-07-27 (efeito colateral de `U2`–`U5`):** os 4 itens do dropdown do usuário logado ("Editar Perfil", "Itens Salvos", "Configurações", "Ajuda") em `header.tsx` **e** `header-secondary.tsx` (duplicados) trocaram `FeatureInProgress` por `Link` real para `/perfil`, `/salvos`, `/configuracoes` e `/faq`. Ainda restam: 1 `FeatureInProgress` em `footer.tsx` e os stubs cobertos por outros itens do backlog (F3 compartilhar — já feito; F7 — já feito).
+- **Implementado em 2026-07-28:** o último stub, "Política de Cookies" no rodapé, foi ligado — `politica-de-privacidade/page.tsx` já tinha uma seção "4. Cookies" própria (criar uma página nova duplicaria conteúdo), só ganhou `id="cookies"` no `<h2>`; `footer.tsx` trocou o `FeatureInProgress`+`Button` por `<Link href="/politica-de-privacidade#cookies">`. Nenhum `FeatureInProgress` de navegação restante nos 3 arquivos.
 
 ---
 
