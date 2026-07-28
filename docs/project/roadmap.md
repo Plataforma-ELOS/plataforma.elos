@@ -75,7 +75,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | 2.3 | ✅ `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
 | 2.4 | ✅ CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
 | 2.5 | ✅ ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
-| 2.6 | E2E (Playwright) dos fluxos críticos (quando rodar contra Supabase real) | 🟠 | Alto |
+| 2.6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados dependem de conta de teste + Supabase em CI | 🟠 | Alto |
 
 ---
 
