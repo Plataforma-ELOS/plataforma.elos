@@ -105,7 +105,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | Q3 | Ampliar testes (actions/data/componentes) | Testes | P2 | Média | 1–2 dias | Q2 |
 | Q4 | `error.tsx`/`loading.tsx` por rota | Código | P2 | Baixa | meio dia | — |
 | Q5 | ESLint + reativar `lint` no build | Config | P2 | Média | meio dia | — |
-| Q6 | E2E (Playwright) dos fluxos críticos | Testes | P2 | Alta | 1–2 dias | G1 |
+| Q6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados fora de escopo | Testes | P2 | Alta | 1–2 dias | G1 |
 | E1 | ✅ Server Components nas telas client-fetch | Arquitetura | P3 | Alta | 1–2 dias | Q2 |
 | E2 | 🟡 Paginação (feed de posts feito; profissionais fora de escopo) | Código | P3 | Média | meio dia | — |
 | E3 | 🟡 Supabase Storage (avatar + foto profissional/clínica; F7 acervo fora de escopo) | Código/Infra | P3 | Alta | 1–2 dias | — |
@@ -531,12 +531,16 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [Q6] E2E com Playwright
+### [Q6] 🟡 E2E com Playwright (páginas públicas cobertas; fluxos autenticados dependem de config externa)
 - **Categoria:** Testes · **Prio:** P2 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** G1
 - **Relevância:** Validar fluxos críticos (login→post→curtir; favoritar; grupos) ponta-a-ponta contra Supabase real (fora do sandbox, que bloqueia o host).
+- **Implementado em 2026-07-28:** `@playwright/test` configurado (`playwright.config.ts`, `testDir: './e2e'`, `webServer` sobe `npm run dev` automaticamente com as mesmas env vars dummy do CI). `e2e/public-pages.spec.ts`: smoke test das 6 páginas 100% públicas (`/home`, `/faq`, `/login`, `/cadastro`, `/termos-de-servico`, `/politica-de-privacidade`) — confirma status 200 e o heading esperado em cada uma. Script `npm run test:e2e`. Essas specs só ficaram confiáveis neste tipo de ambiente **depois** do fix de `H1` (middleware) — antes, toda página dependia de `supabase.co` estar alcançável só para renderizar. Rodei os 6 testes localmente (Chromium pré-instalado do ambiente) e todos passaram.
+- **Não incluído nesta rodada:** os fluxos autenticados que a ficha original pedia (login→post→curtir, favoritar, grupos) exigem uma conta de teste real e Supabase alcançável a partir do runner que rodar os testes — decisão de configuração externa (credenciais como secret do CI), mesma natureza dos itens `G1`-`G4`. A suíte E2E também não foi adicionada ao `.github/workflows/ci.yml` ainda — rodar Playwright em CI exige instalar browsers no runner, um passo novo de pipeline.
 
 #### ✅ Critério de aceite
-- [ ] Suíte E2E cobre login, criar post, favoritar, grupos — verde contra o Preview.
+- [x] Páginas públicas cobertas por E2E, rodando localmente (`npm run test:e2e`).
+- [ ] Suíte E2E cobre login, criar post, favoritar, grupos — depende de conta de teste + Supabase alcançável em CI (config externa).
+- [ ] Integração ao `.github/workflows/ci.yml` — fora de escopo.
 
 ---
 
