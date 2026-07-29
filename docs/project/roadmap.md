@@ -1,13 +1,14 @@
 # Roadmap — Plataforma E.L.O.S
 
 Planejamento de próximos passos, ancorado no estado real do código.
-Última atualização: 2026-07-27 (branch `claude/new-session-8sdpjq`).
+Última atualização: 2026-07-29 (branch `claude/new-session-8sdpjq`, 47 PRs mesclados — ver `docs/project/historico-prs.md`).
 
 ## Estado atual (baseline)
 Next.js 15 + shadcn/ui + Supabase, deploy Vercel. `typecheck` ✅, `build` ✅
-(0 avisos), `test` ✅ (16, Vitest). Arquitetura refatorada (feature-based),
+(0 avisos), `test` ✅ (68, Vitest). Arquitetura refatorada (feature-based),
 Firebase removido, migrations sincronizadas com o remoto. Sem regressão de
-código — o que resta é config externa e evolução.
+código — o que resta é config externa (Horizonte 0) e a decisão de produto
+pendente sobre o quiz semanal (Horizonte 4).
 
 Legenda de esforço: 🟢 ≤1h · 🟡 meio dia · 🟠 1–2 dias · 🔴 3+ dias.
 
@@ -23,7 +24,7 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 | 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ⬜ |
 | 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
 | 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel | QA | 🟡 | ⬜ |
-| 0.6 | Abrir e mergear o PR → `main` (descrição em `docs/project/pr-description.md`) | Processo | 🟢 | ⬜ |
+| 0.6 | ~~Abrir e mergear o PR → `main`~~ — superado: o fluxo virou uma PR por etapa, 47 já mesclados (ver `docs/project/historico-prs.md`) | Processo | 🟢 | ✅ |
 
 ---
 
@@ -111,4 +112,4 @@ Reduzir risco de regressão e melhorar confiabilidade.
 ## Documentos relacionados
 - `docs/project/refactor-report.md` — relatório da refatoração/limpeza.
 - `docs/architecture/security-checklist.md` — RLS + hardening + passo do leaked-password.
-- `docs/project/pr-description.md` — corpo do PR.
+- `docs/project/historico-prs.md` — changelog detalhado de cada PR mesclado (substitui o antigo fluxo de "um PR só", ver item `0.6`).

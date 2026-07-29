@@ -38,6 +38,23 @@ Todos os PRs foram da branch `claude/new-session-8sdpjq` para `main`, passando p
 | [28](#pr-28) | feat: rate limiting nos inserts públicos (E4/3.4) | 2026-07-27 | feat |
 | [29](#pr-29) | feat: Supabase Storage para avatar e foto de profissional/clínica (E3/3.3) | 2026-07-27 | feat |
 | [30](#pr-30) | refactor: migra as 6 telas client-fetch para Server Components (E1/3.1/H2) | 2026-07-27 | refactor |
+| [31](#pr-31) | docs: histórico detalhado de todos os Pull Requests mesclados | 2026-07-28 | docs |
+| [32](#pr-32) | perf: middleware só consulta Supabase Auth quando a rota exige (H1) | 2026-07-28 | perf |
+| [33](#pr-33) | feat: liga "Adicionar ao Acervo" a um insert real (F7) | 2026-07-28 | feat |
+| [34](#pr-34) | feat: paginação do feed de posts da Comunidade (E2/3.2) | 2026-07-28 | feat |
+| [35](#pr-35) | test: configura Playwright e cobre as páginas públicas com E2E (Q6/2.6) | 2026-07-28 | test |
+| [36](#pr-36) | fix: liga o último stub do rodapé à política de cookies (F6) | 2026-07-28 | fix |
+| [37](#pr-37) | refactor: consolida queries inline em lib/data (3.5) | 2026-07-28 | refactor |
+| [38](#pr-38) | feat: busca full-text server-side no Acervo Digital (E8) | 2026-07-28 | feat |
+| [39](#pr-39) | docs: corrige linhas desatualizadas na tabela de priorização | 2026-07-28 | docs |
+| [40](#pr-40) | feat: upload de imagem ao sugerir item do acervo (E3/F7) | 2026-07-28 | feat |
+| [41](#pr-41) | feat: upload de imagem ao criar post (E3/F7 fechado) | 2026-07-28 | feat |
+| [42](#pr-42) | fix: reconstrói 3 arquivos de migration faltando (Supabase Preview) | 2026-07-28 | fix |
+| [43](#pr-43) | fix: cadastro profissional passa a gravar specialty (causa raiz de /profissionais) | 2026-07-28 | fix |
+| [44](#pr-44) | feat: paginação + busca full-text server-side em /profissionais | 2026-07-28 | feat |
+| [45](#pr-45) | chore: remove código morto de stubs já resolvidos (FeatureInProgress) | 2026-07-28 | chore |
+| [46](#pr-46) | perf: ISR em rotas públicas, consolidar queries de profissionais/[id] | 2026-07-28 | perf |
+| [47](#pr-47) | feat: trilhas de conhecimento com passos reais e progresso (sem quiz) | 2026-07-29 | feat |
 
 ---
 
@@ -361,3 +378,208 @@ Fora de escopo: editar foto depois do cadastro (não existe tela de "editar minh
 **Mesclado:** 2026-07-27
 
 Última etapa do plano de 4 frentes. `comunidade`, `profissionais`, `acervo-digital`, `comunidade/explorar-grupos` e `comunidade/meus-grupos` migradas para `page.tsx` (Server Component, busca inicial com `createClient(await cookies())`) + `client-page.tsx` (`"use client"`, recebe os dados como prop, mantém `useSearch`/Dialogs/mutações). `fale-conosco` não precisou de reestruturação (o insert já tinha saído do client no PR #28). Mutations continuam por Server Action; em `comunidade`, criar post/evento agora chama `router.refresh()` em vez de refazer a query no browser. Favoritos/curtidas/membresia viraram uma segunda leitura no próprio Server Component — por isso as 6 rotas saem do build como `ƒ Dynamic`, não `○`/`●` (dado personalizado por usuário não pode ser estático; o ganho real é uma leitura no servidor por request em vez de N chamadas do browser a cada mount). Fecha os achados `E1`/`3.1`/`H2` documentados desde o PR #7.
+
+
+---
+
+## PR #31
+### docs: histórico detalhado de todos os Pull Requests mesclados
+**Mesclado:** 2026-07-28
+
+`docs/project/historico-prs.md` (este documento) — changelog técnico com uma seção por PR (dos 30 já mesclados em `main` até então), detalhando arquivos/tabelas/migrations tocados, decisões de arquitetura e pendências registradas. Índice rápido no topo para navegação. Linkado em `docs/README.md`.
+
+---
+
+## PR #32
+### perf: middleware só consulta Supabase Auth quando a rota exige (H1)
+**Mesclado:** 2026-07-28
+
+`src/lib/supabase/middleware.ts` chamava `supabase.auth.getUser()` em todo request, antes de checar se o path estava em `ROTAS_PRIVADAS`/`ROTAS_DE_AUTH` — inclusive páginas 100% públicas. A checagem de pathname passou a rodar primeiro; se não bater em nenhuma das duas listas, retorna `NextResponse.next()` sem tocar no Supabase.
+
+Reduz latência/custo de API em toda navegação pública e, como efeito colateral, destrava testes E2E confiáveis dessas rotas em ambientes com rede restrita ao Supabase (aproveitado na etapa seguinte deste lote, PR #35). Validado manualmente: login persiste ao navegar entre página pública e privada; redirects de rota privada (deslogado) e de auth (logado) continuam funcionando.
+
+---
+
+## PR #33
+### feat: liga "Adicionar ao Acervo" a um insert real (F7)
+**Mesclado:** 2026-07-28
+
+O formulário era 100% stub — `handleSubmit` só fechava o dialog e mostrava o `AlertDialog` de sucesso fixo, sem gravar nada. A policy `library_suggest` (insert por qualquer autenticado, `suggested_by = auth.uid()`) já existia desde a migration inicial e nunca tinha sido usada.
+
+Nova Server Action `sugerirItemAcervo` (`src/app/actions/library.ts`): checa login, valida campos obrigatórios, separa tags por vírgula, insere em `library_items` (`approved` fica `false` por default). Dialog ganhou estado controlado nos 5 campos; gate de login reaproveita o mesmo padrão já usado em `handleToggleFavorite` no mesmo arquivo.
+
+Item sugerido passa a aparecer na aba "Acervo" de `/admin` e só entra em `/acervo-digital` depois de aprovado. Upload de imagem do material continua fora de escopo nesta etapa (fechado depois, PR #40).
+
+---
+
+## PR #34
+### feat: paginação do feed de posts da Comunidade (E2/3.2)
+**Mesclado:** 2026-07-28
+
+O feed carregava todos os posts de uma vez. `src/lib/data/community.ts` (novo) extrai `mapPostRow`/`tempoRelativo`/`PostRow` de `comunidade/page.tsx` — mapper puro reaproveitado pela busca inicial (Server Component) e pela paginação (Server Action), evitando duplicar a lógica de join com `post_likes`/`post_saves`/`comments`.
+
+`page.tsx` busca a primeira página com `.range(0, 9)` (`POSTS_POR_PAGINA = 10`). Nova Server Action `buscarMaisPosts(offset)` busca as páginas seguintes com a mesma query. Botão "Carregar mais posts" em `client-page.tsx`, some quando não há mais posts.
+
+Paginação de `/profissionais` ficou fora desta rodada — reaberta depois, PR #44.
+
+---
+
+## PR #35
+### test: configura Playwright e cobre as páginas públicas com E2E (Q6/2.6)
+**Mesclado:** 2026-07-28
+
+`@playwright/test` instalado (Chromium pré-instalado no ambiente, sem download). `playwright.config.ts` sobe `npm run dev` automaticamente (`webServer`) com as mesmas env vars dummy do CI.
+
+`e2e/public-pages.spec.ts`: smoke test das 6 páginas 100% públicas (`/home`, `/faq`, `/login`, `/cadastro`, `/termos-de-servico`, `/politica-de-privacidade`) — confirma status 200 e o heading esperado. Só ficaram confiáveis em ambientes com rede restrita ao Supabase depois do fix do middleware (H1, PR #32) — antes, toda página dependia de `supabase.co` estar alcançável só para renderizar.
+
+Fora de escopo: fluxos autenticados (login, criar post, favoritar, grupos) exigem conta de teste real + Supabase alcançável no runner — config externa, mesma natureza dos itens G1-G4. Suíte também não entrou no `.github/workflows/ci.yml` ainda (exigiria instalar browsers no runner).
+
+---
+
+## PR #36
+### fix: liga o último stub do rodapé à política de cookies (F6)
+**Mesclado:** 2026-07-28
+
+"Política de Cookies" no footer era um `FeatureInProgress` solto, fora do grupo "Legal" que já lista Termos/Privacidade linkados. A política de privacidade já tinha uma seção "4. Cookies" própria — criar uma página nova duplicaria conteúdo. `footer.tsx` passou a linkar direto para essa seção via anchor (`id="cookies"`).
+
+Nenhum `FeatureInProgress` de navegação restava em header/header-secondary/footer depois deste PR (o componente em si só seria removido depois, PR #45, quando os últimos usos em `navItems` também deixaram de existir).
+
+---
+
+## PR #37
+### refactor: consolida queries inline em lib/data (3.5)
+**Mesclado:** 2026-07-28
+
+`noticias-gamificadas/page.tsx` e os 3 `page.tsx` de grupos da comunidade (`explorar-grupos`, `meus-grupos`, `grupos/[id]`) mapeavam linhas cruas do Supabase inline, com lógica duplicada entre os dois primeiros (description/tags/contagem de membros coalescidos quase idênticos nos dois arquivos).
+
+`src/lib/data/knowledge.ts` (novo): `mapKnowledgePill`/`mapKnowledgeTrail`, puros, sem depender de React (o ícone por categoria continua resolvido no client, que é onde JSX pertence).
+
+`src/lib/data/groups.ts` (novo): `mapGroupCard` (reaproveitado por `explorar-grupos` e `meus-grupos`) e `mapGroupMember` (`grupos/[id]`), unificando a lógica antes duplicada.
+
+Puro refactor — sem mudança de comportamento. `admin`/`perfil`/`configuracoes`/`cadastro-profissional` ficaram de fora: sem mapper nenhum a extrair (dados passam direto, ou é client component que só faz upload de Storage).
+
+---
+
+## PR #38
+### feat: busca full-text server-side no Acervo Digital (E8)
+**Mesclado:** 2026-07-28
+
+Busca de texto no acervo era 100% client-side (filtro em memória via `useSearch`). Migration nova: coluna `search_vector` (`tsvector`, `generated always as`) + índice GIN em `library_items` (`title` + `author_name` + `tags`).
+
+`array_to_string` (usado para juntar `tags` num texto) é `STABLE`, não `IMMUTABLE` — Postgres rejeita isso em coluna gerada. Corrigido com uma função wrapper `immutable_array_to_string` (com `search_path` fixo, sem o warning de search_path mutável).
+
+Nova Server Action `buscarItensAcervo(query)` usa `.textSearch('search_vector', ..., { type: 'websearch' })`, reaproveita `mapLibraryRow` e replica o merge de favoritos já existente em `acervo-digital/page.tsx`. `client-page.tsx`: busca de texto desacoplada do `useSearch` (que fica só com filtro de tipo + ordenação) — debounce de 300ms chama a action e faz upsert dos resultados, preservando o toggle de favorito otimista.
+
+Full-text em `/profissionais` ficou de fora — os chips de especialidade usavam um prefixo truncado para casar variações de gênero via `.includes()` em JS, incompatível com correspondência por lexema do Postgres sem reimplementar prefix-matching. Registrado como pendência, resolvida depois (PRs #43/#44).
+
+---
+
+## PR #39
+### docs: corrige linhas desatualizadas na tabela de priorização
+**Mesclado:** 2026-07-28
+
+`F1`/`F2`/`F3`/`F5`/`U1`/`U6`/`Q2`-`Q5` já estavam ✅ nas fichas detalhadas de `plano-finalizacao-completa.md`, mas a linha resumo na matriz de priorização não tinha sido atualizada. `Q1` ("validar CI verde no PR") também marcado ✅ — critério satisfeito continuamente desde então, em todos os PRs mesclados nesta sessão.
+
+Puro ajuste de documentação, sem mudança de código.
+
+---
+
+## PR #40
+### feat: upload de imagem ao sugerir item do acervo (E3/F7)
+**Mesclado:** 2026-07-28
+
+Migration nova: `posts.image_url` (aditivo, para o próximo passo do upload em create-post) + 2 buckets de Storage (`library`, `posts`) com RLS restringindo insert/update/delete ao dono da pasta (`(storage.foldername(name))[1] = auth.uid()`), mesmo padrão já usado em `avatars`/`professionals`.
+
+`AddToLibraryDialog` (`acervo-digital/client-page.tsx`) ganhou input de arquivo opcional com preview, reaproveitando o mesmo padrão de upload já usado em `cadastro-profissional/page.tsx`. `sugerirItemAcervo` ganhou parâmetro opcional `imageUrl`.
+
+`mapLibraryRow` ajustado: `imageUrl` agora é populado sempre que `image_url` existir, não só para itens do tipo "video" (documento/jogo sugerido com capa também deve mostrar a imagem).
+
+---
+
+## PR #41
+### feat: upload de imagem ao criar post (E3/F7 fechado)
+**Mesclado:** 2026-07-28
+
+`CreatePost` tinha um botão de imagem envolto em `FeatureInProgress` — o único stub de imagem que sobrava no fluxo de posts. Ganhou input de arquivo opcional com preview, mesmo padrão de upload já usado em `cadastro-profissional`/`AddToLibraryDialog`.
+
+`criarPost` (`actions/community.ts`) e `buscarMaisPosts` ganharam `image_url` no select/insert. `mapPostRow` (`lib/data/community.ts`) e o tipo `Post` (`post-card.tsx`) ganharam `imageUrl`. `PostCard` renderiza a imagem (`next/image`) entre o texto e a barra de ações quando presente.
+
+Tipos gerados do Supabase (`database.types.ts`) regenerados para incluir `posts.image_url` (coluna adicionada na migration da etapa anterior) — corrigia um erro de tipo no insert.
+
+Com isso, `E3` (Storage) e `F7` (Adicionar ao Acervo) ficam completamente fechados — nenhum dos dois formulários que coletam mídia continua sendo stub.
+
+---
+
+## PR #42
+### fix: reconstrói 3 arquivos de migration faltando (Supabase Preview)
+**Mesclado:** 2026-07-28
+
+O check "Supabase Preview" do GitHub Action estava falhando em `main` com "Remote migration versions not found in local migrations directory" — as 3 migrations mais recentes (busca full-text no acervo + upload de imagem, PRs #38/#40) foram aplicadas via `apply_migration` (MCP) durante a execução, mas `apply_migration` não grava o arquivo local automaticamente, só aplica no banco remoto.
+
+Reconstruídos os 3 arquivos com o conteúdo exato enviado em cada chamada (confirmado via `mcp__Supabase__list_migrations` contra o `schema_migrations` remoto): `20260728121355_add_library_items_search_vector.sql`, `20260728121824_fix_immutable_array_to_string_search_path.sql`, `20260728174403_add_posts_image_url_and_buckets.sql`.
+
+`supabase/migrations/README.md` atualizado com a nota "sempre criar o arquivo `.sql` correspondente no mesmo commit" para não repetir o gap.
+
+---
+
+## PR #43
+### fix: cadastro profissional passa a gravar specialty (causa raiz de /profissionais)
+**Mesclado:** 2026-07-28
+
+O formulário de inscrição (`/cadastro-profissional`) nunca coletava nem gravava a especialidade em `professionals`/`clinics` — só as linhas de seed tinham o campo preenchido, tornando a busca por especialidade decorativa para qualquer cadastro real. Adiciona lista canônica compartilhada (`src/lib/data/specialties.ts`), Select no cadastro (com opção "Outro"), campo livre para clínicas, e grava `specialty` nos dois inserts de `inscreverProfissional`.
+
+Migration canoniza os 5 valores de `specialty` das linhas demo para a lista nova. Os chips de `/profissionais` deixam de reaproveitar o estado de busca por texto (prefixo truncado + `.includes()`) e passam a filtrar por igualdade exata via `matchesFilter` do `useSearch`, desacoplado da busca por nome.
+
+Paginação e busca full-text em `/profissionais` continuaram pendentes (etapa seguinte, PR #44) — esta entrega resolveu só a causa raiz que impedia reabrir esse escopo.
+
+---
+
+## PR #44
+### feat: paginação + busca full-text server-side em /profissionais
+**Mesclado:** 2026-07-28
+
+Reabre o escopo de `E2` (paginação) e `E8` (full-text) para `/profissionais`, que ficava fora dessas duas entregas por causa do mecanismo de chips de especialidade baseado em prefixo truncado (corrigido pela etapa anterior, PR #43).
+
+Migration `add_professionals_clinics_search_vector` adiciona `search_vector` (`tsvector` gerado) + índice GIN em `professionals`/`clinics`. `page.tsx` busca a primeira página de cada lista (10 profissionais, 6 clínicas) via `.range()`; novas Server Actions em `actions/professionals.ts`: `buscarMaisProfissionais`/`buscarMaisClinicas` (paginação "carregar mais", ligadas aos 2 botões que eram stubs) e `filtrarProfissionais` (filtro por especialidade exata e/ou busca full-text por nome, substituindo o filtro em memória por página única que não escalava com paginação real).
+
+`client-page.tsx`: clique num chip dispara a busca na hora; digitar no campo de nome dispara com debounce de ~300ms; quando nenhum filtro/busca está ativo, volta a mostrar as listas paginadas localmente.
+
+Tipos do Supabase regenerados (`database.types.ts`) para refletir a nova coluna `search_vector`.
+
+---
+
+## PR #45
+### chore: remove código morto de stubs já resolvidos (FeatureInProgress)
+**Mesclado:** 2026-07-28
+
+Todos os itens de navegação do header já apontavam para rotas reais desde rodadas anteriores (nenhum `navItem` usava `isFeature: true` há tempo) — o branch morto que envolvia o item em `FeatureInProgress` nunca mais era alcançado. Em `header-secondary.tsx`, `renderNavItem` e `renderMobileNavItem` eram funções idênticas duplicadas; unificadas em uma só. Sem mais nenhum uso no código, o componente `FeatureInProgress` também foi removido.
+
+Corrige também duas linhas da matriz-resumo em `plano-finalizacao-completa.md` (`E2`/`E8`) que ainda diziam "profissionais fora de escopo" mesmo com as fichas detalhadas já atualizadas para ✅ na entrega anterior.
+
+---
+
+## PR #46
+### perf: ISR em rotas públicas, consolidar queries de profissionais/[id]
+**Mesclado:** 2026-07-28
+
+Implementa `H3`, `H4` e `H5` de `docs/architecture/harmonia-supabase-vercel.md` (ordem: H5 antes de H3, já que ISR exige tirar a leitura de cookies primeiro — `cookies()` força renderização dinâmica mesmo com `revalidate`).
+
+`H5` — `lib/data/news.ts` (`getNews`/`getNewsBySlug`), `profissionais/page.tsx`, `profissionais/[id]/page.tsx` e as 3 Server Actions de `actions/professionals.ts` passam a usar `createStaticClient()` em vez de `createClient(await cookies())` — nenhum desses pontos personaliza por usuário logado, só leem dado público.
+
+`H3` — `export const revalidate = 300` em `noticias/page.tsx`, `profissionais/page.tsx` e `profissionais/[id]/page.tsx`. `noticias-ai/page.tsx` fica de fora (`force-dynamic` proposital, chama IA a cada request) e `acervo-digital/page.tsx` também (busca favoritos do usuário logado, dado genuinamente personalizado) — build confirma `/noticias` e `/profissionais` saindo de `ƒ Dynamic` para `○ Static` com revalidate de 5 min.
+
+`H4` — `profissionais/[id]/page.tsx` consolidado de até 4 queries (profissional + skills + experiences + reviews) para 1, usando relações aninhadas do PostgREST; branch de clínica de 2 para 1. Validado via `execute_sql` confirmando os relacionamentos (skills/experiences/reviews por profissional) e o caminho de array vazio (nenhum profissional demo tem review ainda).
+
+---
+
+## PR #47
+### feat: trilhas de conhecimento com passos reais e progresso (sem quiz)
+**Mesclado:** 2026-07-29
+
+`trail_progress` existia desde a migration inicial, mas as trilhas não tinham nenhum conteúdo — "Continuar Trilha" em `/noticias-gamificadas` não tinha `onClick` nem `href`, era inerte.
+
+Migration nova cria `knowledge_trail_steps` (passos ordenados por trilha, leitura pública/escrita admin) e `trail_step_completions` (conclusão por usuário, RLS restrita ao dono), com seed de 4 passos reais para cada uma das 2 trilhas demo existentes.
+
+Nova rota `/noticias-gamificadas/trilhas/[id]` lista os passos em `Accordion` com checkbox de conclusão; nova Server Action `alternarPassoConcluido` faz o toggle e recalcula `trail_progress.progress` no mesmo request. Botão "Continuar Trilha" vira link real; barra de progresso trocada pelo `Progress` do shadcn (já existia no projeto, não era usado).
+
+Quiz semanal continua decorativo — fora de escopo, exigiria um sistema de pontos que não existe em nenhum outro lugar do app.

@@ -12,7 +12,7 @@ Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 
 ## 🎨 design/ — Design
 - [`style-guide.md`](./design/style-guide.md) — Guia de estilo visual (cores HSL, temas, efeitos de UI).
-- [`blueprint.md`](./design/blueprint.md) — Blueprint inicial de features e identidade.
+- [`blueprint.md`](./design/blueprint.md) — Blueprint inicial de features e identidade *(documento histórico, superado por `style-guide.md`/`screen-content.md`)*.
 
 ## Fora desta pasta
 - **📜 Histórico de Pull Requests (changelog detalhado de cada PR mesclado): [`./project/historico-prs.md`](./project/historico-prs.md)**
@@ -22,4 +22,5 @@ Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 - Roadmap / próximos passos: [`./project/roadmap.md`](./project/roadmap.md)
 - Checklist de segurança e validação de RLS: [`./architecture/security-checklist.md`](./architecture/security-checklist.md)
 - Histórico de migrations do banco: [`../supabase/migrations/README.md`](../supabase/migrations/README.md)
-- Relatório da última refatoração/limpeza: [`./project/refactor-report.md`](./project/refactor-report.md)
+- Relatório da última refatoração/limpeza: [`./project/refactor-report.md`](./project/refactor-report.md) *(documento histórico)*
+- Corpo da PR consolidada #6 (migração para Supabase): [`./project/pr-description.md`](./project/pr-description.md) *(documento histórico — o fluxo atual é uma PR por etapa, ver `historico-prs.md`)*

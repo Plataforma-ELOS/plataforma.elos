@@ -79,7 +79,7 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 ### Cadastro Profissional (`/cadastro-profissional`)
 *   **Navegação:** "Voltar".
 *   **Títulos:** "Cadastro Profissional", "Submeta sua inscrição para participar do time de perfis profissionais...".
-*   **Formulário:** "Nome Completo", "Email", "Tipo de Cadastro" (Profissional Liberal, Profissional de Clínica, Clínica), "CNPJ", "Número do Registro Profissional", "Compartilhe um pouco de sua experiência".
+*   **Formulário:** "Nome Completo", "Email", "Tipo de Cadastro" (Profissional Liberal, Profissional de Clínica, Clínica), "Adicionar foto (opcional)", "Especialidade" (Select com lista fixa + opção "Outro" que revela campo livre — para profissional/clínica de profissional; campo livre "Especialidade/Área de Atuação" para clínica), "CNPJ", "Número do Registro Profissional (exatamente 7 dígitos)", "Compartilhe um pouco de sua experiência".
 *   **Contador:** "0/200 palavras".
 *   **Botão:** "Enviar Inscrição".
 *   **Feedback Sucesso:** "Inscrição Realizada com Sucesso!", "Sua inscrição foi recebida... Você receberá uma resposta em seu e-mail em um período de até 2 semanas.", "Ok, entendi!".
@@ -114,8 +114,14 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 ### Notícias Gamificadas (`/noticias-gamificadas`)
 *   **Header:** "Pílulas de Conhecimento", "Aprenda de forma rápida e divertida...".
 *   **Seção 1 (Pílulas):** "Destaques da Semana", "Você sabia?", "Dica Rápida", "Fato Importante", "Saber mais".
-*   **Seção 2 (Trilhas):** "Suas Trilhas de Conhecimento", "Trilha: Entendendo o Laudo de TEA", "Trilha: Primeiros Passos na Escola", Porcentagem de progresso, "Continuar Trilha".
-*   **Seção 3 (Quiz):** "Teste seus Conhecimentos", "Quiz da Semana!", "Acerte as perguntas sobre as notícias...","Começar Quiz".
+*   **Seção 2 (Trilhas):** "Suas Trilhas de Conhecimento", "Trilha: Entendendo o Laudo de TEA", "Trilha: Primeiros Passos na Escola", barra de progresso real, "Continuar Trilha" (leva ao detalhe da trilha).
+*   **Seção 3 (Quiz):** "Teste seus Conhecimentos", "Quiz da Semana!", "Acerte as perguntas sobre as notícias...","Começar Quiz" — ainda decorativo (sem pergunta/pontuação implementada).
+
+### Detalhe da Trilha (`/noticias-gamificadas/trilhas/[id]`)
+*   **Navegação:** "Voltar para Trilhas".
+*   **Cabeçalho:** título e descrição da trilha, barra de progresso com percentual.
+*   **Passos:** lista em accordion, numerada ("1. ", "2. "...), cada um com conteúdo real ao expandir e checkbox "Concluí esta etapa" — marcar/desmarcar atualiza o progresso na hora.
+*   **Vazio:** "Esta trilha ainda não tem passos cadastrados." (quando a trilha não tem nenhum passo).
 
 ---
 
@@ -193,16 +199,15 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 
 ### Diretório (`/profissionais`)
 *   **Hero:** "Encontre o Profissional Ideal", "Conectamos você a profissionais e clínicas avaliados...".
-*   **Busca:** "Buscar por especialidade ou nome...".
+*   **Busca:** "Buscar por nome..." (busca full-text server-side, com debounce; independente do filtro por especialidade).
 *   **Compromisso:** "Nosso Compromisso com Você", "Qualidade e Confiança", "Verificação de Credenciais e Experiência", "Avaliações Reais da Comunidade".
-*   **Especialidades:** "Explore por Especialidade", "Psicólogos", "Fonoaudiólogos", "Terapeutas Ocupacionais", "Neurologistas e Psiquiatras", "Psicopedagogos", "Acompanhantes Terapêuticos".
-*   **CTA Especialidade:** "Não encontrou o que procurava? Veja mais!".
-*   **Cards Profissionais:** "Profissionais Liberais", "Especialistas dedicados...", "Ver Perfil".
-*   **Cards Clínicas:** "Clínicas Parceiras", "Espaços multidisciplinares...", "Ver Detalhes da Clínica".
+*   **Especialidades:** "Explore por Especialidade", "Psicólogos", "Fonoaudiólogos", "Terapeutas Ocupacionais", "Neurologistas e Psiquiatras", "Psicopedagogos", "Acompanhantes Terapêuticos" — clicar filtra por igualdade exata (chip fica destacado) e rola até os resultados.
+*   **Cards Profissionais:** "Profissionais Liberais", "Especialistas dedicados...", "Ver Perfil", selo "Verificado" (BadgeCheck) quando aprovado, "Ver mais profissionais" (carrega a próxima página, só aparece sem filtro/busca ativos).
+*   **Cards Clínicas:** "Clínicas Parceiras", "Espaços multidisciplinares...", "Ver Detalhes da Clínica", selo "Verificado", "Explorar mais clínicas" (mesma lógica de paginação).
 
 ### Perfil do Profissional (`/profissionais/[id]`)
 *   **Navegação:** "Voltar", ícone "Compartilhar" (Web Share API com fallback de copiar link).
-*   **Identificação:** Nome, Especialidade, CRM/CRP/CRFa.
+*   **Identificação:** Nome, selo "Verificado" (quando aprovado), Especialidade, CRM/CRP/CRFa.
 *   **Tabs:** "Sobre", "Contato", "Avaliações".
 *   **Sobre:** "Apresentação", "Experiências" (Lista), "Áreas de atuação" (Badges).
 *   **Contato:** "Informações de Contato", "Email", "Telefone", "Instagram".

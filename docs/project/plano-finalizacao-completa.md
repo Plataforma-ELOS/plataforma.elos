@@ -5,7 +5,7 @@
 > Consolida e fica acima de `roadmap.md`, `security-checklist.md` e
 > `pr-description.md`.
 >
-> Branch de trabalho: `claude/new-session-8sdpjq` · Última auditoria: 2026-07-27.
+> Branch de trabalho: `claude/new-session-8sdpjq` · Última auditoria: 2026-07-29.
 >
 > **Atualização 2026-07-27:** incorporado um backlog de UI/UX (categoria `U`)
 > a partir de uma revisão de produto — 6 telas novas, 3 fluxos de navegação a
@@ -16,40 +16,50 @@
 > backlog `U` — `U7`, `U8`, `U10`, `U11`, `U12` (ver fichas abaixo, marcadas
 > ✅). `U10` e `U11` tiveram o diagnóstico corrigido durante a implementação
 > (o código já estava mais correto do que a primeira leitura sugeria).
+>
+> **Atualização 2026-07-29:** auditoria completa de toda a documentação
+> (README + `docs/`) contra o estado real do código, depois de 47 PRs
+> mesclados — corrigidos números desatualizados nesta seção (Resumo
+> Executivo), a caixa de baseline, e a referência obsoleta ao item `0.6`
+> (fluxo de "abrir 1 PR", superado pelo padrão de 1 PR por etapa — ver
+> `docs/project/historico-prs.md`).
 
 ---
 
 ## 1. Resumo Executivo & Diagnóstico Atual
 
 A base está **arquiteturalmente sólida e verde** (`typecheck` 0 erros · `test`
-16/16 · `build` 0 avisos, 22 rotas). Não há regressão de código. O que separa
+68/68 · `build` 0 avisos, 30 rotas). Não há regressão de código. O que separa
 o projeto do "100% em produção" é, em ordem de peso: **(a) configuração externa**
-de painel (Supabase Auth, env vars na Vercel), **(b) algumas features de núcleo
-ainda em stub/mock** (eventos, editar post, área do cuidador) e **(c) dívidas de
-qualidade/escala** (tipos gerados, mais testes, imagens em Storage).
+de painel (Supabase Auth, env vars na Vercel) e **(b) uma decisão de produto
+pendente** (sistema de pontos para o quiz semanal, `F8`). Não há mais nenhuma
+feature de núcleo em stub/mock — o backlog de código deste guia está
+completo.
 
 ### % de conclusão estimado por módulo
 
 | Módulo | Conclusão | Observação |
 |---|---:|---|
 | Autenticação (login/cadastro/logout/middleware) | 90% | Código pronto; falta config de Auth no painel (G1) |
-| Comunidade — feed/curtir/salvar/comentar/excluir/**criar** | 95% | Falta editar post (F2); eventos da sidebar são mock (F1) |
-| Grupos (explorar/meus/criar) | 100% | Completo |
+| Comunidade — feed/curtir/salvar/comentar/excluir/criar/**editar**/paginação | 100% | Completo (F1/F2 ✅) |
+| Grupos (explorar/meus/criar/detalhe) | 100% | Completo |
 | Notícias + Notícias IA | 90% | Precisa `GEMINI_API_KEY` p/ resumo IA (G3) |
-| Notícias gamificadas | 95% | Trilhas com passos reais e progresso funcional; quiz semanal continua decorativo (E-extra) |
-| Acervo digital (+ **favoritar** e **sugerir item**) | 98% | Upload de imagem do material ainda é stub (E3) |
-| Profissionais (listagem/busca/detalhe/reviews) | 95% | "Agendar consulta" e "compartilhar" em stub (F3/F4) |
-| Fale conosco | 85% | Grava no banco; e-mail depende de `EMAILJS_*` (G3) |
-| Cadastro profissional | 100% | Completo |
-| Área do cuidador (dependentes/diário) | 0% | Tabelas existem, **sem UI** (F5) |
-| CI/CD | 100% | `.github/workflows/ci.yml` criado |
-| Banco/RLS/migrations | 100% | 22 tabelas, RLS 22/22, 7 migrations sincronizadas |
-| Perfil do usuário (`/perfil`) | 0% | `profiles` já tem `full_name`/`avatar_url`/`bio`; sem tela (U2) |
-| Itens salvos (`/salvos`) | 20% | Dado já existe (`post_saves`, `library_favorites`); falta tela unificada (U3) |
-| Configurações (`/configuracoes`) | 30% | Tema e tamanho de fonte já funcionam (dropdown do header); falta tela dedicada + notificações/privacidade (U4) |
-| Central de Ajuda (`/ajuda`) | 60% | `/faq` já existe com 6 perguntas; falta busca por tópico + link para contato (U5) |
-| Boas-vindas ao entrar em grupo | 0% | Não existe nem página de detalhe do grupo (`/comunidade/grupos/[id]`) (U1) |
-| Notificações (`/notificacoes`) | 0% | Mesma lacuna do item `E7`; sem tabela nem UI (U6) |
+| Notícias gamificadas | 95% | Trilhas com passos reais e progresso funcional (F8); quiz semanal continua decorativo, pendente de decisão de produto |
+| Acervo digital (+ favoritar, sugerir item, upload de imagem, busca full-text) | 100% | Completo |
+| Profissionais (listagem/busca full-text/paginação/detalhe/reviews/selo verificado) | 100% | Completo — "Agendar consulta" removido por decisão de produto (U12) |
+| Fale conosco | 85% | Grava no banco (com rate limiting); e-mail depende de `EMAILJS_*` (G3) |
+| Cadastro profissional (com especialidade real e upload de foto) | 100% | Completo |
+| Área do cuidador (`/meu-espaco` — dependentes/diário) | 100% | Completo (F5) |
+| CI/CD | 100% | `.github/workflows/ci.yml`, roda em cada PR |
+| Banco/RLS/migrations | 100% | 25 tabelas, RLS 25/25, 22 migrations sincronizadas |
+| Perfil do usuário (`/perfil`) | 100% | Completo, com upload de avatar (U2) |
+| Itens salvos (`/salvos`) | 100% | Completo (U3) |
+| Configurações (`/configuracoes`) | 100% | Completo (U4) |
+| Central de Ajuda (`/faq`) | 100% | Completo, com busca e CTA (U5) |
+| Boas-vindas ao entrar em grupo | 100% | Completo (U1) |
+| Notificações (`/notificacoes`) | 100% | Completo, com realtime (U6/E7) |
+| Painel administrativo (`/admin`) | 100% | Completo (E6) |
+| E2E (Playwright) | 70% | Páginas públicas cobertas; fluxos autenticados dependem de conta de teste + Supabase em CI (Q6/2.6) |
 
 ### Serviços externos integrados
 
@@ -62,10 +72,19 @@ qualidade/escala** (tipos gerados, mais testes, imagens em Storage).
 | **GitHub Actions** | CI (typecheck/test/build) | Workflow criado; roda ao abrir PR |
 
 ### ✅ Já concluído nesta branch (baseline)
-Desacople do Firebase · refactor feature-based · migração de **todas** as telas
-de dados para Supabase · busca real de profissionais (`useSearch`) · Vitest (16
-testes) · sanitização XSS nas notícias · sincronização das 7 migrations · **CI**
-· **favoritar no acervo** · **criar post na comunidade**.
+47 PRs mesclados até aqui — changelog completo, PR a PR, em
+`docs/project/historico-prs.md`. Resumo por área: desacople do Firebase e
+migração de todas as telas para Supabase · núcleo de comunidade completo
+(posts, comentários, curtidas, salvos, grupos, eventos reais, paginação) ·
+rede de profissionais completa (cadastro com especialidade real, paginação,
+busca full-text, selo verificado, avaliações) · acervo digital completo
+(sugestão de item, favoritos, busca full-text, upload de imagem) · área do
+cuidador, perfil, salvos, configurações, notificações e painel administrativo
+· trilhas de conhecimento com passos reais (quiz semanal pendente) · Storage
+para upload de imagem (avatar, profissional, acervo, posts) · rate limiting
+no banco · CI (GitHub Actions) · Vitest (68 testes) · Playwright (páginas
+públicas) · ESLint · harmonia Supabase↔Vercel (middleware, Server
+Components, ISR, consolidação de queries).
 
 ---
 
@@ -114,6 +133,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
 | E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
 | E8 | ✅ Busca server-side (full-text) — Acervo Digital e profissionais/clínicas | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
+| F8 | 🟡 Trilhas de conhecimento — passos reais + progresso (quiz fora de escopo) | Código/Supabase | P3 | Média | meio dia | — |
 
 ---
 
@@ -188,19 +208,13 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [G5] Abrir PR, validar Preview e mergear em `main`
+### [G5] ✅ Abrir PR, validar Preview e mergear em `main`
 - **Categoria:** Processo · **Prio:** P0 · **Dificuldade:** Baixa · **Tempo:** ~1 h · **Dependências:** G1–G4, CI
-- **Relevância:** Publica a branch (16 commits) em produção. Corpo do PR já pronto em `docs/project/pr-description.md`.
-
-#### 🎯 Passo a passo
-1. Abrir PR `claude/new-session-8sdpjq → main` (usar `docs/project/pr-description.md`).
-2. Aguardar **CI verde** + Preview Deployment.
-3. Rodar o smoke test da Seção 5 no Preview.
-4. Merge → deploy de produção automático a partir de `main`.
+- **Relevância:** Publica a branch em produção. O fluxo evoluiu do "1 PR grande" original (corpo em `docs/project/pr-description.md`, PR #6) para **1 PR por etapa** — 47 PRs já mesclados em `main`, cada um passando por CI antes do merge. Ver o changelog completo em `docs/project/historico-prs.md`.
 
 #### ✅ Critério de aceite
-- [ ] CI verde no PR; Preview validado.
-- [ ] Produção em `plataforma-elos-app.vercel.app` funcional.
+- [x] CI verde em cada PR antes do merge — critério satisfeito continuamente desde então.
+- [x] Produção em `plataforma-elos-app.vercel.app` atualizada a cada merge em `main`.
 
 ---
 
@@ -678,7 +692,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 **Antes de mergear em `main` / promover produção:**
 - [ ] `npm run typecheck` → 0 erros.
 - [ ] `npm run test` → verde.
-- [ ] `npm run build` → 0 avisos, 22 rotas.
+- [ ] `npm run build` → 0 avisos, 30 rotas.
 - [ ] **CI verde** no PR (GitHub Actions).
 - [ ] Env vars presentes nos 3 ambientes da Vercel (7 chaves) — sem `service_role` no front.
 - [ ] Supabase Auth: Site URL + Redirect URLs corretos; decisão de confirm-email aplicada (G1).
@@ -686,7 +700,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 - [ ] Usuário admin criado e `is_admin()` = true (G4).
 - [ ] `vercel.json` intacto (`{"framework":"nextjs"}`) — define o preset (projeto tem `framework:null`).
 - [ ] Sanitização XSS ativa nas notícias (`isomorphic-dompurify` em `noticias/[slug]` e `noticias-ai/[slug]`).
-- [ ] RLS habilitada nas 22 tabelas (ver `docs/architecture/security-checklist.md`).
+- [ ] RLS habilitada nas 25 tabelas (ver `docs/architecture/security-checklist.md`).
 - [ ] **Smoke test no Preview:** cadastro → login → criar post → curtir/comentar → favoritar acervo → entrar/sair de grupo → enviar "Fale conosco" → detalhe de profissional/review → suporte IA responde.
 - [ ] Sem mocks nas telas de dados (após F1, `allCommunityEvents` removido).
 
@@ -695,6 +709,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 ## Documentos relacionados
 - Roadmap resumido: [`./roadmap.md`](./roadmap.md)
 - Segurança/RLS + hardening: [`../architecture/security-checklist.md`](../architecture/security-checklist.md)
-- Corpo do PR: [`./pr-description.md`](./pr-description.md)
+- Changelog PR a PR (47 PRs mesclados): [`./historico-prs.md`](./historico-prs.md)
+- Corpo da PR consolidada #6, documento histórico: [`./pr-description.md`](./pr-description.md)
 - Histórico de migrations: [`../../supabase/migrations/README.md`](../../supabase/migrations/README.md)
-- Relatório da refatoração: [`./refactor-report.md`](./refactor-report.md)
+- Relatório da refatoração (documento histórico): [`./refactor-report.md`](./refactor-report.md)
