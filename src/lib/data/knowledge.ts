@@ -44,3 +44,27 @@ export function mapKnowledgeTrail(row: KnowledgeTrailRow, progressoPorTrilha: Ma
     progress: progressoPorTrilha.get(row.id) ?? 0,
   };
 }
+
+export type KnowledgeTrailStepRow = {
+  id: string;
+  trail_id: string;
+  title: string;
+  content: string;
+  sort_order: number;
+};
+
+export type KnowledgeTrailStep = {
+  id: string;
+  title: string;
+  content: string;
+  completed: boolean;
+};
+
+export function mapKnowledgeTrailStep(row: KnowledgeTrailStepRow, passosConcluidos: Set<string>): KnowledgeTrailStep {
+  return {
+    id: row.id,
+    title: row.title,
+    content: row.content,
+    completed: passosConcluidos.has(row.id),
+  };
+}

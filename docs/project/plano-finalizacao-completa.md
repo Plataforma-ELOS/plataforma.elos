@@ -36,7 +36,7 @@ qualidade/escala** (tipos gerados, mais testes, imagens em Storage).
 | Comunidade — feed/curtir/salvar/comentar/excluir/**criar** | 95% | Falta editar post (F2); eventos da sidebar são mock (F1) |
 | Grupos (explorar/meus/criar) | 100% | Completo |
 | Notícias + Notícias IA | 90% | Precisa `GEMINI_API_KEY` p/ resumo IA (G3) |
-| Notícias gamificadas | 85% | Trilhas exibem progresso; sem conteúdo/quiz (E-extra) |
+| Notícias gamificadas | 95% | Trilhas com passos reais e progresso funcional; quiz semanal continua decorativo (E-extra) |
 | Acervo digital (+ **favoritar** e **sugerir item**) | 98% | Upload de imagem do material ainda é stub (E3) |
 | Profissionais (listagem/busca/detalhe/reviews) | 95% | "Agendar consulta" e "compartilhar" em stub (F3/F4) |
 | Fale conosco | 85% | Grava no banco; e-mail depende de `EMAILJS_*` (G3) |
@@ -638,6 +638,19 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
   - **Causa raiz corrigida em 2026-07-28 (primeira etapa):** investigando esse truque, descobri que `/cadastro-profissional` (`inscreverProfissional`, `src/app/actions/professional-signup.ts`) nunca gravava `specialty` em nenhum dos dois inserts — só as linhas seed/demo tinham o campo preenchido; qualquer cadastro real ficava com `specialty = null`. Corrigido: `src/lib/data/specialties.ts` (novo) define a lista canônica (`Psicólogo(a)`, `Fonoaudiólogo(a)`, `Terapeuta Ocupacional`, `Neurologista ou Psiquiatra`, `Psicopedagogo(a)`, `Acompanhante Terapêutico(a)`), usada tanto pelo novo `<Select>` "Especialidade" em `cadastro-profissional/page.tsx` (com opção "Outro" revelando um campo livre) quanto pelos chips de `profissionais/client-page.tsx`; clínicas ganharam um campo de texto livre "Especialidade/Área de Atuação" (categoria diferente, descritiva). `inscreverProfissional` passou a gravar `specialty` nos dois inserts. Migration `canonicalize_professionals_specialty` ajustou os 5 valores de `specialty` das linhas demo para a lista canônica (clínicas não mudaram — specialty delas já era texto livre).
   - **Paginação + full-text implementados em 2026-07-28 (segunda etapa, ver `E2`):** migration `add_professionals_clinics_search_vector` — mesmo padrão de `search_vector`/GIN do Acervo, combinando nome/razão social + specialty + descrição em `professionals` e `clinics`. Nova Server Action `filtrarProfissionais(especialidade?, query?)` (`src/app/actions/professionals.ts`) — `.eq('specialty', especialidade)` e/ou `.textSearch('search_vector', query, {type:'websearch', config:'portuguese'})`, retornando profissionais e clínicas filtrados juntos. `profissionais/client-page.tsx`: os chips de especialidade deixaram de usar `matchesFilter` do `useSearch` sobre a página local (esse desenho, da primeira etapa, só funcionava para a primeira página carregada) — agora clique no chip dispara `filtrarProfissionais` na hora (sem debounce), e a busca por nome dispara a mesma action com debounce de ~300ms; quando nenhum filtro/busca está ativo, a tela volta a mostrar as listas paginadas localmente. Sem paginação adicional sobre resultado filtrado/pesquisado (mesma decisão já tomada no Acervo).
 - **Aceite:** [x] notificações chegam em tempo real · [x] busca global rápida server-side no Acervo Digital · [x] full-text + paginação em `/profissionais` (causa raiz + implementação completas).
+
+---
+
+### [F8] 🟡 Trilhas de conhecimento — passos reais + progresso (quiz fora de escopo)
+- **Categoria:** Código/Supabase · **Prio:** P3 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
+- **Relevância:** `trail_progress` existia desde o `0001`, mas as trilhas não tinham nenhum conteúdo real — "Continuar Trilha" (`/noticias-gamificadas`) não tinha `onClick` nem `href`, era 100% inerte.
+- **Implementado em 2026-07-29:** migration `add_knowledge_trail_steps_and_completions` — tabela `knowledge_trail_steps` (passos ordenados por trilha, leitura pública/escrita admin, mesmo padrão de `knowledge_trails`) + `trail_step_completions` (conclusão por usuário, RLS `FOR ALL` restrita ao dono, mesmo padrão de `dependents`/`caregiver_journal`), com seed de 4 passos reais para cada uma das 2 trilhas demo (conteúdo informativo ancorado em legislação real — Lei Berenice Piana 12.764/2012, Lei Brasileira de Inclusão 13.146/2015 — no mesmo tom factual de `knowledge_pills`). Nova rota `/noticias-gamificadas/trilhas/[id]` (Server Component + `client-page.tsx`): lista os passos em `Accordion` (shadcn), cada um com `Checkbox` "Concluí esta etapa". Nova Server Action `alternarPassoConcluido(trailId, stepId)` (`src/app/actions/knowledge.ts`) faz o toggle em `trail_step_completions` e recalcula `trail_progress.progress` (`count(concluídos)/count(total de passos)×100`) no mesmo request. `noticias-gamificadas/page.tsx`: botão "Continuar Trilha" vira link real; barra de progresso hand-rolled trocada pelo `Progress` do shadcn (já existia no projeto, não era usado).
+- **Fora de escopo, decisão do usuário:** o quiz semanal (`Quiz da Semana!`) continua decorativo — exigiria um sistema de pontos/pontuação que não existe em nenhum outro lugar do app, uma decisão de produto maior que não cabe decidir sozinho nesta rodada.
+
+#### ✅ Critério de aceite
+- [x] "Continuar Trilha" leva a uma tela real com os passos da trilha.
+- [x] Marcar/desmarcar um passo atualiza `trail_progress` e reflete na barra de progresso da listagem.
+- [ ] Quiz semanal — fora de escopo, ver nota acima.
 
 ---
 
