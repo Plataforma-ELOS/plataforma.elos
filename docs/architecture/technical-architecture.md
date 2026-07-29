@@ -4,7 +4,7 @@ Este documento fornece uma análise técnica das telas da aplicação, servindo 
 
 **Stack real (não Firebase):** Next.js 15 (App Router) + Supabase (Postgres, Auth, Realtime) + shadcn/ui + Tailwind, deploy na Vercel. Toda leitura/escrita passa pelo PostgREST sujeita a RLS — ver `docs/architecture/security-checklist.md`. Genkit/Gemini é usado só nos dois fluxos de IA (`/suporte-ia`, `/noticias-ai/[slug]`), sem relação com dados de usuário.
 
-Padrão de acesso a dados predominante: a maioria das telas é **Client Component** que busca via `createClient()` (browser client, `src/lib/supabase/client.ts`) dentro de `useEffect`. As telas mais recentes (`/perfil`, `/salvos`, `/configuracoes`, `/notificacoes`, `/comunidade/grupos/[id]`, `/profissionais/[id]`) seguem o padrão **Server Component + client-page.tsx**: a página busca os dados no servidor (`createClient(await cookies())`, `src/lib/supabase/server.ts`) e repassa como props para um componente `"use client"` que cuida da interação. Migrar as telas mais antigas para esse segundo padrão é o item `3.1`/`E1` do roadmap.
+Padrão de acesso a dados predominante: **Server Component + client-page.tsx** (item `3.1`/`E1` do roadmap, concluído) — a página busca os dados no servidor (`createClient(await cookies())`, `src/lib/supabase/server.ts`, ou `createStaticClient()` quando a rota não depende de sessão — ver `docs/architecture/harmonia-supabase-vercel.md`, item H5) e repassa como props para um componente `"use client"` que cuida da interação. Isso cobre praticamente todas as telas de conteúdo hoje: `/comunidade`, `/comunidade/explorar-grupos`, `/comunidade/meus-grupos`, `/comunidade/grupos/[id]`, `/acervo-digital`, `/profissionais`, `/profissionais/[id]`, `/noticias-gamificadas`, `/noticias-gamificadas/trilhas/[id]`, `/perfil`, `/salvos`, `/configuracoes`, `/notificacoes`, `/meu-espaco`, `/admin`. Os únicos `"use client"` que ainda buscam ou gravam dado diretamente do browser são telas de formulário sem conteúdo inicial para ler (`/login`, `/cadastro`, `/cadastro-profissional`, `/comunidade/criar-grupo`, `/fale-conosco`) — não sobrou tela de listagem/leitura em Client Component puro.
 
 `src/app/loading.tsx` e `src/app/error.tsx` (raiz) dão fallback global de carregamento/erro para qualquer rota sem um boundary mais específico — cobre as telas Server Component acima sem precisar de um arquivo por rota.
 
@@ -89,15 +89,16 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 ```json
 {
   "route": "/acervo-digital",
-  "component_hierarchy": ["DigitalLibraryPage", "SearchBar", "SearchFilters", "Grid/List Switch", "LibraryCards", "AddToLibraryDialog"],
+  "component_hierarchy": ["DigitalLibraryPage", "SearchBar", "SearchFilters", "Grid/List Switch", "LibraryCards"],
   "data": {
     "tables": "library_items (SELECT público) + library_favorites (favoritos do usuário logado, toggle via alternarFavorito em src/app/actions/library.ts)",
-    "mapper": "src/lib/data/library.ts (mapLibraryRow)"
+    "mapper": "src/lib/data/library.ts (mapLibraryRow)",
+    "search": "busca full-text server-side via search_vector (tsvector/GIN), buscarItensAcervo em src/app/actions/library.ts, debounce de 300ms no client"
   },
   "state_management": {
-    "local": ["view: 'grid'|'list'", "useSearch (query/filtro/ordenação)"]
+    "local": ["view: 'grid'|'list'", "useSearch (filtro de tipo/ordenação, decoupled da busca por texto)"]
   },
-  "note": "O formulário 'Adicionar ao Acervo' ainda é um mock local (não persiste) — upload de material real é o item F7/E3 do roadmap."
+  "note": "O dialog 'Adicionar ao Acervo' é markup inline em client-page.tsx (não um componente separado) — grava de verdade via sugerirItemAcervo (library.ts), com upload opcional de imagem para o bucket library."
 }
 ```
 
@@ -108,14 +109,15 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
   "component_hierarchy": ["CommunityPage", "CreatePost", "PostCard", "CommentSection", "CreateEventDialog", "LoginRequiredDialog"],
   "data": {
     "tables": "posts, comments, post_likes, post_saves, events (todas via Server Actions em src/app/actions/community.ts e src/app/actions/events.ts)",
-    "pattern": "Client Component com fetch em useEffect (createClient() do browser). Posts trazem author/likes/saves/comments num único select aninhado."
+    "pattern": "page.tsx é Server Component (createClient(await cookies())) — busca a primeira página de posts (.range(), 10 por página) e eventos futuros num único select aninhado (author/likes/saves/comments); client-page.tsx cuida da interação e do 'Carregar mais posts' (buscarMaisPosts, offset-based)."
   },
   "state_management": {
-    "local": ["posts (useState, recarregado após criar post)", "events (useState, só futuros: starts_at >= now())", "eventoSelecionado (Dialog de detalhe do evento)"]
+    "local": ["posts (useState, seed do servidor + concatenado ao paginar)", "events (useState, só futuros: starts_at >= now())", "eventoSelecionado (Dialog de detalhe do evento)"]
   },
   "post_card": {
     "editar": "editarPost (community.ts) — Dialog com Textarea pré-preenchida, só visível para o autor (posts_update_own via RLS).",
-    "compartilhar": "src/lib/share.ts (compartilhar) — Web Share API com fallback de clipboard, também usado em profissionais/[id]."
+    "compartilhar": "src/lib/share.ts (compartilhar) — Web Share API com fallback de clipboard, também usado em profissionais/[id].",
+    "imagem": "upload opcional para o bucket posts (Supabase Storage) em CreatePost, gravado em posts.image_url e renderizado no card via next/image."
   }
 }
 ```
@@ -125,7 +127,7 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 {
   "tables": "groups (RLS: leitura pública, insert/update do dono ou admin), group_members (RLS: leitura pública, insert do próprio profile_id)",
   "actions": "src/app/actions/groups.ts (entrarNoGrupo, sairDoGrupo, criarGrupo)",
-  "pattern": "/grupos/[id] é Server Component (fetch com cookies) + client-page.tsx; as demais são Client Component com fetch em useEffect.",
+  "pattern": "/grupos/[id], /explorar-grupos e /meus-grupos são Server Component (fetch com cookies) + client-page.tsx; só /criar-grupo continua Client Component (formulário puro, sem conteúdo inicial pra ler).",
   "ux": "Entrar num grupo em /explorar-grupos abre um modal de boas-vindas com CTA para /comunidade/grupos/[id]."
 }
 ```
@@ -146,24 +148,30 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 ```json
 {
   "route": "/profissionais, /profissionais/[id]",
-  "component_hierarchy": ["ProfessionalsPage (client, useSearch)", "ProfessionalProfilePage (Server Component) -> ProfessionalProfileClient"],
+  "component_hierarchy": ["ProfessionalsPage (Server Component, createStaticClient) -> ProfessionalsPageClient (useSearch descontinuado para filtro/busca, agora server-driven)", "ProfessionalProfilePage (Server Component) -> ProfessionalProfileClient"],
   "data": {
     "tables": "professionals, clinics, professional_skills, professional_experiences, reviews",
     "mapper": "src/lib/data/professionals.ts (mapProfessionalDetail, mapClinicDetail, computeReviewSummary)",
-    "actions": "criarAvaliacao em src/app/actions/reviews.ts"
+    "actions": "criarAvaliacao em src/app/actions/reviews.ts; buscarMaisProfissionais/buscarMaisClinicas/filtrarProfissionais em src/app/actions/professionals.ts",
+    "search": "specialty é lista canônica (src/lib/data/specialties.ts), gravada de verdade no cadastro (root cause de um bug antigo em que o chip de especialidade combinava com prefixo truncado); chips filtram por igualdade exata, busca por nome usa search_vector (tsvector/GIN) com debounce de 300ms",
+    "pagination": "10 profissionais / 6 clínicas por página (.range()), botões 'Ver mais profissionais'/'Explorar mais clínicas' reais, escondidos quando um filtro/busca está ativo"
   },
-  "note": "[id] é Server Component: busca em professionals OU clinics (o que existir) + reviews, e repassa para o client-page. Botão 'Agendar consulta' foi removido (decisão de produto, item U12). Botão 'Compartilhar' usa src/lib/share.ts."
+  "cache": "profissionais/page.tsx e profissionais/[id]/page.tsx usam createStaticClient() (sem cookies) + export const revalidate = 300 (ISR) — nenhuma personalização por usuário logado nessas duas rotas.",
+  "note": "[id] consolida profissional+skills+experiences+reviews (ou clínica+reviews) numa única query com relações aninhadas do PostgREST, em vez de até 4 queries separadas. Botão 'Agendar consulta' foi removido (decisão de produto, item U12). Botão 'Compartilhar' usa src/lib/share.ts. Selo 'Verificado' (BadgeCheck) aparece quando verification_status = 'verified', aprovado via /admin."
 }
 ```
 
-## 9. Notícias Gamificadas (`/noticias-gamificadas`)
+## 9. Notícias Gamificadas (`/noticias-gamificadas`, `/noticias-gamificadas/trilhas/[id]`)
 ```json
 {
-  "route": "/noticias-gamificadas",
-  "component_hierarchy": ["NewsGamifiedPage", "KnowledgePills", "LearningTrails", "QuizCard"],
+  "route": "/noticias-gamificadas, /noticias-gamificadas/trilhas/[id]",
+  "component_hierarchy": ["NewsGamifiedPage", "KnowledgePills", "LearningTrails (Progress do shadcn)", "QuizCard (ainda decorativo)", "TrailDetailPage (Server Component) -> TrailDetailClient (Accordion + Checkbox por passo)"],
   "data": {
-    "tables": "knowledge_pills, knowledge_trails, trail_progress (progresso do usuário logado)"
-  }
+    "tables": "knowledge_pills, knowledge_trails, knowledge_trail_steps (passos ordenados por trilha, leitura pública/escrita admin), trail_progress (progresso agregado do usuário logado), trail_step_completions (conclusão por passo, RLS FOR ALL restrita ao dono)",
+    "mapper": "src/lib/data/knowledge.ts (mapKnowledgePill, mapKnowledgeTrail, mapKnowledgeTrailStep)",
+    "actions": "alternarPassoConcluido em src/app/actions/knowledge.ts — faz o toggle em trail_step_completions e recalcula trail_progress.progress (concluídos/total × 100) no mesmo request"
+  },
+  "note": "Quiz semanal ('Quiz da Semana!') continua decorativo — exigiria um sistema de pontos que não existe em nenhum outro lugar do app (decisão de produto, item F8)."
 }
 ```
 
@@ -274,4 +282,4 @@ Padrão de acesso a dados predominante: a maioria das telas é **Client Componen
 Conteúdo estático, sem dados de banco.
 
 ---
-*Atualizado em 2026-07-27. Reflete a arquitetura Supabase real (pós-migração completa do Firebase/mocks), as telas adicionadas na Sprint 5 e a Área do Cuidador (F5/1.6).*
+*Atualizado em 2026-07-29. Reflete a arquitetura Supabase real (pós-migração completa do Firebase/mocks), a migração completa das telas de conteúdo para Server Component + client-page.tsx (H2), a reabertura de `/profissionais` (causa raiz de specialty, paginação, busca full-text, ISR e consolidação de queries — H3/H4/H5) e as trilhas de conhecimento com passos reais (F8).*

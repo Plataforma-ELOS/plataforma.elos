@@ -19,7 +19,7 @@ sujeita às policies de RLS do banco.
 
 ## Validação de RLS (todas as tabelas de `public`)
 
-`RLS habilitada` em **23/23** tabelas, cada uma com ≥1 policy:
+`RLS habilitada` em **25/25** tabelas, cada uma com ≥1 policy:
 
 | Tabela | RLS | Policies |
 |---|---|---|
@@ -39,7 +39,9 @@ sujeita às policies de RLS do banco.
 | news_articles | ✅ | 4 |
 | knowledge_pills | ✅ | 4 |
 | knowledge_trails | ✅ | 4 |
+| knowledge_trail_steps | ✅ | 4 (select público; insert/update/delete só admin) |
 | trail_progress | ✅ | 1 (FOR ALL, dono) |
+| trail_step_completions | ✅ | 1 (FOR ALL, dono) |
 | library_items | ✅ | 4 |
 | library_favorites | ✅ | 1 (FOR ALL, dono) |
 | contact_messages | ✅ | 2 |
@@ -99,7 +101,7 @@ E, para demonstração, o toggle de confirmação de e-mail fica em
 `Authentication → Providers → Email → "Confirm email"`.
 
 ## Resumo
-- ✅ RLS: 23/23 tabelas cobertas — nenhuma correção necessária no banco.
+- ✅ RLS: 25/25 tabelas cobertas — nenhuma correção necessária no banco.
 - ✅ Nenhuma query usa `service_role` no frontend.
 - ✅ Funções `SECURITY DEFINER` sem `EXECUTE` público desnecessário (`notify_post_like`/`notify_post_comment`).
 - ⚠️ Pendência (painel, 1 clique): habilitar Leaked Password Protection.

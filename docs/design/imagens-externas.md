@@ -1,8 +1,8 @@
 # Imagens hospedadas fora do projeto — inventário e plano
 
-> **O problema:** a aplicação hoje depende de dois serviços gratuitos de terceiros para exibir imagens — `i.ibb.co` e `placehold.co`. Nenhum dos dois foi feito para produção: são hosts sem SLA, que podem remover ou alterar uma imagem a qualquer momento sem aviso, ficam fora do controle e do backup do projeto, e um deles (`i.ibb.co`) já se provou bloqueado pela política de rede deste ambiente de desenvolvimento (o mesmo problema que impediu baixar o logo oficial para o favicon, ver commit `fix: substitui favicon do Firebase...`). Além disso, `placehold.co` está gravado como **dado real** em duas tabelas do banco (profissionais e clínicas demo) — ou seja, hoje nenhuma "foto de profissional" no app é uma foto de verdade, é um quadrado colorido com iniciais.
+> **O problema:** a aplicação depende de dois serviços gratuitos de terceiros para exibir imagens — `i.ibb.co` e `placehold.co`. Nenhum dos dois foi feito para produção: são hosts sem SLA, que podem remover ou alterar uma imagem a qualquer momento sem aviso, e um deles (`i.ibb.co`) já se provou bloqueado pela política de rede deste ambiente de desenvolvimento (o mesmo problema que impediu baixar o logo oficial para o favicon). `placehold.co` continua gravado como **dado real** nas 5 linhas demo de profissionais e 2 de clínicas (são fictícias, criadas por seed) — mas **qualquer cadastro real feito hoje pela plataforma já pode subir uma foto de verdade**, já que o upload via Supabase Storage foi implementado (item 10 do inventário) para avatar, foto de profissional/clínica, capa de item do acervo e imagem de post.
 >
-> Este documento lista cada ocorrência encontrada e propõe para onde cada uma deve ir: **arquivo estático no repositório** (`public/`) ou **Supabase Storage** (o "banco de dados" de arquivos do próprio projeto).
+> Este documento lista cada ocorrência encontrada e propõe para onde cada uma deve ir: **arquivo estático no repositório** (`public/`) ou **Supabase Storage** (o "banco de dados" de arquivos do próprio projeto). A Trilha B (Storage) já foi executada; a Trilha A (assets estáticos) segue bloqueada por falta de acesso a `i.ibb.co` neste ambiente.
 
 ---
 
@@ -10,15 +10,16 @@
 
 | # | Imagem / uso | Onde está | Host atual | Tipo | Destino recomendado |
 |---|---|---|---|---|---|
-| 1 | Logo oficial do E.L.O.S (header) | `src/lib/data/placeholder-images.json` → `logo.url`, usado em `header.tsx:249,273` e `header-secondary.tsx` | `i.ibb.co` | Fixo do app | `public/` (estático) |
+| 1 | Logo oficial do E.L.O.S (header) | `src/lib/data/placeholder-images.json` → `logo.url`, usado em `header.tsx`/`header-secondary.tsx` | `i.ibb.co` | Fixo do app | `public/` (estático) |
 | 2 | 5 fotos de profissionais (dados de exemplo, não usadas em nenhuma tela hoje) | `src/lib/data/placeholder-images.json` → `professionals.*` | `i.ibb.co` | Morto/não referenciado no código | Remover do JSON, ou mover para `public/` se algum dia forem usadas |
-| 3 | Avatar genérico (fallback) | `header.tsx:107`, `header-secondary.tsx:109`, `create-post.tsx:27`, `comment-section.tsx:62`, `post-card.tsx:77`, `comunidade/page.tsx:140,149`, `professionals.ts:50` | `placehold.co` | Fixo do app | `public/` (estático) |
+| 3 | Avatar genérico (fallback) | `header.tsx:128`, `header-secondary.tsx:130`, `create-post.tsx:74`, `post-card.tsx:118`, `lib/data/community.ts:47,56`, `lib/data/library.ts:50`, `professionals.ts:84,96,110,130` | `placehold.co` | Fixo do app | `public/` (estático) |
 | 4 | Banner de fundo (login/cadastro) | `login/page.tsx:166`, `cadastro/page.tsx:122` | `placehold.co` | Fixo do app | `public/` (estático) |
-| 5 | Capa de notícia (fallback quando `image_url` é nulo) | `src/lib/data/news.ts:45,71` | `placehold.co` | Fallback de dado dinâmico | `public/` (ícone/placeholder local) |
-| 6 | Capa de item do acervo / avatar (fallback) | `src/lib/data/library.ts:77,88,101,120` | `placehold.co` | Fallback de dado dinâmico | `public/` (ícone/placeholder local) |
-| 7 | **Fotos de profissionais demo (dado real gravado no banco)** | tabela `professionals.image_url` — 5 linhas | `placehold.co` (`?text=AM`, `?text=CL`, etc. — só iniciais, não fotos) | Dado dinâmico | Supabase Storage (bucket `professionals`) |
-| 8 | **Fotos de clínicas demo (dado real gravado no banco)** | tabela `clinics.image_url` — 2 linhas | `placehold.co` (`?text=Clinica`) | Dado dinâmico | Supabase Storage (bucket `professionals` ou bucket próprio `clinics`) |
+| 5 | Capa de notícia (fallback quando `image_url` é nulo) | `src/lib/data/news.ts:44,70` | `placehold.co` | Fallback de dado dinâmico | `public/` (ícone/placeholder local) |
+| 6 | Avatar de perfil (fallback quando `avatar_url` é nulo) | `src/app/perfil/client-page.tsx:105,135` | `placehold.co` | Fallback de dado dinâmico | `public/` (ícone/placeholder local) — **upload real via Storage já existe** (item 10), o fallback só aparece antes do primeiro upload |
+| 7 | **Fotos de profissionais demo (dado real gravado no banco)** | tabela `professionals.image_url` — 5 linhas | `placehold.co` (`?text=AM`, `?text=CL`, etc. — só iniciais, não fotos) | Dado dinâmico | Supabase Storage (bucket `professionals`) — **já disponível para uploads novos** (item 10); as 5 linhas demo específicas continuam com o placeholder por serem dado fictício |
+| 8 | **Fotos de clínicas demo (dado real gravado no banco)** | tabela `clinics.image_url` — 2 linhas | `placehold.co` (`?text=Clinica`) | Dado dinâmico | Supabase Storage (bucket `professionals`) — mesma nota do item 7 |
 | 9 | Hosts liberados em `next.config.ts` mas nunca usados no código | `next.config.ts` → `remotePatterns` | `storage.googleapis.com`, `picsum.photos` | Configuração morta | Remover do `next.config.ts` |
+| 10 | **Upload real de imagem (já implementado)** | avatar (`perfil/client-page.tsx`), foto de profissional/clínica (`cadastro-profissional/page.tsx`), capa de item do acervo (`acervo-digital/client-page.tsx`), imagem de post (`create-post.tsx`) | Supabase Storage — buckets `avatars`, `professionals`, `library`, `posts` | Dado dinâmico | ✅ concluído — RLS de leitura pública/escrita por dono em todos os 4 buckets |
 
 **Contraste — o que já está certo:** `public/perfis/liberais/profissional-*.jpg`, `public/perfis/compromisso.jpg`, `public/noticias/*.jpg`, `public/home/**`, `public/ia/*.jpg` já são imagens locais, usadas nas seções mockadas da home (`new-professionals.tsx`, `news-carousel.tsx`, `new-community.tsx`, `ai-support-home.tsx`) e em `/profissionais`. É esse o padrão a repetir nos itens 1, 3 e 4 acima.
 
@@ -46,25 +47,24 @@ Nenhum caso deste inventário justifica continuar em um host externo.
 
 **Bloqueio conhecido:** os arquivos de origem do logo (item 1) estão em `i.ibb.co`, host bloqueado pela política de rede deste sandbox (mesmo bloqueio já documentado na troca do favicon). Para executar o item 1 preciso que o arquivo oficial do logo seja enviado diretamente no chat, ou que esta etapa rode num ambiente com acesso a esse host. Os itens 3, 4 e 9 não têm esse bloqueio — podem ser feitos com um asset genérico criado localmente (como fiz para o favicon) ou com um arquivo enviado pelo usuário.
 
-### Trilha B — Supabase Storage (itens 5, 6, 7, 8)
+### Trilha B — Supabase Storage (✅ concluída, itens 6, 7, 8, 10)
 
-1. Criar buckets no Supabase Storage: `avatars` (fotos de perfil de usuário), `professionals` (fotos de profissionais e clínicas), `library` (capas de itens do acervo), `news` (capas de notícia).
-2. Policy de leitura pública (`select` liberado) e escrita restrita ao dono do registro (RLS baseada em `auth.uid() = owner_id`), no mesmo padrão das policies já existentes nas tabelas.
-3. Trocar os *fallbacks* embutidos no código (`?? 'https://placehold.co/...'` em `news.ts` e `library.ts`, itens 5-6) por um placeholder local simples — por exemplo, reaproveitar o mesmo ícone (`FileText`/`ImageOff` do `lucide-react`) já usado como fallback visual em `digital-library-card.tsx`, em vez de apontar para outro serviço externo.
-4. Substituir os dois registros de `professionals.image_url` e as duas linhas de `clinics.image_url` (itens 7-8) por uploads reais no bucket `professionals`, atualizando a coluna com a URL pública do Storage. Isso deve acontecer junto com o fluxo de cadastro/verificação de profissional (`cadastro-profissional`), que já existe mas hoje não tem upload de imagem — está listado como stub `F7`/`E3` no `docs/project/plano-finalizacao-completa.md`.
-
-Esta trilha não depende de nenhum host externo bloqueado — pode ser executada por completo nesta sessão quando for priorizada (criação de bucket e RLS são operações do Supabase MCP, sem rede externa envolvida).
+1. ~~Criar buckets no Supabase Storage~~ — feito: `avatars`, `professionals`, `library`, `posts` (migrations `add_storage_buckets_avatars_professionals` e `add_posts_image_url_and_buckets`).
+2. ~~Policy de leitura pública + escrita restrita ao dono~~ — feito, path prefixado por `auth.uid()` em todos os 4 buckets; sem policy de `select` (bucket público já serve via URL, evitando exposição de listagem — ver Security Advisor).
+3. ~~Upload real no fluxo de cadastro/verificação de profissional~~ — feito: `cadastro-profissional/page.tsx` tem upload de foto opcional, gravado em `professionals.image_url`/`clinics.image_url` via `inscreverProfissional`.
+4. ~~Upload no perfil, acervo e posts~~ — feito: `/perfil` (avatar), `/acervo-digital` (capa de item sugerido), criar post (imagem do post).
+5. **Restante, ainda pendente:** trocar os *fallbacks* embutidos no código (itens 3, 5, 6 — avatar genérico, banner de auth, capa de notícia) por um asset local simples em vez de `placehold.co`; e as 5+2 linhas demo de `professionals`/`clinics.image_url` continuam com o placeholder (são dado fictício, não é um cadastro real que alguém possa reenviar).
 
 ---
 
 ## 4. Checklist de aceite
 
-- [ ] `npm run build` limpo depois da troca.
-- [ ] Nenhuma referência a `i.ibb.co` ou `placehold.co` no código, exceto o que for conscientemente mantido como placeholder de desenvolvimento.
-- [ ] `next.config.ts` só lista hosts realmente usados em `remotePatterns`.
-- [ ] `professionals.image_url` e `clinics.image_url` (dado real) apontam para o Supabase Storage, não mais para `placehold.co`.
-- [ ] Buckets do Storage com RLS de leitura pública / escrita restrita ao dono.
+- [x] Buckets do Storage com RLS de leitura pública / escrita restrita ao dono (`avatars`, `professionals`, `library`, `posts`).
+- [x] Upload real disponível em perfil, cadastro profissional, acervo e criação de post.
+- [ ] `npm run build` limpo depois da troca dos assets estáticos restantes (Trilha A).
+- [ ] Nenhuma referência a `i.ibb.co` ou `placehold.co` no código, exceto o que for conscientemente mantido como placeholder de desenvolvimento (linhas demo fictícias).
+- [ ] `next.config.ts` só lista hosts realmente usados em `remotePatterns` (Trilha A, item 9).
 
 ---
 
-**Documentos relacionados:** [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) (task `E3` já menciona sair do `placehold.co` via Storage — este documento detalha o inventário completo e o passo a passo) · [`harmonia-supabase-vercel.md`](../architecture/harmonia-supabase-vercel.md).
+**Documentos relacionados:** [`plano-finalizacao-completa.md`](../project/plano-finalizacao-completa.md) (task `E3` — Supabase Storage — já concluída) · [`harmonia-supabase-vercel.md`](../architecture/harmonia-supabase-vercel.md).

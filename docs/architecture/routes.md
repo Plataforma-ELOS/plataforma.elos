@@ -27,7 +27,8 @@ Este documento lista todas as rotas e páginas disponíveis na aplicação, orga
 - `/acervo-digital` : Repositório de vídeos, documentos e guias (com filtros e busca).
 - `/noticias` : Portal de notícias tradicional da comunidade TEA.
 - `/noticias/[slug]` : Artigo completo com formatação rica.
-- `/noticias-gamificadas` : Pílulas de conhecimento, trilhas de aprendizado e quizzes.
+- `/noticias-gamificadas` : Pílulas de conhecimento e trilhas de aprendizado (quiz semanal ainda decorativo).
+- `/noticias-gamificadas/trilhas/[id]` : Detalhe da trilha — passos reais em accordion, checkbox "Concluí esta etapa" por passo, barra de progresso recalculada a cada conclusão.
 
 ## 🩺 Saúde e Rede de Apoio
 - `/profissionais` : Diretório verificado de especialistas e clínicas parceiras.

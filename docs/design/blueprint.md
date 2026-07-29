@@ -1,3 +1,7 @@
+> **Documento histórico** — este é o scaffold/blueprint original do projeto (nome de trabalho "Elos Platform", template de prototipagem inicial), anterior à migração para Supabase e a praticamente todas as funcionalidades hoje em produção (comunidade, grupos, eventos, notificações, painel admin, área do cuidador, trilhas de conhecimento, etc.). Não é mais atualizado — a paleta de cores e a nav aqui já não refletem o app atual. Os documentos vivos que sucederam este são `docs/design/style-guide.md` (paleta/tokens reais) e `docs/product/screen-content.md` (conteúdo tela a tela).
+>
+> **O que da ideação original ainda vale a pena registrar:** os três pilares de conteúdo descritos abaixo ("Aprendizado", "Conexão", "Organização") seguem sendo, em espírito, os três eixos que a plataforma organiza hoje — Aprendizado virou Acervo Digital + Notícias Gamificadas (pílulas/trilhas); Conexão virou Comunidade (posts/grupos/eventos) + Rede de Profissionais; Organização virou a Área do Cuidador (`/meu-espaco`, dependentes + diário). A intenção original permanece; a implementação evoluiu muito além do que este documento descreve.
+
 # **App Name**: Elos Platform
 
 ## Core Features:

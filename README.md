@@ -28,28 +28,50 @@ O projeto nasceu para preencher uma lacuna de suporte emocional e informacional 
 
 ### 🎮 Gamificação e Notícias
 - **Pílulas de Conhecimento:** Cards de aprendizado rápido sobre direitos e saúde.
-- **Trilhas de Aprendizado:** Caminhos guiados com barra de progresso para capacitação dos cuidadores.
+- **Trilhas de Aprendizado:** Passos reais e ordenados por trilha, com progresso calculado a partir das etapas concluídas por cada cuidador.
+
+### 🧑‍⚕️ Cadastro e Verificação Profissional
+- **Inscrição Profissional/Clínica:** Formulário com especialidade (lista fixa + campo livre para clínicas), foto e dados de registro.
+- **Selo Verificado:** Aprovação de profissionais e clínicas via painel administrativo.
+
+### 🧡 Área do Cuidador
+- **Meu Espaço:** Cadastro de dependentes e diário pessoal com registro de humor, privados a cada cuidador (RLS por dono).
+
+### 🔔 Notificações e Conta
+- **Central de Notificações:** Avisos em tempo real de curtidas e comentários.
+- **Itens Salvos, Configurações e Perfil:** Telas dedicadas para gerenciar preferências, tema, fonte e conteúdo salvo.
+
+### 🛡️ Painel Administrativo
+- **Moderação:** Aprovação de profissionais/clínicas e de itens sugeridos para o Acervo Digital, restrito a administradores.
 
 ## 🛠️ Stack Tecnológica
 
 - **Frontend:** [Next.js 15 (App Router)](https://nextjs.org/)
 - **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+- **Backend/Banco de Dados:** [Supabase](https://supabase.com/) (Postgres, Auth, Row Level Security, Storage, Realtime)
 - **Estilização:** [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/)
 - **IA Engine:** [Google Gemini](https://deepmind.google/technologies/gemini/) via [Genkit](https://genkit.dev/)
 - **Integração de E-mail:** [EmailJS](https://www.emailjs.com/)
 - **Ícones:** [Lucide React](https://lucide.dev/)
+- **Testes:** [Vitest](https://vitest.dev/) (unitários) e [Playwright](https://playwright.dev/) (E2E)
+- **CI/CD:** GitHub Actions (`typecheck` · `test` · `build` em cada PR) + deploy automático via Vercel
 
 ## 📁 Estrutura do Projeto
 
 ```text
 src/
 ├── ai/             # Configuração do Genkit e Fluxos de IA
-├── app/            # Páginas e Rotas (App Router)
+├── app/            # Páginas (Server Components) e Server Actions (App Router)
 ├── components/     # Componentes de UI e Seções da Página
 ├── hooks/          # Hooks customizados (useToast, useSearch, etc.)
-└── lib/            # Utilitários, acesso a dados e config do Supabase
+└── lib/            # Utilitários, mappers de dados (lib/data/) e clients do Supabase
+supabase/
+└── migrations/     # Histórico de migrations SQL do banco (ver README da pasta)
 docs/
-└── product/prd.md  # Documento de Requisitos de Produto completo
+├── product/        # PRD e conteúdo de tela por rota
+├── architecture/   # Rotas, arquitetura técnica, segurança/RLS, harmonia Supabase↔Vercel
+├── design/         # Guia de estilo e inventário de imagens externas
+└── project/        # Roadmap, guia mestre de finalização e histórico de PRs
 ```
 
 ## ⚙️ Como Executar
@@ -59,11 +81,24 @@ docs/
    ```bash
    npm install
    ```
-3. Execute o servidor de desenvolvimento:
+3. Configure as variáveis de ambiente:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Preencha ao menos `GEMINI_API_KEY` para ativar `/suporte-ia` e o resumo de `/noticias-ai` — as chaves do Supabase e do EmailJS já vêm preenchidas no exemplo (são chaves públicas/anon, não secretas).
+4. Execute o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
-4. Acesse a aplicação em `http://localhost:9002`.
+5. Acesse a aplicação em `http://localhost:9002`.
+
+## ✅ Qualidade
+
+```bash
+npm run typecheck   # TypeScript
+npm run test        # Vitest (testes unitários)
+npm run build       # Build de produção (roda lint + typecheck também)
+```
 
 ---
 
