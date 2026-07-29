@@ -6,6 +6,7 @@ import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { mapKnowledgePill, mapKnowledgeTrail } from '@/lib/data/knowledge';
@@ -91,12 +92,12 @@ export default async function NewsGamifiedPage() {
                     </CardHeader>
                     <CardContent className="p-0">
                         <div className="flex items-center gap-4">
-                            <div className="w-full bg-muted rounded-full h-2.5">
-                                <div className="bg-primary h-2.5 rounded-full" style={{ width: `${trail.progress}%` }}></div>
-                            </div>
+                            <Progress value={trail.progress} className="flex-1" />
                             <span className="text-sm font-semibold text-primary-strong">{trail.progress}%</span>
                         </div>
-                        <Button className="mt-4">Continuar Trilha</Button>
+                        <Button className="mt-4" asChild>
+                          <Link href={`/noticias-gamificadas/trilhas/${trail.id}`}>Continuar Trilha</Link>
+                        </Button>
                     </CardContent>
                 </Card>
               ))}

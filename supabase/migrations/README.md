@@ -47,6 +47,12 @@ está com o schema completo e testado:
     gerado) + índice GIN em `professionals` e `clinics`, mesmo padrão de
     `add_library_items_search_vector`, para paginação + busca full-text em
     `/profissionais`.
+  - `add_knowledge_trail_steps_and_completions`: tabelas
+    `knowledge_trail_steps` (passos de cada trilha, leitura pública/escrita
+    admin) e `trail_step_completions` (conclusão por usuário, RLS `FOR ALL`
+    restrita ao dono) + seed de 4 passos por trilha demo — transforma
+    "Continuar Trilha" numa tela real de passo-a-passo em
+    `/noticias-gamificadas`.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

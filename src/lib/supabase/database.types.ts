@@ -351,6 +351,41 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_trail_steps: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          sort_order: number
+          title: string
+          trail_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          title: string
+          trail_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          title?: string
+          trail_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_trail_steps_trail_id_fkey"
+            columns: ["trail_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_trails"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       knowledge_trails: {
         Row: {
           created_at: string
@@ -930,6 +965,49 @@ export type Database = {
           },
           {
             foreignKeyName: "trail_progress_trail_id_fkey"
+            columns: ["trail_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_trails"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trail_step_completions: {
+        Row: {
+          completed_at: string
+          profile_id: string
+          step_id: string
+          trail_id: string
+        }
+        Insert: {
+          completed_at?: string
+          profile_id: string
+          step_id: string
+          trail_id: string
+        }
+        Update: {
+          completed_at?: string
+          profile_id?: string
+          step_id?: string
+          trail_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trail_step_completions_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trail_step_completions_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_trail_steps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trail_step_completions_trail_id_fkey"
             columns: ["trail_id"]
             isOneToOne: false
             referencedRelation: "knowledge_trails"

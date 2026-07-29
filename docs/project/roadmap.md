@@ -96,7 +96,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - ✅ Workflow de verificação de profissionais (aprovar/rejeitar via `/admin` + selo "verificado" em `/profissionais`).
 - ✅ Painel administrativo (`/admin` — verificação de profissionais/clínicas + aprovação do acervo).
 - ✅ Notificações (curtidas, comentários).
-- Trilhas de conhecimento interativas (`trail_progress` existe; falta conteúdo/quiz).
+- 🟡 Trilhas de conhecimento interativas — passos reais + progresso feito (`/noticias-gamificadas/trilhas/[id]`, tabelas `knowledge_trail_steps`/`trail_step_completions`); quiz semanal continua decorativo (fora de escopo — exigiria um sistema de pontos que não existe em nenhum outro lugar do app).
 - ✅ Busca server-side com full-text (Acervo Digital e `/profissionais`, `tsvector`+GIN).
 
 ---
