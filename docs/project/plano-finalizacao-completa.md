@@ -218,6 +218,26 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
+### [G6] Ativar os provedores OAuth (Google, Facebook, Microsoft) no painel Supabase
+- **Categoria:** Painel Supabase + consoles externos · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~40 min (3 provedores) · **Dependências:** G1
+- **Relevância:** O código dos 3 botões de login social já está pronto (`/login`, `/cadastro`, `AuthContext.loginWithProvider`, rota `/auth/callback`) — falta só gerar as credenciais OAuth em cada provedor e colar no Supabase. Escolhidos por serem 100% gratuitos e adequados ao público do app (Apple exige Apple Developer Program pago, US$99/ano; Phone exige provedor de SMS pago — ambos fora de escopo desta rodada).
+
+#### 🎯 Passo a passo
+Redirect URI **igual para os 3** (é o callback do próprio Supabase, não o `/auth/callback` da aplicação):
+`https://azbfrxrqwuhbffofdrct.supabase.co/auth/v1/callback`
+
+1. **Google** — [Google Cloud Console](https://console.cloud.google.com/) → *APIs & Services → OAuth consent screen* (External) → *Credentials → Create Credentials → OAuth Client ID* (Web application) → colar a Redirect URI acima → copiar Client ID/Secret.
+2. **Facebook** — [developers.facebook.com](https://developers.facebook.com/) → *Create App* (tipo Consumer) → adicionar produto "Facebook Login" → *Settings → Valid OAuth Redirect URIs* → colar a Redirect URI → copiar App ID/Secret. Nota: em modo Development só usuários de teste cadastrados conseguem logar — pedir *App Review* (gratuito) para abrir a todos, ou adicionar testers reais enquanto isso.
+3. **Microsoft** — [portal.azure.com](https://portal.azure.com/) → *Microsoft Entra ID → App registrations → New registration* → em "Supported account types" escolher **"Accounts in any organizational directory and personal Microsoft accounts"** (permite login com Outlook/Hotmail pessoal, não só corporativo) → Redirect URI (Web) → colar a Redirect URI → *Certificates & secrets → New client secret* → copiar Application (client) ID + o valor do secret.
+4. Para cada provedor: `https://supabase.com/dashboard/project/azbfrxrqwuhbffofdrct/auth/providers` → ativar o provedor → colar Client ID/Secret → Save.
+
+#### ✅ Critério de aceite
+- [ ] Os 3 provedores aparecem como "Enabled" em Authentication → Providers.
+- [ ] Clicar em cada botão (Google/Facebook/Microsoft) em `/login` ou `/cadastro` completa o fluxo e retorna logado em `/home`.
+- [ ] Uma linha nova aparece em `profiles` com `avatar_url` preenchido automaticamente (vindo do provedor).
+
+---
+
 ### [F1] ✅ Eventos reais na comunidade
 - **Categoria:** Código Next.js + Supabase · **Prio:** P1 · **Dificuldade:** Alta · **Tempo:** 1–2 dias · **Dependências:** G5
 - **Relevância:** A sidebar da `/comunidade` usa `allCommunityEvents` (mock); a tabela `events` existe e está vazia. É a última tela com mock.
@@ -698,6 +718,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 - [ ] Supabase Auth: Site URL + Redirect URLs corretos; decisão de confirm-email aplicada (G1).
 - [ ] Security Advisor sem warnings (Leaked Password Protection ligado — G2).
 - [ ] Usuário admin criado e `is_admin()` = true (G4).
+- [ ] Provedores OAuth Google/Facebook/Microsoft ativados no painel Supabase, credenciais coladas (G6) — opcional, não bloqueia go-live (email/senha continua funcionando sem isso).
 - [ ] `vercel.json` intacto (`{"framework":"nextjs"}`) — define o preset (projeto tem `framework:null`).
 - [ ] Sanitização XSS ativa nas notícias (`isomorphic-dompurify` em `noticias/[slug]` e `noticias-ai/[slug]`).
 - [ ] RLS habilitada nas 25 tabelas (ver `docs/architecture/security-checklist.md`).

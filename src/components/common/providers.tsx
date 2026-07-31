@@ -31,6 +31,8 @@ export type User = {
 
 export type ResultadoAuth = { ok: boolean; erro?: string };
 
+export type ProvedorOAuth = "google" | "facebook" | "azure";
+
 export const AuthContext = createContext<{
   user: User | null;
   loading: boolean;
@@ -39,6 +41,7 @@ export const AuthContext = createContext<{
   login: (email: string, password: string) => Promise<ResultadoAuth>;
   logout: () => void;
   register: (name: string, email: string, password: string) => Promise<ResultadoAuth>;
+  loginWithProvider: (provider: ProvedorOAuth) => Promise<ResultadoAuth>;
 }>({
   user: null,
   loading: true,
@@ -46,6 +49,7 @@ export const AuthContext = createContext<{
   login: async () => ({ ok: false, erro: "Provider não inicializado." }),
   logout: () => {},
   register: async () => ({ ok: false, erro: "Provider não inicializado." }),
+  loginWithProvider: async () => ({ ok: false, erro: "Provider não inicializado." }),
 });
 
 function traduzirErro(msg: string): string {
@@ -151,9 +155,21 @@ export function Providers({ children }: { children: React.ReactNode }) {
     supabase.auth.signOut().then(() => setUser(null));
   }, [supabase]);
 
+  const loginWithProvider = useCallback(
+    async (provider: ProvedorOAuth): Promise<ResultadoAuth> => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: { redirectTo: `${window.location.origin}/auth/callback` },
+      });
+      if (error) return { ok: false, erro: traduzirErro(error.message) };
+      return { ok: true };
+    },
+    [supabase]
+  );
+
   const authContextValue = useMemo(
-    () => ({ user, loading, registeredUsers: [] as never[], login, logout, register }),
-    [user, loading, login, logout, register]
+    () => ({ user, loading, registeredUsers: [] as never[], login, logout, register, loginWithProvider }),
+    [user, loading, login, logout, register, loginWithProvider]
   );
 
   const fontSizeContextValue = useMemo(() => ({ fontSize, setFontSize }), [fontSize]);

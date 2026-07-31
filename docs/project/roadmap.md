@@ -25,6 +25,7 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 | 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
 | 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel | QA | 🟡 | ⬜ |
 | 0.6 | ~~Abrir e mergear o PR → `main`~~ — superado: o fluxo virou uma PR por etapa, 47 já mesclados (ver `docs/project/historico-prs.md`) | Processo | 🟢 | ✅ |
+| 0.7 | Login social: código pronto (Google/Facebook/Microsoft) — falta criar as credenciais OAuth em cada provedor e colar no painel Supabase (Authentication → Providers) | Painel | 🟡 | ⬜ |
 
 ---
 
