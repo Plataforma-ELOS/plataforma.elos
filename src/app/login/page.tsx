@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useContext, Suspense } from 'react';
+import { useState, useContext, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import {
   AlertDialog,
@@ -19,17 +19,29 @@ import {
   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
 import { CheckCircle, XCircle } from 'lucide-react';
-import { AuthContext } from '@/components/common/providers';
+import { AuthContext, type ProvedorOAuth } from '@/components/common/providers';
+import { GoogleIcon, FacebookIcon, MicrosoftIcon } from '@/components/icons/social-icons';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login } = useContext(AuthContext);
+  const { login, loginWithProvider } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
+
+  useEffect(() => {
+    const erroOAuth = searchParams.get('error');
+    if (erroOAuth) {
+      setMensagemErro(
+        erroOAuth === 'oauth' ? 'Não foi possível concluir o login. Tente novamente.' : erroOAuth
+      );
+      setShowErrorDialog(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +52,14 @@ function LoginForm() {
       setShowSuccessDialog(true);
     } else {
       setMensagemErro(erro ?? 'Dados inválidos.');
+      setShowErrorDialog(true);
+    }
+  };
+
+  const handleSocialLogin = async (provider: ProvedorOAuth) => {
+    const { ok, erro } = await loginWithProvider(provider);
+    if (!ok) {
+      setMensagemErro(erro ?? 'Não foi possível iniciar o login.');
       setShowErrorDialog(true);
     }
   };
@@ -149,6 +169,25 @@ function LoginForm() {
                         Entrar
                     </Button>
                 </form>
+                <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">Ou continue com</span>
+                    </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('google')} aria-label="Entrar com Google">
+                        <GoogleIcon />
+                    </Button>
+                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('facebook')} aria-label="Entrar com Facebook">
+                        <FacebookIcon />
+                    </Button>
+                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('azure')} aria-label="Entrar com Microsoft">
+                        <MicrosoftIcon />
+                    </Button>
+                </div>
                 <div className="mt-4 text-center text-sm">
                     <p>
                         Não tem uma conta?{' '}
