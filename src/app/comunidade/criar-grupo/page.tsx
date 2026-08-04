@@ -29,20 +29,23 @@ export default function CreateGroupPage() {
     if (!(groupName.trim() && groupDescription.trim() && agreedToRules)) return;
 
     setCriando(true);
-    const { ok, erro } = await criarGrupo(groupName, groupDescription);
-    setCriando(false);
+    try {
+      const { ok, erro } = await criarGrupo(groupName, groupDescription);
 
-    if (!ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível criar o grupo', description: erro });
-      return;
+      if (!ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível criar o grupo', description: erro });
+        return;
+      }
+
+      setGroupLink(`${window.location.origin}/comunidade/meus-grupos`);
+      setIsCreated(true);
+      toast({
+        title: "Grupo criado com sucesso!",
+        description: `O grupo "${groupName}" agora está ativo.`,
+      });
+    } finally {
+      setCriando(false);
     }
-
-    setGroupLink(`${window.location.origin}/comunidade/meus-grupos`);
-    setIsCreated(true);
-    toast({
-      title: "Grupo criado com sucesso!",
-      description: `O grupo "${groupName}" agora está ativo.`,
-    });
   };
 
   const handleCopyLink = () => {
@@ -54,7 +57,7 @@ export default function CreateGroupPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-muted/40">
+    <div className="flex flex-col min-h-dvh bg-muted/40">
       <HeaderSecondary />
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 md:px-6">

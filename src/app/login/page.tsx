@@ -31,6 +31,7 @@ function LoginForm() {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const erroOAuth = searchParams.get('error');
@@ -45,22 +46,31 @@ function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    try {
+      const { ok, erro } = await login(email, password);
 
-    const { ok, erro } = await login(email, password);
-
-    if (ok) {
-      setShowSuccessDialog(true);
-    } else {
-      setMensagemErro(erro ?? 'Dados inválidos.');
-      setShowErrorDialog(true);
+      if (ok) {
+        setShowSuccessDialog(true);
+      } else {
+        setMensagemErro(erro ?? 'Dados inválidos.');
+        setShowErrorDialog(true);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSocialLogin = async (provider: ProvedorOAuth) => {
-    const { ok, erro } = await loginWithProvider(provider);
-    if (!ok) {
-      setMensagemErro(erro ?? 'Não foi possível iniciar o login.');
-      setShowErrorDialog(true);
+    setLoading(true);
+    try {
+      const { ok, erro } = await loginWithProvider(provider);
+      if (!ok) {
+        setMensagemErro(erro ?? 'Não foi possível iniciar o login.');
+        setShowErrorDialog(true);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,7 +127,7 @@ function LoginForm() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="w-full min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="w-full min-h-dvh flex items-center justify-center bg-background p-4">
         <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
             <div className="flex items-center justify-center p-8 sm:p-12">
                 <div className="mx-auto grid w-full max-w-md gap-6">
@@ -165,7 +175,7 @@ function LoginForm() {
                             Lembrar de mim
                         </label>
                     </div>
-                    <Button type="submit" className="w-full rounded-full">
+                    <Button type="submit" className="w-full rounded-full" disabled={loading}>
                         Entrar
                     </Button>
                 </form>
@@ -177,7 +187,7 @@ function LoginForm() {
                         <span className="bg-card px-2 text-muted-foreground">Ou continue com</span>
                     </div>
                 </div>
-                <Button variant="outline" className="w-full justify-center gap-3" onClick={() => handleSocialLogin('google')}>
+                <Button variant="outline" className="w-full justify-center gap-3" onClick={() => handleSocialLogin('google')} disabled={loading}>
                     <GoogleIcon />
                     Continuar com Google
                 </Button>

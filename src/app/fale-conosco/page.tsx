@@ -97,7 +97,7 @@ export default function ContactPage() {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-muted/20">
+    <div className="flex flex-col min-h-dvh bg-muted/20">
       <HeaderSecondary />
       <main className="flex-1">
         <div className="container mx-auto px-4 md:px-6 py-16 md:py-24">

@@ -64,33 +64,34 @@ export default function ProfilePageClient({ userId, email, fullName, bio, avatar
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSalvando(true);
+    try {
+      let novoAvatarUrl: string | undefined;
+      if (arquivoAvatar) {
+        const supabase = createClient();
+        const extensao = arquivoAvatar.name.split('.').pop();
+        const caminho = `${userId}/${crypto.randomUUID()}.${extensao}`;
+        const { error: erroUpload } = await supabase.storage.from('avatars').upload(caminho, arquivoAvatar, { upsert: true });
+        if (erroUpload) {
+          toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+          return;
+        }
+        novoAvatarUrl = supabase.storage.from('avatars').getPublicUrl(caminho).data.publicUrl;
+      }
 
-    let novoAvatarUrl: string | undefined;
-    if (arquivoAvatar) {
-      const supabase = createClient();
-      const extensao = arquivoAvatar.name.split('.').pop();
-      const caminho = `${userId}/${crypto.randomUUID()}.${extensao}`;
-      const { error: erroUpload } = await supabase.storage.from('avatars').upload(caminho, arquivoAvatar, { upsert: true });
-      if (erroUpload) {
-        setSalvando(false);
-        toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+      const { ok, erro } = await atualizarPerfil(nome, bioTexto, novoAvatarUrl);
+
+      if (!ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível salvar', description: erro });
         return;
       }
-      novoAvatarUrl = supabase.storage.from('avatars').getPublicUrl(caminho).data.publicUrl;
+
+      if (novoAvatarUrl) setAvatarAtual(novoAvatarUrl);
+      setArquivoAvatar(null);
+      toast({ title: 'Perfil atualizado com sucesso!' });
+      setOpen(false);
+    } finally {
+      setSalvando(false);
     }
-
-    const { ok, erro } = await atualizarPerfil(nome, bioTexto, novoAvatarUrl);
-    setSalvando(false);
-
-    if (!ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível salvar', description: erro });
-      return;
-    }
-
-    if (novoAvatarUrl) setAvatarAtual(novoAvatarUrl);
-    setArquivoAvatar(null);
-    toast({ title: 'Perfil atualizado com sucesso!' });
-    setOpen(false);
   };
 
   return (
