@@ -23,6 +23,21 @@
 > Executivo), a caixa de baseline, e a referência obsoleta ao item `0.6`
 > (fluxo de "abrir 1 PR", superado pelo padrão de 1 PR por etapa — ver
 > `docs/project/historico-prs.md`).
+>
+> **Atualização 2026-08-04 — manutenção de bugs de UI/mobile:** auditoria
+> pedida pelo usuário (relato de travamentos e botões sem resposta,
+> sobretudo mobile) encontrou e corrigiu: menu hambúrguer que não fechava
+> ao navegar (`header.tsx`/`header-secondary.tsx`); login/cadastro sem
+> proteção contra duplo clique; 7 formulários onde um erro de rede podia
+> deixar o botão `disabled=true` permanentemente (perfil, meu-espaço ×2,
+> avaliação de profissional, sugestão de acervo, criar post, cadastro
+> profissional, criar grupo — todos ganharam `try/finally`); filtro de
+> tags em `/noticias-ai` (botão morto vira filtro real); botão "Começar
+> Quiz" agora desabilitado em vez de fingir que funciona (quiz continua
+> fora de escopo — decisão de produto já registrada); imagem do feed de
+> posts sem `sizes` (pesava mais que o necessário em mobile); `min-h-screen`
+> → `min-h-dvh` em 4 telas de formulário (corta conteúdo no Safari iOS ao
+> recolher a barra de endereço).
 
 ---
 

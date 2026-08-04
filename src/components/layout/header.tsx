@@ -218,6 +218,7 @@ function UserProfileDropdown() {
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -251,7 +252,7 @@ export default function Header() {
               <NotificationBell />
               <UserProfileDropdown />
             </div>
-          <Sheet>
+          <Sheet open={menuAberto} onOpenChange={setMenuAberto}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
@@ -261,7 +262,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
-                   <Link href="/home" className="flex items-center gap-2 text-2xl font-bold">
+                   <Link href="/home" className="flex items-center gap-2 text-2xl font-bold" onClick={() => setMenuAberto(false)}>
                     <Image src={imagesData.logo.url} alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint={imagesData.logo.hint} />
                     <span className="text-foreground">Plataforma</span>
                     <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
@@ -269,7 +270,7 @@ export default function Header() {
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
                   {navItems.map((item) => (
-                    <Link href={item.href} key={item.name} className="text-foreground/80 hover:text-foreground transition-colors">
+                    <Link href={item.href} key={item.name} className="text-foreground/80 hover:text-foreground transition-colors" onClick={() => setMenuAberto(false)}>
                       {item.name}
                     </Link>
                   ))}

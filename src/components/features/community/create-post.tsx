@@ -46,25 +46,26 @@ export default function CreatePost({ onCreatePost }: CreatePostProps) {
   const handlePublish = async () => {
     if (!user) return;
     setEnviando(true);
-
-    let imageUrl: string | undefined;
-    if (imageFile) {
-      const supabase = createClient();
-      const extensao = imageFile.name.split('.').pop();
-      const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
-      const { error: erroUpload } = await supabase.storage.from('posts').upload(caminho, imageFile);
-      if (erroUpload) {
-        setEnviando(false);
-        toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
-        return;
+    try {
+      let imageUrl: string | undefined;
+      if (imageFile) {
+        const supabase = createClient();
+        const extensao = imageFile.name.split('.').pop();
+        const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
+        const { error: erroUpload } = await supabase.storage.from('posts').upload(caminho, imageFile);
+        if (erroUpload) {
+          toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+          return;
+        }
+        imageUrl = supabase.storage.from('posts').getPublicUrl(caminho).data.publicUrl;
       }
-      imageUrl = supabase.storage.from('posts').getPublicUrl(caminho).data.publicUrl;
-    }
 
-    onCreatePost(postContent, imageUrl);
-    setPostContent('');
-    setImageFile(null);
-    setEnviando(false);
+      onCreatePost(postContent, imageUrl);
+      setPostContent('');
+      setImageFile(null);
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (

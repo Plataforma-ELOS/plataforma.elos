@@ -222,6 +222,7 @@ function UserProfileDropdown() {
 
 export default function HeaderSecondary() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -236,10 +237,10 @@ export default function HeaderSecondary() {
 
   const isCurrentPage = (href: string) => pathname === href;
 
-  const renderNavItem = (item: typeof navItems[0]) => {
+  const renderNavItem = (item: typeof navItems[0], onNavigate?: () => void) => {
     const classNames = `text-foreground/80 hover:text-foreground transition-colors ${isCurrentPage(item.href) ? 'font-bold text-foreground' : ''}`;
     return (
-      <Link href={item.href} key={item.name} className={classNames}>
+      <Link href={item.href} key={item.name} className={classNames} onClick={onNavigate}>
         {item.name}
       </Link>
     );
@@ -267,7 +268,7 @@ export default function HeaderSecondary() {
           <div className="hidden md:inline-flex">
             <UserProfileDropdown />
           </div>
-          <Sheet>
+          <Sheet open={menuAberto} onOpenChange={setMenuAberto}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
@@ -277,14 +278,14 @@ export default function HeaderSecondary() {
             <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-center p-4 border-b">
-                   <Link href="/" className="flex items-center gap-2 text-2xl font-bold">
+                   <Link href="/" className="flex items-center gap-2 text-2xl font-bold" onClick={() => setMenuAberto(false)}>
                         <Image src={imagesData.logo.url} alt="Logo Elos" width={40} height={40} className="rounded-full" data-ai-hint={imagesData.logo.hint} />
                         <span className="text-foreground">Plataforma</span>
                         <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">E.L.O.S</span>
                   </Link>
                 </div>
                 <nav className="flex flex-col gap-6 p-6 text-lg font-medium flex-1">
-                  {navItems.map((item) => renderNavItem(item))}
+                  {navItems.map((item) => renderNavItem(item, () => setMenuAberto(false)))}
                 </nav>
                  <div className="p-6 border-t flex items-center justify-center gap-4">
                     <NotificationBell />

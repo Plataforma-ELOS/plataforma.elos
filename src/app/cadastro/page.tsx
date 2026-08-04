@@ -17,12 +17,14 @@ const SocialButton = ({
   children,
   icon,
   onClick,
+  disabled,
 }: {
   children: React.ReactNode;
   icon: React.ReactNode;
   onClick: () => void;
+  disabled?: boolean;
 }) => (
-  <Button type="button" variant="outline" className="w-full justify-center gap-3" onClick={onClick}>
+  <Button type="button" variant="outline" className="w-full justify-center gap-3" onClick={onClick} disabled={disabled}>
     {icon}
     {children}
   </Button>
@@ -32,11 +34,17 @@ export default function CadastroPage() {
   const router = useRouter();
   const { register, loginWithProvider } = useContext(AuthContext);
   const [erro, setErro] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSocialLogin = async (provider: ProvedorOAuth) => {
     setErro(null);
-    const { ok, erro: mensagemErro } = await loginWithProvider(provider);
-    if (!ok) setErro(mensagemErro ?? 'Não foi possível iniciar o cadastro.');
+    setLoading(true);
+    try {
+      const { ok, erro: mensagemErro } = await loginWithProvider(provider);
+      if (!ok) setErro(mensagemErro ?? 'Não foi possível iniciar o cadastro.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUserSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,19 +55,24 @@ export default function CadastroPage() {
     const password = (form.elements.namedItem('password') as HTMLInputElement).value;
 
     setErro(null);
-    const { ok, erro: mensagemErro } = await register(name, email, password);
+    setLoading(true);
+    try {
+      const { ok, erro: mensagemErro } = await register(name, email, password);
 
-    if (!ok) {
-      setErro(mensagemErro ?? 'Não foi possível criar sua conta.');
-      return;
+      if (!ok) {
+        setErro(mensagemErro ?? 'Não foi possível criar sua conta.');
+        return;
+      }
+
+      // Após o cadastro, leva o usuário para a tela de login
+      router.push('/login');
+    } finally {
+      setLoading(false);
     }
-
-    // Após o cadastro, leva o usuário para a tela de login
-    router.push('/login');
   }
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-background p-4 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
+    <div className="w-full min-h-dvh flex items-center justify-center bg-background p-4 animate-in fade-in-0 slide-in-from-top-4 slide-in-from-left-4 duration-500">
       <div className="w-full max-w-5xl bg-card shadow-2xl rounded-2xl grid lg:grid-cols-2">
         
         {/* Coluna da Esquerda (Formulário) */}
@@ -98,7 +111,7 @@ export default function CadastroPage() {
                             Lembrar de mim
                         </label>
                     </div>
-                    <Button type="submit" className="w-full rounded-full">
+                    <Button type="submit" className="w-full rounded-full" disabled={loading}>
                         Criar Conta
                     </Button>
                 </form>
@@ -110,7 +123,7 @@ export default function CadastroPage() {
                         <span className="bg-background px-2 text-muted-foreground">Ou continue com</span>
                     </div>
                 </div>
-                <SocialButton icon={<GoogleIcon />} onClick={() => handleSocialLogin('google')}>
+                <SocialButton icon={<GoogleIcon />} onClick={() => handleSocialLogin('google')} disabled={loading}>
                     Google
                 </SocialButton>
                 <div className="mt-4 text-center text-sm space-y-4">

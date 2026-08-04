@@ -51,26 +51,29 @@ function LeaveReviewDialog({
     const content = (e.currentTarget.elements.namedItem('review-text') as HTMLTextAreaElement).value;
 
     setEnviando(true);
-    const alvo = entityType === 'professional' ? { professionalId: entityId } : { clinicId: entityId };
-    const { ok, erro } = await criarAvaliacao(alvo, rating, content);
-    setEnviando(false);
+    try {
+      const alvo = entityType === 'professional' ? { professionalId: entityId } : { clinicId: entityId };
+      const { ok, erro } = await criarAvaliacao(alvo, rating, content);
 
-    if (!ok) {
+      if (!ok) {
+        toast({
+          variant: "destructive",
+          title: "Não foi possível enviar",
+          description: erro,
+        });
+        return;
+      }
+
+      document.getElementById('close-dialog-btn')?.click();
+
       toast({
-        variant: "destructive",
-        title: "Não foi possível enviar",
-        description: erro,
+        title: "Avaliação Enviada!",
+        description: `Obrigado por avaliar ${professionalName}. Sua contribuição ajuda toda a comunidade.`,
       });
-      return;
+      setRating(0);
+    } finally {
+      setEnviando(false);
     }
-
-    document.getElementById('close-dialog-btn')?.click();
-
-    toast({
-      title: "Avaliação Enviada!",
-      description: `Obrigado por avaliar ${professionalName}. Sua contribuição ajuda toda a comunidade.`,
-    });
-    setRating(0);
   };
 
   return (

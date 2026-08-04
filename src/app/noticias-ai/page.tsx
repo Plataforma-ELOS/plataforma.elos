@@ -39,9 +39,15 @@ async function AiSummaryCard({ newsArticles }: { newsArticles: { title: string }
 }
 
 
-export default async function NewsAiPage() {
-  const newsArticles = await getNews();
-  const allTags = [...new Set(newsArticles.flatMap((a) => a.tags))];
+export default async function NewsAiPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tag?: string }>;
+}) {
+  const { tag } = await searchParams;
+  const todasAsNoticias = await getNews();
+  const allTags = [...new Set(todasAsNoticias.flatMap((a) => a.tags))];
+  const newsArticles = tag ? todasAsNoticias.filter((a) => a.tags.includes(tag)) : todasAsNoticias;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -66,8 +72,10 @@ export default async function NewsAiPage() {
             <div className="flex flex-col gap-4 mb-8">
                 <h3 className="text-lg font-semibold flex items-center gap-2"><Tags className="h-5 w-5 text-primary-strong"/> Filtrar por tags</h3>
                 <div className="flex flex-wrap gap-2">
-                    {allTags.map(tag => (
-                        <Button key={tag} variant="outline" className="rounded-full">{tag}</Button>
+                    {allTags.map(t => (
+                        <Button key={t} asChild variant={tag === t ? 'default' : 'outline'} className="rounded-full">
+                            <Link href={tag === t ? '/noticias-ai' : `/noticias-ai?tag=${encodeURIComponent(t)}`}>{t}</Link>
+                        </Button>
                     ))}
                 </div>
             </div>

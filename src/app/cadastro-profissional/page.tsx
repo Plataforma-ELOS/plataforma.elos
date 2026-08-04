@@ -127,39 +127,40 @@ export default function ProfessionalSignUpPage() {
     }
 
     setEnviando(true);
+    try {
+      let imageUrl: string | undefined;
+      if (photoFile && user) {
+        const supabase = createClient();
+        const extensao = photoFile.name.split('.').pop();
+        const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
+        const { error: erroUpload } = await supabase.storage.from('professionals').upload(caminho, photoFile);
+        if (erroUpload) {
+          toast({ variant: 'destructive', title: 'Não foi possível enviar a foto', description: erroUpload.message });
+          return;
+        }
+        imageUrl = supabase.storage.from('professionals').getPublicUrl(caminho).data.publicUrl;
+      }
 
-    let imageUrl: string | undefined;
-    if (photoFile && user) {
-      const supabase = createClient();
-      const extensao = photoFile.name.split('.').pop();
-      const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
-      const { error: erroUpload } = await supabase.storage.from('professionals').upload(caminho, photoFile);
-      if (erroUpload) {
-        setEnviando(false);
-        toast({ variant: 'destructive', title: 'Não foi possível enviar a foto', description: erroUpload.message });
+      const { ok, erro } = await inscreverProfissional({
+        fullName,
+        email,
+        registrationType,
+        cnpj,
+        registrationNumber,
+        specialty: especialidadeFinal,
+        experience: experienceText,
+        imageUrl,
+      });
+
+      if (!ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
         return;
       }
-      imageUrl = supabase.storage.from('professionals').getPublicUrl(caminho).data.publicUrl;
+
+      setIsSubmitted(true);
+    } finally {
+      setEnviando(false);
     }
-
-    const { ok, erro } = await inscreverProfissional({
-      fullName,
-      email,
-      registrationType,
-      cnpj,
-      registrationNumber,
-      specialty: especialidadeFinal,
-      experience: experienceText,
-      imageUrl,
-    });
-    setEnviando(false);
-
-    if (!ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
-      return;
-    }
-
-    setIsSubmitted(true);
   };
 
   return (

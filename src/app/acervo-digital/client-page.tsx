@@ -86,37 +86,38 @@ function AddToLibraryDialog({ children }: { children: React.ReactNode }) {
     e.preventDefault();
     if (!type || !user) return;
     setEnviando(true);
+    try {
+      let imageUrl: string | undefined;
+      if (imageFile) {
+        const supabase = createClient();
+        const extensao = imageFile.name.split('.').pop();
+        const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
+        const { error: erroUpload } = await supabase.storage.from('library').upload(caminho, imageFile);
+        if (erroUpload) {
+          toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+          return;
+        }
+        imageUrl = supabase.storage.from('library').getPublicUrl(caminho).data.publicUrl;
+      }
 
-    let imageUrl: string | undefined;
-    if (imageFile) {
-      const supabase = createClient();
-      const extensao = imageFile.name.split('.').pop();
-      const caminho = `${user.id}/${crypto.randomUUID()}.${extensao}`;
-      const { error: erroUpload } = await supabase.storage.from('library').upload(caminho, imageFile);
-      if (erroUpload) {
-        setEnviando(false);
-        toast({ variant: 'destructive', title: 'Não foi possível enviar a imagem', description: erroUpload.message });
+      const { ok, erro } = await sugerirItemAcervo(title, author, type, tags, link, imageUrl);
+
+      if (!ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
         return;
       }
-      imageUrl = supabase.storage.from('library').getPublicUrl(caminho).data.publicUrl;
+
+      setTitle('');
+      setAuthor('');
+      setType('');
+      setTags('');
+      setLink('');
+      setImageFile(null);
+      setOpen(false);
+      setShowSuccess(true);
+    } finally {
+      setEnviando(false);
     }
-
-    const { ok, erro } = await sugerirItemAcervo(title, author, type, tags, link, imageUrl);
-    setEnviando(false);
-
-    if (!ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível enviar', description: erro });
-      return;
-    }
-
-    setTitle('');
-    setAuthor('');
-    setType('');
-    setTags('');
-    setLink('');
-    setImageFile(null);
-    setOpen(false);
-    setShowSuccess(true);
   };
 
   return (

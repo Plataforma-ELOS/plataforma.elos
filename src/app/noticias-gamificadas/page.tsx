@@ -109,7 +109,7 @@ export default async function NewsGamifiedPage() {
               <Puzzle className="h-12 w-12 text-primary-strong mx-auto mb-4" />
               <CardTitle className="text-xl mb-2">Quiz da Semana!</CardTitle>
               <p className="text-muted-foreground mb-4">Acerte as perguntas sobre as notícias da semana e ganhe pontos.</p>
-              <Button>Começar Quiz</Button>
+              <Button disabled title="Em breve">Começar Quiz (em breve)</Button>
             </Card>
           </div>
         </div>

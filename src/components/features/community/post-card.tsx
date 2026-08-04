@@ -168,7 +168,7 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
           <p className="mt-2 text-foreground/90 whitespace-pre-wrap">{content}</p>
           {post.imageUrl && (
             <div className="mt-3 relative w-full aspect-video rounded-xl overflow-hidden border">
-              <Image src={post.imageUrl} alt="Imagem do post" fill className="object-cover" />
+              <Image src={post.imageUrl} alt="Imagem do post" fill sizes="(min-width: 768px) 600px, 100vw" className="object-cover" />
             </div>
           )}
         </div>

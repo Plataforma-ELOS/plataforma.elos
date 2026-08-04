@@ -76,26 +76,29 @@ function DependentDialog({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSalvando(true);
-    const ano = birthYear.trim() ? Number(birthYear) : null;
-    const resultado = dependente
-      ? await atualizarDependente(dependente.id, firstName, ano, relationship, notes)
-      : await criarDependente(firstName, ano, relationship, notes);
-    setSalvando(false);
+    try {
+      const ano = birthYear.trim() ? Number(birthYear) : null;
+      const resultado = dependente
+        ? await atualizarDependente(dependente.id, firstName, ano, relationship, notes)
+        : await criarDependente(firstName, ano, relationship, notes);
 
-    if (!resultado.ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível salvar', description: resultado.erro });
-      return;
+      if (!resultado.ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível salvar', description: resultado.erro });
+        return;
+      }
+
+      toast({ title: dependente ? 'Dependente atualizado!' : 'Dependente adicionado!' });
+      onSaved({
+        id: dependente?.id ?? '',
+        firstName: firstName.trim(),
+        age: ano ? new Date().getFullYear() - ano : null,
+        relationship: relationship.trim(),
+        notes: notes.trim(),
+      });
+      onOpenChange(false);
+    } finally {
+      setSalvando(false);
     }
-
-    toast({ title: dependente ? 'Dependente atualizado!' : 'Dependente adicionado!' });
-    onSaved({
-      id: dependente?.id ?? '',
-      firstName: firstName.trim(),
-      age: ano ? new Date().getFullYear() - ano : null,
-      relationship: relationship.trim(),
-      notes: notes.trim(),
-    });
-    onOpenChange(false);
   };
 
   return (
@@ -267,25 +270,28 @@ function JournalDialog({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSalvando(true);
-    const resultado = entrada
-      ? await atualizarEntradaDiario(entrada.id, mood, content)
-      : await criarEntradaDiario(entryDate, mood, content);
-    setSalvando(false);
+    try {
+      const resultado = entrada
+        ? await atualizarEntradaDiario(entrada.id, mood, content)
+        : await criarEntradaDiario(entryDate, mood, content);
 
-    if (!resultado.ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível salvar', description: resultado.erro });
-      return;
+      if (!resultado.ok) {
+        toast({ variant: 'destructive', title: 'Não foi possível salvar', description: resultado.erro });
+        return;
+      }
+
+      toast({ title: entrada ? 'Entrada atualizada!' : 'Entrada salva!' });
+      onSaved({
+        id: entrada?.id ?? `temp-${Date.now()}`,
+        entryDate,
+        date: entrada?.date ?? entryDate,
+        mood,
+        content: content.trim(),
+      });
+      onOpenChange(false);
+    } finally {
+      setSalvando(false);
     }
-
-    toast({ title: entrada ? 'Entrada atualizada!' : 'Entrada salva!' });
-    onSaved({
-      id: entrada?.id ?? `temp-${Date.now()}`,
-      entryDate,
-      date: entrada?.date ?? entryDate,
-      mood,
-      content: content.trim(),
-    });
-    onOpenChange(false);
   };
 
   return (
