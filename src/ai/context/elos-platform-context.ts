@@ -1,4 +1,10 @@
----
+// src/ai/context/elos-platform-context.ts
+//
+// Contexto da plataforma E.L.O.S usado pelo assistente de IA. Importado
+// como módulo (em vez de lido do disco em runtime via fs.readFile) porque
+// o Vercel não empacota arquivos soltos na função serverless — um import
+// funciona igual em dev, build e qualquer ambiente de deploy.
+export const elosPlatformContext = `---
 📌 Contexto Expandido da Plataforma E.L.O.S para IA
 1. Missão da Plataforma
 
@@ -116,3 +122,4 @@ Nunca deixar a resposta em branco.
 
 Sempre oferecer uma alternativa (link, comunidade, suporte humano).
 ---
+`;

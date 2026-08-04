@@ -81,11 +81,14 @@ function AiSupportPageContent() {
     responseEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Dispara só na transição para loading=true (início da pergunta) — não a
+  // cada chunk de aiResponse, senão o scroll suave reinicia repetidamente
+  // durante o streaming e a tela parece "descer sozinha" continuamente.
   useEffect(() => {
-    if (aiResponse || loading) {
+    if (loading) {
       scrollToBottom();
     }
-  }, [aiResponse, loading]);
+  }, [loading]);
 
   const handleSearch = async (queryString: string) => {
     if (!queryString.trim() || loading) return;
