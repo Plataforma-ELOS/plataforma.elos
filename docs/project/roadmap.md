@@ -23,7 +23,7 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 | 0.2 | Ligar "Criar Post" na `/comunidade` | Código | 🟢 | ✅ feito (`d17d804`) |
 | 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ⬜ |
 | 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
-| 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel | QA | 🟡 | ⬜ |
+| 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel — checklist pronto em [`qa-ponta-a-ponta.md`](./qa-ponta-a-ponta.md), execução manual pendente | QA | 🟡 | ⬜ |
 | 0.6 | ~~Abrir e mergear o PR → `main`~~ — superado: o fluxo virou uma PR por etapa, 47 já mesclados (ver `docs/project/historico-prs.md`) | Processo | 🟢 | ✅ |
 | 0.7 | Login social: código pronto (só Google — Facebook/Microsoft descontinuados por fricção externa, ver `historico-prs.md`) — falta ativar as credenciais no painel Supabase (Authentication → Providers) | Painel | 🟢 | ⬜ |
 
@@ -77,7 +77,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | 2.3 | ✅ `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
 | 2.4 | ✅ CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
 | 2.5 | ✅ ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
-| 2.6 | 🟡 E2E (Playwright) — páginas públicas cobertas; fluxos autenticados dependem de conta de teste + Supabase em CI | 🟠 | Alto |
+| 2.6 | 🟡 E2E (Playwright) — páginas públicas + regressão de UI mobile (`e2e/mobile-nav.spec.ts`) cobertas; fluxos autenticados de dado real ficam no checklist manual (`qa-ponta-a-ponta.md`) até haver conta de teste dedicada + `E2E_TEST_EMAIL`/`E2E_TEST_PASSWORD` como GitHub Secret para rodar em CI | 🟠 | Alto |
 
 ---
 

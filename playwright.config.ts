@@ -12,6 +12,13 @@ export default defineConfig({
   reporter: 'list',
   use: {
     baseURL: 'http://localhost:9002',
+    // Sem PLAYWRIGHT_EXECUTABLE_PATH setado, undefined é ignorado e o
+    // Playwright usa a resolução padrão de browser (CI, máquina local com
+    // `playwright install`). Só ambientes com um Chromium pré-instalado em
+    // path não-padrão (ex. sandboxes deste tipo) precisam setar a env var.
+    launchOptions: {
+      executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH,
+    },
   },
   webServer: {
     command: 'npm run dev',

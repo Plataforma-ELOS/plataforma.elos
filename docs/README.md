@@ -17,6 +17,7 @@ Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 ## Fora desta pasta
 - **📜 Histórico de Pull Requests (changelog detalhado de cada PR mesclado): [`./project/historico-prs.md`](./project/historico-prs.md)**
 - **🏁 Guia mestre de finalização (do estado atual até produção): [`./project/plano-finalizacao-completa.md`](./project/plano-finalizacao-completa.md)**
+- **✅ Checklist de QA ponta a ponta (fluxos autenticados, para rodar na Preview/produção): [`./project/qa-ponta-a-ponta.md`](./project/qa-ponta-a-ponta.md)**
 - **🔗 Harmonia Supabase ↔ Vercel (varredura + plano de organização de dados/front): [`./architecture/harmonia-supabase-vercel.md`](./architecture/harmonia-supabase-vercel.md)**
 - **🖼️ Imagens hospedadas fora do projeto (inventário + plano de migração): [`./design/imagens-externas.md`](./design/imagens-externas.md)**
 - Roadmap / próximos passos: [`./project/roadmap.md`](./project/roadmap.md)
