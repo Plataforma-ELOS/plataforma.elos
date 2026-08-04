@@ -31,7 +31,7 @@ export type User = {
 
 export type ResultadoAuth = { ok: boolean; erro?: string };
 
-export type ProvedorOAuth = "google" | "facebook" | "azure";
+export type ProvedorOAuth = "google";
 
 export const AuthContext = createContext<{
   user: User | null;

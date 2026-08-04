@@ -1,7 +1,8 @@
 -- Estende handle_new_user() para capturar avatar_url do metadata de OAuth
--- (Google/Facebook/Microsoft sempre trazem uma foto de perfil no
--- raw_user_meta_data; signup por email/senha continua com avatar_url nulo,
--- comportamento inalterado).
+-- (o provedor Google sempre traz uma foto de perfil no raw_user_meta_data;
+-- signup por email/senha continua com avatar_url nulo, comportamento
+-- inalterado). Função genérica, não específica de provedor — funcionaria
+-- igual se outro provedor OAuth fosse ativado no futuro.
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
