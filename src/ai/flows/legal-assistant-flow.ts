@@ -7,24 +7,9 @@
  */
 
 import {ai} from '@/ai/genkit';
-import fs from 'fs/promises';
-import path from 'path';
-
-// Função para ler o contexto da plataforma de um arquivo
-async function getPlatformContext() {
-  const filePath = path.join(process.cwd(), 'src', 'ai', 'context', 'elos-platform-context.md');
-  try {
-    const context = await fs.readFile(filePath, 'utf-8');
-    return context;
-  } catch (error) {
-    console.error("Erro ao ler o arquivo de contexto:", error);
-    return "Contexto da plataforma E.L.O.S não pôde ser carregado.";
-  }
-}
+import {elosPlatformContext} from '@/ai/context/elos-platform-context';
 
 export async function askLegalAssistant(question: string) {
-  const platformContext = await getPlatformContext();
-
   const { stream } = ai.generateStream({
       prompt: question,
       model: 'googleai/gemini-2.5-flash',
@@ -41,7 +26,7 @@ export async function askLegalAssistant(question: string) {
 
       Utilize o seguinte contexto sobre a plataforma E.L.O.S para guiar suas respostas:
       ---
-      ${platformContext}
+      ${elosPlatformContext}
       ---
       `,
     });
