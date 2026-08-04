@@ -218,23 +218,18 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [G6] Ativar os provedores OAuth (Google, Facebook, Microsoft) no painel Supabase
-- **Categoria:** Painel Supabase + consoles externos · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~40 min (3 provedores) · **Dependências:** G1
-- **Relevância:** O código dos 3 botões de login social já está pronto (`/login`, `/cadastro`, `AuthContext.loginWithProvider`, rota `/auth/callback`) — falta só gerar as credenciais OAuth em cada provedor e colar no Supabase. Escolhidos por serem 100% gratuitos e adequados ao público do app (Apple exige Apple Developer Program pago, US$99/ano; Phone exige provedor de SMS pago — ambos fora de escopo desta rodada).
+### [G6] Ativar login social com Google no painel Supabase
+- **Categoria:** Painel Supabase + Google Cloud Console · **Prio:** P1 · **Dificuldade:** Baixa · **Tempo:** ~10 min · **Dependências:** G1
+- **Relevância:** O código do botão de login social já está pronto (`/login`, `/cadastro`, `AuthContext.loginWithProvider`, rota `/auth/callback`) — falta só colar o Client ID/Secret do Google no Supabase. Facebook e Microsoft foram descontinuados desta rodada (Facebook exigiria App Review para sair do modo Development; Microsoft esbarrou num bloqueio real de conta pessoal não conseguindo criar app registration sem entrar no Programa para Desenvolvedores do M365 — fricção desproporcional ao ganho). Apple e Phone continuam fora por exigirem custo externo (US$99/ano e provedor de SMS pago, respectivamente).
 
 #### 🎯 Passo a passo
-Redirect URI **igual para os 3** (é o callback do próprio Supabase, não o `/auth/callback` da aplicação):
-`https://azbfrxrqwuhbffofdrct.supabase.co/auth/v1/callback`
-
-1. **Google** — [Google Cloud Console](https://console.cloud.google.com/) → *APIs & Services → OAuth consent screen* (External) → *Credentials → Create Credentials → OAuth Client ID* (Web application) → colar a Redirect URI acima → copiar Client ID/Secret.
-2. **Facebook** — [developers.facebook.com](https://developers.facebook.com/) → *Create App* (tipo Consumer) → adicionar produto "Facebook Login" → *Settings → Valid OAuth Redirect URIs* → colar a Redirect URI → copiar App ID/Secret. Nota: em modo Development só usuários de teste cadastrados conseguem logar — pedir *App Review* (gratuito) para abrir a todos, ou adicionar testers reais enquanto isso.
-3. **Microsoft** — [portal.azure.com](https://portal.azure.com/) → *Microsoft Entra ID → App registrations → New registration* → em "Supported account types" escolher **"Accounts in any organizational directory and personal Microsoft accounts"** (permite login com Outlook/Hotmail pessoal, não só corporativo) → Redirect URI (Web) → colar a Redirect URI → *Certificates & secrets → New client secret* → copiar Application (client) ID + o valor do secret.
-4. Para cada provedor: `https://supabase.com/dashboard/project/azbfrxrqwuhbffofdrct/auth/providers` → ativar o provedor → colar Client ID/Secret → Save.
+1. [Google Cloud Console](https://console.cloud.google.com/) → *APIs & Services → OAuth consent screen* (External) → *Credentials → Create Credentials → OAuth Client ID* (Web application) → Redirect URI: `https://azbfrxrqwuhbffofdrct.supabase.co/auth/v1/callback` → copiar Client ID/Secret.
+2. `https://supabase.com/dashboard/project/azbfrxrqwuhbffofdrct/auth/providers` → **Google** → ativar o toggle → colar Client ID/Secret → Save.
 
 #### ✅ Critério de aceite
-- [ ] Os 3 provedores aparecem como "Enabled" em Authentication → Providers.
-- [ ] Clicar em cada botão (Google/Facebook/Microsoft) em `/login` ou `/cadastro` completa o fluxo e retorna logado em `/home`.
-- [ ] Uma linha nova aparece em `profiles` com `avatar_url` preenchido automaticamente (vindo do provedor).
+- [ ] Google aparece como "Enabled" em Authentication → Providers.
+- [ ] Clicar no botão "Continuar com Google" em `/login` ou `/cadastro` completa o fluxo e retorna logado em `/home`.
+- [ ] Uma linha nova aparece em `profiles` com `avatar_url` preenchido automaticamente (vindo do Google).
 
 ---
 
@@ -718,7 +713,7 @@ Redirect URI **igual para os 3** (é o callback do próprio Supabase, não o `/a
 - [ ] Supabase Auth: Site URL + Redirect URLs corretos; decisão de confirm-email aplicada (G1).
 - [ ] Security Advisor sem warnings (Leaked Password Protection ligado — G2).
 - [ ] Usuário admin criado e `is_admin()` = true (G4).
-- [ ] Provedores OAuth Google/Facebook/Microsoft ativados no painel Supabase, credenciais coladas (G6) — opcional, não bloqueia go-live (email/senha continua funcionando sem isso).
+- [ ] Provedor OAuth Google ativado no painel Supabase, credenciais coladas (G6) — opcional, não bloqueia go-live (email/senha continua funcionando sem isso).
 - [ ] `vercel.json` intacto (`{"framework":"nextjs"}`) — define o preset (projeto tem `framework:null`).
 - [ ] Sanitização XSS ativa nas notícias (`isomorphic-dompurify` em `noticias/[slug]` e `noticias-ai/[slug]`).
 - [ ] RLS habilitada nas 25 tabelas (ver `docs/architecture/security-checklist.md`).

@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { AuthContext, type ProvedorOAuth } from '@/components/common/providers';
-import { GoogleIcon, FacebookIcon, MicrosoftIcon } from '@/components/icons/social-icons';
+import { GoogleIcon } from '@/components/icons/social-icons';
 
 function LoginForm() {
   const router = useRouter();
@@ -177,17 +177,10 @@ function LoginForm() {
                         <span className="bg-card px-2 text-muted-foreground">Ou continue com</span>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('google')} aria-label="Entrar com Google">
-                        <GoogleIcon />
-                    </Button>
-                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('facebook')} aria-label="Entrar com Facebook">
-                        <FacebookIcon />
-                    </Button>
-                    <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('azure')} aria-label="Entrar com Microsoft">
-                        <MicrosoftIcon />
-                    </Button>
-                </div>
+                <Button variant="outline" className="w-full justify-center gap-3" onClick={() => handleSocialLogin('google')}>
+                    <GoogleIcon />
+                    Continuar com Google
+                </Button>
                 <div className="mt-4 text-center text-sm">
                     <p>
                         Não tem uma conta?{' '}

@@ -54,10 +54,9 @@ está com o schema completo e testado:
     "Continuar Trilha" numa tela real de passo-a-passo em
     `/noticias-gamificadas`.
   - `capture_oauth_avatar_url_on_signup`: estende `handle_new_user()` para
-    também gravar `avatar_url` a partir de `raw_user_meta_data` — os novos
-    provedores OAuth (Google/Facebook/Microsoft) sempre trazem uma foto de
-    perfil; signup por email/senha continua com `avatar_url` nulo, sem
-    mudança de comportamento.
+    também gravar `avatar_url` a partir de `raw_user_meta_data` — o login
+    social (Google) sempre traz uma foto de perfil; signup por email/senha
+    continua com `avatar_url` nulo, sem mudança de comportamento.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

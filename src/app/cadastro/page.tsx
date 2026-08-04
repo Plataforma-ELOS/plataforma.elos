@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 import { AuthContext, type ProvedorOAuth } from '@/components/common/providers';
-import { GoogleIcon, FacebookIcon, MicrosoftIcon } from '@/components/icons/social-icons';
+import { GoogleIcon } from '@/components/icons/social-icons';
 
 const SocialButton = ({
   children,
@@ -110,17 +110,9 @@ export default function CadastroPage() {
                         <span className="bg-background px-2 text-muted-foreground">Ou continue com</span>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
-                    <SocialButton icon={<GoogleIcon />} onClick={() => handleSocialLogin('google')}>
-                        Google
-                    </SocialButton>
-                    <SocialButton icon={<FacebookIcon />} onClick={() => handleSocialLogin('facebook')}>
-                        Facebook
-                    </SocialButton>
-                    <SocialButton icon={<MicrosoftIcon />} onClick={() => handleSocialLogin('azure')}>
-                        Microsoft
-                    </SocialButton>
-                </div>
+                <SocialButton icon={<GoogleIcon />} onClick={() => handleSocialLogin('google')}>
+                    Google
+                </SocialButton>
                 <div className="mt-4 text-center text-sm space-y-4">
                     <p>
                         Já tem uma conta?{' '}
