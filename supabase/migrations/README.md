@@ -57,6 +57,9 @@ está com o schema completo e testado:
     também gravar `avatar_url` a partir de `raw_user_meta_data` — o login
     social (Google) sempre traz uma foto de perfil; signup por email/senha
     continua com `avatar_url` nulo, sem mudança de comportamento.
+  - `use_local_clinic_demo_images`: `clinics.image_url` das 2 linhas demo
+    passa de `placehold.co` para as fotos locais reais em
+    `public/perfis/clinicas/` (trazidas do repositório de referência).
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
