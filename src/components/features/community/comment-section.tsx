@@ -59,7 +59,7 @@ export default function CommentSection({ comments, onCommentSubmit }: CommentSec
       {/* Formulário para adicionar novo comentário */}
       <form onSubmit={handleSubmit} className="flex gap-3 items-start">
         <Avatar className="h-9 w-9">
-          <AvatarImage src="https://placehold.co/48x48.png" alt={user?.name} data-ai-hint="user avatar" />
+          <AvatarImage src={user?.avatarUrl ?? undefined} alt={user?.name} />
           <AvatarFallback>{user?.name.charAt(0) || 'U'}</AvatarFallback>
         </Avatar>
         <div className="flex-1 space-y-2">

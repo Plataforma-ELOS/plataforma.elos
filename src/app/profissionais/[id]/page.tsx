@@ -10,6 +10,7 @@ import {
   type ClinicRow,
   type ReviewData,
 } from '@/lib/data/professionals';
+import { consultarComRetry, falharSeRuntime } from '@/lib/data/consulta';
 import ProfessionalProfileClient from './client-page';
 
 // ISR: detalhe público, sem personalização por usuário logado — pode ser
@@ -60,18 +61,27 @@ export default async function ProfessionalProfilePage({ params }: { params: Prom
   // Uma única query por entidade (profissional OU clínica), com skills,
   // experiências e reviews embutidos via relação aninhada do PostgREST —
   // substitui as até 4-5 idas separadas ao Supabase que este arquivo fazia.
-  const { data: professionalRow } = await supabase
-    .from('professionals')
-    .select(`
-      id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status,
-      professional_skills ( skill ),
-      professional_experiences ( description, sort_order ),
-      reviews ( ${REVIEWS_SELECT} )
-    `)
-    .eq('id', id)
-    .order('sort_order', { foreignTable: 'professional_experiences' })
-    .order('created_at', { foreignTable: 'reviews', ascending: false })
-    .maybeSingle();
+  const { data: professionalRow, error: professionalError } = await consultarComRetry(() =>
+    supabase
+      .from('professionals')
+      .select(`
+        id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status,
+        professional_skills ( skill ),
+        professional_experiences ( description, sort_order ),
+        reviews ( ${REVIEWS_SELECT} )
+      `)
+      .eq('id', id)
+      .order('sort_order', { foreignTable: 'professional_experiences' })
+      .order('created_at', { foreignTable: 'reviews', ascending: false })
+      .maybeSingle()
+  );
+
+  // O erro precisa ser tratado antes de qualquer notFound(): a rota é ISR, e
+  // uma falha de rede faria a página renderizar um 404 "com sucesso", que o
+  // Next cachearia por revalidate inteiro (ver src/lib/data/consulta.ts).
+  if (professionalError) {
+    falharSeRuntime('profissional-detalhe', `erro ao buscar profissional ${id}: ${professionalError.message}`);
+  }
 
   let professional;
   let reviewRows: ReviewRow[];
@@ -87,16 +97,24 @@ export default async function ProfessionalProfilePage({ params }: { params: Prom
     reviewRows = row.reviews;
     entityType = 'professional';
   } else {
-    const { data: clinicRow } = await supabase
-      .from('clinics')
-      .select(`
-        id, name, specialty, description, image_url, cnpj, phone, email, verification_status,
-        reviews ( ${REVIEWS_SELECT} )
-      `)
-      .eq('id', id)
-      .order('created_at', { foreignTable: 'reviews', ascending: false })
-      .maybeSingle();
+    const { data: clinicRow, error: clinicError } = await consultarComRetry(() =>
+      supabase
+        .from('clinics')
+        .select(`
+          id, name, specialty, description, image_url, cnpj, phone, email, verification_status,
+          reviews ( ${REVIEWS_SELECT} )
+        `)
+        .eq('id', id)
+        .order('created_at', { foreignTable: 'reviews', ascending: false })
+        .maybeSingle()
+    );
 
+    if (clinicError) {
+      falharSeRuntime('profissional-detalhe', `erro ao buscar clinica ${id}: ${clinicError.message}`);
+    }
+
+    // Sem erro e sem linha: o id realmente não existe — 404 legítimo, seguro
+    // de cachear.
     if (!clinicRow) {
       notFound();
     }

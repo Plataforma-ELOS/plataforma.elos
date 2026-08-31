@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { mapLibraryRow, type LibraryRow } from '@/lib/data/library';
 import { mapSavedPost, type PostSaveRow, type SavedItem } from '@/lib/data/saved';
+import { consultarComRetry } from '@/lib/data/consulta';
 import SavedPageClient from './client-page';
 
 export default async function SavedPage() {
@@ -13,14 +14,18 @@ export default async function SavedPage() {
 
   const [{ data: postSaves, error: postSavesError }, { data: libraryFavorites, error: libraryError }] =
     await Promise.all([
-      supabase
-        .from('post_saves')
-        .select('post:posts(id, content, created_at, author:profiles!posts_author_id_fkey(full_name, avatar_url))')
-        .eq('profile_id', user.id),
-      supabase
-        .from('library_favorites')
-        .select('item:library_items(id, type, title, author_name, image_url, action_url, downloadable, tags, created_at)')
-        .eq('profile_id', user.id),
+      consultarComRetry(() =>
+        supabase
+          .from('post_saves')
+          .select('post:posts(id, content, created_at, author:profiles!posts_author_id_fkey(full_name, avatar_url))')
+          .eq('profile_id', user.id)
+      ),
+      consultarComRetry(() =>
+        supabase
+          .from('library_favorites')
+          .select('item:library_items(id, type, title, author_name, image_url, action_url, downloadable, tags, created_at)')
+          .eq('profile_id', user.id)
+      ),
     ]);
 
   if (postSavesError) console.error('[salvos] erro ao buscar posts salvos:', postSavesError.message);

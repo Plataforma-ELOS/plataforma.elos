@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { mapGroupCard, type GroupRow } from '@/lib/data/groups';
+import { consultarComRetry } from '@/lib/data/consulta';
 import MyGroupsPageClient from './client-page';
 
 type GroupMemberRow = { group: GroupRow | null };
@@ -12,10 +13,12 @@ export default async function MyGroupsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data, error } = await supabase
-    .from('group_members')
-    .select('group:groups!group_members_group_id_fkey ( id, name, description, tags, group_members(count) )')
-    .eq('profile_id', user.id);
+  const { data, error } = await consultarComRetry(() =>
+    supabase
+      .from('group_members')
+      .select('group:groups!group_members_group_id_fkey ( id, name, description, tags, group_members(count) )')
+      .eq('profile_id', user.id)
+  );
 
   if (error) console.error('[meus-grupos] erro ao buscar grupos:', error.message);
 

@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { mapDependentRow, mapJournalEntryRow, type DependentRow, type JournalEntryRow } from '@/lib/data/caregiver';
+import { consultarComRetry } from '@/lib/data/consulta';
 import MeuEspacoClient from './client-page';
 
 export default async function MeuEspacoPage() {
@@ -12,16 +13,20 @@ export default async function MeuEspacoPage() {
 
   const [{ data: dependentRows, error: dependentsError }, { data: journalRows, error: journalError }] =
     await Promise.all([
-      supabase
-        .from('dependents')
-        .select('id, first_name, birth_year, relationship, notes')
-        .eq('caregiver_id', user.id)
-        .order('first_name', { ascending: true }),
-      supabase
-        .from('caregiver_journal')
-        .select('id, entry_date, mood, content')
-        .eq('caregiver_id', user.id)
-        .order('entry_date', { ascending: false }),
+      consultarComRetry(() =>
+        supabase
+          .from('dependents')
+          .select('id, first_name, birth_year, relationship, notes')
+          .eq('caregiver_id', user.id)
+          .order('first_name', { ascending: true })
+      ),
+      consultarComRetry(() =>
+        supabase
+          .from('caregiver_journal')
+          .select('id, entry_date, mood, content')
+          .eq('caregiver_id', user.id)
+          .order('entry_date', { ascending: false })
+      ),
     ]);
 
   if (dependentsError) console.error('[meu-espaco] erro ao buscar dependentes:', dependentsError.message);
