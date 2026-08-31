@@ -115,7 +115,7 @@ Este documento cataloga cada fragmento de texto visível na plataforma, servindo
 *   **Header:** "Pílulas de Conhecimento", "Aprenda de forma rápida e divertida...".
 *   **Seção 1 (Pílulas):** "Destaques da Semana", "Você sabia?", "Dica Rápida", "Fato Importante", "Saber mais".
 *   **Seção 2 (Trilhas):** "Suas Trilhas de Conhecimento", "Trilha: Entendendo o Laudo de TEA", "Trilha: Primeiros Passos na Escola", barra de progresso real, "Continuar Trilha" (leva ao detalhe da trilha).
-*   **Seção 3 (Quiz):** "Teste seus Conhecimentos", "Quiz da Semana!", "Acerte as perguntas sobre as notícias...","Começar Quiz" — ainda decorativo (sem pergunta/pontuação implementada).
+*   ~~**Seção 3 (Quiz)**~~ — removida da tela em 2026-08-31 (decisão de produto). A página termina na seção de trilhas.
 
 ### Detalhe da Trilha (`/noticias-gamificadas/trilhas/[id]`)
 *   **Navegação:** "Voltar para Trilhas".

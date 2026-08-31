@@ -165,13 +165,13 @@ Padrão de acesso a dados predominante: **Server Component + client-page.tsx** (
 ```json
 {
   "route": "/noticias-gamificadas, /noticias-gamificadas/trilhas/[id]",
-  "component_hierarchy": ["NewsGamifiedPage", "KnowledgePills", "LearningTrails (Progress do shadcn)", "QuizCard (ainda decorativo)", "TrailDetailPage (Server Component) -> TrailDetailClient (Accordion + Checkbox por passo)"],
+  "component_hierarchy": ["NewsGamifiedPage", "KnowledgePills", "LearningTrails (Progress do shadcn)", "TrailDetailPage (Server Component) -> TrailDetailClient (Accordion + Checkbox por passo)"],
   "data": {
     "tables": "knowledge_pills, knowledge_trails, knowledge_trail_steps (passos ordenados por trilha, leitura pública/escrita admin), trail_progress (progresso agregado do usuário logado), trail_step_completions (conclusão por passo, RLS FOR ALL restrita ao dono)",
     "mapper": "src/lib/data/knowledge.ts (mapKnowledgePill, mapKnowledgeTrail, mapKnowledgeTrailStep)",
     "actions": "alternarPassoConcluido em src/app/actions/knowledge.ts — faz o toggle em trail_step_completions e recalcula trail_progress.progress (concluídos/total × 100) no mesmo request"
   },
-  "note": "Quiz semanal ('Quiz da Semana!') continua decorativo — exigiria um sistema de pontos que não existe em nenhum outro lugar do app (decisão de produto, item F8)."
+  "note": "Quiz semanal ('Quiz da Semana!') removido da tela em 2026-08-31 por decisão de produto — era decorativo e exigiria um sistema de pontos inexistente no app (item F8)."
 }
 ```
 

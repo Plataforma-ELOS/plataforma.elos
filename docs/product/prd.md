@@ -55,7 +55,7 @@ A paleta de cores foi escolhida para transmitir calma, confiança e modernidade.
 ### 5.6. Trilhas de Conhecimento
 - **Pílulas de Conhecimento:** Cards de aprendizado rápido por categoria (Direitos, Bem-estar, Saúde).
 - **Trilhas com Passos Reais:** Cada trilha tem uma sequência de passos com conteúdo próprio; o cuidador marca cada passo como concluído e a barra de progresso reflete o avanço real.
-- **Quiz Semanal:** Ainda não implementado — depende de uma decisão de produto sobre um eventual sistema de pontuação, que não existe hoje em nenhuma outra parte da plataforma.
+- **Quiz Semanal:** ~~Previsto~~ — **removido do escopo do produto em 2026-08-31**, por decisão do usuário. Nunca saiu do decorativo, e implementá-lo exigiria um sistema de pontuação que não existe em nenhuma outra parte da plataforma.
 
 ### 5.7. Conta e Notificações
 - **Perfil e Preferências:** Edição de nome/bio/foto, tema, tamanho de texto e preferências de notificação/privacidade.
