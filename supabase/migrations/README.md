@@ -25,6 +25,16 @@ está com o schema completo e testado:
   aconteceu depois das 3 migrations mais recentes (corrigido nesta entrega).
   Ao aplicar uma migration nova via MCP, **sempre** criar o arquivo `.sql`
   correspondente nesta pasta no mesmo commit.
+  **Cuidado com o timestamp:** não use um `date` gerado *antes* da chamada —
+  o `apply_migration` carimba a versão dele no momento em que roda, e a
+  diferença de alguns segundos já quebra o check. Depois de aplicar,
+  confirme a versão real e renomeie o arquivo local para bater exatamente:
+  ```sql
+  select version, name from supabase_migrations.schema_migrations order by version desc limit 1;
+  ```
+  (Aconteceu de novo em `use_local_clinic_demo_images`: remoto `…110435`,
+  local `…110426`, 9 s de diferença — deixou o "Supabase Preview" vermelho
+  na `main` até ser renomeado.)
   - `add_notification_privacy_prefs_to_profiles`: `notify_email`,
     `notify_push`, `profile_public` (boolean, default `true`) em `profiles`,
     usadas pela tela `/configuracoes`.
