@@ -2,6 +2,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { consultarComRetry } from '@/lib/data/consulta';
 import AdminClient from './client-page';
 
 export default async function AdminPage() {
@@ -14,21 +15,27 @@ export default async function AdminPage() {
 
   const [{ data: professionals, error: professionalsError }, { data: clinics, error: clinicsError }, { data: libraryItems, error: libraryError }] =
     await Promise.all([
-      supabase
-        .from('professionals')
-        .select('id, display_name, specialty, kind, verification_status, created_at')
-        .eq('verification_status', 'pending')
-        .order('created_at', { ascending: true }),
-      supabase
-        .from('clinics')
-        .select('id, name, specialty, verification_status, created_at')
-        .eq('verification_status', 'pending')
-        .order('created_at', { ascending: true }),
-      supabase
-        .from('library_items')
-        .select('id, title, type, author_name, action_url, tags, created_at')
-        .eq('approved', false)
-        .order('created_at', { ascending: true }),
+      consultarComRetry(() =>
+        supabase
+          .from('professionals')
+          .select('id, display_name, specialty, kind, verification_status, created_at')
+          .eq('verification_status', 'pending')
+          .order('created_at', { ascending: true })
+      ),
+      consultarComRetry(() =>
+        supabase
+          .from('clinics')
+          .select('id, name, specialty, verification_status, created_at')
+          .eq('verification_status', 'pending')
+          .order('created_at', { ascending: true })
+      ),
+      consultarComRetry(() =>
+        supabase
+          .from('library_items')
+          .select('id, title, type, author_name, action_url, tags, created_at')
+          .eq('approved', false)
+          .order('created_at', { ascending: true })
+      ),
     ]);
 
   if (professionalsError) console.error('[admin] erro ao buscar profissionais:', professionalsError.message);

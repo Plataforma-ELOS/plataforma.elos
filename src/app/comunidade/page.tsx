@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import type { Post } from '@/components/features/community/post-card';
 import { mapEventRow, type EventData, type EventRow } from '@/lib/data/events';
 import { mapPostRow, POSTS_POR_PAGINA, type PostRow } from '@/lib/data/community';
+import { consultarComRetry } from '@/lib/data/consulta';
 import CommunityPageClient from './client-page';
 
 export default async function CommunityPage() {
@@ -11,25 +12,29 @@ export default async function CommunityPage() {
   const { data: { user: usuarioAtual } } = await supabase.auth.getUser();
 
   const [{ data: postRows, error: postsError }, { data: eventRows, error: eventsError }] = await Promise.all([
-    supabase
-      .from('posts')
-      .select(`
-        id, content, created_at, author_id, image_url,
-        author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
-        post_likes ( profile_id ),
-        post_saves ( profile_id ),
-        comments (
-          id, content, created_at,
-          author:profiles!comments_author_id_fkey ( full_name, avatar_url )
-        )
-      `)
-      .order('created_at', { ascending: false })
-      .range(0, POSTS_POR_PAGINA - 1),
-    supabase
-      .from('events')
-      .select('id, title, description, starts_at, type, location')
-      .gte('starts_at', new Date().toISOString())
-      .order('starts_at', { ascending: true }),
+    consultarComRetry(() =>
+      supabase
+        .from('posts')
+        .select(`
+          id, content, created_at, author_id, image_url,
+          author:profiles!posts_author_id_fkey ( full_name, avatar_url ),
+          post_likes ( profile_id ),
+          post_saves ( profile_id ),
+          comments (
+            id, content, created_at,
+            author:profiles!comments_author_id_fkey ( full_name, avatar_url )
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .range(0, POSTS_POR_PAGINA - 1)
+    ),
+    consultarComRetry(() =>
+      supabase
+        .from('events')
+        .select('id, title, description, starts_at, type, location')
+        .gte('starts_at', new Date().toISOString())
+        .order('starts_at', { ascending: true })
+    ),
   ]);
 
   if (postsError) console.error('[comunidade] erro ao buscar posts:', postsError.message);

@@ -27,6 +27,12 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  /**
+   * Foto de perfil vinda de `profiles.avatar_url` — upload em /perfil ou a
+   * foto do Google capturada no signup (migration
+   * `capture_oauth_avatar_url_on_signup`). Nula para quem nunca enviou uma.
+   */
+  avatarUrl: string | null;
 };
 
 export type ResultadoAuth = { ok: boolean; erro?: string };
@@ -80,7 +86,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     async (userId: string, email: string) => {
       const { data } = await supabase
         .from("profiles")
-        .select("full_name")
+        .select("full_name, avatar_url")
         .eq("id", userId)
         .maybeSingle();
 
@@ -88,6 +94,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         id: userId,
         name: (data?.full_name as string) ?? email.split("@")[0],
         email,
+        avatarUrl: (data?.avatar_url as string | null) ?? null,
       });
     },
     [supabase]

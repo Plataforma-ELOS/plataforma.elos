@@ -52,6 +52,45 @@
 > `falharSeRuntime`, que **lança em runtime** — assim o Next preserva a
 > última página boa em cache — mas degrada para vazio durante `next build`,
 > já que o CI builda com credenciais dummy de propósito.
+>
+> **Atualização 2026-08-31 (2) — auditoria "o que falta para finalizar":**
+> levantamento do estado **real** (SQL no banco + Vercel + leitura do código),
+> não do que esta documentação afirmava. Resultados:
+>
+> - **Correção de um erro meu:** eu havia relatado o Security Advisor do
+>   Supabase como zerado. Não está — `auth_leaked_password_protection`
+>   continua em WARN. É o único aviso e é um toggle de painel (`0.8` no
+>   roadmap).
+> - **Itens do Horizonte 0 que já estavam feitos** e constavam como pendentes:
+>   `0.1` (Auth configurado — 3 usuários reais, nenhum com e-mail pendente),
+>   `0.7`/`G6` (login Google funcionando — 1 usuário autenticado por ele, com
+>   `avatar_url` do Google gravado), `G4` (2 admins) e `0.3` (a IA responde em
+>   produção).
+> - **Defeito P0 encontrado e corrigido nesta entrega:**
+>   `src/app/profissionais/[id]/page.tsx` é ISR (`revalidate = 300`) e
+>   **descartava o `error`** das duas consultas na desestruturação. Numa falha
+>   transitória (`TypeError: fetch failed`, o mesmo que originou o bug da
+>   listagem) as duas voltavam `null`, a página renderizava um `notFound()`
+>   "com sucesso" e o Next **cacheava o 404** — o perfil do profissional
+>   sumia. Corrigido com `consultarComRetry` + `falharSeRuntime` **antes** do
+>   `notFound()`, que segue valendo para o caso legítimo de id inexistente.
+> - **Avatar do próprio usuário nunca aparecia:** `carregarPerfil`
+>   (`providers.tsx`) só selecionava `full_name`, então header, header
+>   secundário, "criar post", caixa de comentário e o comentário otimista do
+>   `post-card` mostravam um `placehold.co` fixo — enquanto os avatares **dos
+>   outros** apareciam certos. Agora `avatar_url` entra no `AuthContext` e o
+>   fallback passa a ser a inicial do nome (`AvatarFallback` do Radix), sem
+>   depender de host externo.
+> - **Robustez:** as 8 rotas dinâmicas que faziam `console.error` + `?? []`
+>   ganharam `consultarComRetry`. Aqui **não** se usa `falharSeRuntime`: numa
+>   rota dinâmica um throw viraria 500 na cara do usuário; o retry cobre a
+>   falha transitória e a degradação para lista vazia segue como último
+>   recurso.
+> - **Pendências que continuam abertas:** imagens em `placehold.co`/`i.ibb.co`
+>   (notícias, heros de login/cadastro, logo), banco sem conteúdo semente
+>   (0 posts, 0 eventos, 0 avaliações), quiz semanal (decisão de produto),
+>   E2E autenticado (precisa de conta de teste + GitHub Secrets) e domínio
+>   próprio.
 
 ---
 

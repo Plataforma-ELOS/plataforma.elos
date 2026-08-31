@@ -115,7 +115,7 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
       id: `comment-${Date.now()}`,
       author: {
         name: currentUser.name,
-        avatarUrl: 'https://placehold.co/40x40.png',
+        avatarUrl: currentUser.avatarUrl ?? 'https://placehold.co/40x40.png',
         hint: 'user avatar'
       },
       time: 'Agora',

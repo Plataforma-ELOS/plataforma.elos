@@ -2,16 +2,19 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { mapLibraryRow } from '@/lib/data/library';
+import { consultarComRetry } from '@/lib/data/consulta';
 import DigitalLibraryPageClient from './client-page';
 
 export default async function DigitalLibraryPage() {
   const supabase = createClient(await cookies());
 
-  const { data, error } = await supabase
-    .from('library_items')
-    .select('id, type, title, author_name, image_url, action_url, downloadable, tags, created_at')
-    .eq('approved', true)
-    .order('created_at', { ascending: false });
+  const { data, error } = await consultarComRetry(() =>
+    supabase
+      .from('library_items')
+      .select('id, type, title, author_name, image_url, action_url, downloadable, tags, created_at')
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
+  );
 
   if (error) console.error('[acervo-digital] erro ao buscar itens:', error.message);
 

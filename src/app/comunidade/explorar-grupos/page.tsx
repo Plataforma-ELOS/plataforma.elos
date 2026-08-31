@@ -2,6 +2,7 @@
 import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 import { mapGroupCard, type GroupRow } from '@/lib/data/groups';
+import { consultarComRetry } from '@/lib/data/consulta';
 import ExploreGroupsPageClient from './client-page';
 
 export default async function ExploreGroupsPage() {
@@ -9,7 +10,9 @@ export default async function ExploreGroupsPage() {
   const { data: { user } } = await supabase.auth.getUser();
 
   const [{ data: groupRows, error }, { data: membershipRows }] = await Promise.all([
-    supabase.from('groups').select('id, name, description, tags, group_members(count)'),
+    consultarComRetry(() =>
+      supabase.from('groups').select('id, name, description, tags, group_members(count)')
+    ),
     user
       ? supabase.from('group_members').select('group_id').eq('profile_id', user.id)
       : Promise.resolve({ data: [] as { group_id: string }[] }),

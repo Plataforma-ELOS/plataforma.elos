@@ -1,7 +1,16 @@
 # Roadmap — Plataforma E.L.O.S
 
 Planejamento de próximos passos, ancorado no estado real do código.
-Última atualização: 2026-07-29 (branch `claude/new-session-8sdpjq`, 47 PRs mesclados — ver `docs/project/historico-prs.md`).
+Última atualização: 2026-08-31 (branch `claude/new-session-8sdpjq` — ver
+`docs/project/historico-prs.md`).
+
+> **Auditoria de 2026-08-31:** o Horizonte 0 foi reconferido contra o estado
+> real (SQL no banco + Vercel), não contra a documentação. `0.1`, `0.3` e `0.7`
+> já estavam feitos e marcados como pendentes; em compensação apareceu `0.8`
+> (Leaked Password Protection continua desligado — o Security Advisor **não**
+> está zerado) e um defeito de código da mesma classe do cache ISR envenenado,
+> ainda vivo em `/profissionais/[id]`. Detalhes no changelog de
+> `plano-finalizacao-completa.md`.
 
 ## Estado atual (baseline)
 Next.js 15 + shadcn/ui + Supabase, deploy Vercel. `typecheck` ✅, `build` ✅
@@ -19,13 +28,14 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 
 | # | Ação | Tipo | Esforço | Status |
 |---|---|---|---|---|
-| 0.1 | Supabase Auth: Site URL `plataforma-elos-app.vercel.app` + Redirect URLs; decidir confirm-email | Painel | 🟢 | ⬜ |
+| 0.1 | Supabase Auth: Site URL `plataforma-elos-app.vercel.app` + Redirect URLs; decidir confirm-email | Painel | 🟢 | ✅ confirmado 2026-08-31 — 3 usuários reais, 0 com e-mail pendente de confirmação |
 | 0.2 | Ligar "Criar Post" na `/comunidade` | Código | 🟢 | ✅ feito (`d17d804`) |
-| 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ⬜ |
-| 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ |
+| 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ✅ a IA responde em produção |
+| 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ não verificável fora do painel da Vercel |
 | 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel — checklist pronto em [`qa-ponta-a-ponta.md`](./qa-ponta-a-ponta.md), execução manual pendente | QA | 🟡 | ⬜ |
 | 0.6 | ~~Abrir e mergear o PR → `main`~~ — superado: o fluxo virou uma PR por etapa, 47 já mesclados (ver `docs/project/historico-prs.md`) | Processo | 🟢 | ✅ |
-| 0.7 | Login social: código pronto (só Google — Facebook/Microsoft descontinuados por fricção externa, ver `historico-prs.md`) — falta ativar as credenciais no painel Supabase (Authentication → Providers) | Painel | 🟢 | ⬜ |
+| 0.7 | Login social: código pronto (só Google — Facebook/Microsoft descontinuados por fricção externa, ver `historico-prs.md`) | Painel | 🟢 | ✅ confirmado 2026-08-31 — 1 usuário autenticado via Google, com `avatar_url` do `lh3.googleusercontent.com` gravado em `profiles` |
+| 0.8 | Ativar **Leaked Password Protection** (Supabase → Authentication → Policies) | Painel | 🟢 | ⬜ único aviso restante do Security Advisor |
 
 ---
 
