@@ -38,6 +38,20 @@
 > posts sem `sizes` (pesava mais que o necessário em mobile); `min-h-screen`
 > → `min-h-dvh` em 4 telas de formulário (corta conteúdo no Safari iOS ao
 > recolher a barra de endereço).
+>
+> **Atualização 2026-08-31 — cache ISR envenenado (bug de produção):** uma
+> verificação E2E (Vercel + GitHub + Supabase + app ao vivo) encontrou
+> `/profissionais` e `/noticias` servindo listas **vazias** em produção,
+> apesar do banco ter 5 profissionais, 2 clínicas e 4 notícias. Causa: as
+> duas rotas logavam o erro da consulta e renderizavam com `?? []` — como
+> são ISR (`revalidate = 300`), o Next cacheava a página vazia e passava a
+> servi-la (Runtime Errors da Vercel: `TypeError: fetch failed`, de 21/08
+> em diante). Contraprova: `/acervo-digital` (dinâmica) servia dado real
+> normalmente. Correção: novo `src/lib/data/consulta.ts` com
+> `consultarComRetry` (backoff curto para falha transitória) e
+> `falharSeRuntime`, que **lança em runtime** — assim o Next preserva a
+> última página boa em cache — mas degrada para vazio durante `next build`,
+> já que o CI builda com credenciais dummy de propósito.
 
 ---
 
