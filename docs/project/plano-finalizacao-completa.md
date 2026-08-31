@@ -91,6 +91,40 @@
 >   (0 posts, 0 eventos, 0 avaliações), quiz semanal (decisão de produto),
 >   E2E autenticado (precisa de conta de teste + GitHub Secrets) e domínio
 >   próprio.
+>
+> **Atualização 2026-08-31 (3) — decisões do usuário + imagens ligadas:**
+>
+> - **Quiz semanal removido do produto.** Ver ficha `F8`. Não vira dívida
+>   técnica: é escopo retirado.
+> - **EmailJS confirmado** e **domínio próprio adiado** (`0.4` e `0.9` no
+>   roadmap). Com isso, o **único** item de painel que resta é a Leaked
+>   Password Protection (`0.8`).
+> - **❗ Correção de um diagnóstico meu:** eu havia relatado que as fotos das
+>   notícias e dos profissionais "não existiam localmente em nenhum dos dois
+>   repositórios". **Errado.** `public/noticias/noticia-1..4.jpg` e
+>   `public/perfis/liberais/profissional-1..5.jpg` estavam versionados o tempo
+>   todo, e a home já os exibia via arrays hardcoded
+>   (`news-carousel.tsx`, `new-professionals.tsx`). O que faltava era o
+>   **banco** apontar para eles: as 4 notícias tinham `image_url` nulo e os 5
+>   profissionais apontavam para `placehold.co/400x400/<cor>?text=XX`. Ou seja,
+>   a home mostrava a foto real e a listagem mostrava o cinza.
+> - **Migration `use_local_news_and_professional_images`:** notícia casada por
+>   `slug` (mesmo mapeamento da home) e profissional casado por especialidade
+>   (as 5 batem 1:1). Os 5 `display_name` demo passaram a usar os nomes que a
+>   home já mostrava (`Dra. Cristiane (demo)`, …) — sem isso, casar só por
+>   especialidade colocaria a foto da "Dra. Beatriz" num card chamado "Carlos
+>   Eduardo Lima". Só o nome mudou; `registration_number` (`DEMO-xxx`),
+>   especialidade, descrição e skills continuam iguais.
+> - **Não é lacuna:** `public/acervo/**` e `public/comunidade/membro-*` são
+>   sobras do repositório de referência. O card do acervo mostra thumbnail
+>   **só** para `type = 'video'`; documento renderiza um ícone `FileText` de
+>   propósito, então `library_items.image_url` nulo está correto.
+> - **Sobre o banco vazio:** confirmado que é ausência de uso, não bug. 3
+>   contas (2 admins + 1 cuidador via Google) e o único rastro de interação
+>   real são 3 linhas em `group_members`; todo o resto está zerado.
+> - **Continua aberto:** logo oficial e os heros `placehold.co/1920x1080` de
+>   `/login`/`/cadastro`/`/cadastro-profissional` — dependem de arquivo que o
+>   usuário precisa fornecer; conteúdo semente; E2E autenticado.
 
 ---
 
@@ -98,11 +132,12 @@
 
 A base está **arquiteturalmente sólida e verde** (`typecheck` 0 erros · `test`
 68/68 · `build` 0 avisos, 30 rotas). Não há regressão de código. O que separa
-o projeto do "100% em produção" é, em ordem de peso: **(a) configuração externa**
-de painel (Supabase Auth, env vars na Vercel) e **(b) uma decisão de produto
-pendente** (sistema de pontos para o quiz semanal, `F8`). Não há mais nenhuma
-feature de núcleo em stub/mock — o backlog de código deste guia está
-completo.
+o projeto do "100% em produção" é, em ordem de peso: **(a)** um único item de
+painel (Leaked Password Protection) e **(b) conteúdo** — o banco não tem posts,
+eventos nem avaliações porque ninguém usou o app a fundo ainda. Não há mais
+nenhuma feature de núcleo em stub/mock, nem decisão de produto pendente: o quiz
+semanal foi **removido** em 2026-08-31 (ver `F8`), e o backlog de código deste
+guia está completo.
 
 ### % de conclusão estimado por módulo
 
@@ -111,8 +146,8 @@ completo.
 | Autenticação (login/cadastro/logout/middleware) | 90% | Código pronto; falta config de Auth no painel (G1) |
 | Comunidade — feed/curtir/salvar/comentar/excluir/criar/**editar**/paginação | 100% | Completo (F1/F2 ✅) |
 | Grupos (explorar/meus/criar/detalhe) | 100% | Completo |
-| Notícias + Notícias IA | 90% | Precisa `GEMINI_API_KEY` p/ resumo IA (G3) |
-| Notícias gamificadas | 95% | Trilhas com passos reais e progresso funcional (F8); quiz semanal continua decorativo, pendente de decisão de produto |
+| Notícias + Notícias IA | 100% | Completo — `GEMINI_API_KEY` configurada, IA responde em produção |
+| Notícias gamificadas | 100% | Trilhas com passos reais e progresso funcional (F8); quiz semanal removido por decisão de produto |
 | Acervo digital (+ favoritar, sugerir item, upload de imagem, busca full-text) | 100% | Completo |
 | Profissionais (listagem/busca full-text/paginação/detalhe/reviews/selo verificado) | 100% | Completo — "Agendar consulta" removido por decisão de produto (U12) |
 | Fale conosco | 85% | Grava no banco (com rate limiting); e-mail depende de `EMAILJS_*` (G3) |
@@ -148,7 +183,7 @@ rede de profissionais completa (cadastro com especialidade real, paginação,
 busca full-text, selo verificado, avaliações) · acervo digital completo
 (sugestão de item, favoritos, busca full-text, upload de imagem) · área do
 cuidador, perfil, salvos, configurações, notificações e painel administrativo
-· trilhas de conhecimento com passos reais (quiz semanal pendente) · Storage
+· trilhas de conhecimento com passos reais · Storage
 para upload de imagem (avatar, profissional, acervo, posts) · rate limiting
 no banco · CI (GitHub Actions) · Vitest (68 testes) · Playwright (páginas
 públicas) · ESLint · harmonia Supabase↔Vercel (middleware, Server
@@ -201,7 +236,7 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 | E6 | ✅ Painel administrativo | Código | P3 | Muito Alta | 3+ dias | G4 |
 | E7 | ✅ Notificações | Código | P3 | Muito Alta | 3+ dias | — |
 | E8 | ✅ Busca server-side (full-text) — Acervo Digital e profissionais/clínicas | Código/Supabase | P3 | Alta | 1–2 dias | E1 |
-| F8 | 🟡 Trilhas de conhecimento — passos reais + progresso (quiz fora de escopo) | Código/Supabase | P3 | Média | meio dia | — |
+| F8 | ✅ Trilhas de conhecimento — passos reais + progresso (quiz removido) | Código/Supabase | P3 | Média | meio dia | — |
 
 ---
 
@@ -738,16 +773,16 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 
 ---
 
-### [F8] 🟡 Trilhas de conhecimento — passos reais + progresso (quiz fora de escopo)
+### [F8] ✅ Trilhas de conhecimento — passos reais + progresso (quiz removido)
 - **Categoria:** Código/Supabase · **Prio:** P3 · **Dificuldade:** Média · **Tempo:** meio dia · **Dependências:** —
 - **Relevância:** `trail_progress` existia desde o `0001`, mas as trilhas não tinham nenhum conteúdo real — "Continuar Trilha" (`/noticias-gamificadas`) não tinha `onClick` nem `href`, era 100% inerte.
 - **Implementado em 2026-07-29:** migration `add_knowledge_trail_steps_and_completions` — tabela `knowledge_trail_steps` (passos ordenados por trilha, leitura pública/escrita admin, mesmo padrão de `knowledge_trails`) + `trail_step_completions` (conclusão por usuário, RLS `FOR ALL` restrita ao dono, mesmo padrão de `dependents`/`caregiver_journal`), com seed de 4 passos reais para cada uma das 2 trilhas demo (conteúdo informativo ancorado em legislação real — Lei Berenice Piana 12.764/2012, Lei Brasileira de Inclusão 13.146/2015 — no mesmo tom factual de `knowledge_pills`). Nova rota `/noticias-gamificadas/trilhas/[id]` (Server Component + `client-page.tsx`): lista os passos em `Accordion` (shadcn), cada um com `Checkbox` "Concluí esta etapa". Nova Server Action `alternarPassoConcluido(trailId, stepId)` (`src/app/actions/knowledge.ts`) faz o toggle em `trail_step_completions` e recalcula `trail_progress.progress` (`count(concluídos)/count(total de passos)×100`) no mesmo request. `noticias-gamificadas/page.tsx`: botão "Continuar Trilha" vira link real; barra de progresso hand-rolled trocada pelo `Progress` do shadcn (já existia no projeto, não era usado).
-- **Fora de escopo, decisão do usuário:** o quiz semanal (`Quiz da Semana!`) continua decorativo — exigiria um sistema de pontos/pontuação que não existe em nenhum outro lugar do app, uma decisão de produto maior que não cabe decidir sozinho nesta rodada.
+- **Quiz semanal removido em 2026-08-31, por decisão do usuário:** o card `Quiz da Semana!` nunca chegou a funcionar — era decorativo, com o botão desabilitado desde a rodada de 04/08, e sair do decorativo exigiria um sistema de pontos que não existe em nenhum outro lugar do app. Em vez de ficar indefinidamente como "em breve" na tela, a seção inteira saiu de `noticias-gamificadas/page.tsx` (título "Teste seus Conhecimentos" + `Card` + import órfão do ícone `Puzzle`). **Não é dívida técnica: é escopo retirado do produto.**
 
 #### ✅ Critério de aceite
 - [x] "Continuar Trilha" leva a uma tela real com os passos da trilha.
 - [x] Marcar/desmarcar um passo atualiza `trail_progress` e reflete na barra de progresso da listagem.
-- [ ] Quiz semanal — fora de escopo, ver nota acima.
+- [x] Quiz semanal — removido do produto, ver nota acima.
 
 ---
 

@@ -15,7 +15,7 @@
 
 - [ ] Cadastro por e-mail/senha cria a conta e redireciona para `/login`.
 - [ ] Login por e-mail/senha entra e redireciona para `/home`.
-- [ ] Login com Google (`/login` e `/cadastro`, botão "Continuar com Google") completa o fluxo OAuth e retorna logado — só testável depois que as credenciais forem coladas no painel Supabase (ficha `G6`).
+- [ ] Login com Google (`/login` e `/cadastro`, botão "Continuar com Google") completa o fluxo OAuth e retorna logado — credenciais já ativas no painel Supabase (há 1 conta real criada por esse fluxo).
 - [ ] Logout limpa a sessão e os itens do header voltam ao estado deslogado.
 - [ ] Sessão sobrevive a um `refresh` da página (não desloga sozinho).
 - [ ] Acessar uma rota privada deslogado (ex. `/comunidade/criar-grupo`) redireciona para `/login?redirect=...` e volta para a rota certa após logar.
@@ -71,7 +71,7 @@
 ## 7. Perfil e Configurações
 
 - [ ] Editar nome/bio em `/perfil` persiste.
-- [ ] Upload de avatar em `/perfil` funciona e reflete no header.
+- [ ] Upload de avatar em `/perfil` funciona e **reflete no header** (corrigido na PR #58 — antes o header sempre mostrava um placeholder).
 - [ ] `/configuracoes`: alternar tema (claro/escuro), tamanho de fonte e preferências de notificação persistem.
 
 ## 8. Notificações
@@ -88,7 +88,7 @@
 
 ## 10. Fale Conosco e Suporte IA
 
-- [ ] Enviar mensagem em `/fale-conosco` grava no banco e dispara e-mail (EmailJS) — requer `GEMINI_API_KEY`/chaves EmailJS configuradas (`G3`).
+- [ ] Enviar mensagem em `/fale-conosco` grava no banco e dispara e-mail (EmailJS) — `GEMINI_API_KEY` e chaves EmailJS já configuradas.
 - [ ] Enviar 4 mensagens seguidas rapidamente dispara o rate limit (mensagem amigável, não erro genérico).
 - [ ] `/suporte-ia`: pergunta retorna resposta em streaming, sem travar a tela.
 - [ ] Clicar num tópico sugerido preenche a pergunta e rola até a resposta.
@@ -104,7 +104,6 @@
 - [ ] **Login e Cadastro não permitem duplo clique** — botão desabilita visivelmente durante o envio.
 - [ ] Simular erro de rede (DevTools → Offline) num dos 7 formulários corrigidos (perfil, meu-espaço, avaliação, acervo, criar post, cadastro profissional, criar grupo) e confirmar que o botão **volta a ficar habilitado** em vez de travar.
 - [ ] Testar em um iPhone real (Safari) se disponível: telas de formulário (login, cadastro, criar-grupo, fale-conosco) não cortam conteúdo ao rolar com a barra de endereço recolhendo (`min-h-dvh`).
-- [ ] "Começar Quiz" em `/noticias-gamificadas` aparece visivelmente desabilitado (não finge estar ativo).
 
 ---
 

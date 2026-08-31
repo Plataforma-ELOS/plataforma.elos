@@ -16,8 +16,10 @@ Planejamento de próximos passos, ancorado no estado real do código.
 Next.js 15 + shadcn/ui + Supabase, deploy Vercel. `typecheck` ✅, `build` ✅
 (0 avisos), `test` ✅ (68, Vitest). Arquitetura refatorada (feature-based),
 Firebase removido, migrations sincronizadas com o remoto. Sem regressão de
-código — o que resta é config externa (Horizonte 0) e a decisão de produto
-pendente sobre o quiz semanal (Horizonte 4).
+código. O quiz semanal foi **removido** por decisão de produto em
+2026-08-31 (nunca chegou a existir de verdade: era um card decorativo com o
+botão desabilitado, e exigiria um sistema de pontos inexistente no app). O que
+resta é config externa (Horizonte 0) e conteúdo.
 
 Legenda de esforço: 🟢 ≤1h · 🟡 meio dia · 🟠 1–2 dias · 🔴 3+ dias.
 
@@ -31,11 +33,12 @@ Deixar o que já existe operável em produção (quase tudo é config, não cód
 | 0.1 | Supabase Auth: Site URL `plataforma-elos-app.vercel.app` + Redirect URLs; decidir confirm-email | Painel | 🟢 | ✅ confirmado 2026-08-31 — 3 usuários reais, 0 com e-mail pendente de confirmação |
 | 0.2 | Ligar "Criar Post" na `/comunidade` | Código | 🟢 | ✅ feito (`d17d804`) |
 | 0.3 | Preencher `GEMINI_API_KEY` (Vercel + `.env.local`) → ativa `/suporte-ia` e resumo de `/noticias-ai` | Config | 🟢 | ✅ a IA responde em produção |
-| 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ⬜ não verificável fora do painel da Vercel |
+| 0.4 | Preencher `NEXT_PUBLIC_EMAILJS_*` → envio de e-mail no fale-conosco (gravação no banco já funciona) | Config | 🟢 | ✅ confirmado pelo usuário em 2026-08-31 |
 | 0.5 | Validar fluxos ponta-a-ponta na Preview da Vercel — checklist pronto em [`qa-ponta-a-ponta.md`](./qa-ponta-a-ponta.md), execução manual pendente | QA | 🟡 | ⬜ |
 | 0.6 | ~~Abrir e mergear o PR → `main`~~ — superado: o fluxo virou uma PR por etapa, 47 já mesclados (ver `docs/project/historico-prs.md`) | Processo | 🟢 | ✅ |
 | 0.7 | Login social: código pronto (só Google — Facebook/Microsoft descontinuados por fricção externa, ver `historico-prs.md`) | Painel | 🟢 | ✅ confirmado 2026-08-31 — 1 usuário autenticado via Google, com `avatar_url` do `lh3.googleusercontent.com` gravado em `profiles` |
-| 0.8 | Ativar **Leaked Password Protection** (Supabase → Authentication → Policies) | Painel | 🟢 | ⬜ único aviso restante do Security Advisor |
+| 0.8 | Ativar **Leaked Password Protection** (Supabase → Authentication → Policies) | Painel | 🟢 | ⬜ **único item realmente pendente** — é o único aviso do Security Advisor |
+| 0.9 | Domínio próprio | Vercel | 🟢 | ⏸️ **adiado por decisão do usuário (2026-08-31)** — `plataforma-elos-app.vercel.app` é o endereço oficial por ora. Não é pendência. |
 
 ---
 
@@ -108,7 +111,8 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - ✅ Workflow de verificação de profissionais (aprovar/rejeitar via `/admin` + selo "verificado" em `/profissionais`).
 - ✅ Painel administrativo (`/admin` — verificação de profissionais/clínicas + aprovação do acervo).
 - ✅ Notificações (curtidas, comentários).
-- 🟡 Trilhas de conhecimento interativas — passos reais + progresso feito (`/noticias-gamificadas/trilhas/[id]`, tabelas `knowledge_trail_steps`/`trail_step_completions`); quiz semanal continua decorativo (fora de escopo — exigiria um sistema de pontos que não existe em nenhum outro lugar do app).
+- ✅ Trilhas de conhecimento interativas — passos reais + progresso (`/noticias-gamificadas/trilhas/[id]`, tabelas `knowledge_trail_steps`/`trail_step_completions`).
+- ❌ ~~Quiz semanal~~ — **removido em 2026-08-31 por decisão do usuário.** Era um card decorativo com botão desabilitado; exigiria um sistema de pontos que não existe em nenhum outro lugar do app. Sai do escopo do produto, não fica como pendência.
 - ✅ Busca server-side com full-text (Acervo Digital e `/profissionais`, `tsvector`+GIN).
 
 ---

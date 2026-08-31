@@ -7,7 +7,7 @@ import Footer from '@/components/layout/footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Award, Puzzle, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
+import { Award, Lightbulb, Newspaper, CheckCircle, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { mapKnowledgePill, mapKnowledgeTrail } from '@/lib/data/knowledge';
 
@@ -83,7 +83,7 @@ export default async function NewsGamifiedPage() {
 
             {/* Trilhas de Conhecimento */}
             <h2 className="text-2xl font-bold mb-4">Suas Trilhas de Conhecimento</h2>
-            <div className="space-y-4 mb-12">
+            <div className="space-y-4">
               {knowledgeTrails.map((trail) => (
                 <Card key={trail.id} className="p-6 rounded-2xl shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
                     <CardHeader className="p-0 mb-4">
@@ -102,15 +102,6 @@ export default async function NewsGamifiedPage() {
                 </Card>
               ))}
             </div>
-
-            {/* Quiz Semanal */}
-            <h2 className="text-2xl font-bold mb-4">Teste seus Conhecimentos</h2>
-            <Card className="p-6 rounded-2xl text-center bg-primary/10 border-primary/20 shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-2">
-              <Puzzle className="h-12 w-12 text-primary-strong mx-auto mb-4" />
-              <CardTitle className="text-xl mb-2">Quiz da Semana!</CardTitle>
-              <p className="text-muted-foreground mb-4">Acerte as perguntas sobre as notícias da semana e ganhe pontos.</p>
-              <Button disabled title="Em breve">Começar Quiz (em breve)</Button>
-            </Card>
           </div>
         </div>
       </main>

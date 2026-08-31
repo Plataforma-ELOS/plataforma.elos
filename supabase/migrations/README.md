@@ -70,6 +70,18 @@ está com o schema completo e testado:
   - `use_local_clinic_demo_images`: `clinics.image_url` das 2 linhas demo
     passa de `placehold.co` para as fotos locais reais em
     `public/perfis/clinicas/` (trazidas do repositório de referência).
+  - `use_local_news_and_professional_images`: mesma ideia, para as outras duas
+    entidades. As 4 notícias tinham `image_url` nulo e os 5 profissionais demo
+    apontavam para `placehold.co/400x400/<cor>?text=XX`, embora
+    `public/noticias/noticia-1..4.jpg` e
+    `public/perfis/liberais/profissional-1..5.jpg` já estivessem versionados e
+    já fossem exibidos na home. Notícia casada por `slug` (mesmo mapeamento de
+    `news-carousel.tsx`), profissional casado por especialidade (as 5 batem
+    1:1). Os `display_name` demo passaram a usar os nomes que a home já
+    mostrava (`Dra. Cristiane (demo)`, …) — sem isso a foto da "Dra. Beatriz"
+    cairia num card chamado "Carlos Eduardo Lima". Só o nome mudou;
+    `registration_number` (`DEMO-xxx`), especialidade, descrição e skills
+    ficaram intactos.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
