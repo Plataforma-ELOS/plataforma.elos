@@ -13,7 +13,8 @@ import { getNews } from '@/lib/data/news';
 export const revalidate = 300;
 
 export default async function NewsPage() {
-  const newsArticles = await getNews();
+  // lancarErro: rota com ISR — ver src/lib/data/consulta.ts.
+  const newsArticles = await getNews({ lancarErro: true });
   const featuredArticle = newsArticles[0];
   const otherArticles = newsArticles.slice(1);
 

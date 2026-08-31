@@ -6,6 +6,7 @@ import {
   PROFISSIONAIS_POR_PAGINA,
   CLINICAS_POR_PAGINA,
 } from '@/lib/data/professionals';
+import { consultarComRetry, falharSeRuntime } from '@/lib/data/consulta';
 import ProfessionalsPageClient from './client-page';
 
 // ISR: listagem pública, sem personalização por usuário logado — pode ser
@@ -17,21 +18,27 @@ export default async function ProfessionalsPage() {
 
   const [{ data: professionalRows, error: professionalsError }, { data: clinicRows, error: clinicsError }] =
     await Promise.all([
-      supabase
-        .from('professionals')
-        .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status')
-        .in('kind', ['liberal', 'clinic_professional'])
-        .order('created_at', { ascending: false })
-        .range(0, PROFISSIONAIS_POR_PAGINA - 1),
-      supabase
-        .from('clinics')
-        .select('id, name, specialty, description, image_url, cnpj, phone, email, verification_status')
-        .order('created_at', { ascending: false })
-        .range(0, CLINICAS_POR_PAGINA - 1),
+      consultarComRetry(() =>
+        supabase
+          .from('professionals')
+          .select('id, display_name, specialty, description, image_url, registration_number, phone, email, instagram, verification_status')
+          .in('kind', ['liberal', 'clinic_professional'])
+          .order('created_at', { ascending: false })
+          .range(0, PROFISSIONAIS_POR_PAGINA - 1),
+      ),
+      consultarComRetry(() =>
+        supabase
+          .from('clinics')
+          .select('id, name, specialty, description, image_url, cnpj, phone, email, verification_status')
+          .order('created_at', { ascending: false })
+          .range(0, CLINICAS_POR_PAGINA - 1),
+      ),
     ]);
 
-  if (professionalsError) console.error('[profissionais] erro ao buscar profissionais:', professionalsError.message);
-  if (clinicsError) console.error('[profissionais] erro ao buscar clinicas:', clinicsError.message);
+  // Lança em runtime para o Next preservar a última página boa em cache, em
+  // vez de cachear uma listagem vazia (ver src/lib/data/consulta.ts).
+  if (professionalsError) falharSeRuntime('profissionais', `erro ao buscar profissionais: ${professionalsError.message}`);
+  if (clinicsError) falharSeRuntime('profissionais', `erro ao buscar clinicas: ${clinicsError.message}`);
 
   return (
     <ProfessionalsPageClient

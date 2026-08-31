@@ -3,6 +3,7 @@
 // { slug, title, description, imageUrl, imageHint, category, date }
 import { createStaticClient } from '@/lib/supabase/server';
 import { formatarDataPtBr } from '../format';
+import { consultarComRetry, falharSeRuntime } from './consulta';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,
 // saude, comunidade) — a tela usa o rótulo em português com acento e
@@ -25,15 +26,23 @@ export type NewsCardData = {
   tags: string[];
 };
 
-export async function getNews(): Promise<NewsCardData[]> {
+/**
+ * @param opcoes.lancarErro Para rotas com ISR: lança em runtime quando a
+ * consulta falha, evitando que o Next cacheie uma listagem vazia. Rotas
+ * dinâmicas (ex.: /noticias-ai) mantêm o default e degradam para lista vazia.
+ */
+export async function getNews(opcoes?: { lancarErro?: boolean }): Promise<NewsCardData[]> {
   const supabase = createStaticClient();
-  const { data, error } = await supabase
-    .from('news_articles')
-    .select('slug, title, description, image_url, image_hint, category, tags, published_at')
-    .order('published_at', { ascending: false, nullsFirst: false });
+  const { data, error } = await consultarComRetry(() =>
+    supabase
+      .from('news_articles')
+      .select('slug, title, description, image_url, image_hint, category, tags, published_at')
+      .order('published_at', { ascending: false, nullsFirst: false }),
+  );
 
   if (error) {
-    console.error('[getNews]', error.message);
+    if (opcoes?.lancarErro) falharSeRuntime('getNews', error.message);
+    else console.error('[getNews]', error.message);
     return [];
   }
 
