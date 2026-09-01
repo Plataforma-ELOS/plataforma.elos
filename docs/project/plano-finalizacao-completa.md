@@ -125,6 +125,17 @@
 > - **Continua aberto:** logo oficial e os heros `placehold.co/1920x1080` de
 >   `/login`/`/cadastro`/`/cadastro-profissional` — dependem de arquivo que o
 >   usuário precisa fornecer; conteúdo semente; E2E autenticado.
+>
+> **Atualização 2026-08-31 (4) — deploy da Vercel parou por repositório
+> privado:** entre o merge da PR #58 e o push da PR #59, o repositório
+> `Plataforma-ELOS/plataforma.elos` foi tornado privado. O plano Hobby da
+> Vercel não faz deploy de repositório **privado de organização**, então a
+> PR #59 (quiz removido + fotos ligadas) foi mesclada em `main` sem nenhum
+> deploy — 0 deployments novos por ~15 minutos, confirmado via
+> `list_deployments`. O bot da Vercel deixou o aviso na própria PR. Voltou a
+> público; este commit existe para gerar um push novo em `main` e reacionar
+> o webhook da Vercel, já que a mudança de visibilidade sozinha não
+> redispara deploy de um push que já aconteceu enquanto estava privado.
 
 ---
 
