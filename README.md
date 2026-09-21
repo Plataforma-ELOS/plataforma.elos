@@ -5,7 +5,7 @@ A **E.L.O.S** é uma plataforma digital de apoio integral dedicada a cuidadores 
 ## 👤 Autoria
 
 ## Mentor:
-- ** Altemar Antônio Galvão Barbosa
+- ** Altemar Antônio G. Barbosa
 
 ## Este projeto foi desenvolvido por:
 - ** Leticia de Santana Lins — LeticiaDeSantanaLins
