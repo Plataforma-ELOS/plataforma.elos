@@ -2,6 +2,17 @@
 
 A **E.L.O.S** é uma plataforma digital de apoio integral dedicada a cuidadores de pessoas com Transtorno do Espectro Autista (TEA). Sob a premissa de que "cuidar de alguém começa por cuidar de si", a plataforma centraliza recursos, comunidade e conexão com profissionais para reduzir a vulnerabilidade e o isolamento dos cuidadores.
 
+## 👤 Autoria
+
+## Mentor:
+- ** Altemar Antônio Galvão Barbosa
+
+## Este projeto foi desenvolvido por:
+- ** Leticia de Santana Lins — LeticiaDeSantanaLins
+- ** Renato Alves Ribeiro de Oliveira — RenatoAlves-ofc
+- ** Letícia Maria Augusto de Souza Galvão — LeticiaASG
+- ** Luckas Alexandre Oliveira Castro Barros — ceka1702
+
 ## 🚀 Visão Geral
 
 O projeto nasceu para preencher uma lacuna de suporte emocional e informacional para famílias no espectro autista. A plataforma utiliza tecnologias modernas para oferecer clareza sobre direitos, ferramentas de aprendizagem e um espaço seguro de conexão.
