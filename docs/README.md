@@ -1,5 +1,16 @@
 # Documentação — Plataforma E.L.O.S
 
+## 👤 Autoria
+
+## Mentor:
+- ** Altemar Antônio G. Barbosa
+
+## Este projeto foi desenvolvido por:
+- ** Leticia de Santana Lins — LeticiaDeSantanaLins
+- ** Renato Alves Ribeiro de Oliveira — RenatoAlves-ofc
+- ** Letícia Maria Augusto de Souza Galvão — LeticiaASG
+- ** Luckas Alexandre Oliveira Castro Barros — ceka1702
+
 Documentos organizados por área. Todos em Markdown, nomes em kebab-case.
 
 ## 📦 product/ — Produto
