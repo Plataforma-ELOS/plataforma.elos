@@ -1,0 +1,8 @@
+[
+  {
+    "name": "postgrest",
+    "listen": "0.0.0.0:3001",
+    "upstream": "postgrest:3000",
+    "enabled": true
+  }
+]
