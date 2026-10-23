@@ -1,0 +1,60 @@
+name: Estresse
+
+# Roda um cenário de estresse sob demanda (Actions → Estresse → Run workflow).
+#
+# Não roda em PR nem em push de propósito: cada execução leva de minutos a
+# dezenas de minutos e sobe um banco inteiro. Também NUNCA toca produção: o
+# runner sobe o mesmo ambiente isolado de stress/ambiente (Postgres com as
+# migrations do repositório + PostgREST + Toxiproxy) e a app roda dentro dele.
+#
+# O resultado (painel HTML do k6, métricas, CPU/memória, consultas ao banco)
+# fica como artefato da execução.
+
+on:
+  workflow_dispatch:
+    inputs:
+      cenario:
+        description: Cenário
+        type: choice
+        options: [fumaca, carga, pico, estresse, ruptura, dependencia]
+        default: fumaca
+      escala_tempo:
+        description: Escala de tempo (1 = duração completa; 0.25 = um quarto)
+        default: '1'
+      escala_carga:
+        description: Escala de carga (1 = usuários padrão do cenário)
+        default: '1'
+
+jobs:
+  estresse:
+    name: estresse · ${{ inputs.cenario }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rodar cenário
+        run: stress/rodar.sh "${{ inputs.cenario }}"
+        env:
+          ESCALA_TEMPO: ${{ inputs.escala_tempo }}
+          ESCALA_CARGA: ${{ inputs.escala_carga }}
+          DERRUBAR: '1'
+
+      - name: Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: estresse-${{ inputs.cenario }}-${{ github.run_number }}
+          path: stress/resultados/
+          if-no-files-found: warn

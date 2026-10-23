@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Terminal, Newspaper, Tags } from 'lucide-react';
-import { getNewsSummary } from '@/ai/flows/news-flow';
+import { obterResumoDoDia } from '@/lib/data/news-summary';
 import { getNews } from '@/lib/data/news';
 
 // Renderiza no momento da requisição (não no build) para não depender da IA
@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic';
 async function AiSummaryCard({ newsArticles }: { newsArticles: { title: string }[] }) {
     let summary: string;
     try {
-        summary = await getNewsSummary(newsArticles.map(a => a.title));
+        summary = await obterResumoDoDia(newsArticles.map(a => a.title));
     } catch (error) {
         console.error('Falha ao gerar o resumo de notícias com IA:', error);
         summary = 'O resumo inteligente das notícias está temporariamente indisponível. Explore os destaques abaixo.';

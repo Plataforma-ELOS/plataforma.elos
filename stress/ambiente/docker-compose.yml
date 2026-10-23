@@ -1,0 +1,88 @@
+# Ambiente ISOLADO de teste de estresse da Plataforma E.L.O.S.
+#
+# Nunca aponta para o Supabase de produção: sobe um Postgres próprio, aplica
+# as mesmas migrations de supabase/migrations e serve a API REST pelo
+# PostgREST (o mesmo componente que o Supabase usa por baixo de /rest/v1).
+#
+#   app (next start) ──► gateway :54321 ──► toxiproxy ──► postgrest ──► db
+#
+# O Toxiproxy fica no meio do caminho de propósito: é por ele que o cenário
+# "dependencia" injeta lentidão e queda no banco (efeito dominó).
+#
+# Imagens vêm do ECR público da AWS para não esbarrar no limite de downloads
+# anônimos do Docker Hub. Uso: ver stress/README.md.
+name: elos-estresse
+
+services:
+  db:
+    image: public.ecr.aws/docker/library/postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      # Volume da massa sintética (db/02-dados-estresse.sh).
+      ESTRESSE_USUARIOS: ${ESTRESSE_USUARIOS:-200}
+      ESTRESSE_POSTS: ${ESTRESSE_POSTS:-600}
+      ESTRESSE_COMENTARIOS_POR_POST: ${ESTRESSE_COMENTARIOS_POR_POST:-6}
+      ESTRESSE_CURTIDAS_POR_POST: ${ESTRESSE_CURTIDAS_POR_POST:-12}
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      # Limite de conexões próximo ao das instâncias menores do Supabase;
+      # ajustável para ver como o ponto de ruptura se move.
+      - -c
+      - max_connections=${DB_MAX_CONEXOES:-60}
+    volumes:
+      - ./db/00-bootstrap.sql:/docker-entrypoint-initdb.d/00-bootstrap.sql:ro
+      - ./db/01-migrations.sh:/docker-entrypoint-initdb.d/01-migrations.sh:ro
+      - ./db/02-dados-estresse.sh:/docker-entrypoint-initdb.d/02-dados-estresse.sh:ro
+      - ../../supabase/migrations:/migrations:ro
+    ports:
+      - "127.0.0.1:54322:5432"
+    healthcheck:
+      # Só fica saudável depois das migrations e da massa de dados.
+      test: ["CMD-SHELL", "psql -U postgres -h 127.0.0.1 -tAc 'select count(*) > 0 from public.posts' | grep -q t"]
+      interval: 2s
+      timeout: 5s
+      retries: 90
+
+  postgrest:
+    image: public.ecr.aws/supabase/postgrest:v12.2.3
+    environment:
+      PGRST_DB_URI: postgres://authenticator:authenticator@db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: anon
+      # Segredo SÓ deste ambiente local; o JWT anônimo de ambiente.env foi
+      # assinado com ele. Não tem relação com nenhuma chave real.
+      PGRST_JWT_SECRET: segredo-local-somente-para-teste-de-estresse-elos
+      # Tamanho do pool de conexões do PostgREST — um dos gargalos clássicos.
+      PGRST_DB_POOL: ${PGRST_POOL:-10}
+      PGRST_DB_POOL_ACQUISITION_TIMEOUT: 10
+    depends_on:
+      db:
+        condition: service_healthy
+
+  toxiproxy:
+    image: ${IMAGEM_TOXIPROXY:-ghcr.io/shopify/toxiproxy:2.12.0}
+    command: ["-host=0.0.0.0", "-config=/config/toxiproxy.json"]
+    volumes:
+      - ./toxiproxy.json:/config/toxiproxy.json:ro
+    ports:
+      # API de controle das falhas (usada pelo cenário "dependencia").
+      - "127.0.0.1:8474:8474"
+    depends_on:
+      - postgrest
+
+  gateway:
+    image: public.ecr.aws/docker/library/nginx:1.27-alpine
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      # Mesma porta do Supabase local (supabase start), para ficar familiar.
+      - "127.0.0.1:54321:80"
+    depends_on:
+      - toxiproxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/rest/v1/news_articles?select=slug\\&limit=1 | grep -q slug"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
