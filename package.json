@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "stress": "bash stress/rodar.sh"
+    "stress": "bash stress/rodar.sh",
+    "stress:resumo": "node stress/resumir.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

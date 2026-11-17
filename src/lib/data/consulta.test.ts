@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { consultarComRetry, emBuild, falharSeRuntime } from './consulta';
+import { calcularEspera, consultarComRetry, emBuild, falharSeRuntime } from './consulta';
 
 // Espera instantânea: os testes não devem depender de timers reais.
 const semEspera = async () => {};
@@ -73,5 +73,42 @@ describe('falharSeRuntime', () => {
     expect(emBuild()).toBe(true);
     expect(() => falharSeRuntime('profissional-detalhe', 'fetch failed')).not.toThrow();
     expect(console.error).toHaveBeenCalledWith('[profissional-detalhe] fetch failed');
+  });
+});
+
+describe('calcularEspera', () => {
+  it('cresce a cada tentativa (backoff linear de 200 ms)', () => {
+    const meio = () => 0.5; // jitter neutro: fator 1
+    expect(calcularEspera(0, meio)).toBe(200);
+    expect(calcularEspera(1, meio)).toBe(400);
+    expect(calcularEspera(2, meio)).toBe(600);
+  });
+
+  it('varia de -50% a +50% em torno da base (jitter)', () => {
+    expect(calcularEspera(0, () => 0)).toBe(100);
+    expect(calcularEspera(0, () => 0.999)).toBe(300);
+    expect(calcularEspera(1, () => 0)).toBe(200);
+    expect(calcularEspera(1, () => 0.999)).toBe(600);
+  });
+
+  it('dá esperas diferentes para requisições diferentes (não sincroniza as tentativas)', () => {
+    const esperas = new Set(Array.from({ length: 30 }, () => calcularEspera(1)));
+    expect(esperas.size).toBeGreaterThan(5);
+  });
+
+  it('consultarComRetry usa a espera com jitter entre as tentativas', async () => {
+    const esperas: number[] = [];
+    const executar = vi.fn().mockResolvedValue({ data: null, error: { message: 'falha' } });
+
+    await consultarComRetry(executar, 3, async (ms) => {
+      esperas.push(ms);
+    });
+
+    expect(executar).toHaveBeenCalledTimes(3);
+    expect(esperas).toHaveLength(2); // só entre as tentativas, não depois da última
+    expect(esperas[0]).toBeGreaterThanOrEqual(100);
+    expect(esperas[0]).toBeLessThanOrEqual(300);
+    expect(esperas[1]).toBeGreaterThanOrEqual(200);
+    expect(esperas[1]).toBeLessThanOrEqual(600);
   });
 });

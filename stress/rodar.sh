@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Roda um cenário de estresse contra o ambiente ISOLADO (nunca produção).
 #
-#   stress/rodar.sh <fumaca|carga|pico|estresse|ruptura|dependencia>
+#   stress/rodar.sh <fumaca|carga|pico|estresse|ruptura|dependencia|transitoria>
 #
 # Variáveis opcionais:
 #   ESCALA_TEMPO=0.25  ESCALA_CARGA=2   encurta o tempo / multiplica a carga
@@ -21,8 +21,8 @@ cd "$(dirname "$0")/.."
 
 CENARIO="${1:-}"
 case "$CENARIO" in
-  fumaca|carga|pico|estresse|ruptura|dependencia) ;;
-  *) echo "uso: stress/rodar.sh <fumaca|carga|pico|estresse|ruptura|dependencia>" >&2; exit 2 ;;
+  fumaca|carga|pico|estresse|ruptura|dependencia|transitoria) ;;
+  *) echo "uso: stress/rodar.sh <fumaca|carga|pico|estresse|ruptura|dependencia|transitoria>" >&2; exit 2 ;;
 esac
 
 PORTA="${PORTA_APP:-9100}"
