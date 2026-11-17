@@ -1,6 +1,6 @@
 "use client";
 
-// Seção "Conteúdos do E.L.O.S." da Comunidade: orientações de profissionais
+// Seção "Conteúdos do E.L.O.S." do Acervo Digital: orientações de profissionais
 // e clínicas e relatos de cuidadores (tabela feed_contents), com filtro por
 // tipo e leitura completa num Dialog. Os conteúdos atuais são de perfis
 // demonstrativos e a tela sempre diz isso — não são depoimentos reais.
