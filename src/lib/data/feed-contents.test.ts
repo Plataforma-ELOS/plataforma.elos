@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { mapFeedContentRow, parseCorpo, parseFontes, type FeedContentRow } from './feed-contents';
+import {
+  gerarSlug,
+  mapFeedContentRow,
+  parseCorpo,
+  parseFontes,
+  validarSugestaoConteudo,
+  type FeedContentRow,
+  type SugestaoConteudo,
+} from './feed-contents';
 
 const baseRow: FeedContentRow = {
   slug: 'rotina-visual',
@@ -80,5 +88,65 @@ describe('mapFeedContentRow', () => {
     expect(mapFeedContentRow({ ...baseRow, image_url: null })!.imageUrl).toBeNull();
     expect(mapFeedContentRow({ ...baseRow, image_url: 'https://x.org/a.jpg' })!.imageUrl).toBe('https://x.org/a.jpg');
     expect(mapFeedContentRow({ ...baseRow, image_url: 'javascript:alert(1)' })!.imageUrl).toBeNull();
+  });
+});
+
+const sugestaoBase: SugestaoConteudo = {
+  kind: 'cuidador',
+  title: 'Como preparamos a ida ao dentista',
+  authorLabel: 'Mãe da Lia',
+  body: 'Antes da consulta mostramos fotos do consultório e contamos, com calma, cada etapa do que ia acontecer naquele dia.',
+};
+
+describe('validarSugestaoConteudo', () => {
+  it('aceita uma sugestão mínima e normaliza os campos opcionais', () => {
+    const r = validarSugestaoConteudo({ ...sugestaoBase, title: '  Como preparamos a ida ao dentista  ', tip: '  ' });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.dados.title).toBe('Como preparamos a ida ao dentista');
+    expect(r.dados.tip).toBeNull();
+    expect(r.dados.sources).toEqual([]);
+    expect(r.dados.image_url).toBeNull();
+  });
+
+  it('recusa tipo desconhecido, título curto e texto curto', () => {
+    expect(validarSugestaoConteudo({ ...sugestaoBase, kind: 'video' })).toMatchObject({ ok: false });
+    expect(validarSugestaoConteudo({ ...sugestaoBase, title: 'Oi' })).toMatchObject({ ok: false });
+    expect(validarSugestaoConteudo({ ...sugestaoBase, body: 'curto' })).toMatchObject({ ok: false });
+  });
+
+  it('exige https nas fontes e ignora linhas de fonte vazias', () => {
+    expect(
+      validarSugestaoConteudo({ ...sugestaoBase, sources: [{ titulo: 'NICE', url: 'http://nice.org.uk' }] }),
+    ).toMatchObject({ ok: false });
+    const r = validarSugestaoConteudo({
+      ...sugestaoBase,
+      sources: [{ titulo: 'NICE', url: 'https://www.nice.org.uk' }, { titulo: '', url: '' }],
+    });
+    expect(r.ok && r.dados.sources).toEqual([{ titulo: 'NICE', descricao: '', url: 'https://www.nice.org.uk' }]);
+  });
+
+  it('recusa mais de 3 fontes e fonte sem nome', () => {
+    const quatro = Array.from({ length: 4 }, (_, i) => ({ titulo: `F${i}`, url: '' }));
+    expect(validarSugestaoConteudo({ ...sugestaoBase, sources: quatro })).toMatchObject({ ok: false });
+    expect(
+      validarSugestaoConteudo({ ...sugestaoBase, sources: [{ titulo: '', url: 'https://x.org' }] }),
+    ).toMatchObject({ ok: false });
+  });
+
+  it('imagem exige descrição (acessibilidade)', () => {
+    const semAlt = validarSugestaoConteudo({ ...sugestaoBase, imageUrl: 'https://x.supabase.co/a.jpg' });
+    expect(semAlt).toMatchObject({ ok: false });
+    const comAlt = validarSugestaoConteudo({ ...sugestaoBase, imageUrl: 'https://x.supabase.co/a.jpg', imageAlt: 'Consultório' });
+    expect(comAlt.ok && comAlt.dados.image_alt).toBe('Consultório');
+  });
+});
+
+describe('gerarSlug', () => {
+  it('remove acentos e pontuação e acrescenta o sufixo', () => {
+    expect(gerarSlug('Rotina visual: pequenas mudanças!', 'ab12')).toBe('rotina-visual-pequenas-mudancas-ab12');
+  });
+  it('usa um nome padrão quando o título não tem letras', () => {
+    expect(gerarSlug('!!!', 'ab12')).toBe('conteudo-ab12');
   });
 });

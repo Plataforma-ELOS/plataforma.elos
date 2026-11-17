@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import { useSearch } from '@/hooks/use-search';
+import { normalizarBusca, useSearch } from '@/hooks/use-search';
 
 type Item = { name: string; tag: string; date: number; type: string };
 
@@ -68,5 +68,19 @@ describe('useSearch', () => {
     expect(result.current.results).toHaveLength(1);
     act(() => result.current.setQuery(''));
     expect(result.current.results).toHaveLength(3);
+  });
+});
+
+describe('normalizarBusca', () => {
+  it('ignora acentos e maiúsculas', () => {
+    expect(normalizarBusca('Clínica Ação')).toBe('clinica acao');
+  });
+
+  it('faz "clinica" encontrar "Clínica" no hook', () => {
+    const { result } = renderHook(() =>
+      useSearch({ items: [{ t: 'Clínica' }, { t: 'Cuidador' }], searchableText: (i) => [i.t] }),
+    );
+    act(() => result.current.setQuery('clinica'));
+    expect(result.current.results.map((i) => i.t)).toEqual(['Clínica']);
   });
 });

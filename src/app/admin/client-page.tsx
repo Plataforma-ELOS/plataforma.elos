@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShieldCheck, Check, X, BadgeCheck, Library, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { atualizarVerificacao, aprovarItemAcervo, rejeitarItemAcervo } from '@/app/actions/admin';
+import { atualizarVerificacao, aprovarConteudo, rejeitarConteudo } from '@/app/actions/admin';
+import type { FeedContent } from '@/lib/data/feed-contents';
 
 type ProfissionalPendente = {
   id: string;
@@ -29,15 +30,8 @@ type ClinicaPendente = {
   created_at: string;
 };
 
-type ItemAcervoPendente = {
-  id: string;
-  title: string;
-  type: string;
-  author_name: string | null;
-  action_url: string | null;
-  tags: string[];
-  created_at: string;
-};
+/** Conteúdo sugerido em "Adicionar ao Acervo", aguardando aprovação. */
+export type ConteudoPendente = FeedContent & { id: string };
 
 function VerificacoesTab({
   profissionaisIniciais,
@@ -105,56 +99,43 @@ function VerificacoesTab({
   );
 }
 
-function AcervoTab({ itensIniciais }: { itensIniciais: ItemAcervoPendente[] }) {
+function AcervoTab({ conteudosIniciais }: { conteudosIniciais: ConteudoPendente[] }) {
   const { toast } = useToast();
-  const [itens, setItens] = useState(itensIniciais);
+  const [conteudos, setConteudos] = useState(conteudosIniciais);
 
-  const handleAprovar = async (id: string) => {
-    setItens((atual) => atual.filter((i) => i.id !== id));
-    const resultado = await aprovarItemAcervo(id);
+  const decidir = async (id: string, aprovar: boolean) => {
+    setConteudos((atual) => atual.filter((c) => c.id !== id));
+    const resultado = aprovar ? await aprovarConteudo(id) : await rejeitarConteudo(id);
     if (!resultado.ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível aprovar', description: resultado.erro });
+      toast({
+        variant: 'destructive',
+        title: aprovar ? 'Não foi possível aprovar' : 'Não foi possível rejeitar',
+        description: resultado.erro,
+      });
     }
   };
 
-  const handleRejeitar = async (id: string) => {
-    setItens((atual) => atual.filter((i) => i.id !== id));
-    const resultado = await rejeitarItemAcervo(id);
-    if (!resultado.ok) {
-      toast({ variant: 'destructive', title: 'Não foi possível rejeitar', description: resultado.erro });
-    }
-  };
-
-  if (itens.length === 0) {
-    return <p className="text-muted-foreground text-center py-12">Nenhum item sugerido pendente no momento.</p>;
+  if (conteudos.length === 0) {
+    return <p className="text-muted-foreground text-center py-12">Nenhum conteúdo sugerido pendente no momento.</p>;
   }
 
   return (
     <div className="space-y-3">
-      {itens.map((item) => (
-        <Card key={item.id}>
+      {conteudos.map((c) => (
+        <Card key={c.id}>
           <CardContent className="p-4 space-y-3">
             <div className="flex items-start justify-between gap-4 flex-wrap">
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="font-semibold">{item.title}</p>
-                  <Badge variant="secondary">{item.type}</Badge>
+              <div className="space-y-1 min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="secondary">{c.kindLabel}</Badge>
+                  <p className="font-semibold">{c.title}</p>
                 </div>
-                {item.author_name && <p className="text-sm text-muted-foreground">Autor: {item.author_name}</p>}
-                {item.action_url && (
-                  <a
-                    href={item.action_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-primary-strong hover:underline inline-flex items-center gap-1 mt-1"
-                  >
-                    {item.action_url}
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
+                <p className="text-sm text-muted-foreground">
+                  {c.authorLabel} · enviado em {c.date}
+                </p>
               </div>
               <div className="flex gap-2">
-                <Button size="sm" onClick={() => handleAprovar(item.id)}>
+                <Button size="sm" onClick={() => decidir(c.id, true)}>
                   <Check className="mr-2 h-4 w-4" />
                   Aprovar
                 </Button>
@@ -162,13 +143,54 @@ function AcervoTab({ itensIniciais }: { itensIniciais: ItemAcervoPendente[] }) {
                   size="sm"
                   variant="outline"
                   className="text-destructive hover:text-destructive"
-                  onClick={() => handleRejeitar(item.id)}
+                  onClick={() => decidir(c.id, false)}
                 >
                   <X className="mr-2 h-4 w-4" />
                   Rejeitar
                 </Button>
               </div>
             </div>
+
+            {/* O admin precisa ler tudo antes de publicar. */}
+            <details className="rounded-md border p-3 text-sm">
+              <summary className="cursor-pointer font-medium">Ler o conteúdo completo</summary>
+              <div className="mt-3 space-y-3">
+                {c.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={c.imageUrl} alt={c.imageAlt} className="max-h-48 rounded-md object-cover" />
+                )}
+                {c.blocos.map((b, i) =>
+                  b.tipo === 'paragrafo' ? (
+                    <p key={i}>{b.texto}</p>
+                  ) : (
+                    <ul key={i} className={b.ordenada ? 'list-decimal pl-5' : 'list-disc pl-5'}>
+                      {b.itens.map((item, j) => <li key={j}>{item}</li>)}
+                    </ul>
+                  ),
+                )}
+                {c.tip && <p><strong>Dica:</strong> {c.tip}</p>}
+                {c.sources.length > 0 && (
+                  <ul className="space-y-1">
+                    {c.sources.map((f, i) => (
+                      <li key={i}>
+                        {f.titulo}
+                        {f.url && (
+                          <a
+                            href={f.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-2 text-primary-strong hover:underline inline-flex items-center gap-1"
+                          >
+                            {f.url}
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </details>
           </CardContent>
         </Card>
       ))}
@@ -179,11 +201,11 @@ function AcervoTab({ itensIniciais }: { itensIniciais: ItemAcervoPendente[] }) {
 export default function AdminClient({
   professionaisIniciais,
   clinicasIniciais,
-  itensAcervoIniciais,
+  conteudosPendentes,
 }: {
   professionaisIniciais: ProfissionalPendente[];
   clinicasIniciais: ClinicaPendente[];
-  itensAcervoIniciais: ItemAcervoPendente[];
+  conteudosPendentes: ConteudoPendente[];
 }) {
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
@@ -197,7 +219,7 @@ export default function AdminClient({
               </div>
               <div>
                 <h1 className="text-3xl font-bold font-headline">Painel Administrativo</h1>
-                <p className="text-muted-foreground">Verificações e itens do acervo pendentes de aprovação.</p>
+                <p className="text-muted-foreground">Verificações e conteúdos do acervo pendentes de aprovação.</p>
               </div>
             </div>
 
@@ -216,7 +238,7 @@ export default function AdminClient({
                 <VerificacoesTab profissionaisIniciais={professionaisIniciais} clinicasIniciais={clinicasIniciais} />
               </TabsContent>
               <TabsContent value="acervo" className="mt-6">
-                <AcervoTab itensIniciais={itensAcervoIniciais} />
+                <AcervoTab conteudosIniciais={conteudosPendentes} />
               </TabsContent>
             </Tabs>
           </div>

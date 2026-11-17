@@ -261,6 +261,7 @@ export type Database = {
       }
       feed_contents: {
         Row: {
+          approved: boolean
           author_label: string
           body: string
           created_at: string
@@ -272,10 +273,12 @@ export type Database = {
           published_at: string
           slug: string
           sources: Json
+          suggested_by: string | null
           tip: string | null
           title: string
         }
         Insert: {
+          approved?: boolean
           author_label: string
           body: string
           created_at?: string
@@ -287,10 +290,12 @@ export type Database = {
           published_at?: string
           slug: string
           sources?: Json
+          suggested_by?: string | null
           tip?: string | null
           title: string
         }
         Update: {
+          approved?: boolean
           author_label?: string
           body?: string
           created_at?: string
@@ -302,10 +307,19 @@ export type Database = {
           published_at?: string
           slug?: string
           sources?: Json
+          suggested_by?: string | null
           tip?: string | null
           title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "feed_contents_suggested_by_fkey"
+            columns: ["suggested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       group_members: {
         Row: {

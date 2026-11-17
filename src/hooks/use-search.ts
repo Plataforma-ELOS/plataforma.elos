@@ -4,11 +4,16 @@
 // ser reaproveitado por qualquer tela com listagem pesquisável.
 import { useMemo, useState } from 'react';
 
+/** Minúsculas e sem acento: "clinica" encontra "Clínica". */
+export function normalizarBusca(texto: string): string {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 export type SortOrder = 'recent' | 'oldest';
 
 export interface UseSearchParams<T> {
   items: T[];
-  /** Campos textuais de cada item onde a query é procurada (case-insensitive). */
+  /** Campos textuais de cada item onde a query é procurada (sem diferenciar maiúsculas nem acentos). */
   searchableText: (item: T) => string[];
   /** Predicado de filtro por categoria/tipo; recebe o valor de filtro atual. */
   matchesFilter?: (item: T, filterValue: string) => boolean;
@@ -47,12 +52,12 @@ export function useSearch<T>({
   const [sortOrder, setSortOrder] = useState<SortOrder>(initialSort);
 
   const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = normalizarBusca(query.trim());
 
     let out = items.filter((item) => {
       if (matchesFilter && !matchesFilter(item, filter)) return false;
       if (!q) return true;
-      return searchableText(item).some((text) => text.toLowerCase().includes(q));
+      return searchableText(item).some((text) => normalizarBusca(text).includes(q));
     });
 
     if (sortBy) {
