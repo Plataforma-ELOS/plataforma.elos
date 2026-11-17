@@ -63,6 +63,24 @@ if (metricas.taxa_alvo_rps) {
   console.log(`Taxa-alvo no momento em que o teste terminou/abortou: ${metricas.taxa_alvo_rps.value} req/s`);
 }
 
+// ---------------------------------------------------------------- CPU e memória
+const arquivoRecursos = join(dir, 'recursos.csv');
+if (existsSync(arquivoRecursos)) {
+  const porAlvo = {};
+  for (const linha of readFileSync(arquivoRecursos, 'utf8').split('\n').slice(1)) {
+    const [, alvo, cpu, mem] = linha.split(',');
+    if (!alvo || Number.isNaN(Number(cpu))) continue;
+    (porAlvo[alvo.replace('elos-estresse-', '').replace(/-1$/, '')] ??= []).push({ cpu: Number(cpu), mem });
+  }
+  console.log('\nCPU (% de 1 núcleo; Node passa de 100% com threads auxiliares) e memória final:');
+  for (const [alvo, v] of Object.entries(porAlvo)) {
+    const cpus = v.map((x) => x.cpu);
+    const media = cpus.reduce((a, b) => a + b, 0) / cpus.length;
+    const aviso = alvo.includes('media-desde') ? '  ⚠ média desde o início do processo, não é instantâneo' : '';
+    console.log(`  ${alvo.padEnd(30)} máx ${String(Math.round(Math.max(...cpus))).padStart(4)}%  média ${String(Math.round(media)).padStart(4)}%  memória ${v.at(-1).mem}${aviso}`);
+  }
+}
+
 if (!dimensao) {
   console.log('\n(este cenário não quebra por etapa/fase; veja relatorio.html)');
   process.exit(0);
