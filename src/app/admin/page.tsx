@@ -43,11 +43,8 @@ export default async function AdminPage() {
   if (clinicsError) console.error('[admin] erro ao buscar clínicas:', clinicsError.message);
   if (conteudosError) console.error('[admin] erro ao buscar conteúdos do acervo:', conteudosError.message);
 
-  const conteudosPendentes: ConteudoPendente[] = ((conteudoRows ?? []) as (FeedContentRow & { id: string })[])
-    .map((row) => {
-      const c = mapFeedContentRow(row);
-      return c ? { ...c, id: row.id } : null;
-    })
+  const conteudosPendentes: ConteudoPendente[] = ((conteudoRows ?? []) as FeedContentRow[])
+    .map(mapFeedContentRow)
     .filter((c): c is ConteudoPendente => c !== null);
 
   return (

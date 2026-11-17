@@ -44,7 +44,7 @@ import {
   type FeedKind,
 } from '@/lib/data/feed-contents';
 import { AuthContext } from '@/components/common/providers';
-import { sugerirConteudo } from '@/app/actions/feed-contents';
+import { alternarConteudoSalvo, sugerirConteudo } from '@/app/actions/feed-contents';
 import { useToast } from '@/hooks/use-toast';
 import { createClient } from '@/lib/supabase/client';
 
@@ -372,8 +372,33 @@ const textoPesquisavel = (c: FeedContent) => [
 const casaComTipo = (c: FeedContent, filtro: string) => filtro === 'all' || c.kind === filtro;
 const dataDoConteudo = (c: FeedContent) => c.publishedAt;
 
-function DigitalLibraryContent({ conteudos }: { conteudos: FeedContent[] }) {
+function DigitalLibraryContent({ conteudos, salvosIniciais }: { conteudos: FeedContent[]; salvosIniciais: string[] }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user } = useContext(AuthContext);
+  const { toast } = useToast();
+  const [salvos, setSalvos] = useState<ReadonlySet<string>>(() => new Set(salvosIniciais));
+
+  const inverter = (id: string) =>
+    setSalvos((atual) => {
+      const novo = new Set(atual);
+      if (novo.has(id)) novo.delete(id);
+      else novo.add(id);
+      return novo;
+    });
+
+  const handleAlternarSalvo = async (id: string) => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    inverter(id); // otimista
+    const { ok, erro } = await alternarConteudoSalvo(id);
+    if (!ok) {
+      inverter(id);
+      toast({ variant: 'destructive', title: 'Não foi possível salvar', description: erro });
+    }
+  };
 
   const {
     query,
@@ -431,7 +456,7 @@ function DigitalLibraryContent({ conteudos }: { conteudos: FeedContent[] }) {
             </div>
           </div>
 
-          <GradeConteudos conteudos={results} />
+          <GradeConteudos conteudos={results} salvos={salvos} onAlternarSalvo={handleAlternarSalvo} />
 
           {results.length === 0 && (
             <div className="text-center py-16 animate-in fade-in-0 duration-500">
@@ -447,10 +472,16 @@ function DigitalLibraryContent({ conteudos }: { conteudos: FeedContent[] }) {
   );
 }
 
-export default function DigitalLibraryPageClient({ conteudos }: { conteudos: FeedContent[] }) {
+export default function DigitalLibraryPageClient({
+  conteudos,
+  salvosIniciais,
+}: {
+  conteudos: FeedContent[];
+  salvosIniciais: string[];
+}) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <DigitalLibraryContent conteudos={conteudos} />
+      <DigitalLibraryContent conteudos={conteudos} salvosIniciais={salvosIniciais} />
     </Suspense>
   );
 }

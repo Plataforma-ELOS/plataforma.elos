@@ -259,6 +259,39 @@ export type Database = {
           },
         ]
       }
+      feed_content_saves: {
+        Row: {
+          content_id: string
+          created_at: string
+          profile_id: string
+        }
+        Insert: {
+          content_id: string
+          created_at?: string
+          profile_id: string
+        }
+        Update: {
+          content_id?: string
+          created_at?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_content_saves_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "feed_contents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feed_content_saves_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feed_contents: {
         Row: {
           approved: boolean

@@ -31,7 +31,7 @@ type ClinicaPendente = {
 };
 
 /** Conteúdo sugerido em "Adicionar ao Acervo", aguardando aprovação. */
-export type ConteudoPendente = FeedContent & { id: string };
+export type ConteudoPendente = FeedContent;
 
 function VerificacoesTab({
   profissionaisIniciais,

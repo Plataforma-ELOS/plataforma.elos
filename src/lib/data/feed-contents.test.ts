@@ -10,6 +10,7 @@ import {
 } from './feed-contents';
 
 const baseRow: FeedContentRow = {
+  id: '00000000-0000-0000-0000-000000000001',
   slug: 'rotina-visual',
   kind: 'clinica',
   title: 'Rotina visual',
@@ -72,6 +73,7 @@ describe('parseFontes', () => {
 describe('mapFeedContentRow', () => {
   it('mapeia rótulo, resumo, blocos, fontes e data', () => {
     const c = mapFeedContentRow(baseRow)!;
+    expect(c.id).toBe('00000000-0000-0000-0000-000000000001');
     expect(c.kindLabel).toBe('Clínica');
     expect(c.resumo).toBe('Primeiro parágrafo continua aqui.');
     expect(c.blocos).toHaveLength(3);

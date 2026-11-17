@@ -2,8 +2,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { mapLibraryRow, type LibraryRow } from '@/lib/data/library';
-import { mapSavedPost, type PostSaveRow, type SavedItem } from '@/lib/data/saved';
+import { mapSavedConteudos, mapSavedPost, type ConteudoSaveRow, type PostSaveRow, type SavedItem } from '@/lib/data/saved';
 import { consultarComRetry } from '@/lib/data/consulta';
 import SavedPageClient from './client-page';
 
@@ -12,7 +11,7 @@ export default async function SavedPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const [{ data: postSaves, error: postSavesError }, { data: libraryFavorites, error: libraryError }] =
+  const [{ data: postSaves, error: postSavesError }, { data: conteudoSaves, error: conteudosError }] =
     await Promise.all([
       consultarComRetry(() =>
         supabase
@@ -22,24 +21,24 @@ export default async function SavedPage() {
       ),
       consultarComRetry(() =>
         supabase
-          .from('library_favorites')
-          .select('item:library_items(id, type, title, author_name, image_url, action_url, downloadable, tags, created_at)')
+          .from('feed_content_saves')
+          .select(
+            'created_at, conteudo:feed_contents(id, slug, kind, title, author_label, body, tip, sources, image_url, image_alt, is_demo, published_at)'
+          )
           .eq('profile_id', user.id)
       ),
     ]);
 
   if (postSavesError) console.error('[salvos] erro ao buscar posts salvos:', postSavesError.message);
-  if (libraryError) console.error('[salvos] erro ao buscar favoritos do acervo:', libraryError.message);
+  if (conteudosError) console.error('[salvos] erro ao buscar conteúdos salvos do acervo:', conteudosError.message);
 
   const posts: SavedItem[] = ((postSaves ?? []) as unknown as { post: PostSaveRow | null }[])
     .filter((row) => row.post)
     .map((row) => mapSavedPost(row.post!));
 
-  const libraryItems: SavedItem[] = ((libraryFavorites ?? []) as unknown as { item: LibraryRow | null }[])
-    .filter((row) => row.item)
-    .map((row) => ({ ...mapLibraryRow(row.item!), kind: 'library' as const }));
+  const conteudos: SavedItem[] = mapSavedConteudos((conteudoSaves ?? []) as unknown as ConteudoSaveRow[]);
 
-  const itens = [...posts, ...libraryItems].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const itens = [...posts, ...conteudos].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   return <SavedPageClient itens={itens} />;
 }

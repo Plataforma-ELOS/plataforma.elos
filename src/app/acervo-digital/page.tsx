@@ -15,16 +15,28 @@ export default async function DigitalLibraryPage() {
   const { data, error } = await consultarComRetry(() =>
     supabase
       .from('feed_contents')
-      .select('slug, kind, title, author_label, body, tip, sources, image_url, image_alt, is_demo, published_at')
+      .select('id, slug, kind, title, author_label, body, tip, sources, image_url, image_alt, is_demo, published_at')
       .eq('approved', true)
       .order('published_at', { ascending: false })
   );
 
   if (error) console.error('[acervo-digital] erro ao buscar conteúdos:', error.message);
 
+  // Quais destes a pessoa logada já salvou (botão de salvar marcado).
+  const { data: { user } } = await supabase.auth.getUser();
+  let salvos: string[] = [];
+  if (user) {
+    const { data: linhas, error: erroSalvos } = await supabase
+      .from('feed_content_saves')
+      .select('content_id')
+      .eq('profile_id', user.id);
+    if (erroSalvos) console.error('[acervo-digital] erro ao buscar salvos:', erroSalvos.message);
+    salvos = (linhas ?? []).map((l) => l.content_id);
+  }
+
   const conteudos: FeedContent[] = ((data ?? []) as FeedContentRow[])
     .map(mapFeedContentRow)
     .filter((c): c is FeedContent => c !== null);
 
-  return <DigitalLibraryPageClient conteudos={conteudos} />;
+  return <DigitalLibraryPageClient conteudos={conteudos} salvosIniciais={salvos} />;
 }

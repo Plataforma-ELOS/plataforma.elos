@@ -6,7 +6,7 @@
 // depoimentos reais.
 import { useState } from 'react';
 import Image from 'next/image';
-import { Building2, ExternalLink, HeartHandshake, Lightbulb, Stethoscope, type LucideIcon } from 'lucide-react';
+import { Bookmark, Building2, ExternalLink, HeartHandshake, Lightbulb, Stethoscope, type LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -166,7 +166,13 @@ function LeituraCompleta({ conteudo, aberto, onOpenChange }: { conteudo: FeedCon
   );
 }
 
-function CardConteudo({ conteudo }: { conteudo: FeedContent }) {
+type PropsSalvar = {
+  /** Se o conteúdo está nos salvos de quem vê. Sem `onAlternarSalvo`, o botão não aparece. */
+  salvo?: boolean;
+  onAlternarSalvo?: (id: string) => void;
+};
+
+export function CardConteudo({ conteudo, salvo = false, onAlternarSalvo }: { conteudo: FeedContent } & PropsSalvar) {
   const [aberto, setAberto] = useState(false);
   return (
     <Card className={cn('flex h-full flex-col overflow-hidden border-t-4', ESTILO[conteudo.kind].borda)}>
@@ -178,9 +184,23 @@ function CardConteudo({ conteudo }: { conteudo: FeedContent }) {
           {conteudo.authorLabel} · {conteudo.date}
         </p>
         <p className="line-clamp-3 flex-1 text-sm text-foreground/80">{conteudo.resumo}</p>
-        <Button variant="outline" size="sm" className="self-start" onClick={() => setAberto(true)}>
-          Ler mais<span className="sr-only">: {conteudo.title}</span>
-        </Button>
+        <div className="flex items-center justify-between gap-2">
+          <Button variant="outline" size="sm" onClick={() => setAberto(true)}>
+            Ler mais<span className="sr-only">: {conteudo.title}</span>
+          </Button>
+          {onAlternarSalvo && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-pressed={salvo}
+              aria-label={salvo ? `Remover dos salvos: ${conteudo.title}` : `Salvar: ${conteudo.title}`}
+              title={salvo ? 'Remover dos salvos' : 'Salvar para ver depois'}
+              onClick={() => onAlternarSalvo(conteudo.id)}
+            >
+              <Bookmark className={cn('h-5 w-5', salvo && 'fill-current text-primary-strong')} />
+            </Button>
+          )}
+        </div>
       </CardContent>
       <LeituraCompleta conteudo={conteudo} aberto={aberto} onOpenChange={setAberto} />
     </Card>
@@ -192,11 +212,19 @@ function CardConteudo({ conteudo }: { conteudo: FeedContent }) {
  * barra do topo da página (src/app/acervo-digital/client-page.tsx); aqui
  * chega a lista já filtrada.
  */
-export default function GradeConteudos({ conteudos }: { conteudos: FeedContent[] }) {
+export default function GradeConteudos({
+  conteudos,
+  salvos,
+  onAlternarSalvo,
+}: {
+  conteudos: FeedContent[];
+  salvos?: ReadonlySet<string>;
+  onAlternarSalvo?: (id: string) => void;
+}) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in-0 duration-500">
       {conteudos.map((c) => (
-        <CardConteudo key={c.slug} conteudo={c} />
+        <CardConteudo key={c.slug} conteudo={c} salvo={salvos?.has(c.id)} onAlternarSalvo={onAlternarSalvo} />
       ))}
     </div>
   );
