@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Plus, CheckCircle } from 'lucide-react';
 import DigitalLibraryCard from '@/components/features/acervo/digital-library-card';
 import DigitalLibraryListItem from '@/components/features/acervo/digital-library-list-item';
+import FeedConteudos from '@/components/features/acervo/feed-conteudos';
 import SearchBar from '@/components/features/search/search-bar';
 import SearchFilters from '@/components/features/search/search-filters';
 import { useSearch } from '@/hooks/use-search';
@@ -36,6 +37,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import type { LibraryItemData } from '@/lib/data/library';
+import type { FeedContent } from '@/lib/data/feed-contents';
 import { AuthContext } from '@/components/common/providers';
 import { alternarFavorito, buscarItensAcervo, sugerirItemAcervo } from '@/app/actions/library';
 import { useToast } from '@/hooks/use-toast';
@@ -236,7 +238,13 @@ const searchLibraryText = (item: LibraryItemData) => [item.title, ...item.tags];
 const matchesLibraryType = (item: LibraryItemData, filter: string) => filter === 'all' || item.type === filter;
 const libraryDate = (item: LibraryItemData) => new Date(item.createdAt).getTime();
 
-function DigitalLibraryContent({ itensIniciais }: { itensIniciais: LibraryItemData[] }) {
+function DigitalLibraryContent({
+  itensIniciais,
+  conteudos,
+}: {
+  itensIniciais: LibraryItemData[];
+  conteudos: FeedContent[];
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user } = useContext(AuthContext);
@@ -330,6 +338,12 @@ function DigitalLibraryContent({ itensIniciais }: { itensIniciais: LibraryItemDa
             </AddToLibraryDialog>
           </div>
 
+          <FeedConteudos conteudos={conteudos} />
+
+          {conteudos.length > 0 && (
+            <h2 className="text-2xl font-bold font-headline mb-4">Materiais do acervo</h2>
+          )}
+
           <div className="bg-card p-4 rounded-xl border mb-8">
             <div className="flex flex-col md:flex-row gap-4">
               <SearchBar
@@ -387,10 +401,16 @@ function DigitalLibraryContent({ itensIniciais }: { itensIniciais: LibraryItemDa
   );
 }
 
-export default function DigitalLibraryPageClient({ itensIniciais }: { itensIniciais: LibraryItemData[] }) {
+export default function DigitalLibraryPageClient({
+  itensIniciais,
+  conteudos,
+}: {
+  itensIniciais: LibraryItemData[];
+  conteudos: FeedContent[];
+}) {
   return (
     <Suspense fallback={<div>Carregando...</div>}>
-      <DigitalLibraryContent itensIniciais={itensIniciais} />
+      <DigitalLibraryContent itensIniciais={itensIniciais} conteudos={conteudos} />
     </Suspense>
   );
 }
