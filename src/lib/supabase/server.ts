@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import type { Database } from "./database.types";
+import { fetchResiliente } from "./fetch-resiliente";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -24,6 +25,9 @@ export const createClient = (cookieStore: Awaited<ReturnType<typeof cookies>>) =
           }
         },
       },
+      // Tempo-limite por consulta e retry que de fato reconsulta — ver
+      // fetch-resiliente.ts.
+      global: { fetch: fetchResiliente },
     },
   );
 };
@@ -42,6 +46,7 @@ export const createStaticClient = () => {
         },
         setAll() {},
       },
+      global: { fetch: fetchResiliente },
     },
   );
 };
