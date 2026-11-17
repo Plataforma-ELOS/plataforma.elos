@@ -10,11 +10,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Bookmark, X } from 'lucide-react';
-import DigitalLibraryCard from '@/components/features/acervo/digital-library-card';
+import { CardConteudo } from '@/components/features/acervo/feed-conteudos';
 import SearchBar from '@/components/features/search/search-bar';
 import { useSearch } from '@/hooks/use-search';
 import { alternarSalvo } from '@/app/actions/community';
-import { alternarFavorito } from '@/app/actions/library';
+import { alternarConteudoSalvo } from '@/app/actions/feed-contents';
 import type { SavedItem } from '@/lib/data/saved';
 
 export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
@@ -22,7 +22,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
 
   const { query, setQuery, filter, setFilter, results } = useSearch({
     items: lista,
-    searchableText: (item) => (item.kind === 'post' ? [item.content, item.author.name] : [item.title, item.author]),
+    searchableText: (item) => (item.kind === 'post' ? [item.content, item.author.name] : [item.conteudo.title, item.conteudo.authorLabel, item.conteudo.kindLabel]),
     matchesFilter: (item, filterValue) => filterValue === 'all' || item.kind === filterValue,
     sortBy: (item) => new Date(item.createdAt).getTime(),
   });
@@ -32,7 +32,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
     if (item.kind === 'post') {
       alternarSalvo(item.id);
     } else {
-      alternarFavorito(item.id);
+      alternarConteudoSalvo(item.id);
     }
   }, []);
 
@@ -47,7 +47,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
             </div>
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl font-headline">Itens Salvos</h1>
             <p className="max-w-[700px] text-foreground/80 md:text-xl">
-              Posts e materiais do acervo que você guardou para ver depois.
+              Posts e conteúdos do acervo que você guardou para ver depois.
             </p>
           </div>
 
@@ -58,7 +58,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
                 <TabsList>
                   <TabsTrigger value="all">Tudo</TabsTrigger>
                   <TabsTrigger value="post">Posts</TabsTrigger>
-                  <TabsTrigger value="library">Acervo</TabsTrigger>
+                  <TabsTrigger value="conteudo">Acervo</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -66,7 +66,7 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
             {results.length === 0 ? (
               <p className="text-muted-foreground text-center py-12">
                 {lista.length === 0
-                  ? 'Você ainda não salvou nada. Favorite posts na Comunidade ou materiais no Acervo Digital.'
+                  ? 'Você ainda não salvou nada. Salve posts na Comunidade ou conteúdos no Acervo Digital.'
                   : 'Nenhum item encontrado para essa busca.'}
               </p>
             ) : (
@@ -101,11 +101,11 @@ export default function SavedPageClient({ itens }: { itens: SavedItem[] }) {
                       </CardContent>
                     </Card>
                   ) : (
-                    <DigitalLibraryCard
-                      key={`library-${item.id}`}
-                      item={item}
-                      isFavorited
-                      onToggleFavorite={() => remover(item)}
+                    <CardConteudo
+                      key={`conteudo-${item.id}`}
+                      conteudo={item.conteudo}
+                      salvo
+                      onAlternarSalvo={() => remover(item)}
                     />
                   )
                 )}

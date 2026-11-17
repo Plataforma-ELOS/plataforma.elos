@@ -106,6 +106,12 @@ está com o schema completo e testado:
     demonstrativa); limite de 5 sugestões por pessoa por hora (trigger, sem
     EXECUTE para anon/authenticated). Remove os 3 materiais de exemplo de
     `library_items` (vídeo/documento/documento), a pedido.
+  - `feed_content_saves`: salvar conteúdos do Acervo para ver em `/salvos`
+    (chave `(content_id, profile_id)`, RLS só do dono, `on delete cascade`
+    nos dois lados) — substitui `library_favorites`. Remove a última linha de
+    `library_items`, uma sugestão de teste ("Coloring"). As tabelas antigas
+    (`library_items`, `library_favorites`) ficam vazias e sem uso no código;
+    não foram apagadas.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

@@ -31,6 +31,7 @@ export type BlocoTexto =
 export type FonteConteudo = { titulo: string; descricao: string; url: string | null };
 
 export type FeedContent = {
+  id: string;
   slug: string;
   kind: FeedKind;
   kindLabel: string;
@@ -50,6 +51,7 @@ export type FeedContent = {
 };
 
 export type FeedContentRow = {
+  id: string;
   slug: string;
   kind: string;
   title: string;
@@ -120,6 +122,7 @@ export function mapFeedContentRow(row: FeedContentRow): FeedContent | null {
   const blocos = parseCorpo(row.body);
   const primeiroParagrafo = blocos.find((b) => b.tipo === 'paragrafo');
   return {
+    id: row.id,
     slug: row.slug,
     kind: row.kind,
     kindLabel: FEED_KIND_LABEL[row.kind],
