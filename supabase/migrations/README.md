@@ -93,6 +93,11 @@ está com o schema completo e testado:
     pública, escrita admin) + 8 conteúdos e 4 notícias de pesquisa do
     documento "E.L.O.S. — descrições". Não usa `posts` porque `posts` exige
     autor com conta real, e esses perfis são demonstrativos.
+  - `use_photos_for_remaining_contents_and_news`: fotos para os 3 conteúdos e
+    as 3 notícias de pesquisa que estavam com a ilustração-padrão. Aplicada
+    **depois** do deploy que trouxe os arquivos e de conferir que cada um
+    respondia em produção — na ordem inversa, o banco apontaria por alguns
+    minutos para imagens que o site ainda não tinha.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
