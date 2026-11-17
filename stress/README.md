@@ -169,3 +169,5 @@ banco inteiro e leva de minutos a dezenas de minutos.
   logados e escritas (criar post, curtir) ficam fora.
 - O registro de cada execução segue o modelo em
   [`docs/project/relatorio-ponto-de-ruptura.md`](../docs/project/relatorio-ponto-de-ruptura.md).
+  A primeira rodada está em
+  [`docs/project/estresse/2026-11-17-local.md`](../docs/project/estresse/2026-11-17-local.md).

@@ -1,7 +1,7 @@
 # Roadmap — Plataforma E.L.O.S
 
 Planejamento de próximos passos, ancorado no estado real do código.
-Última atualização: 2026-08-31 (branch `claude/new-session-8sdpjq` — ver
+Última atualização: 2026-11-17 (branch `claude/new-session-8sdpjq` — ver
 `docs/project/historico-prs.md`).
 
 > **Auditoria de 2026-08-31:** o Horizonte 0 foi reconferido contra o estado
@@ -90,6 +90,8 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | 2.3 | ✅ `error.tsx`/`loading.tsx` por rota (hoje só flags `carregando` manuais) | 🟡 | Médio |
 | 2.4 | ✅ CI (GitHub Actions): `typecheck` + `build` + `test` em cada PR | 🟡 | Alto |
 | 2.5 | ✅ ESLint (`eslint-config-next`) + reativar `lint` no build | 🟡 | Médio |
+| 2.7 | ✅ Testes de estresse isolados (`stress/`: k6 + Toxiproxy, banco das 25 migrations) — carga, pico, estresse, ruptura, falha de dependência e falha transitória; relatório em `docs/project/estresse/2026-11-17-local.md` | 🟠 | Alto |
+| 2.8 | ✅ Retry de `consultarComRetry` passa a reconsultar de fato: o Next deduplicava o `fetch` GET pela URL e devolvia a mesma falha (achado pelo teste de estresse). `fetch` dos clients de servidor sai com `signal` (tempo-limite de 8 s) + *jitter* nas esperas. Falha transitória: degradação 27% → 4% | 🟡 | Alto |
 | 2.6 | 🟡 E2E (Playwright) — páginas públicas + regressão de UI mobile (`e2e/mobile-nav.spec.ts`) cobertas; fluxos autenticados de dado real ficam no checklist manual (`qa-ponta-a-ponta.md`) até haver conta de teste dedicada + `E2E_TEST_EMAIL`/`E2E_TEST_PASSWORD` como GitHub Secret para rodar em CI | 🟠 | Alto |
 
 ---
@@ -103,6 +105,8 @@ Reduzir risco de regressão e melhorar confiabilidade.
 | 3.3 | ✅ Supabase Storage para imagens — avatar, foto profissional/clínica, acervo, create-post | 🟠 | Edição de foto pós-cadastro (profissional) fica de fora |
 | F7 | ✅ Ligar "Adicionar ao Acervo" a um insert real, com upload de imagem | 🟢 | — |
 | 3.4 | ✅ Rate limiting / anti-abuso em inserts públicos (`contact_messages`, `reviews`) | 🟡 | Trigger no banco, não só na Server Action |
+| 3.6 | ⏳ **Circuit breaker** em `consultarComRetry` — com o retry efetivo, um banco fora do ar recebe ~2,9× as consultas de uma fase normal (era ~1,7×). Aguarda decisão | 🟡 | Evita efeito dominó |
+| 3.7 | ⏳ Endpoint de saúde que consulte o banco + monitor externo — com o banco fora, as rotas dinâmicas respondem **200 com lista vazia**; monitor de 5xx não vê | 🟡 | Observabilidade |
 | 3.5 | ✅ Consolidar queries inline nas páginas para `lib/data` (noticias-gamificadas + grupos); admin/perfil/configuracoes ficaram de fora (sem mapper a extrair) | 🟡 | Manutenibilidade |
 
 ---
@@ -125,6 +129,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - **Sprint 5 — Polimento:** `1B.12` (contraste do tema claro) já feito. (`1B.7`/`1B.8` já feitos.)
 
 ## Documentos relacionados
+- `docs/project/estresse/` — relatórios dos testes de estresse (`stress/README.md` explica como rodar).
 - `docs/project/refactor-report.md` — relatório da refatoração/limpeza.
 - `docs/architecture/security-checklist.md` — RLS + hardening + passo do leaked-password.
 - `docs/project/historico-prs.md` — changelog detalhado de cada PR mesclado (substitui o antigo fluxo de "um PR só", ver item `0.6`).
