@@ -841,5 +841,6 @@ qualidade · **P3** escala/polimento. Dificuldade: Baixa/Média/Alta/Muito Alta.
 - Segurança/RLS + hardening: [`../architecture/security-checklist.md`](../architecture/security-checklist.md)
 - Changelog PR a PR (47 PRs mesclados): [`./historico-prs.md`](./historico-prs.md)
 - Corpo da PR consolidada #6, documento histórico: [`./pr-description.md`](./pr-description.md)
+- Testes de estresse (relatório de 2026-11-17: gargalo, ruptura, retry inefetivo e corrigido, circuit breaker pendente): [`./estresse/2026-11-17-local.md`](./estresse/2026-11-17-local.md)
 - Histórico de migrations: [`../../supabase/migrations/README.md`](../../supabase/migrations/README.md)
 - Relatório da refatoração (documento histórico): [`./refactor-report.md`](./refactor-report.md)

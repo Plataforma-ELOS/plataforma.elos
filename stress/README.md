@@ -51,7 +51,15 @@ npm run stress -- estresse        # as 4 etapas da apostila + recuperação (~18
 ESCALA_TEMPO=0.25 npm run stress -- estresse   # versão rápida (~5 min)
 SEM_BUILD=1 npm run stress -- ruptura          # reaproveita o build anterior
 DERRUBAR=1 npm run stress -- carga             # derruba os contêineres no fim
+
+npm run stress:resumo                          # tabelas por etapa/fase da última execução
+npm run stress:resumo -- stress/resultados/<cenario>-<data>
 ```
+
+Com o teste rodando, o painel do k6 abre ao vivo em http://127.0.0.1:5665.
+`npm run stress:resumo` mostra o que o painel não mostra: as métricas **por
+etapa ou por fase**, as consultas que chegaram ao banco por requisição e a
+CPU de cada componente.
 
 O script sobe o ambiente, builda a app apontando para ele, roda o cenário e
 salva tudo em `stress/resultados/<cenario>-<data>/`.
@@ -69,6 +77,7 @@ salva tudo em `stress/resultados/<cenario>-<data>/`.
 | `estresse` | Teste de estresse | Degraus 5 → 20 → 50 → 100 → 200 → 5 | Onde começa a degradação, onde quebra, e se recupera |
 | `ruptura` | Ponto de ruptura | Taxa de chegada sobe até 400 req/s e **aborta sozinho** ao estourar os limites | Qual o volume exato do *breakpoint*? (métrica `taxa_alvo_rps`) |
 | `dependencia` | Falha de dependência | Carga constante enquanto o banco fica **lento** (+3 s) e depois **fora do ar** | Efeito dominó, contrapressão, o que cada rota entrega sem banco |
+| `transitoria` | Falha transitória | Carga constante enquanto **~30% das conexões** com o banco são cortadas (`TOXICIDADE=0.3`), com o banco de pé | O **retry** recupera falhas passageiras? (compare a degradação silenciosa antes e depois de mexer nele) |
 
 `ESCALA_TEMPO` e `ESCALA_CARGA` multiplicam durações e usuários de qualquer
 cenário — para rodar rápido ou adaptar à máquina.
@@ -93,7 +102,7 @@ custo), `/login`/`/cadastro` (limite do Supabase Auth e e-mails reais) e
 |---|---|
 | `relatorio.html` | Painel do k6: latência, vazão e erros ao longo do tempo (gerado em execuções de 30 s ou mais) |
 | `resumo.json` / `k6.log` | Métricas finais, **separadas por grupo, etapa ou fase** |
-| `recursos.csv` | CPU e memória do Next e de cada contêiner a cada 5 s |
+| `recursos.csv` | CPU e memória do Next e de cada contêiner a cada 5 s. No Linux a CPU do Next é **instantânea** (lida de `/proc`); no macOS só existe a média desde o início do processo, e a coluna `next(media-desde-o-inicio)` avisa isso — `ps %cpu` esconde o gargalo na média |
 | `gateway.txt` | Cada consulta que chegou ao banco, com status e tempo |
 
 As métricas que importam, conforme a apostila:
@@ -148,7 +157,17 @@ banco inteiro e leva de minutos a dezenas de minutos.
   Os **números absolutos** não valem para produção — o que se transfere é o
   **comportamento**: qual rota degrada primeiro, se o retry amplifica a carga,
   se a ISR segura o banco fora do ar, se o sistema se recupera sozinho.
+- **A ISR não é exercitada pela falha de banco.** `/profissionais` e `/noticias`
+  revalidam a cada 300 s, e as fases de falha duram 60–90 s: o cache nunca
+  expira durante o teste, então ele **não prova** que o `falharSeRuntime`
+  preserva a última página boa quando a revalidação falha. Para isso seria
+  preciso manter o banco fora por mais de 5 minutos com tráfego contínuo.
+- **Os números de CPU do Next valem para um processo só.** O gargalo medido
+  (um núcleo saturado) é do `next start` único deste ambiente; na Vercel cada
+  requisição roda numa invocação própria.
 - **Só tráfego anônimo.** Não há GoTrue (Supabase Auth) no ambiente; fluxos
   logados e escritas (criar post, curtir) ficam fora.
 - O registro de cada execução segue o modelo em
   [`docs/project/relatorio-ponto-de-ruptura.md`](../docs/project/relatorio-ponto-de-ruptura.md).
+  A primeira rodada está em
+  [`docs/project/estresse/2026-11-17-local.md`](../docs/project/estresse/2026-11-17-local.md).
