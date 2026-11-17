@@ -259,6 +259,54 @@ export type Database = {
           },
         ]
       }
+      feed_contents: {
+        Row: {
+          author_label: string
+          body: string
+          created_at: string
+          id: string
+          image_alt: string | null
+          image_url: string | null
+          is_demo: boolean
+          kind: Database["public"]["Enums"]["feed_content_kind"]
+          published_at: string
+          slug: string
+          sources: Json
+          tip: string | null
+          title: string
+        }
+        Insert: {
+          author_label: string
+          body: string
+          created_at?: string
+          id?: string
+          image_alt?: string | null
+          image_url?: string | null
+          is_demo?: boolean
+          kind: Database["public"]["Enums"]["feed_content_kind"]
+          published_at?: string
+          slug: string
+          sources?: Json
+          tip?: string | null
+          title: string
+        }
+        Update: {
+          author_label?: string
+          body?: string
+          created_at?: string
+          id?: string
+          image_alt?: string | null
+          image_url?: string | null
+          is_demo?: boolean
+          kind?: Database["public"]["Enums"]["feed_content_kind"]
+          published_at?: string
+          slug?: string
+          sources?: Json
+          tip?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           group_id: string
@@ -505,6 +553,9 @@ export type Database = {
           image_url: string | null
           published_at: string | null
           slug: string
+          source_citation: string | null
+          source_note: string | null
+          source_url: string | null
           tags: string[]
           title: string
         }
@@ -519,6 +570,9 @@ export type Database = {
           image_url?: string | null
           published_at?: string | null
           slug: string
+          source_citation?: string | null
+          source_note?: string | null
+          source_url?: string | null
           tags?: string[]
           title: string
         }
@@ -533,6 +587,9 @@ export type Database = {
           image_url?: string | null
           published_at?: string | null
           slug?: string
+          source_citation?: string | null
+          source_note?: string | null
+          source_url?: string | null
           tags?: string[]
           title?: string
         }
@@ -1024,9 +1081,17 @@ export type Database = {
     }
     Enums: {
       event_type: "online" | "presencial"
+      feed_content_kind: "profissional" | "clinica" | "cuidador"
       font_size: "sm" | "base" | "lg"
       library_type: "video" | "document" | "game" | "other"
-      news_category: "legislacao" | "tecnologia" | "saude" | "comunidade"
+      news_category:
+        | "legislacao"
+        | "tecnologia"
+        | "saude"
+        | "comunidade"
+        | "dados"
+        | "educacao"
+        | "desenvolvimento"
       professional_kind: "liberal" | "clinic_professional" | "clinic"
       user_role: "caregiver" | "professional" | "clinic" | "admin"
       verification_status: "pending" | "verified" | "rejected"
@@ -1158,9 +1223,18 @@ export const Constants = {
   public: {
     Enums: {
       event_type: ["online", "presencial"],
+      feed_content_kind: ["profissional", "clinica", "cuidador"],
       font_size: ["sm", "base", "lg"],
       library_type: ["video", "document", "game", "other"],
-      news_category: ["legislacao", "tecnologia", "saude", "comunidade"],
+      news_category: [
+        "legislacao",
+        "tecnologia",
+        "saude",
+        "comunidade",
+        "dados",
+        "educacao",
+        "desenvolvimento",
+      ],
       professional_kind: ["liberal", "clinic_professional", "clinic"],
       user_role: ["caregiver", "professional", "clinic", "admin"],
       verification_status: ["pending", "verified", "rejected"],

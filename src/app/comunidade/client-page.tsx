@@ -10,6 +10,8 @@ import { Plus, LogIn, Calendar, MapPin, CalendarPlus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import PostCard, { Post } from '@/components/features/community/post-card';
 import CreatePost from '@/components/features/community/create-post';
+import FeedConteudos from '@/components/features/community/feed-conteudos';
+import type { FeedContent } from '@/lib/data/feed-contents';
 import Link from 'next/link';
 import {
   AlertDialog,
@@ -162,10 +164,12 @@ export default function CommunityPageClient({
   postsIniciais,
   eventosIniciais,
   hasMoreIniciais,
+  conteudos,
 }: {
   postsIniciais: Post[];
   eventosIniciais: EventData[];
   hasMoreIniciais: boolean;
+  conteudos: FeedContent[];
 }) {
   const [posts, setPosts] = useState<Post[]>(postsIniciais);
   const [events, setEvents] = useState<EventData[]>(eventosIniciais);
@@ -271,12 +275,16 @@ export default function CommunityPageClient({
           {/* Cabeçalho alinhado à esquerda */}
           <div className="text-left space-y-2 mb-8">
             <h1 className="text-4xl font-bold text-primary-strong dark:text-foreground font-headline">
-              Posts em Destaque
+              Comunidade
             </h1>
             <p  className="text-muted-foreground">
-              As conversas mais populares da comunidade no momento.
+              Conteúdos com fonte e as conversas da comunidade no momento.
             </p>
           </div>
+
+          <FeedConteudos conteudos={conteudos} />
+
+          <h2 className="text-2xl font-bold font-headline mb-6">Posts em Destaque</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {/* Coluna Principal do Feed */}

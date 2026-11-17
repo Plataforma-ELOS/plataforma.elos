@@ -118,6 +118,7 @@ Reduzir risco de regressão e melhorar confiabilidade.
 - ✅ Trilhas de conhecimento interativas — passos reais + progresso (`/noticias-gamificadas/trilhas/[id]`, tabelas `knowledge_trail_steps`/`trail_step_completions`).
 - ❌ ~~Quiz semanal~~ — **removido em 2026-08-31 por decisão do usuário.** Era um card decorativo com botão desabilitado; exigiria um sistema de pontos que não existe em nenhum outro lugar do app. Sai do escopo do produto, não fica como pendência.
 - ✅ Busca server-side com full-text (Acervo Digital e `/profissionais`, `tsvector`+GIN).
+- ✅ Conteúdos com fonte: seção "Conteúdos do E.L.O.S." em `/comunidade` (tabela `feed_contents` — profissionais em azul, clínicas em roxo, cuidadores em rosa, sempre com selo "perfil demonstrativo" enquanto não houver autor real) e 4 notícias de pesquisa com bloco "Créditos e fonte original" + "Ler artigo original". Pendente: fotos para 3 conteúdos e 3 notícias (hoje com ilustração-padrão) e conferir os links/DOIs das fontes.
 
 ---
 

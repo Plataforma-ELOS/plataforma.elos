@@ -30,6 +30,15 @@
     /* Interação e Acento */
     --accent: 215 77% 78%;           /* Azul Sereno: Hovers e acentos visuais */
     --accent-foreground: 215 20% 15%;
+    /* Tipos do feed de conteúdos (Profissional / Clínica / Cuidador):
+       azul = conhecimento, roxo = orientação, rosa = acolhimento.
+       "-texto" é para texto sobre o "-suave" (contraste >= 4.5:1). */
+    --tipo-profissional: 215 75% 38%;
+    --tipo-profissional-suave: 215 85% 94%;
+    --tipo-clinica: 270 55% 42%;
+    --tipo-clinica-suave: 270 75% 95%;
+    --tipo-cuidador: 330 60% 40%;
+    --tipo-cuidador-suave: 330 85% 95%;
     --muted: 258 67% 96%;            /* Cinza Lavanda: Fundo de inputs e áreas neutras */
     --muted-foreground: 256 10% 45%;
     
@@ -75,6 +84,12 @@
     /* Interação e Acento */
     --accent: 215 70% 70%;           /* Azul Pastel Vibrante */
     --accent-foreground: 215 80% 98%;
+    --tipo-profissional: 215 90% 82%;
+    --tipo-profissional-suave: 215 45% 24%;
+    --tipo-clinica: 270 85% 85%;
+    --tipo-clinica-suave: 270 35% 26%;
+    --tipo-cuidador: 330 85% 85%;
+    --tipo-cuidador-suave: 330 35% 25%;
     --muted: 257 20% 22%;
     --muted-foreground: 258 30% 70%;
     
