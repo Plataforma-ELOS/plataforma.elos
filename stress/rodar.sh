@@ -45,23 +45,36 @@ if [ "${SEM_BUILD:-0}" != 1 ]; then
   npm run build > "$SAIDA/build.log" 2>&1 || { tail -30 "$SAIDA/build.log"; exit 1; }
 fi
 
+# A porta precisa estar livre. Se já houver algo respondendo, o teste mediria
+# esse outro processo (um servidor velho, com outro build) em vez do que acabou
+# de ser buildado — já aconteceu, e os números pareciam válidos.
+if curl -s -o /dev/null --max-time 2 "http://127.0.0.1:${PORTA}/"; then
+  echo "A porta ${PORTA} já está em uso por outro processo (provavelmente um 'next start' anterior)." >&2
+  echo "Encerre-o ou use PORTA_APP=<outra porta>. Em Linux/macOS: pkill -f next-server" >&2
+  exit 1
+fi
+
 echo "==> Iniciando a aplicação em http://127.0.0.1:${PORTA}"
-npx next start -p "$PORTA" -H 127.0.0.1 > "$SAIDA/next.log" 2>&1 &
+# Chama o Next direto (sem npx): com o wrapper, $! era o PID do npx e o
+# servidor, neto dele, sobrevivia ao kill e ficava órfão segurando a porta.
+node node_modules/next/dist/bin/next start -p "$PORTA" -H 127.0.0.1 > "$SAIDA/next.log" 2>&1 &
 NEXT_PID=$!
 MONITOR_PID=""
 encerrar() {
   [ -n "$MONITOR_PID" ] && kill "$MONITOR_PID" 2>/dev/null || true
-  pkill -P "$NEXT_PID" 2>/dev/null || true
   kill "$NEXT_PID" 2>/dev/null || true
   if [ "${DERRUBAR:-0}" = 1 ]; then "${COMPOSE[@]}" down -v; fi
 }
 trap encerrar EXIT
 
 for _ in $(seq 1 90); do
+  # Se o processo morreu (porta presa, erro de build...), não adianta esperar.
+  kill -0 "$NEXT_PID" 2>/dev/null || { echo "A aplicação encerrou ao iniciar"; tail -30 "$SAIDA/next.log"; exit 1; }
   curl -sf -o /dev/null "http://127.0.0.1:${PORTA}/home" && break
   sleep 1
 done
 curl -sf -o /dev/null "http://127.0.0.1:${PORTA}/home" || { echo "A aplicação não subiu"; tail -30 "$SAIDA/next.log"; exit 1; }
+kill -0 "$NEXT_PID" 2>/dev/null || { echo "Quem respondeu não é o processo iniciado agora"; exit 1; }
 
 # Observabilidade durante o teste: CPU e memória a cada 5 s, do processo do
 # Next e de cada contêiner, para correlacionar com o painel do k6.
