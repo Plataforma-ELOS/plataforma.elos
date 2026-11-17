@@ -1,9 +1,9 @@
 "use client";
 
-// Seção "Conteúdos do E.L.O.S." do Acervo Digital: orientações de profissionais
-// e clínicas e relatos de cuidadores (tabela feed_contents), com filtro por
-// tipo e leitura completa num Dialog. Os conteúdos atuais são de perfis
-// demonstrativos e a tela sempre diz isso — não são depoimentos reais.
+// Cards do Acervo Digital: orientações de profissionais e clínicas e relatos
+// de cuidadores (tabela feed_contents), com leitura completa num Dialog.
+// Conteúdos de perfis demonstrativos (is_demo) sempre levam o selo — não são
+// depoimentos reais.
 import { useState } from 'react';
 import Image from 'next/image';
 import { Building2, ExternalLink, HeartHandshake, Lightbulb, Stethoscope, type LucideIcon } from 'lucide-react';
@@ -18,15 +18,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import {
-  FEED_KINDS,
-  FEED_KIND_FILTRO,
-  type BlocoTexto,
-  type FeedContent,
-  type FeedKind,
-} from '@/lib/data/feed-contents';
-
-const VISIVEIS_INICIAL = 3;
+import { type BlocoTexto, type FeedContent, type FeedKind } from '@/lib/data/feed-contents';
 
 // Classes completas (o Tailwind só gera o que aparece literal no código).
 const ESTILO: Record<FeedKind, { badge: string; fundo: string; icone: LucideIcon; borda: string }> = {
@@ -195,60 +187,17 @@ function CardConteudo({ conteudo }: { conteudo: FeedContent }) {
   );
 }
 
-export default function FeedConteudos({ conteudos }: { conteudos: FeedContent[] }) {
-  const [filtro, setFiltro] = useState<FeedKind | 'todos'>('todos');
-  const [verTodos, setVerTodos] = useState(false);
-
-  if (conteudos.length === 0) return null;
-
-  const filtrados = filtro === 'todos' ? conteudos : conteudos.filter((c) => c.kind === filtro);
-  const visiveis = verTodos ? filtrados : filtrados.slice(0, VISIVEIS_INICIAL);
-  const opcoes: { valor: FeedKind | 'todos'; rotulo: string }[] = [
-    { valor: 'todos', rotulo: 'Todos' },
-    ...FEED_KINDS.map((k) => ({ valor: k, rotulo: FEED_KIND_FILTRO[k] })),
-  ];
-
+/**
+ * Grade de conteúdos do Acervo. Busca, filtro por tipo e ordenação ficam na
+ * barra do topo da página (src/app/acervo-digital/client-page.tsx); aqui
+ * chega a lista já filtrada.
+ */
+export default function GradeConteudos({ conteudos }: { conteudos: FeedContent[] }) {
   return (
-    <section aria-labelledby="conteudos-elos" className="mb-10 space-y-5">
-      <div className="space-y-1">
-        <h2 id="conteudos-elos" className="text-2xl font-bold font-headline">Conteúdos do E.L.O.S.</h2>
-        <p className="text-sm text-muted-foreground">
-          Quem estuda, quem atende e quem vive essa realidade: orientações de profissionais e clínicas e
-          relatos de cuidadores, com as fontes de cada um.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar conteúdos por tipo">
-        {opcoes.map((o) => (
-          <Button
-            key={o.valor}
-            type="button"
-            size="sm"
-            variant={filtro === o.valor ? 'default' : 'outline'}
-            aria-pressed={filtro === o.valor}
-            onClick={() => {
-              setFiltro(o.valor);
-              setVerTodos(false);
-            }}
-          >
-            {o.rotulo}
-          </Button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {visiveis.map((c) => (
-          <CardConteudo key={c.slug} conteudo={c} />
-        ))}
-      </div>
-
-      {filtrados.length > VISIVEIS_INICIAL && (
-        <div className="text-center">
-          <Button variant="ghost" onClick={() => setVerTodos((v) => !v)}>
-            {verTodos ? 'Ver menos' : `Ver todos (${filtrados.length})`}
-          </Button>
-        </div>
-      )}
-    </section>
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 animate-in fade-in-0 duration-500">
+      {conteudos.map((c) => (
+        <CardConteudo key={c.slug} conteudo={c} />
+      ))}
+    </div>
   );
 }

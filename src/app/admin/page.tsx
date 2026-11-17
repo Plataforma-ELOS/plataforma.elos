@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { consultarComRetry } from '@/lib/data/consulta';
-import AdminClient from './client-page';
+import { mapFeedContentRow, type FeedContentRow } from '@/lib/data/feed-contents';
+import AdminClient, { type ConteudoPendente } from './client-page';
 
 export default async function AdminPage() {
   const supabase = createClient(await cookies());
@@ -13,7 +14,7 @@ export default async function AdminPage() {
   const { data: perfil } = await supabase.from('profiles').select('role').eq('id', user.id).single();
   if (perfil?.role !== 'admin') redirect('/home');
 
-  const [{ data: professionals, error: professionalsError }, { data: clinics, error: clinicsError }, { data: libraryItems, error: libraryError }] =
+  const [{ data: professionals, error: professionalsError }, { data: clinics, error: clinicsError }, { data: conteudoRows, error: conteudosError }] =
     await Promise.all([
       consultarComRetry(() =>
         supabase
@@ -31,8 +32,8 @@ export default async function AdminPage() {
       ),
       consultarComRetry(() =>
         supabase
-          .from('library_items')
-          .select('id, title, type, author_name, action_url, tags, created_at')
+          .from('feed_contents')
+          .select('id, slug, kind, title, author_label, body, tip, sources, image_url, image_alt, is_demo, published_at')
           .eq('approved', false)
           .order('created_at', { ascending: true })
       ),
@@ -40,13 +41,20 @@ export default async function AdminPage() {
 
   if (professionalsError) console.error('[admin] erro ao buscar profissionais:', professionalsError.message);
   if (clinicsError) console.error('[admin] erro ao buscar clínicas:', clinicsError.message);
-  if (libraryError) console.error('[admin] erro ao buscar itens do acervo:', libraryError.message);
+  if (conteudosError) console.error('[admin] erro ao buscar conteúdos do acervo:', conteudosError.message);
+
+  const conteudosPendentes: ConteudoPendente[] = ((conteudoRows ?? []) as (FeedContentRow & { id: string })[])
+    .map((row) => {
+      const c = mapFeedContentRow(row);
+      return c ? { ...c, id: row.id } : null;
+    })
+    .filter((c): c is ConteudoPendente => c !== null);
 
   return (
     <AdminClient
       professionaisIniciais={professionals ?? []}
       clinicasIniciais={clinics ?? []}
-      itensAcervoIniciais={libraryItems ?? []}
+      conteudosPendentes={conteudosPendentes}
     />
   );
 }

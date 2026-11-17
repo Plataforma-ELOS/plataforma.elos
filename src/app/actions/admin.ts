@@ -34,26 +34,32 @@ export async function atualizarVerificacao(
   return { ok: true };
 }
 
-export async function aprovarItemAcervo(id: string): Promise<Resultado> {
+/** Publica no Acervo um conteúdo sugerido (feed_contents). */
+export async function aprovarConteudo(id: string): Promise<Resultado> {
   const { supabase, user, admin } = await contextoAdmin();
   if (!user) return { ok: false, erro: PRECISA_LOGIN };
   if (!admin) return { ok: false, erro: SEM_PERMISSAO };
 
-  const { error } = await supabase.from('library_items').update({ approved: true }).eq('id', id);
-  if (error) return { ok: false, erro: 'Não foi possível aprovar o item agora.' };
+  // published_at = agora: a data exibida é a da publicação, não a do envio.
+  const { error } = await supabase
+    .from('feed_contents')
+    .update({ approved: true, published_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) return { ok: false, erro: 'Não foi possível aprovar o conteúdo agora.' };
 
   revalidatePath('/admin');
   revalidatePath('/acervo-digital');
   return { ok: true };
 }
 
-export async function rejeitarItemAcervo(id: string): Promise<Resultado> {
+/** Descarta um conteúdo sugerido que ainda não foi publicado. */
+export async function rejeitarConteudo(id: string): Promise<Resultado> {
   const { supabase, user, admin } = await contextoAdmin();
   if (!user) return { ok: false, erro: PRECISA_LOGIN };
   if (!admin) return { ok: false, erro: SEM_PERMISSAO };
 
-  const { error } = await supabase.from('library_items').delete().eq('id', id);
-  if (error) return { ok: false, erro: 'Não foi possível rejeitar o item agora.' };
+  const { error } = await supabase.from('feed_contents').delete().eq('id', id).eq('approved', false);
+  if (error) return { ok: false, erro: 'Não foi possível rejeitar o conteúdo agora.' };
 
   revalidatePath('/admin');
   return { ok: true };

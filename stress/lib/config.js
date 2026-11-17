@@ -43,7 +43,7 @@ export const carga = (n) => Math.max(1, Math.round(n * ESCALA_CARGA));
 export const ROTAS = [
   // Dinâmicas: cada visita consulta o banco.
   { grupo: 'dinamica', rota: '/comunidade', marca: 'Post de estresse', peso: 30 },
-  { grupo: 'dinamica', rota: '/acervo-digital', marca: 'Entendendo o Comportamento no TEA', peso: 15 },
+  { grupo: 'dinamica', rota: '/acervo-digital', marca: 'Crises não são birras', peso: 15 },
   { grupo: 'dinamica', rota: '/comunidade/explorar-grupos', marca: 'Grupo de estresse', peso: 15 },
   // ISR: servidas do cache, revalidadas a cada 5 min — grupo de controle.
   { grupo: 'isr', rota: '/profissionais', marca: 'Dra. Cristiane', peso: 15 },

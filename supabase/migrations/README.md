@@ -98,6 +98,14 @@ está com o schema completo e testado:
     **depois** do deploy que trouxe os arquivos e de conferir que cada um
     respondia em produção — na ordem inversa, o banco apontaria por alguns
     minutos para imagens que o site ainda não tinha.
+  - `acervo_feed_contents_suggestions`: o Acervo Digital passa a mostrar só
+    `feed_contents`. Colunas `approved` (sugestões entram pendentes; os 8
+    editoriais ficam aprovados) e `suggested_by`; RLS de leitura (aprovados
+    para todos, a própria sugestão para quem enviou, tudo para admin) e de
+    inserção (usuário logado só como sugestão própria, pendente e não
+    demonstrativa); limite de 5 sugestões por pessoa por hora (trigger, sem
+    EXECUTE para anon/authenticated). Remove os 3 materiais de exemplo de
+    `library_items` (vídeo/documento/documento), a pedido.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**
