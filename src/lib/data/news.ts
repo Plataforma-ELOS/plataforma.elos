@@ -6,14 +6,30 @@ import { formatarDataPtBr } from '../format';
 import { consultarComRetry, falharSeRuntime } from './consulta';
 
 // O banco guarda o enum em minúsculo sem acento (legislacao, tecnologia,
-// saude, comunidade) — a tela usa o rótulo em português com acento e
+// saude, comunidade...) — a tela usa o rótulo em português com acento e
 // maiúscula. Esse mapeamento existe só por causa dessa diferença.
-const CATEGORIA_LABEL: Record<string, string> = {
+export const CATEGORIA_LABEL: Record<string, string> = {
   legislacao: 'Legislação',
   tecnologia: 'Tecnologia',
   saude: 'Saúde',
   comunidade: 'Comunidade',
+  dados: 'Dados e pesquisas',
+  educacao: 'Educação e inclusão',
+  desenvolvimento: 'Desenvolvimento infantil',
 };
+
+/** Ilustração local para notícia sem foto (em vez de um placeholder externo). */
+export const IMAGEM_PADRAO_NOTICIA = '/noticias/padrao.svg';
+
+/** Só aceita link https — vira <a href> na página da notícia. */
+export function linkFonteSeguro(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url).protocol === 'https:' ? url : null;
+  } catch {
+    return null;
+  }
+}
 
 export type NewsCardData = {
   slug: string;
@@ -50,7 +66,7 @@ export async function getNews(opcoes?: { lancarErro?: boolean }): Promise<NewsCa
     slug: a.slug,
     title: a.title,
     description: a.description ?? '',
-    imageUrl: a.image_url ?? 'https://placehold.co/800x600.png',
+    imageUrl: a.image_url ?? IMAGEM_PADRAO_NOTICIA,
     imageHint: a.image_hint ?? 'noticia',
     category: CATEGORIA_LABEL[a.category ?? ''] ?? a.category ?? '',
     date: formatarDataPtBr(a.published_at),
@@ -62,7 +78,7 @@ export async function getNewsBySlug(slug: string) {
   const supabase = createStaticClient();
   const { data, error } = await supabase
     .from('news_articles')
-    .select('slug, title, description, content, image_url, image_hint, category, author_name, published_at')
+    .select('slug, title, description, content, image_url, image_hint, category, author_name, published_at, source_url, source_citation, source_note')
     .eq('slug', slug)
     .maybeSingle();
 
@@ -76,11 +92,14 @@ export async function getNewsBySlug(slug: string) {
     title: data.title,
     description: data.description ?? '',
     content: data.content ?? '',
-    imageUrl: data.image_url ?? 'https://placehold.co/1200x600.png',
+    imageUrl: data.image_url ?? IMAGEM_PADRAO_NOTICIA,
     imageHint: data.image_hint ?? 'noticia',
     category: CATEGORIA_LABEL[data.category ?? ''] ?? data.category ?? '',
     authorName: data.author_name ?? '',
     date: formatarDataPtBr(data.published_at),
+    sourceUrl: linkFonteSeguro(data.source_url),
+    sourceCitation: data.source_citation ?? null,
+    sourceNote: data.source_note ?? null,
   };
 }
 

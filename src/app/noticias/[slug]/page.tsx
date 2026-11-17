@@ -7,7 +7,8 @@ import DOMPurify from 'isomorphic-dompurify';
 import HeaderSecondary from '@/components/layout/header-secondary';
 import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, BookOpen, Calendar, ExternalLink, User } from 'lucide-react';
 import { getNewsBySlug, getAllNewsSlugs } from '@/lib/data/news';
 
 export default async function NewsArticlePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -35,14 +36,16 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
               <header className="mb-8">
                 <Badge variant="default" className="mb-4 bg-primary/80 text-primary-foreground">{article.category}</Badge>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tighter leading-tight font-headline mb-4">{article.title}</h1>
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                         <User className="h-4 w-4" />
                         <span>{article.authorName || 'Equipe Elos'}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        <span>{article.date}</span>
+                        {/* Notícia de pesquisa: a data é a da publicação original do
+                            estudo, não a da adaptação para o feed. */}
+                        <span>{article.sourceCitation ? `Publicado originalmente em ${article.date}` : article.date}</span>
                     </div>
                 </div>
               </header>
@@ -61,6 +64,28 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ sl
                 className="prose prose-lg max-w-none text-foreground prose-headings:text-foreground prose-strong:text-foreground prose-a:text-primary-strong"
                 dangerouslySetInnerHTML={{ __html: conteudoSeguro }}
               />
+
+              {article.sourceCitation && (
+                <section aria-labelledby="fonte-original" className="mt-12 rounded-2xl border bg-muted/40 p-6 space-y-4">
+                  <h2 id="fonte-original" className="flex items-center gap-2 text-lg font-semibold">
+                    <BookOpen className="h-5 w-5 text-primary-strong" aria-hidden="true" />
+                    Créditos e fonte original
+                  </h2>
+                  <p className="text-sm leading-relaxed">{article.sourceCitation}</p>
+                  {article.sourceNote && (
+                    <p className="text-sm text-muted-foreground">{article.sourceNote}</p>
+                  )}
+                  {article.sourceUrl && (
+                    <Button asChild>
+                      <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer">
+                        Ler artigo original
+                        <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                        <span className="sr-only">(abre em nova aba)</span>
+                      </a>
+                    </Button>
+                  )}
+                </section>
+              )}
 
             </article>
           </div>

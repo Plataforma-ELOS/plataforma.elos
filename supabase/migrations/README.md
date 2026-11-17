@@ -82,6 +82,17 @@ está com o schema completo e testado:
     cairia num card chamado "Carlos Eduardo Lima". Só o nome mudou;
     `registration_number` (`DEMO-xxx`), especialidade, descrição e skills
     ficaram intactos.
+  - `add_news_source_columns_and_categories`: `news_articles` ganha
+    `source_url` (só `https`, por `CHECK`), `source_citation` e `source_note`
+    — a página da notícia mostra o bloco "Créditos e fonte original" e o
+    botão "Ler artigo original". O enum `news_category` ganha `dados`,
+    `educacao` e `desenvolvimento` (`ADD VALUE` fica numa migration própria
+    porque o valor novo não pode ser usado na mesma transação).
+  - `seed_feed_contents_and_research_news`: tabela `feed_contents` (conteúdos
+    editoriais de profissionais, clínicas e cuidadores, com `is_demo`; leitura
+    pública, escrita admin) + 8 conteúdos e 4 notícias de pesquisa do
+    documento "E.L.O.S. — descrições". Não usa `posts` porque `posts` exige
+    autor com conta real, e esses perfis são demonstrativos.
 
 **Resultado no Security/Performance Advisor: 0 avisos de segurança, 0
 avisos de performance.**

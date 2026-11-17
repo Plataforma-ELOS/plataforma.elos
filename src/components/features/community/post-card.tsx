@@ -204,19 +204,22 @@ export default function PostCard({ post, onToggleSave, onDelete, currentUser, on
             <span>{commentCount} comentários</span>
         </button>
       </div>
+      {/* Em telas estreitas (< 400px) os três rótulos não cabem lado a lado e a
+          linha empurrava a página para fora da tela: o texto vira sr-only e
+          fica só o ícone, sem perder o nome acessível do botão. */}
       <div className="mt-2 border-t pt-2 flex justify-around">
-        <Button variant="ghost" className="w-full" onClick={handleLike}>
-          <ThumbsUp className={`h-5 w-5 mr-2 ${isLiked ? 'text-primary-strong fill-current' : ''}`} />
-          Curtir
+        <Button variant="ghost" className="min-w-0 flex-1 px-2" onClick={handleLike}>
+          <ThumbsUp className={`h-5 w-5 ${isLiked ? 'text-primary-strong fill-current' : ''}`} />
+          <span className="max-[399px]:sr-only">Curtir</span>
         </Button>
-        <Button variant="ghost" className="w-full" onClick={() => setShowComments(!showComments)}>
-            <MessageCircle className="h-5 w-5 mr-2" />
-            Comentar
+        <Button variant="ghost" className="min-w-0 flex-1 px-2" onClick={() => setShowComments(!showComments)}>
+            <MessageCircle className="h-5 w-5" />
+            <span className="max-[399px]:sr-only">Comentar</span>
         </Button>
         
-        <Button variant="ghost" className="w-full" onClick={handleShare}>
-          <Share2 className="h-5 w-5 mr-2" />
-          Compartilhar
+        <Button variant="ghost" className="min-w-0 flex-1 px-2" onClick={handleShare}>
+          <Share2 className="h-5 w-5" />
+          <span className="max-[399px]:sr-only">Compartilhar</span>
         </Button>
       </div>
       
